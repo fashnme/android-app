@@ -3,6 +3,8 @@ import { View, Dimensions, Text } from 'react-native';
 import { Scene, Router } from 'react-native-router-flux';
 
 import SplashScreen from './components/loginScreen/SplashScreen';
+import HomePage from './components/HomePage';
+
 // class TabIcon extends Component {
 //   constructor(props) {
 //     super(props);
@@ -32,7 +34,8 @@ const RouterComponent = () => {
       <Router navigationBarStyle={{ backgroundColor: '#fff' }}>
         <Scene key='root' hideNavBar>
             <Scene key='tabBar' tabs tabBarPosition="bottom" showLabel={false} tabBarStyle={styles.tabBarStyle} indicatorStyle={styles.indicatorStyle}>
-              <Scene key='splashScreen' component={SplashScreen} />
+                  <Scene hideNavBar key='home' title='Home' component={HomePage} tabStyle={styles.tabStyle} />
+                  <Scene key='splashScreen' component={SplashScreen} />
             </Scene>
         </Scene>
       </Router>
