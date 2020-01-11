@@ -26,7 +26,7 @@ class HomePage extends Component {
 
   render() {
     const { feedData, feedPageNum } = this.props;
-    console.log('HomePage', feedData, feedPageNum);
+    console.log('HomePage Feed Data', feedData, feedPageNum);
     return (
       <View />
     );

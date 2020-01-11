@@ -15,8 +15,8 @@ export const homePageGetInitialFeedData = ({ userToken }) => {
   return (dispatch) => {
     axios.get(HomePageGetInitialFeedDataURL, { headers: { Authorization: userToken } })
     .then(response => {
-      console.log('Actions Feed Data', response.data);
-      dispatch({ type: HOME_PAGE_FEED_INITIAL_DATA_UPDATE, payload: response.data });
+      // console.log('Actions Feed Data', response.data.posts);
+      dispatch({ type: HOME_PAGE_FEED_INITIAL_DATA_UPDATE, payload: response.data.posts });
     })
     .catch(error => {
       console.log('HomePageActions homePageGetInitialFeedData Error', error);
