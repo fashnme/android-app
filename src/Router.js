@@ -51,7 +51,10 @@ const styles = {
     flexDirection: 'row',
     height: 52,
     elevation: 2,
-    alignItems: 'center'
+    alignItems: 'center',
+    backgroundColor: 'black',
+    opacity: 0.1,
+    display: 'none'
   },
   tabStyle: {
     width: tabWidth,
