@@ -6,7 +6,9 @@ import {
 } from '../types';
 
 import {
-  HomePageGetInitialFeedDataURL
+  HomePageGetInitialFeedDataURL,
+  HomePageLikePostURL,
+  HomePageUnLikePostURL
 } from '../URLS';
 
 
@@ -24,11 +26,58 @@ export const homePageGetInitialFeedData = ({ userToken }) => {
   };
 };
 
-
+// Method to Get the Extra Feed Data
 export const homePageGetExtraFeedData = ({ userToken, feedPageNum }) => {
   console.log('Actions ', userToken, feedPageNum);
   return {
     type: HOME_PAGE_FEED_EXTRA_DATA_UPDATE,
     payload: []
+  };
+};
+
+// Method to Like a Post
+export const homePageLikePost = ({ userToken, postId }) => {
+  const headers = {
+    'Content-Type': 'application/json',
+    Authorization: userToken
+  };
+  return (dispatch) => {
+    axios({
+        method: 'post',
+        url: HomePageLikePostURL,
+        headers,
+        data: { postId }
+        })
+        .then((response) => {
+            console.log('homePageLikePost', response);
+        })
+        .catch((error) => {
+            //handle error
+            console.log('homePageLikePost Actions Error ', error);
+      });
+  };
+};
+
+
+// Method to UnLike a Post
+export const homePageUnLikePost = ({ userToken, postId }) => {
+  const headers = {
+    'Content-Type': 'application/json',
+    Authorization: userToken
+  };
+  return (dispatch) => {
+    axios({
+        method: 'post',
+        url: HomePageUnLikePostURL,
+        headers,
+        data: { postId }
+        })
+        .then((response) => {
+            console.log('homePageUnLikePost', response);
+        })
+        .catch((error) => {
+            //handle error
+            console.log('homePageUnLikePost Actions Error ', error);
+      });
   };
 };
