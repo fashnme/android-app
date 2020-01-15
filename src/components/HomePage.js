@@ -9,7 +9,10 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import Carousel from 'react-native-snap-carousel';
-import { homePageGetInitialFeedData } from '../actions';
+import {
+  homePageGetInitialFeedData,
+  homePageUpdateActiveTab
+} from '../actions';
 import styles from './styles/HomePage';
 // Store height in variable
 const height = Dimensions.get('window').height;
@@ -70,5 +73,6 @@ const mapStateToProps = ({ homePageState }) => {
 };
 
 export default connect(mapStateToProps, {
-  homePageGetInitialFeedData
+  homePageGetInitialFeedData,
+  homePageUpdateActiveTab
 })(HomePage);

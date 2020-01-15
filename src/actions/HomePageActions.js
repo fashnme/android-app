@@ -2,7 +2,8 @@ import axios from 'axios';
 
 import {
   HOME_PAGE_FEED_INITIAL_DATA_UPDATE,
-  HOME_PAGE_FEED_EXTRA_DATA_UPDATE
+  HOME_PAGE_FEED_EXTRA_DATA_UPDATE,
+  HOME_PAGE_ACTIVE_TAB_UPDATE
 } from '../types';
 
 import {
@@ -36,6 +37,14 @@ export const homePageGetExtraFeedData = ({ userToken, feedPageNum }) => {
   };
 };
 
+// Method to Update the Active Tab on Home page
+export const homePageUpdateActiveTab = ({ activeTab }) => {
+  console.log('Active Tab Updated', activeTab);
+  return {
+    type: HOME_PAGE_ACTIVE_TAB_UPDATE,
+    payload: activeTab
+  };
+};
 
 // Method to Like a Post
 export const homePageLikePost = ({ userToken, postId }) => {
