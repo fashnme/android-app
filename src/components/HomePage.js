@@ -28,7 +28,7 @@ class HomePage extends Component {
   // componentWillUnmount() {
   //
   // }
-  MainScreen(item) {
+  mainScreen(item) {
     return (
       <ImageBackground source={{ uri: item.uploadUrl }} style={styles.body}>
         <StatusBar translucent backgroundColor="transparent" />
