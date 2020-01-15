@@ -9,6 +9,7 @@ export const ASYNCSTORAGE_USER_TOKEN_NAME = 'userToken';
 
 export const HOME_PAGE_FEED_INITIAL_DATA_UPDATE = 'home_page_feed_initial_data_update';
 export const HOME_PAGE_FEED_EXTRA_DATA_UPDATE = 'home_page_feed_extra_data_update';
+export const HOME_PAGE_ACTIVE_TAB_UPDATE = 'home_page_active_tab_update';
 
 // export const WISHLIST_ADD_OPERATION = 'add';
 // export const WISHLIST_REMOVE_OPERATION = 'remove';
