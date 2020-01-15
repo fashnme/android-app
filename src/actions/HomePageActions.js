@@ -26,6 +26,7 @@ export const homePageGetInitialFeedData = ({ userToken }) => {
   };
 };
 
+
 // Method to Get the Extra Feed Data
 export const homePageGetExtraFeedData = ({ userToken, feedPageNum }) => {
   console.log('Actions ', userToken, feedPageNum);
@@ -34,6 +35,7 @@ export const homePageGetExtraFeedData = ({ userToken, feedPageNum }) => {
     payload: []
   };
 };
+
 
 // Method to Like a Post
 export const homePageLikePost = ({ userToken, postId }) => {
