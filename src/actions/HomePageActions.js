@@ -39,7 +39,7 @@ export const homePageGetExtraFeedData = ({ userToken, feedPageNum }) => {
 
 // Method to Update the Active Tab on Home page
 export const homePageUpdateActiveTab = ({ activeTab }) => {
-  console.log('Active Tab Updated', activeTab);
+  // console.log('Active Tab Updated', activeTab);
   return {
     type: HOME_PAGE_ACTIVE_TAB_UPDATE,
     payload: activeTab
