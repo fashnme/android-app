@@ -41,7 +41,7 @@ class HomePage extends Component {
           </Text>
           <Text onPress={() => this.props.homePageUpdateActiveTab({ activeTab: 2 })} style={this.props.activeTab === 2 ? { ...styles.followTabsItem, ...styles.selectedTab } : styles.followTabsItem}>Following</Text>
         </View>
-        <View style={styles.postContent}>  
+        <View style={styles.postContent}>
             <View style={styles.userDetails}>
               <Text style={styles.userName}>{item.userId}</Text>
               <Text style={styles.postCaption}>{item.caption}</Text>
@@ -56,7 +56,7 @@ class HomePage extends Component {
 
   render() {
     const { feedData, feedPageNum } = this.props;
-    console.log('HomePage Feed Data', feedData, feedPageNum);
+    // console.log('HomePage Feed Data', feedData, feedPageNum);
     return (
       <Carousel
         data={feedData}
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
   },
   postActionsOptions: {
   },
-  followTabs: { 
+  followTabs: {
       flexDirection: 'row',
       justifyContent: 'center',
   },
@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 0
   },
-  userDetails: { 
+  userDetails: {
       flexDirection: 'column',
       marginBottom: 60,
       color: 'white',
