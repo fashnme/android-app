@@ -41,7 +41,7 @@ class HomePage extends Component {
       itemHeight={WINDOW_HEIGHT}
       vertical
       renderItem={({ item }) => (
-          <HomePagePost WINDOW_WIDTH={WINDOW_WIDTH} feedData item={item} />
+          <HomePagePost item={item} WINDOW_WIDTH={WINDOW_WIDTH} verticalCarousel={this.refs.verticalCarousel} />
       )}
     />   
     );
@@ -49,8 +49,8 @@ class HomePage extends Component {
 }
 
 const mapStateToProps = ({ homePageState }) => {
-  const { feedData, feedPageNum, activeTab } = homePageState;
-  return { feedData, feedPageNum, activeTab };
+  const { feedData, feedPageNum, activeTab, userToken } = homePageState;
+  return { feedData, feedPageNum, activeTab, userToken };
 };
 
 

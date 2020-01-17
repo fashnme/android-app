@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, ImageBackground, StatusBar } from 'react-native';
-import Carousel from 'react-native-snap-carousel';
 import { connect } from 'react-redux';
+import ImageSlider from 'react-native-image-slider';
 import {
   homePageGetInitialFeedData,
   homePageUpdateActiveTab
@@ -9,13 +9,8 @@ import {
 
 class HomePagePost extends Component {
   // Renders main slider(vertical) with user details
-  MainScreen(item, page) {
-    console.log('c1', this.refs.verticalCarousel);
-    console.log('c2', this.refs.ch);
-    // if (this.carousel.currentIndex === 0) {
-    //   this.refs.verticalCarousel.snapToNext();
-    // }
-    if (page === 'home') {
+  MainScreen(item, index) {
+    if (index === 1) {
       return (
         <ImageBackground source={{ uri: item.uploadUrl }} resizeMode="cover" style={styles.body}>
           <StatusBar translucent backgroundColor="transparent" />
@@ -44,32 +39,34 @@ class HomePagePost extends Component {
           </View>
         </ImageBackground>
       );
-    } else if (page === 'like') {
-      return (
-        <View style={styles.body}>
-            <Text>Like</Text>
-        </View>
-      );
-    } else if (page === 'dislike') {
-      return (
-        <View style={styles.body}>
-            <Text>dislike</Text>
-        </View>
-      );
+    } else if (index === 2) {
+      return (<View style={styles.slide3}>
+        <Text>Dislike</Text>
+      </View>);
+    } else if (index === 0) {
+      return (<View style={styles.slide1}>
+        <Text>Like</Text>
+      </View>);
     }
   }
 
     render() {
-        const { WINDOW_WIDTH, item } = this.props;
+        const { item, WIDTH, verticalCarousel } = this.props;
         return (
-          <Carousel
-            data={['dislike', 'home', 'like']}
-            sliderWidth={WINDOW_WIDTH}
-            itemWidth={WINDOW_WIDTH}
-            ref={'ch'}
-            firstItem={1}
-            horizontal
-            renderItem={(i) => this.MainScreen(item, i.item)}
+          <ImageSlider 
+          images={['like', 'home', 'dislike']}
+          position={1}
+          onPositionChanged={(index) => {
+            if (index !== 1) {
+              verticalCarousel.snapToNext();
+            }
+          }}
+          customSlide={({ index, style, width }) => (
+            // It's important to put style here because it's got offset inside
+            <View key={index} style={{ width }}>
+                {this.MainScreen(item, index)}
+            </View>
+          )}
           />
         );
     }
@@ -81,7 +78,13 @@ const styles = StyleSheet.create({
         paddingTop: 20,
         backgroundColor: 'black',
     },
-    postActionsOptions: {
+    slide1: {
+      backgroundColor: 'green',
+      flex: 1
+    },
+    slide3: {
+      backgroundColor: 'red',
+      flex: 1
     },
     followTabs: { 
         flexDirection: 'row',
