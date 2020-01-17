@@ -9,6 +9,7 @@ const INITIAL_STATE = {
   feedData: [], // Stores the Feed as a Array
   feedPageNum: 1, // Stores the Current Page for Feed
   activeTab: 1, // Active Tab, 1: Public , 2: Following
+  userToken: ''
 };
 
 export default (state = INITIAL_STATE, action) => {
