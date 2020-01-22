@@ -6,10 +6,22 @@
 
 export const ASYNCSTORAGE_USER_TOKEN_NAME = 'userToken';
 
-
+export const HOME_PAGE_PUBLIC_MODE = 1;
+export const HOME_PAGE_PERSONAL_MODE = 2;
 export const HOME_PAGE_FEED_INITIAL_DATA_UPDATE = 'home_page_feed_initial_data_update';
 export const HOME_PAGE_FEED_EXTRA_DATA_UPDATE = 'home_page_feed_extra_data_update';
+export const HOME_PAGE_PUBLIC_FEED_INITIAL_DATA_UPDATE = 'home_page_public_feed_initial_data_update';
+export const HOME_PAGE_PUBLIC_FEED_EXTRA_DATA_UPDATE = 'home_page_public_feed_extra_data_update';
+export const HOME_PAGE_SET_PUBLIC_VERTICAL_CAROUSEL_REF = 'home_page_set_public_vertical_carousel_ref';
+export const HOME_PAGE_SET_PERSONAL_VERTICAL_CAROUSEL_REF = 'home_page_set_personal_vertical_carousel_ref';
 export const HOME_PAGE_ACTIVE_TAB_UPDATE = 'home_page_active_tab_update';
+
+// Keeping track of users Actions
+export const USER_SET_ACTION_DATA = 'user_set_action_data';
+export const USER_LIKED_POST = 'user_liked_post';
+export const USER_UNLIKED_POST = 'user_unliked_post';
+export const USER_FOLLOWED_HIM = 'user_followed_him';
+export const USER_UNFOLLOWED_HIM = 'user_unfollowed_him';
 
 // export const WISHLIST_ADD_OPERATION = 'add';
 // export const WISHLIST_REMOVE_OPERATION = 'remove';

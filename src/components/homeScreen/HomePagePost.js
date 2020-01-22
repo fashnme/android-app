@@ -1,142 +1,270 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, ImageBackground, StatusBar } from 'react-native';
+import { View, StyleSheet, StatusBar, Dimensions, Text } from 'react-native';
 import { connect } from 'react-redux';
-import ImageSlider from 'react-native-image-slider';
+import Carousel, { ParallaxImage } from 'react-native-snap-carousel';
+import { Icon } from 'react-native-elements';
+import LikeScreen from './LikeScreen';
+import DislikeScreen from './DislikeScreen';
+import { HOME_PAGE_PUBLIC_MODE, HOME_PAGE_PERSONAL_MODE } from '../../types';
+import AvatarComp from './AvatarComp';
+import HeartComp from './HeartComp';
 import {
-  homePageGetInitialFeedData,
-  homePageUpdateActiveTab
+  homePageLikePost,
+  homePageDislikePost,
+  homePageUnlikePost,
+  celebrityPageFollow,
+  celebrityPageUnfollow
 } from '../../actions';
 
+const screenWidth = Dimensions.get('window').width;
+const height = Dimensions.get('window').height + StatusBar.currentHeight;
+const tabs = { DISLIKE: 0, CONTENT: 1, LIKE: 2 };
+
 class HomePagePost extends Component {
-  // Renders main slider(vertical) with user details
-  MainScreen(item, index) {
-    if (index === 1) {
-      return (
-        <ImageBackground source={{ uri: item.uploadUrl }} resizeMode="cover" style={styles.body}>
-          <StatusBar translucent backgroundColor="transparent" />
-          <View style={styles.followTabs}>
-            <Text 
-              onPress={() => this.props.homePageUpdateActiveTab({ activeTab: 1 })} 
-              style={this.props.activeTab === 1 ? { ...styles.followTabsItem, ...styles.selectedTab } : styles.followTabsItem}
-            >
-              For you
-            </Text>
-            <Text 
-              onPress={() => this.props.homePageUpdateActiveTab({ activeTab: 2 })} 
-              style={this.props.activeTab === 2 ? { ...styles.followTabsItem, ...styles.selectedTab } : styles.followTabsItem}
-            >
-                Following
-              </Text>
-          </View>
-          <View style={styles.postContent}>  
-              <View style={styles.userDetails}>
-                <Text style={styles.userName}>@{item.userName}</Text>
-                <Text style={styles.postCaption}>{item.caption}</Text>
-              </View>
-          </View>
-          <View style={styles.postActionsOptions}>
-            <Text style={{ color: 'red' }}>Hi</Text>
-          </View>
-        </ImageBackground>
-      );
-    } else if (index === 2) {
-      return (<View style={styles.slide3}>
-        <Text>Dislike</Text>
-      </View>);
-    } else if (index === 0) {
-      return (<View style={styles.slide1}>
-        <Text>Like</Text>
-      </View>);
+  changeToNextContent(index) {
+    const { activeTab, data, userToken, verticalPublicCarouselRef, verticalPersonalCarouselRef } = this.props;
+    if (activeTab === HOME_PAGE_PUBLIC_MODE) {
+      verticalPublicCarouselRef.snapToNext();
+    } else if (activeTab === HOME_PAGE_PERSONAL_MODE) {
+      verticalPersonalCarouselRef.snapToNext();
     }
+    const { postId, userId } = data;
+    switch (index) {
+      case tabs.LIKE:
+        this.props.homePageLikePost({ postId, userId, userToken });
+        break;
+
+      case tabs.CONTENT:
+        break;
+
+      case tabs.DISLIKE:
+        this.props.homePageDislikePost({ postId, userId, userToken });
+        break;
+
+      default:
+        break;
+    }
+    return {};
   }
 
-    render() {
-        const { item, WIDTH, verticalCarousel } = this.props;
-        return (
-          <ImageSlider 
-          images={['like', 'home', 'dislike']}
-          position={1}
-          onPositionChanged={(index) => {
-            if (index !== 1) {
-              verticalCarousel.snapToNext();
-            }
-          }}
-          customSlide={({ index, style, width }) => (
-            // It's important to put style here because it's got offset inside
-            <View key={index} style={{ width }}>
-                {this.MainScreen(item, index)}
-            </View>
-          )}
+  renderContent(parallaxProps, uploadUrl) {
+      return (
+          <ParallaxImage
+            source={{ uri: uploadUrl }}
+            containerStyle={styles.imageContainer}
+            style={styles.image}
+            parallaxFactor={0}
+            {...parallaxProps}
           />
+      );
+  }
+
+  renderIconWithText({ style, name, type, text, color = '#fafafa', onPress }) {
+      return (
+        <View style={style}>
+            <Icon
+              name={name}
+              type={type}
+              color={color}
+              size={32}
+              onPress={onPress}
+              iconStyle={styles.icons}
+            />
+            <Text style={styles.actionCaption}>{text}</Text>
+        </View>
+      );
+  }
+
+  renderUserCaption(caption, userName) {
+      return (
+        <View style={styles.postDetails}>
+          <Text
+            style={styles.postCaption}
+            onPress={() => console.log('user caption clicked')}
+          >
+            {caption}
+          </Text>
+          <Text
+            style={styles.userName}
+            onPress={() => console.log('username clicked')}
+          >
+            {userName}
+          </Text>
+        </View>
+      );
+  }
+
+  renderItem({ item }, parallaxProps) {
+    const { userToken } = this.props;
+     const { totalComments, caption, uploadUrl, totalLikes, userName, userPic, userId, postId } = this.props.data;
+     if (item === tabs.DISLIKE) {
+        return (
+          <DislikeScreen />
         );
+      } else if (item === tabs.LIKE) {
+        return (
+          <LikeScreen />
+        );
+      }
+      return (
+          <View style={styles.exampleContainer}>
+            {this.renderContent(parallaxProps, uploadUrl)}
+            {this.renderUserCaption(caption, userName)}
+            <View style={styles.postActions}>
+              {this.renderIconWithText({
+                    style: styles.productTag,
+                    name: 'shopping-bag',
+                    type: 'font-awesome',
+                    text: '',
+                    onPress: () => { console.log('Shopping Bag button pressed'); }
+               })}
+
+               {this.renderIconWithText({
+                     style: styles.actionButton,
+                     name: 'share',
+                     type: 'font-awesome',
+                     text: 'Share',
+                     onPress: () => { console.log('Share Bag button pressed'); }
+                })}
+
+                {this.renderIconWithText({
+                      style: styles.actionButton,
+                      name: 'commenting',
+                      type: 'font-awesome',
+                      text: totalComments,
+                      onPress: () => { console.log('Comment Bag button pressed'); }
+                 })}
+
+                 <HeartComp
+                    postId={postId}
+                    text={totalLikes}
+                    onLikePress={() => this.props.homePageLikePost({ postId, userId, userToken })}
+                    onUnlikePress={() => this.props.homePageUnlikePost({ postId, userId, userToken })}
+                 />
+                 <AvatarComp
+                    userId={userId}
+                    userPic={userPic}
+                    onFollowPress={() => this.props.celebrityPageFollow({ userToken, userId })}
+                    onProfileClick={() => this.props.celebrityPageUnfollow({ userToken, userId })}
+                 />
+              </View>
+          </View>
+      );
     }
+
+  render() {
+    return (
+      <View style={{ flex: 1 }}>
+        <StatusBar translucent backgroundColor="transparent" />
+        <View style={[styles.exampleContainer]}>
+              <Carousel
+                ref={(c) => { this.carousel = c; }}
+                data={[
+                    tabs.DISLIKE, // Dislike
+                    tabs.CONTENT, // Image
+                    tabs.LIKE, // Like
+                  ]}
+                renderItem={this.renderItem.bind(this)}
+                sliderWidth={screenWidth}
+                itemWidth={screenWidth}
+                style={{ flex: 1 }}
+                containerCustomStyle={styles.slider}
+                contentContainerCustomStyle={styles.sliderContentContainer}
+                onBeforeSnapToItem={this.changeToNextContent.bind(this)}
+                layout={'tinder'}
+                hasParallaxImages
+                firstItem={1}
+              />
+        </View>
+      </View>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
-    body: {
-        flex: 1,
-        paddingTop: 20,
-        backgroundColor: 'black',
-    },
-    slide1: {
-      backgroundColor: 'green',
-      flex: 1
-    },
-    slide3: {
-      backgroundColor: 'red',
-      flex: 1
-    },
-    followTabs: { 
-        flexDirection: 'row',
-        justifyContent: 'center',
-    },
-    postContent: {
-      position: 'absolute',
-      bottom: 0
-    },
-    userDetails: { 
-        flexDirection: 'column',
-        marginBottom: 60,
-        color: 'white',
-        textShadowColor: 'black',
-        textShadowRadius: 4,
-        marginLeft: 5
-    },
-    userName: {
-        color: 'white',
-        textShadowColor: 'black',
-        textShadowRadius: 4,
-        fontWeight: 'bold',
-        fontSize: 18
-    },
-    postCaption: {
-        color: 'white',
-        textShadowColor: 'black',
-        textShadowRadius: 4,
-        fontSize: 16,
-        width: '65%'
-    },
-    followTabsItem: {
-        color: 'white',
-        fontSize: 24,
-        padding: 10,
-        textShadowColor: 'black',
-        textShadowRadius: 4,
-        opacity: 0.8
-    },
-    selectedTab: {
-        opacity: 1,
-        fontWeight: 'bold',
-    }
-  });
-  
-const mapStateToProps = ({ homePageState }) => {
-    const { feedData, feedPageNum, activeTab } = homePageState;
-    return { feedData, feedPageNum, activeTab };
-  };
-  
-  
+  exampleContainer: {
+    flex: 1,
+  },
+  title: {
+    paddingHorizontal: 30,
+    backgroundColor: 'transparent',
+    color: 'rgba(255, 255, 255, 0.9)',
+    fontSize: 20,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  slider: {
+    overflow: 'visible', // for custom animations
+  },
+  item: {
+    width: screenWidth,
+    height: screenWidth,
+  },
+  imageContainer: {
+    height,
+    width: screenWidth,
+    backgroundColor: 'white',
+  },
+  image: {
+    flex: 1,
+    resizeMode: 'cover',
+  },
+  postDetails: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    marginBottom: 50,
+    marginLeft: 10,
+    flexDirection: 'column-reverse',
+  },
+  userName: {
+    color: 'white',
+    textShadowColor: 'black',
+    textShadowRadius: 4,
+    fontWeight: 'bold',
+    fontSize: 18,
+  },
+  postCaption: {
+    color: 'white',
+    textShadowColor: 'black',
+    textShadowRadius: 4,
+    paddingTop: 10,
+    fontSize: 16,
+    width: '65%',
+  },
+  productTag: {
+    marginTop: 20,
+  },
+  icons: {
+    marginTop: 15,
+    textShadowColor: 'black',
+    textShadowRadius: 10,
+  },
+  actionCaption: {
+    color: 'white',
+    textAlign: 'center',
+  },
+  postActions: {
+   position: 'absolute',
+   bottom: 0,
+   right: 0,
+   marginBottom: 100,
+   marginRight: 10,
+   flexDirection: 'column-reverse',
+ },
+});
+
+const mapStateToProps = ({ homePageState, userActionData }) => {
+    const { likedPosts, followingData } = userActionData;
+    const { activeTab, verticalPublicCarouselRef, verticalPersonalCarouselRef, userToken } = homePageState;
+    return { activeTab, verticalPublicCarouselRef, verticalPersonalCarouselRef, userToken, likedPosts, followingData };
+};
+
+
   export default connect(mapStateToProps, {
-    homePageGetInitialFeedData,
-    homePageUpdateActiveTab
+    homePageLikePost,
+    homePageDislikePost,
+    homePageUnlikePost,
+    celebrityPageFollow,
+    celebrityPageUnfollow
   })(HomePagePost);
