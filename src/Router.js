@@ -4,7 +4,7 @@ import { Scene, Router } from 'react-native-router-flux';
 
 import SplashScreen from './components/loginScreen/SplashScreen';
 import HomePage from './components/HomePage';
-
+import CelebrityPage from './components/CelebrityPage';
 // class TabIcon extends Component {
 //   constructor(props) {
 //     super(props);
@@ -35,6 +35,7 @@ const RouterComponent = () => {
         <Scene key='root' hideNavBar>
             <Scene key='tabBar' tabs tabBarPosition="bottom" showLabel={false} tabBarStyle={styles.tabBarStyle} indicatorStyle={styles.indicatorStyle}>
                   <Scene hideNavBar key='home' title='Home' component={HomePage} tabStyle={styles.tabStyle} />
+                  <Scene hideNavBar key='celebrityPage' title='Celebrity' component={CelebrityPage} tabStyle={styles.tabStyle} />
                   <Scene key='splashScreen' component={SplashScreen} />
             </Scene>
         </Scene>

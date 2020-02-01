@@ -3,7 +3,17 @@ import { View, Text } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { connect } from 'react-redux';
 
-const HeartComp = ({ postId, text, onLikePress, onUnlikePress, likedPosts }) => {
+
+const convertIntToString = (num) => {
+  if (String(num).length >= 7) {
+    return `${String(num / 1000000)}M`;
+  } else if (String(num).length >= 4) {
+    return `${String(num / 1000)}K`;
+  }
+  return num;
+};
+
+const HeartComp = ({ postId, likes, onLikePress, onUnlikePress, likedPosts }) => {
   if (postId in likedPosts) {
     return (
       <View>
@@ -15,7 +25,7 @@ const HeartComp = ({ postId, text, onLikePress, onUnlikePress, likedPosts }) => 
           onPress={onUnlikePress}
           iconStyle={styles.icons}
         />
-        <Text style={styles.actionCaption}>{text}</Text>
+        <Text style={styles.actionCaption}>{convertIntToString(likes + 1)}</Text>
       </View>
     );
   }
@@ -30,11 +40,10 @@ const HeartComp = ({ postId, text, onLikePress, onUnlikePress, likedPosts }) => 
         onPress={onLikePress}
         iconStyle={styles.icons}
       />
-      <Text style={styles.actionCaption}>{text}</Text>
+      <Text style={styles.actionCaption}>{convertIntToString(likes)}</Text>
     </View>
   );
 };
-
 
 const styles = {
   icons: {

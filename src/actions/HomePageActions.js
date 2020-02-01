@@ -150,6 +150,7 @@ export const homePageDislikePost = ({ userToken, postId, userId }) => {
     Authorization: userToken
   };
   return (dispatch) => {
+    dispatch({ type: USER_UNLIKED_POST, payload: postId });
     axios({
         method: 'post',
         url: HomePageDislikePostURL,
