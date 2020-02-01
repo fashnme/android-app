@@ -3,8 +3,7 @@ import { Avatar } from 'react-native-elements';
 import { connect } from 'react-redux';
 
 const AvatarComp = ({ userId, userPic, onFollowPress, onProfileClick, followingData }) => {
-  // const { followingData } = this.props;
-  console.log('followingData', followingData);
+  // console.log('followingData', followingData);
   if (userId in followingData) {
     return (
       <Avatar

@@ -13,7 +13,8 @@ import {
   homePageDislikePost,
   homePageUnlikePost,
   celebrityPageFollow,
-  celebrityPageUnfollow
+  celebrityPageUnfollow,
+  celebrityPageVisitAndSetData
 } from '../../actions';
 
 const screenWidth = Dimensions.get('window').width;
@@ -137,7 +138,7 @@ class HomePagePost extends Component {
 
                  <HeartComp
                     postId={postId}
-                    text={totalLikes}
+                    likes={totalLikes}
                     onLikePress={() => this.props.homePageLikePost({ postId, userId, userToken })}
                     onUnlikePress={() => this.props.homePageUnlikePost({ postId, userId, userToken })}
                  />
@@ -145,7 +146,7 @@ class HomePagePost extends Component {
                     userId={userId}
                     userPic={userPic}
                     onFollowPress={() => this.props.celebrityPageFollow({ userToken, userId })}
-                    onProfileClick={() => this.props.celebrityPageUnfollow({ userToken, userId })}
+                    onProfileClick={() => this.props.celebrityPageVisitAndSetData({ userToken, userId })}
                  />
               </View>
           </View>
@@ -170,7 +171,12 @@ class HomePagePost extends Component {
                 style={{ flex: 1 }}
                 containerCustomStyle={styles.slider}
                 contentContainerCustomStyle={styles.sliderContentContainer}
-                onBeforeSnapToItem={this.changeToNextContent.bind(this)}
+                onSnapToItem={(index) => {
+                              if (index !== 1) {
+                                this.carousel.snapToItem(1, true, () => {});
+                              }
+                              this.changeToNextContent(index);
+                            }}
                 layout={'tinder'}
                 hasParallaxImages
                 firstItem={1}
@@ -266,5 +272,6 @@ const mapStateToProps = ({ homePageState, userActionData }) => {
     homePageDislikePost,
     homePageUnlikePost,
     celebrityPageFollow,
-    celebrityPageUnfollow
+    celebrityPageUnfollow,
+    celebrityPageVisitAndSetData
   })(HomePagePost);

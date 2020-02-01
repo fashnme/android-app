@@ -23,5 +23,9 @@ export const USER_UNLIKED_POST = 'user_unliked_post';
 export const USER_FOLLOWED_HIM = 'user_followed_him';
 export const USER_UNFOLLOWED_HIM = 'user_unfollowed_him';
 
+// Celebrity Page
+export const CELEBRITY_PAGE_SET_CELEB_DATA = 'celebrity_page_set_celeb_data';
+export const CELEBRITY_PAGE_GET_CELEB_POSTS = 'celebrity_page_get_celeb_posts';
+export const CELEBRITY_PAGE_GET_CELEB_LIKED_POSTS = 'celebrity_page_get_celeb_liked_posts';
 // export const WISHLIST_ADD_OPERATION = 'add';
 // export const WISHLIST_REMOVE_OPERATION = 'remove';
