@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, StatusBar, Dimensions, Text } from 'react-native';
+import { View, StyleSheet, StatusBar, Dimensions, Text, TouchableNativeFeedback } from 'react-native';
 import { connect } from 'react-redux';
 import Carousel, { ParallaxImage } from 'react-native-snap-carousel';
 import { Icon } from 'react-native-elements';
@@ -8,13 +8,15 @@ import DislikeScreen from './DislikeScreen';
 import { HOME_PAGE_PUBLIC_MODE, HOME_PAGE_PERSONAL_MODE } from '../../types';
 import AvatarComp from './AvatarComp';
 import HeartComp from './HeartComp';
+import CommentsModal from './CommentsModal';
 import {
   homePageLikePost,
   homePageDislikePost,
   homePageUnlikePost,
   celebrityPageFollow,
   celebrityPageUnfollow,
-  celebrityPageVisitAndSetData
+  celebrityPageVisitAndSetData,
+  homePageToggleCommentsModal
 } from '../../actions';
 
 const screenWidth = Dimensions.get('window').width;
@@ -62,17 +64,18 @@ class HomePagePost extends Component {
 
   renderIconWithText({ style, name, type, text, color = '#fafafa', onPress }) {
       return (
-        <View style={style}>
+        <TouchableNativeFeedback onPress={onPress} style={style}>
+          <View>
             <Icon
               name={name}
               type={type}
               color={color}
               size={32}
-              onPress={onPress}
               iconStyle={styles.icons}
             />
             <Text style={styles.actionCaption}>{text}</Text>
-        </View>
+          </View>
+        </TouchableNativeFeedback>
       );
   }
 
@@ -97,7 +100,7 @@ class HomePagePost extends Component {
 
   renderItem({ item }, parallaxProps) {
     const { userToken } = this.props;
-     const { totalComments, caption, uploadUrl, totalLikes, userName, userPic, userId, postId } = this.props.data;
+     const { totalComments, comments, caption, uploadUrl, totalLikes, userName, userPic, userId, postId } = this.props.data;
      if (item === tabs.DISLIKE) {
         return (
           <DislikeScreen />
@@ -133,7 +136,7 @@ class HomePagePost extends Component {
                       name: 'commenting',
                       type: 'font-awesome',
                       text: totalComments,
-                      onPress: () => { console.log('Comment Bag button pressed'); }
+                      onPress: () => { this.props.homePageToggleCommentsModal(true); }
                  })}
 
                  <HeartComp
@@ -148,6 +151,7 @@ class HomePagePost extends Component {
                     onFollowPress={() => this.props.celebrityPageFollow({ userToken, userId })}
                     onProfileClick={() => this.props.celebrityPageVisitAndSetData({ userToken, userId })}
                  />
+                 <CommentsModal comments={comments} />
               </View>
           </View>
       );
@@ -266,12 +270,12 @@ const mapStateToProps = ({ homePageState, userActionData }) => {
     return { activeTab, verticalPublicCarouselRef, verticalPersonalCarouselRef, userToken, likedPosts, followingData };
 };
 
-
   export default connect(mapStateToProps, {
     homePageLikePost,
     homePageDislikePost,
     homePageUnlikePost,
     celebrityPageFollow,
     celebrityPageUnfollow,
-    celebrityPageVisitAndSetData
+    celebrityPageVisitAndSetData,
+    homePageToggleCommentsModal
   })(HomePagePost);

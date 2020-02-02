@@ -116,7 +116,7 @@ export const celebrityPageFollow = ({ userToken, userId }) => {
         data: { userId }
         })
         .then((response) => {
-            console.log('celebrityPageFollow', response);
+            console.log('celebrityPageFollow', response.data);
         })
         .catch((error) => {
             //handle error
@@ -141,7 +141,7 @@ export const celebrityPageUnfollow = ({ userToken, userId }) => {
         data: { userId }
         })
         .then((response) => {
-            console.log('celebrityPageUnfollow', response);
+            console.log('celebrityPageUnfollow', response.data);
         })
         .catch((error) => {
             //handle error

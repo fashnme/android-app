@@ -9,7 +9,10 @@ import {
   HOME_PAGE_SET_PUBLIC_VERTICAL_CAROUSEL_REF,
   HOME_PAGE_SET_PERSONAL_VERTICAL_CAROUSEL_REF,
   USER_LIKED_POST,
-  USER_UNLIKED_POST
+  USER_UNLIKED_POST,
+  HOME_PAGE_TOGGLE_COMMENTS_MODAL,
+  HOME_PAGE_TOGGLE_SHARE_MODAL,
+  HOME_PAGE_TOGGLE_PRODUCTS_MODAL
 } from '../types';
 
 import {
@@ -108,7 +111,7 @@ export const homePageLikePost = ({ userToken, postId, userId }) => {
         data: { postId, posterId: userId }
         })
         .then((response) => {
-            console.log('homePageLikePost', response);
+            console.log('homePageLikePost', response.data);
         })
         .catch((error) => {
             //handle error
@@ -133,7 +136,7 @@ export const homePageUnlikePost = ({ userToken, postId, userId }) => {
         data: { postId, posterId: userId }
         })
         .then((response) => {
-            console.log('homePageUnlikePost', response);
+            console.log('homePageUnlikePost', response.data);
         })
         .catch((error) => {
             //handle error
@@ -158,11 +161,35 @@ export const homePageDislikePost = ({ userToken, postId, userId }) => {
         data: { postId, posterId: userId }
         })
         .then((response) => {
-            console.log('homePageDislikePost', response);
+            console.log('homePageDislikePost', response.data);
         })
         .catch((error) => {
             //handle error
             console.log('homePageDislikePost Actions Error ', error);
       });
+  };
+};
+
+// Method to Toggle Comments Modal on HomePage
+export const homePageToggleCommentsModal = (isVisible) => {
+  return {
+    type: HOME_PAGE_TOGGLE_COMMENTS_MODAL,
+    payload: isVisible
+  };
+};
+
+// Method to Toggle Share Modal on HomePage
+export const homePageToggleShareModal = (isVisible) => {
+  return {
+    type: HOME_PAGE_TOGGLE_SHARE_MODAL,
+    payload: isVisible
+  };
+};
+
+// Method to Toggle Products Modal on HomePage
+export const homePageToggleProductsModal = (isVisible) => {
+  return {
+    type: HOME_PAGE_TOGGLE_PRODUCTS_MODAL,
+    payload: isVisible
   };
 };

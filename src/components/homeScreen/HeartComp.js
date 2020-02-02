@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, TouchableNativeFeedback } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { connect } from 'react-redux';
 
@@ -16,17 +16,18 @@ const convertIntToString = (num) => {
 const HeartComp = ({ postId, likes, onLikePress, onUnlikePress, likedPosts }) => {
   if (postId in likedPosts) {
     return (
-      <View>
-        <Icon
-          name='heart'
-          type='font-awesome'
-          color='#f00'
-          size={32}
-          onPress={onUnlikePress}
-          iconStyle={styles.icons}
-        />
-        <Text style={styles.actionCaption}>{convertIntToString(likes + 1)}</Text>
-      </View>
+      <TouchableNativeFeedback onPress={onUnlikePress}>
+        <View>
+          <Icon
+            name='heart'
+            type='font-awesome'
+            color='#f00'
+            size={32}
+            iconStyle={styles.icons}
+          />
+          <Text style={styles.actionCaption}>{convertIntToString(likes + 1)}</Text>
+        </View>
+      </TouchableNativeFeedback>
     );
   }
 
