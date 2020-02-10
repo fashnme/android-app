@@ -1,4 +1,7 @@
 import axios from 'axios';
+import Share from 'react-native-share';
+import { Platform } from 'react-native';
+import RNFS from 'react-native-fs';
 
 import {
   HOME_PAGE_FEED_INITIAL_DATA_UPDATE,
@@ -192,4 +195,43 @@ export const homePageToggleProductsModal = (isVisible) => {
     type: HOME_PAGE_TOGGLE_PRODUCTS_MODAL,
     payload: isVisible
   };
+};
+
+const downloadImage = ({ url, type }) => {
+  const FILE = Platform.OS === 'ios' ? '' : 'file://';
+  const cacheDir = `${RNFS.DocumentDirectoryPath}/Cache`;
+  let outputPath = '';
+  if (type === 'video') {
+    outputPath = `${FILE}${cacheDir}/video.mp4`;
+  } else {
+    outputPath = `${FILE}${cacheDir}/image.jpg`;
+  }
+
+  RNFS.exists(cacheDir)
+    .then(response => {
+       if (response !== true) {
+        // Directory not exists
+        RNFS.mkdir(cacheDir);
+       }
+       return RNFS.downloadFile({
+         fromUrl: url,
+         toFile: outputPath
+       })
+       .promise.then(() => {
+         return { path: outputPath }; // Downloaded Successfully
+       })
+       .catch((error) => {
+         console.log('Error while Downloading Share Image', url, error);
+       });
+     });
+};
+
+// Method to Share the Post
+export const homePageSharePost = ({ postData }) => {
+  const path = downloadImage({ url: postData.uploadUrl, type: postData.mediaType });
+  const options = { message: postData.caption, url: path, title: 'Share Now' };
+  Share.open(options)
+   .then((res) => { console.log('homePageSharePost Post Shared', res); })
+   .catch((err) => { console.log('homePageSharePost Post Sharing Error', err); });
+  return { type: 'homePageSharePost' };
 };

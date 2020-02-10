@@ -9,6 +9,7 @@ import { HOME_PAGE_PUBLIC_MODE, HOME_PAGE_PERSONAL_MODE } from '../../types';
 import AvatarComp from './AvatarComp';
 import HeartComp from './HeartComp';
 import CommentsModal from './CommentsModal';
+// import ShareModal from './ShareModal';
 import {
   homePageLikePost,
   homePageDislikePost,
@@ -16,7 +17,9 @@ import {
   celebrityPageFollow,
   celebrityPageUnfollow,
   celebrityPageVisitAndSetData,
-  homePageToggleCommentsModal
+  homePageToggleCommentsModal,
+  homePageSharePost,
+  homePageToggleProductsModal
 } from '../../actions';
 
 const screenWidth = Dimensions.get('window').width;
@@ -100,7 +103,8 @@ class HomePagePost extends Component {
 
   renderItem({ item }, parallaxProps) {
     const { userToken } = this.props;
-     const { totalComments, comments, caption, uploadUrl, totalLikes, userName, userPic, userId, postId } = this.props.data;
+     const { totalComments, caption, uploadUrl, totalLikes, userName, userPic, userId, postId } = this.props.data;
+     console.log('home Data', totalComments, caption, uploadUrl, totalLikes, userName, userPic, userId, postId);
      if (item === tabs.DISLIKE) {
         return (
           <DislikeScreen />
@@ -120,7 +124,7 @@ class HomePagePost extends Component {
                     name: 'shopping-bag',
                     type: 'font-awesome',
                     text: '',
-                    onPress: () => { console.log('Shopping Bag button pressed'); }
+                    onPress: () => { this.props.homePageToggleProductsModal(true); }
                })}
 
                {this.renderIconWithText({
@@ -128,7 +132,7 @@ class HomePagePost extends Component {
                      name: 'share',
                      type: 'font-awesome',
                      text: 'Share',
-                     onPress: () => { console.log('Share Bag button pressed'); }
+                     onPress: () => { this.props.homePageSharePost({ postData: this.props.data }); }
                 })}
 
                 {this.renderIconWithText({
@@ -151,7 +155,8 @@ class HomePagePost extends Component {
                     onFollowPress={() => this.props.celebrityPageFollow({ userToken, userId })}
                     onProfileClick={() => this.props.celebrityPageVisitAndSetData({ userToken, userId })}
                  />
-                 <CommentsModal comments={comments} />
+                 <CommentsModal />
+
               </View>
           </View>
       );
@@ -267,6 +272,7 @@ const styles = StyleSheet.create({
 const mapStateToProps = ({ homePageState, userActionData }) => {
     const { likedPosts, followingData } = userActionData;
     const { activeTab, verticalPublicCarouselRef, verticalPersonalCarouselRef, userToken } = homePageState;
+    console.log('In the mapStateToProps of HomePagePost');
     return { activeTab, verticalPublicCarouselRef, verticalPersonalCarouselRef, userToken, likedPosts, followingData };
 };
 
@@ -277,5 +283,7 @@ const mapStateToProps = ({ homePageState, userActionData }) => {
     celebrityPageFollow,
     celebrityPageUnfollow,
     celebrityPageVisitAndSetData,
-    homePageToggleCommentsModal
+    homePageToggleCommentsModal,
+    homePageSharePost,
+    homePageToggleProductsModal
   })(HomePagePost);

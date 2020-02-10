@@ -12,13 +12,38 @@ import {
   HOME_PAGE_TOGGLE_PRODUCTS_MODAL
 } from '../types';
 
-
 const INITIAL_STATE = {
-  feedData: [], // Stores the Feed as a Array
+  feedData: [
+    { caption: 'I am great at caption',
+        uploadUrl: 'https://i.pinimg.com/236x/d1/0c/fd/d10cfd6e4fbcbebe1658ea42f7de8d2d.jpg',
+        userId: 'yami007',
+        mediaType: 'image',
+        timestamp: 'Mon Feb 10 2020 16:09:55 GMT+0530',
+        totalLikes: 10,
+        totalComments: 20,
+        taggedProducts: [],
+        userName: 'pawan',
+        userPic: 'https://i.pinimg.com/236x/d1/0c/fd/d10cfd6e4fbcbebe1658ea42f7de8d2d.jpg',
+        postId: 'dafasfas'
+    }
+  ], // Stores the Feed as a Array
   feedPageNum: 1, // Stores the Current Page for Feed
   activeTab: null, // Active Tab, 1: Public , 2: Following, Initially null to show the spinner
   userToken: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiUERvNWdtOEJNZ0tZWjFQNFlobFoiLCJpYXQiOjE1Nzg0ODgzODF9.f_0FHHWMZ1Javvvmtl72yO5m_1pICYjggYZA0-ccFQM',
-  publicFeedData: [],
+  publicFeedData: [
+    { caption: 'I am great at caption',
+        uploadUrl: 'https://i.pinimg.com/236x/d1/0c/fd/d10cfd6e4fbcbebe1658ea42f7de8d2d.jpg',
+        userId: 'yami007',
+        mediaType: 'image',
+        timestamp: 'Mon Feb 10 2020 16:09:55 GMT+0530',
+        totalLikes: 10,
+        totalComments: 20,
+        taggedProducts: [],
+        userName: 'pawan',
+        userPic: 'https://i.pinimg.com/236x/d1/0c/fd/d10cfd6e4fbcbebe1658ea42f7de8d2d.jpg',
+        postId: 'dafasfas'
+    }
+  ],
   publicFeedPageNum: 1,
   commentModalVisible: false,
   shareModalVisible: false,

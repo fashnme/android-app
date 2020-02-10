@@ -30,5 +30,12 @@ export const USER_UNFOLLOWED_HIM = 'user_unfollowed_him';
 export const CELEBRITY_PAGE_SET_CELEB_DATA = 'celebrity_page_set_celeb_data';
 export const CELEBRITY_PAGE_GET_CELEB_POSTS = 'celebrity_page_get_celeb_posts';
 export const CELEBRITY_PAGE_GET_CELEB_LIKED_POSTS = 'celebrity_page_get_celeb_liked_posts';
+
+// Upload Page
+export const UPLOAD_PAGE_TOGGLE_ISSELECTED = 'upload_page_toggle_isselected';
+export const UPLOAD_PAGE_UPDATE_CAPTION = 'upload_page_update_caption';
+export const UPLOAD_PAGE_UPDATE_SELECTED_IMAGE_PATH = 'upload_page_update_selected_image_path';
+
+
 // export const WISHLIST_ADD_OPERATION = 'add';
 // export const WISHLIST_REMOVE_OPERATION = 'remove';

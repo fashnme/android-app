@@ -28,7 +28,7 @@ const renderListItem = ({ item }) => {
 };
 
 const CommentsModal = ({ comments, commentModalVisible, homePageToggleCommentsModal }) => {
-  console.log('Comments', comments, commentModalVisible);
+  console.log('CommentsModal', comments, commentModalVisible);
   const data = {
     comments: [{
     comment_id: '52342',
