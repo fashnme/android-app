@@ -1,42 +1,44 @@
 import React, { Component } from 'react';
 import { View, Dimensions, Text } from 'react-native';
 import { Scene, Router } from 'react-native-router-flux';
-
-import SplashScreen from './components/loginScreen/SplashScreen';
+import { Icon } from 'react-native-elements';
+// import SplashScreen from './components/loginScreen/SplashScreen';
 import HomePage from './components/HomePage';
 import CelebrityPage from './components/CelebrityPage';
-// class TabIcon extends Component {
-//   constructor(props) {
-//     super(props);
-//     this.iconsMap = {
-//       home: { type: 'font-awesome', name: 'home', displayName: 'Home' },
-//       search: { type: 'font-awesome', name: 'search', displayName: 'Search' },
-//       reward: { type: 'font-awesome', name: 'rupee', displayName: 'Rewards' },
-//       user: { type: 'entypo', name: 'user', displayName: 'Me' },
-//       celeb: { type: 'foundation', name: 'graph-bar', displayName: 'Celebs' }
-//     };
-//   }
-// render() {
-//     const color = this.props.focused ? '#FF91AF' : '#c6c9cf';
-//     // const backgroundColor = this.props.selected ? '#ff0000' : '#fff';
-//     const iconName = this.props.iconName;
-//     return (
-//       <View style={{ boderRadius: 5 }}>
-//         <Icon color={color} name={this.iconsMap[iconName].name} type={this.iconsMap[iconName].type} size={24} />
-//         <Text style={{ color, fontWeight: 'bold', fontSize: 12 }}> {this.iconsMap[iconName].displayName} </Text>
-//       </View>
-//     );
-//   }
-// }
+import UploadPage from './components/UploadPage';
 
+class TabIcon extends Component {
+  constructor(props) {
+    super(props);
+    this.iconsMap = {
+      home: { type: 'font-awesome', name: 'home', displayName: 'Home' },
+      search: { type: 'font-awesome', name: 'search', displayName: 'Search' },
+      upload: { type: 'font-awesome', name: 'plus-circle', displayName: 'Upload' },
+      user: { type: 'entypo', name: 'user', displayName: 'Me' },
+      celeb: { type: 'foundation', name: 'graph-bar', displayName: 'Celebs' }
+    };
+  }
+render() {
+    const color = this.props.focused ? '#FF91AF' : '#c6c9cf';
+    // const backgroundColor = this.props.selected ? '#ff0000' : '#fff';
+    const iconName = this.props.iconName;
+    return (
+      <View style={{ boderRadius: 5 }}>
+        <Icon color={color} name={this.iconsMap[iconName].name} type={this.iconsMap[iconName].type} size={24} />
+        <Text style={{ color, fontWeight: 'bold', fontSize: 12 }}> {this.iconsMap[iconName].displayName} </Text>
+      </View>
+    );
+  }
+}
+// <Scene icon={TabIcon} iconName={'home'} key='splashScreen' component={SplashScreen} />
 const RouterComponent = () => {
     return (
       <Router navigationBarStyle={{ backgroundColor: '#fff' }}>
         <Scene key='root' hideNavBar>
             <Scene key='tabBar' tabs tabBarPosition="bottom" showLabel={false} tabBarStyle={styles.tabBarStyle} indicatorStyle={styles.indicatorStyle}>
-                  <Scene hideNavBar key='home' title='Home' component={HomePage} tabStyle={styles.tabStyle} />
-                  <Scene hideNavBar key='celebrityPage' title='Celebrity' component={CelebrityPage} tabStyle={styles.tabStyle} />
-                  <Scene key='splashScreen' component={SplashScreen} />
+                <Scene hideNavBar icon={TabIcon} iconName={'home'} key='home' title='Home' component={HomePage} tabStyle={styles.tabStyle} />
+                <Scene hideNavBar icon={TabIcon} iconName={'upload'} key='uploadPage' title='Upload' component={UploadPage} tabStyle={styles.tabStyle} />
+                <Scene hideNavBar icon={TabIcon} iconName={'user'} key='celebrityPage' title='Celebrity' component={CelebrityPage} tabStyle={styles.tabStyle} />
             </Scene>
         </Scene>
       </Router>
@@ -54,8 +56,6 @@ const styles = {
     elevation: 2,
     alignItems: 'center',
     backgroundColor: 'black',
-    opacity: 0.1,
-    display: 'none'
   },
   tabStyle: {
     width: tabWidth,
