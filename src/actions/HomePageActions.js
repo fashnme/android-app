@@ -2,7 +2,7 @@ import axios from 'axios';
 import Share from 'react-native-share';
 import { Platform } from 'react-native';
 import RNFS from 'react-native-fs';
-
+import { video } from './video';
 import {
   HOME_PAGE_FEED_INITIAL_DATA_UPDATE,
   HOME_PAGE_FEED_EXTRA_DATA_UPDATE,
@@ -207,17 +207,19 @@ const downloadImage = ({ url, type }) => {
     outputPath = `${FILE}${cacheDir}/image.jpg`;
   }
 
-  RNFS.exists(cacheDir)
+  return RNFS.exists(cacheDir)
     .then(response => {
        if (response !== true) {
         // Directory not exists
         RNFS.mkdir(cacheDir);
+        console.log('homePageSharePost Directory Created', cacheDir);
        }
-       return RNFS.downloadFile({
+       RNFS.downloadFile({
          fromUrl: url,
          toFile: outputPath
        })
-       .promise.then(() => {
+       .promise.then((d) => {
+         console.log('homePageSharePost downloadFile', outputPath, d);
          return { path: outputPath }; // Downloaded Successfully
        })
        .catch((error) => {
@@ -227,11 +229,61 @@ const downloadImage = ({ url, type }) => {
 };
 
 // Method to Share the Post
+// export const homePageSharePost = ({ postData }) => {
+//   return (dispatch) => {
+//     downloadImage({ url: postData.uploadUrl, type: postData.mediaType })
+//     .then(({ path }) => {
+//       console.log('homePageSharePost path', path);
+//       const options = { message: postData.caption, url: path, title: 'Share Now' };
+//       Share.open(options)
+//        .then((res) => { console.log('homePageSharePost Post Shared', res); })
+//        .catch((err) => { console.log('homePageSharePost Post Sharing Error', err); });
+//     });
+//     dispatch({ type: 'homePageSharePost' });
+//   };
+// };
 export const homePageSharePost = ({ postData }) => {
-  const path = downloadImage({ url: postData.uploadUrl, type: postData.mediaType });
-  const options = { message: postData.caption, url: path, title: 'Share Now' };
-  Share.open(options)
-   .then((res) => { console.log('homePageSharePost Post Shared', res); })
-   .catch((err) => { console.log('homePageSharePost Post Sharing Error', err); });
-  return { type: 'homePageSharePost' };
+  return (dispatch) => {
+    const url = postData.uploadUrl;
+    const type = postData.mediaType;
+    const FILE = Platform.OS === 'ios' ? '' : 'file://';
+    const cacheDir = `${RNFS.DocumentDirectoryPath}/Cache`;
+    let outputPath = '';
+    if (type === 'video') {
+      outputPath = `${FILE}${cacheDir}/video.mp4`;
+    } else {
+      outputPath = `${FILE}${cacheDir}/image.jpg`;
+    }
+    RNFS.exists(cacheDir)
+      .then(response => {
+         if (response !== true) {
+          // Directory not exists
+          RNFS.mkdir(cacheDir);
+          console.log('homePageSharePost Directory Created', cacheDir);
+         }
+         RNFS.downloadFile({
+           fromUrl: url,
+           toFile: outputPath
+         })
+         .promise.then(() => {
+           RNFS.readFile(outputPath, 'base64')
+           .then((d) => {
+             // const image = `data:image/jpeg;base64,${d}`;
+             const image = `data:video/mp4;base64,${video}`;
+
+             console.log('homePageSharePost downloadFile', d);
+             const options = { message: postData.caption, url: image, title: 'Share Now' };
+             Share.open(options)
+              .then((res) => { console.log('homePageSharePost Post Shared', res); })
+              .catch((err) => { console.log('homePageSharePost Post Sharing Error', err); });
+           });
+
+           return { path: outputPath }; // Downloaded Successfully
+         })
+         .catch((error) => {
+           console.log('Error while Downloading Share Image', url, error);
+         });
+       });
+    dispatch({ type: 'homePageSharePost' });
+  };
 };

@@ -104,7 +104,7 @@ class HomePagePost extends Component {
   renderItem({ item }, parallaxProps) {
     const { userToken } = this.props;
      const { totalComments, caption, uploadUrl, totalLikes, userName, userPic, userId, postId } = this.props.data;
-     console.log('home Data', totalComments, caption, uploadUrl, totalLikes, userName, userPic, userId, postId);
+     // console.log('home Data', totalComments, caption, uploadUrl, totalLikes, userName, userPic, userId, postId);
      if (item === tabs.DISLIKE) {
         return (
           <DislikeScreen />
@@ -272,7 +272,6 @@ const styles = StyleSheet.create({
 const mapStateToProps = ({ homePageState, userActionData }) => {
     const { likedPosts, followingData } = userActionData;
     const { activeTab, verticalPublicCarouselRef, verticalPersonalCarouselRef, userToken } = homePageState;
-    console.log('In the mapStateToProps of HomePagePost');
     return { activeTab, verticalPublicCarouselRef, verticalPersonalCarouselRef, userToken, likedPosts, followingData };
 };
 
