@@ -26,3 +26,10 @@ export const uploadPageUpdateSelectedImagePath = (imgPath) => {
     payload: imgPath
   };
 };
+
+export const uploadPageUploadContent = ({ caption, selectedImagePath, userToken }) => {
+  console.log('Content Uploaded', caption, selectedImagePath, userToken);
+  return {
+    type: 'uploadPageUploadContent'
+  };
+};
