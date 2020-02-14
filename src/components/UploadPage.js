@@ -4,6 +4,7 @@ import { RNCamera } from 'react-native-camera';
 import { Icon } from 'react-native-elements';
 import { connect } from 'react-redux';
 import ImagePicker from 'react-native-image-picker';
+import PostScreen from './uploadScreen/PostScreen';
 import {
   uploadPageToggleIsSelected,
   uploadPageUpdateCaption,
@@ -14,15 +15,6 @@ import {
 const screenWidth = Dimensions.get('window').width;
 // const height = Dimensions.get('window').height + StatusBar.currentHeight;
 
-const RecordButton = ({ onPress, onLongPress }) => {
-  return (
-    <TouchableNativeFeedback onLongPress={onLongPress} onPress={onPress}>
-      <View style={styles.recordButtonOuterCircle}>
-        <View style={styles.recordButtonInnerCircle} />
-      </View>
-   </TouchableNativeFeedback>
-  ); 
- };
 
 class UploadPage extends Component {
   // this.props.uploadPageToggleIsSelected(true)
@@ -34,6 +26,7 @@ class UploadPage extends Component {
     this.state = {
       frontCamera: false,
       isModalVisible: false,
+      isRecording: false,
     };
   }
   setModalVisible(visible) {
@@ -124,23 +117,38 @@ class UploadPage extends Component {
   render() {
     const { userToken, selectedImagePath, isSelected, caption } = this.props;
 
+    const RecordButton = ({ onPress, onLongPress }) => {
+      return (
+        <TouchableNativeFeedback onLongPress={onLongPress} onPress={onPress}>
+          <View style={styles.recordButtonOuterCircle}>
+            {this.state.isRecording ? <View style={styles.recordingButton} /> : <View style={styles.recordButtonInnerCircle} />}
+          </View>
+       </TouchableNativeFeedback>
+      ); 
+     };
+
     const takePicture = async () => {
       if (this.camera) {
-        const options = { quality: 0.5, base64: true };
+        const options = { quality: 1, base64: true };
         const data = await this.camera.takePictureAsync(options);
+        console.log(data.uri);
         this.props.uploadPageUpdateSelectedImagePath(data.uri);
         this.props.uploadPageToggleIsSelected(true);
       }
     };
     const takeVideo = async () => {
       if (this.camera) {
-        const options = { quality: 0.5, base64: true };
-        const data = await this.camera.takeVideo(options);
+        const options = { maxDuration: 30 };
+        this.setState({
+          isRecording: true,
+        });
+        const data = await this.camera.recordAsync(options);
+        console.log(data.uri);
         this.props.uploadPageUpdateSelectedImagePath(data.uri);
         this.props.uploadPageToggleIsSelected(true);
       }
     };
-    
+
     const CustomIcon = ({ name, type, onPress }) => (
         <Icon onPress={onPress} iconStyle={styles.icon} containerStyle={{ margin: 40 }} color="white" size={30} name={name} type={type} />
     );
@@ -182,7 +190,7 @@ class UploadPage extends Component {
             </View>
             <View style={styles.cameraActions}>
               <CustomIcon name="swap-vertical" type="material-community" onPress={() => this.setState({ frontCamera: !this.state.frontCamera })} />
-              <RecordButton onPress={() => takePicture()} />  
+              <RecordButton onLongPress={() => takeVideo()} onPress={() => (this.state.isRecording ? this.camera.stopRecording() : takePicture())} />  
               <CustomIcon name="images" type="entypo" onPress={() => this.setModalVisible(true)} />
             </View>
           </SafeAreaView>
@@ -192,10 +200,16 @@ class UploadPage extends Component {
       );
     } 
       return (
-        <View style={{ flex: 1, backgroundColor: 'blue' }}>
-          <Image style={{ height: 300, width: 400 }} source={{ uri: selectedImagePath }} />
-        </View>
-      );
+      <PostScreen
+        postAction={() => {
+                this.props.uploadPageUploadContent({ caption, selectedImagePath, userToken });
+              }}
+        caption={caption}
+        updateCaption={(data) => {
+                this.props.uploadPageUpdateCaption(data);
+        }}      
+        onBackPress={() => this.props.uploadPageToggleIsSelected(false)} dataUri={selectedImagePath}
+      />);
   }
 }
 
@@ -269,6 +283,13 @@ const styles = StyleSheet.create({
     borderRadius: 33, // half of height and width for circle
     backgroundColor: '#FF362E',
   },
+  recordingButton: {
+    height: 40,
+    width: 40,
+    backgroundColor: '#FF362E',
+    margin: 4,
+    borderRadius: 10,
+  },
   recordButtonOuterCircle: {
     height: 90,
     width: 90,
@@ -276,7 +297,8 @@ const styles = StyleSheet.create({
     borderColor: '#EA425C',
     borderWidth: 8,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    flexDirection: 'row',
   }
 });
 
