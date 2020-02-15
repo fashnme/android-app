@@ -19,7 +19,7 @@ import {
   celebrityPageVisitAndSetData,
   homePageToggleCommentsModal,
   homePageSharePost,
-  homePageToggleProductsModal
+  homePageOpenProductsModal
 } from '../../actions';
 
 const screenWidth = Dimensions.get('window').width;
@@ -103,7 +103,7 @@ class HomePagePost extends Component {
 
   renderItem({ item }, parallaxProps) {
     const { userToken } = this.props;
-     const { totalComments, caption, uploadUrl, totalLikes, userName, userPic, userId, postId } = this.props.data;
+     const { totalComments, topComments, taggedProducts, caption, uploadUrl, totalLikes, userName, userPic, userId, postId } = this.props.data;
      // console.log('home Data', totalComments, caption, uploadUrl, totalLikes, userName, userPic, userId, postId);
      if (item === tabs.DISLIKE) {
         return (
@@ -124,7 +124,7 @@ class HomePagePost extends Component {
                     name: 'shopping-bag',
                     type: 'font-awesome',
                     text: '',
-                    onPress: () => { this.props.homePageToggleProductsModal(true); }
+                    onPress: () => { this.props.homePageOpenProductsModal({ isVisible: true, productsData: taggedProducts }); }
                })}
 
                {this.renderIconWithText({
@@ -153,9 +153,9 @@ class HomePagePost extends Component {
                     userId={userId}
                     userPic={userPic}
                     onFollowPress={() => this.props.celebrityPageFollow({ userToken, userId })}
-                    onProfileClick={() => this.props.celebrityPageVisitAndSetData({ userToken, userId })}
+                    onProfileClick={() => this.props.celebrityPageVisitAndSetData({ userToken, userId, isPersonalPage: false })}
                  />
-                 <CommentsModal />
+                 <CommentsModal comments={topComments} />
 
               </View>
           </View>
@@ -284,5 +284,5 @@ const mapStateToProps = ({ homePageState, userActionData }) => {
     celebrityPageVisitAndSetData,
     homePageToggleCommentsModal,
     homePageSharePost,
-    homePageToggleProductsModal
+    homePageOpenProductsModal
   })(HomePagePost);

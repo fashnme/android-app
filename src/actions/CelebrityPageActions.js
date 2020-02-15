@@ -19,8 +19,11 @@ import {
 
 
 // Method to Visit & Set the Celebrity Page
-export const celebrityPageVisitAndSetData = ({ userId, userToken }) => {
-  Actions.celebrityPage();
+export const celebrityPageVisitAndSetData = ({ userId, userToken, isPersonalPage }) => {
+  if (!isPersonalPage) {
+    Actions.celebrityPage(); // Calling from Home Page, so go to Celebrity Page
+  }
+
   const headers = {
     'Content-Type': 'application/json',
     Authorization: userToken

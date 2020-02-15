@@ -2,7 +2,6 @@ import axios from 'axios';
 import Share from 'react-native-share';
 import { Platform } from 'react-native';
 import RNFS from 'react-native-fs';
-import { video } from './video';
 import {
   HOME_PAGE_FEED_INITIAL_DATA_UPDATE,
   HOME_PAGE_FEED_EXTRA_DATA_UPDATE,
@@ -15,7 +14,7 @@ import {
   USER_UNLIKED_POST,
   HOME_PAGE_TOGGLE_COMMENTS_MODAL,
   HOME_PAGE_TOGGLE_SHARE_MODAL,
-  HOME_PAGE_TOGGLE_PRODUCTS_MODAL
+  HOME_PAGE_SET_TOGGLE_PRODUCTS_DATA
 } from '../types';
 
 import {
@@ -32,7 +31,7 @@ export const homePageGetInitialFeedData = ({ userToken }) => {
   return (dispatch) => {
     axios.get(HomePageGetInitialFeedDataURL, { headers: { Authorization: userToken } })
     .then(response => {
-      // console.log('Actions Feed Data', response.data.posts);
+      console.log('Actions Feed Data', response.data.posts);
       dispatch({ type: HOME_PAGE_FEED_INITIAL_DATA_UPDATE, payload: response.data.posts });
     })
     .catch(error => {
@@ -190,58 +189,13 @@ export const homePageToggleShareModal = (isVisible) => {
 };
 
 // Method to Toggle Products Modal on HomePage
-export const homePageToggleProductsModal = (isVisible) => {
-  return {
-    type: HOME_PAGE_TOGGLE_PRODUCTS_MODAL,
-    payload: isVisible
+export const homePageOpenProductsModal = ({ isVisible, productsData }) => {
+  return (dispatch) => {
+    dispatch({ type: HOME_PAGE_TOGGLE_COMMENTS_MODAL, payload: false });
+    dispatch({ type: HOME_PAGE_SET_TOGGLE_PRODUCTS_DATA, payload: { isVisible, productsData } });
   };
 };
 
-const downloadImage = ({ url, type }) => {
-  const FILE = Platform.OS === 'ios' ? '' : 'file://';
-  const cacheDir = `${RNFS.DocumentDirectoryPath}/Cache`;
-  let outputPath = '';
-  if (type === 'video') {
-    outputPath = `${FILE}${cacheDir}/video.mp4`;
-  } else {
-    outputPath = `${FILE}${cacheDir}/image.jpg`;
-  }
-
-  return RNFS.exists(cacheDir)
-    .then(response => {
-       if (response !== true) {
-        // Directory not exists
-        RNFS.mkdir(cacheDir);
-        console.log('homePageSharePost Directory Created', cacheDir);
-       }
-       RNFS.downloadFile({
-         fromUrl: url,
-         toFile: outputPath
-       })
-       .promise.then((d) => {
-         console.log('homePageSharePost downloadFile', outputPath, d);
-         return { path: outputPath }; // Downloaded Successfully
-       })
-       .catch((error) => {
-         console.log('Error while Downloading Share Image', url, error);
-       });
-     });
-};
-
-// Method to Share the Post
-// export const homePageSharePost = ({ postData }) => {
-//   return (dispatch) => {
-//     downloadImage({ url: postData.uploadUrl, type: postData.mediaType })
-//     .then(({ path }) => {
-//       console.log('homePageSharePost path', path);
-//       const options = { message: postData.caption, url: path, title: 'Share Now' };
-//       Share.open(options)
-//        .then((res) => { console.log('homePageSharePost Post Shared', res); })
-//        .catch((err) => { console.log('homePageSharePost Post Sharing Error', err); });
-//     });
-//     dispatch({ type: 'homePageSharePost' });
-//   };
-// };
 export const homePageSharePost = ({ postData }) => {
   return (dispatch) => {
     const url = postData.uploadUrl;
@@ -249,10 +203,13 @@ export const homePageSharePost = ({ postData }) => {
     const FILE = Platform.OS === 'ios' ? '' : 'file://';
     const cacheDir = `${RNFS.DocumentDirectoryPath}/Cache`;
     let outputPath = '';
+    let b64PreExt = '';
     if (type === 'video') {
       outputPath = `${FILE}${cacheDir}/video.mp4`;
+      b64PreExt = 'video/mp4';
     } else {
       outputPath = `${FILE}${cacheDir}/image.jpg`;
+      b64PreExt = 'image/jpeg';
     }
     RNFS.exists(cacheDir)
       .then(response => {
@@ -268,11 +225,9 @@ export const homePageSharePost = ({ postData }) => {
          .promise.then(() => {
            RNFS.readFile(outputPath, 'base64')
            .then((d) => {
-             // const image = `data:image/jpeg;base64,${d}`;
-             const image = `data:video/mp4;base64,${video}`;
-
-             console.log('homePageSharePost downloadFile', d);
-             const options = { message: postData.caption, url: image, title: 'Share Now' };
+             const content = `data:${b64PreExt};base64,${d}`;
+             const message = `Check out ${postData.userName}'s Post \u000A ${postData.caption.trim()} \u000A Download the App`;
+             const options = { message, url: content, title: 'Share Now' };
              Share.open(options)
               .then((res) => { console.log('homePageSharePost Post Shared', res); })
               .catch((err) => { console.log('homePageSharePost Post Sharing Error', err); });
