@@ -17,7 +17,7 @@ export const HOME_PAGE_SET_PERSONAL_VERTICAL_CAROUSEL_REF = 'home_page_set_perso
 export const HOME_PAGE_ACTIVE_TAB_UPDATE = 'home_page_active_tab_update';
 export const HOME_PAGE_TOGGLE_COMMENTS_MODAL = 'home_page_toggle_comments_modal';
 export const HOME_PAGE_TOGGLE_SHARE_MODAL = 'home_page_toggle_share_modal';
-export const HOME_PAGE_TOGGLE_PRODUCTS_MODAL = 'home_page_toggle_products_modal';
+export const HOME_PAGE_SET_TOGGLE_PRODUCTS_DATA = 'home_page_set_toggle_products_data';
 
 // Keeping track of users Actions
 export const USER_SET_ACTION_DATA = 'user_set_action_data';
@@ -35,6 +35,9 @@ export const CELEBRITY_PAGE_GET_CELEB_LIKED_POSTS = 'celebrity_page_get_celeb_li
 export const UPLOAD_PAGE_TOGGLE_ISSELECTED = 'upload_page_toggle_isselected';
 export const UPLOAD_PAGE_UPDATE_CAPTION = 'upload_page_update_caption';
 export const UPLOAD_PAGE_UPDATE_SELECTED_IMAGE_PATH = 'upload_page_update_selected_image_path';
+
+// Product Related types
+export const PRODUCT_PAGE_SELECTED_PRODUCT_UPDATE = 'product_page_selected_product_update';
 
 
 // export const WISHLIST_ADD_OPERATION = 'add';

@@ -9,47 +9,19 @@ import {
   HOME_PAGE_PUBLIC_MODE,
   HOME_PAGE_TOGGLE_COMMENTS_MODAL,
   HOME_PAGE_TOGGLE_SHARE_MODAL,
-  HOME_PAGE_TOGGLE_PRODUCTS_MODAL
 } from '../types';
 
 const INITIAL_STATE = {
-  feedData: [
-    { caption: 'I am great at caption',
-        uploadUrl: 'https://i.pinimg.com/236x/d1/0c/fd/d10cfd6e4fbcbebe1658ea42f7de8d2d.jpg',
-        userId: 'yami007',
-        mediaType: 'image',
-        timestamp: 'Mon Feb 10 2020 16:09:55 GMT+0530',
-        totalLikes: 10,
-        totalComments: 20,
-        taggedProducts: [],
-        userName: 'pawan',
-        userPic: 'https://i.pinimg.com/236x/d1/0c/fd/d10cfd6e4fbcbebe1658ea42f7de8d2d.jpg',
-        postId: 'dafasfas'
-    }
-  ], // Stores the Feed as a Array
+  feedData: [], // Stores the Feed as a Array
   feedPageNum: 1, // Stores the Current Page for Feed
   activeTab: null, // Active Tab, 1: Public , 2: Following, Initially null to show the spinner
   userToken: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiUERvNWdtOEJNZ0tZWjFQNFlobFoiLCJpYXQiOjE1Nzg0ODgzODF9.f_0FHHWMZ1Javvvmtl72yO5m_1pICYjggYZA0-ccFQM',
-  publicFeedData: [
-    { caption: 'I am great at caption',
-        uploadUrl: 'https://i.pinimg.com/236x/d1/0c/fd/d10cfd6e4fbcbebe1658ea42f7de8d2d.jpg',
-        userId: 'yami007',
-        mediaType: 'image',
-        timestamp: 'Mon Feb 10 2020 16:09:55 GMT+0530',
-        totalLikes: 10,
-        totalComments: 20,
-        taggedProducts: [],
-        userName: 'pawan',
-        userPic: 'https://i.pinimg.com/236x/d1/0c/fd/d10cfd6e4fbcbebe1658ea42f7de8d2d.jpg',
-        postId: 'dafasfas'
-    }
-  ],
+  publicFeedData: [],
   publicFeedPageNum: 1,
   commentModalVisible: false,
   shareModalVisible: false,
-  productsModalVisible: false,
   verticalPublicCarouselRef: null,
-  verticalPersonalCarouselRef: null
+  verticalPersonalCarouselRef: null,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -90,13 +62,11 @@ export default (state = INITIAL_STATE, action) => {
           return { ...state, activeTab: action.payload };
 
       case HOME_PAGE_TOGGLE_COMMENTS_MODAL:
-          return { ...state, commentModalVisible: action.payload, shareModalVisible: false, productsModalVisible: false };
+          return { ...state, commentModalVisible: action.payload, shareModalVisible: false };
 
       case HOME_PAGE_TOGGLE_SHARE_MODAL:
-          return { ...state, shareModalVisible: action.payload, commentModalVisible: false, productsModalVisible: false };
+          return { ...state, shareModalVisible: action.payload, commentModalVisible: false };
 
-      case HOME_PAGE_TOGGLE_PRODUCTS_MODAL:
-          return { ...state, productsModalVisible: action.payload, commentModalVisible: false, shareModalVisible: false };
       default:
           return state;
     }

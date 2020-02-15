@@ -6,6 +6,7 @@ import { Icon } from 'react-native-elements';
 import HomePage from './components/HomePage';
 import CelebrityPage from './components/CelebrityPage';
 import UploadPage from './components/UploadPage';
+import PersonalPage from './components/PersonalPage';
 
 class TabIcon extends Component {
   constructor(props) {
@@ -36,13 +37,15 @@ const RouterComponent = () => {
       <Router navigationBarStyle={{ backgroundColor: '#fff' }}>
         <Scene key='root' hideNavBar>
             <Scene key='tabBar' tabs tabBarPosition="bottom" showLabel={false} tabBarStyle={styles.tabBarStyle} indicatorStyle={styles.indicatorStyle}>
-                <Scene hideNavBar icon={TabIcon} iconName={'home'} key='home' title='Home' component={HomePage} tabStyle={styles.tabStyle} />
+                <Scene hideNavBar icon={TabIcon} iconName={'home'} tabStyle={styles.tabStyle}>
+                    <Scene hideNavBar key='home' title='Home' component={HomePage} />
+                    <Scene hideNavBar key='celebrityPage' title='Celebrity' component={CelebrityPage} />
+                </Scene>
                 <Scene hideNavBar icon={TabIcon} iconName={'upload'} key='uploadPage' title='Upload' component={UploadPage} tabStyle={styles.tabStyle} />
-                <Scene hideNavBar icon={TabIcon} iconName={'user'} key='celebrityPage' title='Celebrity' component={CelebrityPage} tabStyle={styles.tabStyle} />
+                <Scene hideNavBar icon={TabIcon} iconName={'user'} key='personalPage' title='Personal' component={PersonalPage} tabStyle={styles.tabStyle} />
             </Scene>
         </Scene>
       </Router>
-
     );
 };
 
