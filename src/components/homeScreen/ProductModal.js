@@ -2,7 +2,12 @@ import React, { useState } from 'react';
 import { StyleSheet, View, Text, FlatList, Image, TouchableWithoutFeedback, TouchableNativeFeedback } from 'react-native';
 import { Icon } from 'react-native-elements';
 import Modal from 'react-native-modal';
+import { connect } from 'react-redux';
 import { globalStyles } from '../../Styles';
+import {
+  homePageOpenProductsModal as _homePageOpenProductsModal,
+  productPageSelectedProductUpdate as _productPageSelectedProductUpdate
+} from '../../actions';
 
 const data = {
   products: [
@@ -28,6 +33,16 @@ const data = {
   ]
 };
 
+const ProductThumbnail = ({ index, item, onPress, productsData }) => {
+  return (
+    <View style={styles.thumbnailWrapper}>
+      <TouchableWithoutFeedback onPress={() => onPress(index, productsData)}>
+        <Image source={{ uri: item.imageUri }} style={styles.productThumbnail} />
+      </TouchableWithoutFeedback>
+    </View>
+  );
+};
+
 const AddToCartButton = ({ onPress, title }) => {
   return (
     <TouchableNativeFeedback onPress={onPress}>
@@ -48,20 +63,30 @@ const BuyNowButton = ({ onPress, title }) => {
   );
 };
 
+const renderPriceBlock = ({ crossedPrice, price }) => {
+  const discount = Math.floor(((crossedPrice - price) * 100) / crossedPrice);
+  if (discount === 0) {
+    return <View />;
+  }
+  return (
+    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+      <Text style={styles.productCost}>{`\u20B9${crossedPrice}`}</Text>
+      <Text style={styles.productDiscount}>{`${discount}% Off`}</Text>
+    </View>
+  );
+};
 const ProductView = ({ productData }) => {
+  const { title, brandName, price, crossedPrice, image } = productData;
   return (
     <View style={styles.productView}>
       <View style={styles.productImage}>
-        <Image source={{ uri: productData.imageUri }} style={{ flex: 1 }} />
+        <Image source={{ uri: image }} style={{ flex: 1 }} />
       </View>
       <View style={styles.productData}>
-        <Text style={styles.productName}>{productData.name}</Text>
-        <Text style={styles.productBrand}>{productData.brand}</Text>
-        <Text style={styles.productPrice}>{productData.price}</Text>
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <Text style={styles.productCost}>{productData.cost}</Text>
-          <Text style={styles.productDiscount}>{productData.discount} {productData.discount !== '' ? 'off' : ''}</Text>
-        </View>
+        <Text style={styles.productName}>{title}</Text>
+        <Text style={styles.productBrand}>{brandName}</Text>
+        <Text style={styles.productPrice}>{`\u20B9${price}`}</Text>
+        { renderPriceBlock({ crossedPrice, price }) }
         <AddToCartButton title="ADD TO CART" onPress={() => console.log('Add to Cart button Pressed')} />
         <BuyNowButton title="BUY NOW" onPress={() => console.log('Buy Now button Pressed')} />
       </View>
@@ -69,14 +94,13 @@ const ProductView = ({ productData }) => {
   );
 };
 
-const ProductModal = ({ isVisible, onExit, postData }) => {
-  const [itemIndex, setItemIndex] = useState(0);
+const ProductModal = ({ selectedItem, productsData, productsModalVisible, homePageOpenProductsModal, productPageSelectedProductUpdate }) => {
     return (
         <Modal
-          onSwipeComplete={() => onExit(false)}
+          onSwipeComplete={() => homePageOpenProductsModal({ isVisible: false, productsData: [] })}
           swipeDirection={['down']}
           scroll
-          isVisible={isVisible}
+          isVisible={productsModalVisible}
           style={{
             margin: 0,
             justifyContent: 'flex-end',
@@ -87,7 +111,7 @@ const ProductModal = ({ isVisible, onExit, postData }) => {
             <View style={styles.commentsModalHeader}>
               <Text style={styles.commentsModalHeaderTitle}>Products</Text>
                 <View style={styles.commentsModalHeaderExitButton}>
-                  <Icon name='cross' type='entypo' onPress={() => onExit(false)} />
+                  <Icon name='cross' type='entypo' onPress={() => homePageOpenProductsModal({ isVisible: false, productsData: [] })} />
                 </View>
             </View>
             <View style={styles.body}>
@@ -95,12 +119,12 @@ const ProductModal = ({ isVisible, onExit, postData }) => {
                 <FlatList
                     horizontal
                     showsHorizontalScrollIndicator={false}
-                    data={data.products}
-                    keyExtractor={({ item }, index) => item + index.toString()}
-                    renderItem={(i) => <View style={styles.thumbnailWrapper}><TouchableWithoutFeedback onPress={() => setItemIndex(i.index)}><Image source={{ uri: i.item.imageUri }} style={styles.productThumbnail} /></TouchableWithoutFeedback></View>}
+                    data={productsData}
+                    keyExtractor={(item, index) => index.toString()}
+                    renderItem={({ item, index }) => <ProductThumbnail item={item} index={index} onPress={productPageSelectedProductUpdate} productsData={productsData} />}
                 />
               </View>
-              <ProductView productData={data.products[itemIndex]} />
+              <ProductView productData={productsData[selectedItem]} />
             </View>
 
             <View style={styles.editBox} />
@@ -189,5 +213,11 @@ const styles = StyleSheet.create({
         marginLeft: 10,
       }
 });
-
-export default ProductModal;
+const mapStateToProps = ({ productPageState }) => {
+    const { productsData, productsModalVisible, selectedItem } = productPageState;
+    return { productsData, productsModalVisible, selectedItem };
+};
+export default connect(mapStateToProps, {
+  homePageOpenProductsModal: _homePageOpenProductsModal,
+  productPageSelectedProductUpdate: _productPageSelectedProductUpdate
+})(ProductModal);
