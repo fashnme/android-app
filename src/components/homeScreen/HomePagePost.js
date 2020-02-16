@@ -9,6 +9,7 @@ import { HOME_PAGE_PUBLIC_MODE, HOME_PAGE_PERSONAL_MODE } from '../../types';
 import AvatarComp from './AvatarComp';
 import HeartComp from './HeartComp';
 import CommentsModal from './CommentsModal';
+import ProductModal from './ProductModal';
 // import ShareModal from './ShareModal';
 import {
   homePageLikePost,
@@ -105,6 +106,7 @@ class HomePagePost extends Component {
     const { userToken } = this.props;
      const { totalComments, topComments, taggedProducts, caption, uploadUrl, totalLikes, userName, userPic, userId, postId } = this.props.data;
      // console.log('home Data', totalComments, caption, uploadUrl, totalLikes, userName, userPic, userId, postId);
+     // console.log('taggedProducts', taggedProducts);
      if (item === tabs.DISLIKE) {
         return (
           <DislikeScreen />
@@ -156,7 +158,7 @@ class HomePagePost extends Component {
                     onProfileClick={() => this.props.celebrityPageVisitAndSetData({ userToken, userId, isPersonalPage: false })}
                  />
                  <CommentsModal comments={topComments} />
-
+                 <ProductModal />
               </View>
           </View>
       );
@@ -269,9 +271,10 @@ const styles = StyleSheet.create({
  },
 });
 
-const mapStateToProps = ({ homePageState, userActionData }) => {
+const mapStateToProps = ({ homePageState, userActionData, personalPageState }) => {
     const { likedPosts, followingData } = userActionData;
-    const { activeTab, verticalPublicCarouselRef, verticalPersonalCarouselRef, userToken } = homePageState;
+    const { activeTab, verticalPublicCarouselRef, verticalPersonalCarouselRef } = homePageState;
+    const { userToken } = personalPageState;
     return { activeTab, verticalPublicCarouselRef, verticalPersonalCarouselRef, userToken, likedPosts, followingData };
 };
 
