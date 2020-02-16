@@ -1,30 +1,35 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { StyleSheet, View, Image, StatusBar, Dimensions, ScrollView } from 'react-native';
 import { Header, Input, Button } from 'react-native-elements';
+import { connect } from 'react-redux';
+import {
+  uploadPageUpdateCaption as _uploadPageUpdateCaption,
+  uploadPageToggleIsSelected as _uploadPageToggleIsSelected,
+  uploadPageUploadContent as _uploadPageUploadContent
+} from '../../actions';
 
 const screenWidth = Dimensions.get('window').width;
 
-class PostScreen extends Component {
-    render() {
+const PostScreen = ({ selectedImagePath, caption, userToken, uploadPageUpdateCaption, uploadPageToggleIsSelected, uploadPageUploadContent }) => {
         return (
             <ScrollView>
                 <View style={{ flex: 1 }}>
                     <StatusBar barStyle="dark-content" />
                     <Header
-                    backgroundColor="white"
-                    leftComponent={{ icon: 'arrow-left', type: 'font-awesome', color: 'black', onPress: () => this.props.onBackPress() }}
-                    centerComponent={{ text: 'Post', style: { color: 'black', fontSize: 20 } }}
-                    rightComponent={{ icon: 'delete', color: 'black', onPress: () => this.props.onBackPress() }}
+                      backgroundColor="white"
+                      leftComponent={{ icon: 'arrow-left', type: 'font-awesome', color: 'black', onPress: () => uploadPageToggleIsSelected(false) }}
+                      centerComponent={{ text: 'Post', style: { color: 'black', fontSize: 20 } }}
+                      rightComponent={{ icon: 'delete', color: 'black', onPress: () => uploadPageToggleIsSelected(false) }}
                     />
                     <View style={{ justifyContent: 'center', alignItems: 'center', padding: 5, }}>
-                        <Image style={{ height: 400, width: screenWidth - 20, borderRadius: 5, }} resizeMode="contain" source={{ uri: this.props.dataUri }} />
+                        <Image style={{ height: 400, width: screenWidth - 20, borderRadius: 5, }} resizeMode="contain" source={{ uri: selectedImagePath }} />
                     </View>
                     <View style={{ margin: 10 }}>
                     <Input
                         placeholder="Add a caption"
                         multiline
-                        value={this.props.caption}
-                        onChangeText={(text) => this.props.updateCaption(text)}
+                        value={caption}
+                        onChangeText={(text) => uploadPageUpdateCaption(text)}
                         numberOfLines={4}
                         inputStyle={{ height: 100 }}
                         maxLength={280}
@@ -33,15 +38,18 @@ class PostScreen extends Component {
                     />
                     <View style={{ margin: 20, alignItems: 'center' }}>
                         <View style={{ width: 200 }}>
-                            <Button title="Post" onPress={() => console.log('Post button pressed')} raised />
+                            <Button
+                              raised
+                              title="Post"
+                              onPress={() => uploadPageUploadContent({ caption, selectedImagePath, userToken })}
+                            />
                         </View>
                     </View>
                 </View>
                 </View>
             </ScrollView>
           );
-    }
-}
+};
 
 const styles = StyleSheet.create({
     containerStyle: {
@@ -61,7 +69,17 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         flexDirection: 'row',
         padding: 10,
-      }    
+      }
 });
 
-export default PostScreen;
+const mapStateToProps = ({ uploadPageState, personalPageState }) => {
+  const { selectedImagePath, caption } = uploadPageState;
+  const { userToken } = personalPageState;
+  return { selectedImagePath, caption, userToken };
+};
+
+export default connect(mapStateToProps, {
+  uploadPageUpdateCaption: _uploadPageUpdateCaption,
+  uploadPageToggleIsSelected: _uploadPageToggleIsSelected,
+  uploadPageUploadContent: _uploadPageUploadContent
+})(PostScreen);

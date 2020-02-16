@@ -60,8 +60,9 @@ class HomePage extends Component {
   }
 }
 
-const mapStateToProps = ({ homePageState }) => {
-  const { feedData, feedPageNum, publicFeedData, activeTab, userToken } = homePageState;
+const mapStateToProps = ({ homePageState, personalPageState }) => {
+  const { feedData, feedPageNum, publicFeedData, activeTab } = homePageState;
+  const { userToken } = personalPageState;
   return { feedData, feedPageNum, publicFeedData, activeTab, userToken };
 };
 

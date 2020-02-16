@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { StyleSheet, View, Text, FlatList, Image, TouchableWithoutFeedback, TouchableNativeFeedback } from 'react-native';
 import { Icon } from 'react-native-elements';
 import Modal from 'react-native-modal';
@@ -9,35 +9,12 @@ import {
   productPageSelectedProductUpdate as _productPageSelectedProductUpdate
 } from '../../actions';
 
-const data = {
-  products: [
-      {
-        id: 1,
-        name: 'Men Zip Decoration Letter Print Hooded Sweatshirt',
-        brand: 'SHEIN',
-        price: 'Rs. 1311',
-        cost: 'Rs. 1656',
-        discount: '20%',
-        imageUri: 'https://img.ltwebstatic.com/origin/images2_pi/2018/06/28/15301669633684263662_im_405x552.jpg',
-    },
 
-    {
-      id: 2,
-      name: 'Wolverine: Beast Mode On T-Shirts   ',
-      brand: 'MARVEL',
-      price: 'Rs. 449',
-      cost: '',
-      discount: '',
-      imageUri: 'https://images.thesouledstore.com/public/theSoul/uploads/catalog/product/1546675082_Marvel_Wolverine_BeastModeOn_Tshirt_Mockup.jpg',
-  },
-  ]
-};
-
-const ProductThumbnail = ({ index, item, onPress, productsData }) => {
+const ProductThumbnail = ({ index, item, productPageSelectedProductUpdate, productsData }) => {
   return (
     <View style={styles.thumbnailWrapper}>
-      <TouchableWithoutFeedback onPress={() => onPress(index, productsData)}>
-        <Image source={{ uri: item.imageUri }} style={styles.productThumbnail} />
+      <TouchableWithoutFeedback onPress={() => productPageSelectedProductUpdate(index, productsData)}>
+        <Image source={{ uri: item.image }} style={styles.productThumbnail} />
       </TouchableWithoutFeedback>
     </View>
   );
@@ -70,12 +47,16 @@ const renderPriceBlock = ({ crossedPrice, price }) => {
   }
   return (
     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-      <Text style={styles.productCost}>{`\u20B9${crossedPrice}`}</Text>
+      <Text style={styles.productCost}>{`\u20B9 ${crossedPrice}`}</Text>
       <Text style={styles.productDiscount}>{`${discount}% Off`}</Text>
     </View>
   );
 };
 const ProductView = ({ productData }) => {
+  // console.log('ProductModal productData', productData);
+  if (productData === undefined) {
+    return <View />;
+  }
   const { title, brandName, price, crossedPrice, image } = productData;
   return (
     <View style={styles.productView}>
@@ -118,10 +99,9 @@ const ProductModal = ({ selectedItem, productsData, productsModalVisible, homePa
               <View style={styles.productsList}>
                 <FlatList
                     horizontal
-                    showsHorizontalScrollIndicator={false}
                     data={productsData}
                     keyExtractor={(item, index) => index.toString()}
-                    renderItem={({ item, index }) => <ProductThumbnail item={item} index={index} onPress={productPageSelectedProductUpdate} productsData={productsData} />}
+                    renderItem={({ item, index }) => <ProductThumbnail item={item} index={index} productPageSelectedProductUpdate={productPageSelectedProductUpdate} productsData={productsData} />}
                 />
               </View>
               <ProductView productData={productsData[selectedItem]} />
@@ -135,7 +115,7 @@ const ProductModal = ({ selectedItem, productsData, productsModalVisible, homePa
 
 const styles = StyleSheet.create({
     modalStyle: {
-        height: '70%',
+        height: '80%',
         backgroundColor: 'white',
         borderTopLeftRadius: 15,
         borderTopRightRadius: 15,
@@ -171,7 +151,7 @@ const styles = StyleSheet.create({
         padding: 10,
       },
       productThumbnail: {
-        width: 80,
+        width: 90,
         height: 90,
         borderRadius: 20,
       },
@@ -191,7 +171,7 @@ const styles = StyleSheet.create({
         padding: 10,
       },
       productName: {
-        fontSize: 20,
+        fontSize: 16,
       },
       productBrand: {
         fontSize: 15,
@@ -199,7 +179,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
       },
       productPrice: {
-        fontSize: 30,
+        fontSize: 20,
         fontWeight: 'bold'
       },
       productCost: {

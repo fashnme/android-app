@@ -6,9 +6,9 @@ import {
   HOME_PAGE_PUBLIC_FEED_EXTRA_DATA_UPDATE,
   HOME_PAGE_SET_PUBLIC_VERTICAL_CAROUSEL_REF,
   HOME_PAGE_SET_PERSONAL_VERTICAL_CAROUSEL_REF,
-  HOME_PAGE_PUBLIC_MODE,
   HOME_PAGE_TOGGLE_COMMENTS_MODAL,
   HOME_PAGE_TOGGLE_SHARE_MODAL,
+  HOME_PAGE_PERSONAL_MODE
 } from '../types';
 
 const INITIAL_STATE = {
@@ -27,7 +27,7 @@ const INITIAL_STATE = {
 export default (state = INITIAL_STATE, action) => {
     switch (action.type) {
       case HOME_PAGE_FEED_INITIAL_DATA_UPDATE:
-          return { ...state, feedData: action.payload, feedPageNum: 2, activeTab: HOME_PAGE_PUBLIC_MODE, verticalCarouselRef: null };
+          return { ...state, feedData: action.payload, feedPageNum: 2, activeTab: HOME_PAGE_PERSONAL_MODE, verticalCarouselRef: null };
 
       case HOME_PAGE_FEED_EXTRA_DATA_UPDATE: {
           const newFeedData = [...state.feedData, ...action.payload];

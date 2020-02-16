@@ -31,7 +31,7 @@ export const homePageGetInitialFeedData = ({ userToken }) => {
   return (dispatch) => {
     axios.get(HomePageGetInitialFeedDataURL, { headers: { Authorization: userToken } })
     .then(response => {
-      console.log('Actions Feed Data', response.data.posts);
+      // console.log('Actions homePageGetInitialFeedData', response.data.posts);
       dispatch({ type: HOME_PAGE_FEED_INITIAL_DATA_UPDATE, payload: response.data.posts });
     })
     .catch(error => {
@@ -190,6 +190,7 @@ export const homePageToggleShareModal = (isVisible) => {
 
 // Method to Toggle Products Modal on HomePage
 export const homePageOpenProductsModal = ({ isVisible, productsData }) => {
+  console.log('homePageOpenProductsModal productsData', isVisible, productsData);
   return (dispatch) => {
     dispatch({ type: HOME_PAGE_TOGGLE_COMMENTS_MODAL, payload: false });
     dispatch({ type: HOME_PAGE_SET_TOGGLE_PRODUCTS_DATA, payload: { isVisible, productsData } });

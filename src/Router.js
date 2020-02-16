@@ -39,7 +39,7 @@ const RouterComponent = () => {
             <Scene key='tabBar' tabs tabBarPosition="bottom" showLabel={false} tabBarStyle={styles.tabBarStyle} indicatorStyle={styles.indicatorStyle}>
                 <Scene hideNavBar icon={TabIcon} iconName={'home'} tabStyle={styles.tabStyle}>
                     <Scene hideNavBar key='home' title='Home' component={HomePage} />
-                    <Scene hideNavBar key='celebrityPage' title='Celebrity' component={CelebrityPage} />
+                    <Scene hideNavBar hideTabBar key='celebrityPage' title='Celebrity' component={CelebrityPage} />
                 </Scene>
                 <Scene hideNavBar icon={TabIcon} iconName={'upload'} key='uploadPage' title='Upload' component={UploadPage} tabStyle={styles.tabStyle} />
                 <Scene hideNavBar icon={TabIcon} iconName={'user'} key='personalPage' title='Personal' component={PersonalPage} tabStyle={styles.tabStyle} />
