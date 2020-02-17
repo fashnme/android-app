@@ -50,7 +50,7 @@ export const signupPageSendOTP = (phone) => {
 export const signupPageVerifyOTP = (phone, otp) => {
   console.log('signupPageVerifyOTP', phone, otp);
   return (dispatch) => {
-    dispatch({ type: SIGNUP_PAGE_TOGGLE_OTP_SENT, payload: true });
+
   };
 };
 
