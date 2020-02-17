@@ -4,7 +4,8 @@ import {
   SIGNUP_PAGE_PHONE_UPDATE,
   SIGNUP_PAGE_OTP_UPDATE,
   SIGNUP_PAGE_REFERRER_UPDATE,
-  SIGNUP_PAGE_TOGGLE_OTP_SENT
+  SIGNUP_PAGE_TOGGLE_OTP_SENT,
+  SIGNUP_PAGE_COUNTRY_CODE_UPDATE
 } from '../types';
 
 import {
@@ -50,5 +51,12 @@ export const signupPageVerifyOTP = (phone, otp) => {
   console.log('signupPageVerifyOTP', phone, otp);
   return (dispatch) => {
     dispatch({ type: SIGNUP_PAGE_TOGGLE_OTP_SENT, payload: true });
+  };
+};
+
+export const signupPageCountryCodeUpdate = ({ name, callingCode, countryCode }) => {
+  return {
+    type: SIGNUP_PAGE_COUNTRY_CODE_UPDATE,
+    payload: { name, callingCode, countryCode }
   };
 };
