@@ -10,7 +10,7 @@ import {
 
 const screenWidth = Dimensions.get('window').width;
 
-const PostScreen = ({ selectedImagePath, caption, userToken, uploadPageUpdateCaption, uploadPageToggleIsSelected, uploadPageUploadContent }) => {
+const PostScreen = ({ selectedImagePath, caption, userToken, personalUserId, uploadPageUpdateCaption, uploadPageToggleIsSelected, uploadPageUploadContent }) => {
         return (
             <ScrollView>
                 <View style={{ flex: 1 }}>
@@ -41,7 +41,7 @@ const PostScreen = ({ selectedImagePath, caption, userToken, uploadPageUpdateCap
                             <Button
                               raised
                               title="Post"
-                              onPress={() => uploadPageUploadContent({ caption, selectedImagePath, userToken })}
+                              onPress={() => uploadPageUploadContent({ caption, selectedImagePath, userToken, personalUserId })}
                             />
                         </View>
                     </View>
@@ -74,8 +74,8 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = ({ uploadPageState, personalPageState }) => {
   const { selectedImagePath, caption } = uploadPageState;
-  const { userToken } = personalPageState;
-  return { selectedImagePath, caption, userToken };
+  const { userToken, personalUserId } = personalPageState;
+  return { selectedImagePath, caption, userToken, personalUserId };
 };
 
 export default connect(mapStateToProps, {

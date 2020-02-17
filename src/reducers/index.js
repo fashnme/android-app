@@ -5,6 +5,7 @@ import UserActionDataReducer from './UserActionDataReducer';
 import CelebrityPageReducer from './CelebrityPageReducer';
 import UploadPageReducer from './UploadPageReducer';
 import PersonalPageReducer from './PersonalPageReducer';
+import SignupPageReducer from './SignupPageReducer';
 
 export default combineReducers({
     homePageState: HomePageReducer,
@@ -12,5 +13,6 @@ export default combineReducers({
     userActionData: UserActionDataReducer,
     celebPageState: CelebrityPageReducer,
     uploadPageState: UploadPageReducer,
-    personalPageState: PersonalPageReducer
+    personalPageState: PersonalPageReducer,
+    signupPageState: SignupPageReducer
 });
