@@ -7,6 +7,7 @@ import HomePage from './components/HomePage';
 import CelebrityPage from './components/CelebrityPage';
 import UploadPage from './components/UploadPage';
 import PersonalPage from './components/PersonalPage';
+import SignupPage from './components/SignupPage';
 
 class TabIcon extends Component {
   constructor(props) {
@@ -36,6 +37,7 @@ const RouterComponent = () => {
     return (
       <Router navigationBarStyle={{ backgroundColor: '#fff' }}>
         <Scene key='root' hideNavBar>
+            <Scene key='signupPage' title='SignUp' component={SignupPage} />
             <Scene key='tabBar' tabs tabBarPosition="bottom" showLabel={false} tabBarStyle={styles.tabBarStyle} indicatorStyle={styles.indicatorStyle}>
                 <Scene hideNavBar icon={TabIcon} iconName={'home'} tabStyle={styles.tabStyle}>
                     <Scene hideNavBar key='home' title='Home' component={HomePage} />

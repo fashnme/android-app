@@ -6,12 +6,25 @@ import UserPostsComp from './celebScreen/UserPostsComp';
 import { celebrityPageVisitAndSetData } from '../actions';
 
 class PersonalPage extends Component {
-  componentDidMount() {
-    const { personalUserId, userToken } = this.props;
-    this.props.celebrityPageVisitAndSetData({ userToken, userId: personalUserId, isPersonalPage: true });
+  async componentDidMount() {
+    // const { personalUserId, userToken } = this.props;
+    this.focusListener = this.props.navigation.addListener('didFocus', () => {
+    this.onFocusFunction();
+  });
+    // this.props.celebrityPageVisitAndSetData({ userToken, userId: personalUserId, isPersonalPage: true });
   }
+  componentWillUnmount() {
+  this.focusListener.remove();
+}
+  onFocusFunction() {
+  // do some stuff on every screen focus
+   const { personalUserId, userToken } = this.props;
+   this.props.celebrityPageVisitAndSetData({ userToken, userId: personalUserId, isPersonalPage: true });
+}
 
   render() {
+    // const { userId, personalUserId, userToken } = this.props;
+
     return (
       <View style={{ flex: 1 }}>
         <FlatList
@@ -27,9 +40,14 @@ class PersonalPage extends Component {
   }
 }
 
-const mapStateToProps = ({ personalPageState }) => {
+const mapStateToProps = ({ personalPageState, celebPageState }) => {
   const { personalUserId, userToken } = personalPageState;
-  return { personalUserId, userToken };
+  const { userId } = celebPageState;
+  if (userId !== personalUserId) {
+    console.log('PersonalPage', userId, personalUserId);
+    // this.props.celebrityPageVisitAndSetData({ userToken, userId: personalUserId, isPersonalPage: true });
+  }
+  return { personalUserId, userToken, userId };
 };
 
 export default connect(mapStateToProps, {

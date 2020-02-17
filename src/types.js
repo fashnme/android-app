@@ -39,6 +39,10 @@ export const UPLOAD_PAGE_UPDATE_SELECTED_IMAGE_PATH = 'upload_page_update_select
 // Product Related types
 export const PRODUCT_PAGE_SELECTED_PRODUCT_UPDATE = 'product_page_selected_product_update';
 
-
+// Signup page
+export const SIGNUP_PAGE_PHONE_UPDATE = 'signup_page_phone_update';
+export const SIGNUP_PAGE_OTP_UPDATE = 'signup_page_otp_update';
+export const SIGNUP_PAGE_REFERRER_UPDATE = 'signup_page_referrer_update';
+export const SIGNUP_PAGE_TOGGLE_OTP_SENT = 'signup_page_toggle_otp_sent';
 // export const WISHLIST_ADD_OPERATION = 'add';
 // export const WISHLIST_REMOVE_OPERATION = 'remove';
