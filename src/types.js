@@ -44,5 +44,6 @@ export const SIGNUP_PAGE_PHONE_UPDATE = 'signup_page_phone_update';
 export const SIGNUP_PAGE_OTP_UPDATE = 'signup_page_otp_update';
 export const SIGNUP_PAGE_REFERRER_UPDATE = 'signup_page_referrer_update';
 export const SIGNUP_PAGE_TOGGLE_OTP_SENT = 'signup_page_toggle_otp_sent';
+export const SIGNUP_PAGE_COUNTRY_CODE_UPDATE = 'signup_page_country_code_update';
 // export const WISHLIST_ADD_OPERATION = 'add';
 // export const WISHLIST_REMOVE_OPERATION = 'remove';

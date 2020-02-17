@@ -136,7 +136,7 @@ class UploadPage extends Component {
           isRecording: true,
         });
         const data = await this.camera.recordAsync(options);
-        console.log(data.uri);
+        // console.log(data.uri);
         this.props.uploadPageUpdateSelectedImagePath(data.uri);
         this.props.uploadPageToggleIsSelected(true);
       }
