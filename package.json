@@ -16,6 +16,7 @@
     "react-native": "0.61.5",
     "react-native-aws3": "0.0.9",
     "react-native-camera": "^3.17.0",
+    "react-native-country-picker-modal": "^1.10.0",
     "react-native-elements": "^1.2.7",
     "react-native-file-type": "0.0.8",
     "react-native-fs": "^2.16.4",
