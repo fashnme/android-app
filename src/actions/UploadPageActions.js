@@ -1,8 +1,10 @@
 // import axios from 'axios';
 import { Image } from 'react-native';
+import axios from 'axios';
 import fileType from 'react-native-file-type';
 import ImageResizer from 'react-native-image-resizer/index.android';
 import { RNS3 } from 'react-native-aws3';
+import { ProcessingManager } from 'react-native-video-processing';
 
 import {
   UPLOAD_PAGE_TOGGLE_ISSELECTED,
@@ -10,7 +12,12 @@ import {
   UPLOAD_PAGE_UPDATE_SELECTED_IMAGE_PATH
 } from '../types';
 
-const options = {
+import {
+  UploadPageUploadContentURL
+} from '../URLS';
+
+
+const awsOptions = {
   keyPrefix: 'uploads/',
   bucket: 'fashn-social',
   accessKey: 'AKIAISBMFGYLRSA53ROQ',
@@ -44,31 +51,39 @@ export const uploadPageUploadContent = ({ caption, selectedImagePath, userToken,
   return (dispatch) => {
     fileType(selectedImagePath).then(({ mime }) => {
       if (mime.includes('image')) {
-        resizeAndUploadImage(selectedImagePath, userToken, personalUserId);
+        resizeAndUploadImage(selectedImagePath, userToken, personalUserId, caption);
       } else if (mime.includes('video')) {
-        console.log('Video Detected');
+        resizeAndUploadVideo(selectedImagePath, userToken, personalUserId, caption);
       }
     });
     dispatch({ type: 'uploadPageUploadContent' });
   };
 };
 
-const resizeAndUploadImage = (selectedImagePath, userToken, personalUserId) => {
-  Image.getSize(selectedImagePath, (w, h) => {
-    ImageResizer.createResizedImage(selectedImagePath, w, h, 'WEBP', 50).then((response) => {
-      console.log('Compressed Image', response.uri);
-      uploadContent(response.uri, 'image/webp', personalUserId);
-      // fileType(response.uri).then(({ mime }) => {
-      //   console.log('New File Type', mime); // image/webp
-      // });
+const resizeAndUploadVideo = (selectedVideoPath, userToken, personalUserId, caption) => {
+  ProcessingManager.getVideoInfo(selectedVideoPath)
+  .then((orig) => {
+    const { height, width } = orig.size;
+    const options = { width, height, bitrateMultiplier: 3, minimumBitrate: 300000 };
+    ProcessingManager.compress(selectedVideoPath, options).then((d) => {
+        fileType(d.source).then(({ mime }) => { uploadContent(d.source, mime, personalUserId, userToken, caption); });
     }).catch((err) => {
-      console.log('Error in Image Compression', err);
+      console.log('Error in Compressing Video', err);
     });
-    console.log('Dimensions', w, h);
   });
 };
 
-const uploadContent = (uri, type, personalUserId) => {
+const resizeAndUploadImage = (selectedImagePath, userToken, personalUserId, caption) => {
+  Image.getSize(selectedImagePath, (w, h) => {
+    ImageResizer.createResizedImage(selectedImagePath, w, h, 'WEBP', 50).then((response) => {
+      uploadContent(response.uri, 'image/webp', personalUserId, userToken, caption);
+    }).catch((err) => {
+      console.log('Error in Image Compression', err);
+    });
+  });
+};
+
+const uploadContent = (uri, type, personalUserId, userToken, caption) => {
   let name = '';
   let keyPrefix = '';
   if (type.includes('image')) {
@@ -78,12 +93,34 @@ const uploadContent = (uri, type, personalUserId) => {
     name = `${personalUserId}-time-${Math.round((new Date().getTime()) / 1000)}.mp4`;
     keyPrefix = 'videos/';
   }
-  options.keyPrefix = keyPrefix;
+  awsOptions.keyPrefix = keyPrefix;
   const file = { uri, name, type };
-  RNS3.put(file, options).then(response => {
-    if (response.status !== 201) {
-      throw new Error('Failed to upload image to S3');
+  RNS3.put(file, awsOptions).then(response => {
+    if (response.status === 201) {
+      console.log('Content Uploaded');
+      updateDatabase(caption, type, response.postResponse.location, userToken);
+    } else {
+      console.log('Error in Uploading Content', response, uri, name, type);
     }
-    console.log('Image Uploaded', response.body);
   });
+};
+
+const updateDatabase = (caption, mediaType, uploadUrl, userToken) => {
+  const headers = {
+    'Content-Type': 'application/json',
+    Authorization: userToken
+  };
+  axios({
+      method: 'post',
+      url: UploadPageUploadContentURL,
+      headers,
+      data: { caption, mediaType, uploadUrl }
+      })
+      .then((response) => {
+          console.log('Content Uploaded updateDatabase', response.data);
+      })
+      .catch((error) => {
+          //handle error
+          console.log('Content Uploaded updateDatabase ', error);
+    });
 };
