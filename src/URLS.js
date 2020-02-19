@@ -14,4 +14,4 @@ export const CelebrityPageGetUserPostsURL = 'https://fashn-backend.herokuapp.com
 export const CelebrityPageGetUserLikedPostsURL = 'https://fashn-backend.herokuapp.com/user/get-user-liked-posts';
 
 // UploadPage Urls
-export const UploadPageUploadContentURL = 'https://fashn-backend.herokuapp.com/user/create-post/';
+export const UploadPageUploadContentURL = 'https://fashn-backend.herokuapp.com/user/create-post';
