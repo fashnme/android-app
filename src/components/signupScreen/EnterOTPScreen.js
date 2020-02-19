@@ -1,17 +1,13 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, ScrollView, Text, Image, Dimensions } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import { Input, Button, Icon } from 'react-native-elements';
+import { Button, Icon } from 'react-native-elements';
 import { connect } from 'react-redux';
 import OTPInputView from '@twotalltotems/react-native-otp-input';
 import {
-  signupPagePhoneUpdate,
   signupPageOTPUpdate,
-  signupPageReferrerUpdate,
-  signupPageToggleOtpSent,
-  signupPageSendOTP,
   signupPageVerifyOTP,
-  signupPageCountryCodeUpdate
+  signupPageToggleOtpSent
 } from '../../actions';
 
 const screenHeight = Dimensions.get('window').height;
@@ -25,7 +21,7 @@ class EnterOTPScreen extends Component {
       };
   }
   render() {
-    const { countryCode, name, callingCode } = this.props.countryData;
+    const { loading, phoneNumber, otp, countryData } = this.props;
     return (
         <ScrollView>
             <View style={styles.container}>
@@ -36,7 +32,7 @@ class EnterOTPScreen extends Component {
                 <View style={styles.bodyIcon}>
                     <Image style={styles.icon} source={require('../../resources/icons/mail.png')} />
                     <Text style={{ color: '#C71585', fontSize: 18, fontWeight: 'bold' }}>Enter OTP</Text>
-                    <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 18, }}>We have sent OTP on {this.props.phoneNumber}</Text>
+                    <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 18, }}>We have sent OTP on {phoneNumber}</Text>
                 </View>
                 <LinearGradient colors={['#FF7F50', '#FF8C00', '#FF4500']} style={styles.body}>
                     <View style={styles.topCropper} />
@@ -45,36 +41,35 @@ class EnterOTPScreen extends Component {
                                 <OTPInputView
                                     style={{ width: '80%', height: 200 }}
                                     pinCount={4}
-                                    // code={this.state.code} //You can supply this prop or not. The component will be used as a controlled / uncontrolled component respectively.
-                                    // onCodeChanged = {code => { this.setState({code})}}
                                     autoFocusOnLoad
                                     codeInputFieldStyle={styles.otpInput}
                                     onCodeFilled={(code => {
-                                        this.props.signupPageOTPUpdate(code);
+                                      this.props.signupPageOTPUpdate(code);
                                     })}
                                 />
-                        </View>  
+                        </View>
                                 <Text
                                     onPress={() => {
                                         if (this.state.resend === false) {
                                             this.setState({ resend: true });
-                                            this.props.signupPageSendOTP(this.props.phoneNumber);
+                                            this.props.signupPageSendOTP(phoneNumber);
                                         }
-                                    }} 
+                                    }}
                                     style={{ color: 'white', fontWeight: 'bold' }}
                                 >
                                     {this.state.resend ? 'OTP Sent!' : 'Resend OTP'}
-                                </Text> 
+                                </Text>
                                {this.props.error != null ? <Text style={{ fontWeight: 'bold', color: 'white', fontSize: 20, padding: 10, }}>{this.props.error}</Text> : <View />}
                         <Button
+                            loading={loading}
                             title="VERIFY"
                             titleStyle={{ color: '#FF4500', fontSize: 20, fontWeight: 'bold' }}
                             buttonStyle={{ backgroundColor: 'white', borderRadius: 30, paddingHorizontal: 20, marginTop: 30, elevation: 15, }}
-                            onPress={() => this.props.signupPageVerifyOTP(this.props.phoneNumber, this.props.otp)}
-                        /> 
+                            onPress={() => this.props.signupPageVerifyOTP(phoneNumber, otp, countryData.callingCode)}
+                        />
                     </View>
                 </LinearGradient>
-            </View>            
+            </View>
         </ScrollView>
     );
   }
@@ -102,7 +97,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         flex: 4,
         justifyContent: 'center',
-    },  
+    },
     body: {
         flex: 5,
     },
@@ -131,32 +126,28 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center'
     },
-    otpInput: { 
-        backgroundColor: '#F37344', 
-        height: 50, 
-        width: 50, 
-        alignItems: 'center', 
+    otpInput: {
+        backgroundColor: '#F37344',
+        height: 50,
+        width: 50,
+        alignItems: 'center',
         justifyContent: 'center',
         borderRadius: 5,
-        elevation: 15, 
+        elevation: 15,
         borderColor: 'white',
         borderWidth: 1,
         margin: 10,
     },
   });
-  
+
 
 const mapStateToProps = ({ signupPageState }) => {
-    const { phoneNumber, otp, isOtpSent, referrerId, countryData, error } = signupPageState;
-    return { phoneNumber, otp, isOtpSent, referrerId, countryData, error };
+    const { phoneNumber, otp, countryData, error, loading } = signupPageState;
+    return { phoneNumber, otp, countryData, error, loading };
 };
 
 export default connect(mapStateToProps, {
-  signupPagePhoneUpdate,
   signupPageOTPUpdate,
-  signupPageReferrerUpdate,
-  signupPageToggleOtpSent,
-  signupPageSendOTP,
   signupPageVerifyOTP,
-  signupPageCountryCodeUpdate
+  signupPageToggleOtpSent
 })(EnterOTPScreen);
