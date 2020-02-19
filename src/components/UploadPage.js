@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, SafeAreaView, Dimensions, TouchableNativeFeedba
 import { RNCamera } from 'react-native-camera';
 import { Icon } from 'react-native-elements';
 import { connect } from 'react-redux';
+import { ProcessingManager } from 'react-native-video-processing';
 import ImagePicker from 'react-native-image-picker';
 import PostScreen from './uploadScreen/PostScreen';
 import {
@@ -11,12 +12,8 @@ import {
 } from '../actions';
 
 const screenWidth = Dimensions.get('window').width;
-// const height = Dimensions.get('window').height + StatusBar.currentHeight;
-
 
 class UploadPage extends Component {
-  // this.props.uploadPageToggleIsSelected(true)
-  // this.props.uploadPageUpdateSelectedImagePath('file://dafad')
   constructor() {
     super();
     this.state = {
@@ -89,21 +86,54 @@ class UploadPage extends Component {
       storageOptions: {
         skipBackup: true,
         noData: true,
+        waitUntilSaved: true,
+        cameraRoll: true
       },
     };
-    // Open Image Library:
-    ImagePicker.launchImageLibrary(options, response => {
-      // Same code as in above section!
+    ImagePicker.launchImageLibrary(options, response => { // Open Image Library:
       if (response.didCancel) {
         console.log('User cancelled image picker');
       } else if (response.error) {
         console.log('ImagePicker Error: ', response.error);
         this.props.selectImageFromLibraryVS(false);
-        // } else if (response.customButton) {
-        //   console.log('User tapped custom button: ', response.customButton);
       } else {
-        this.props.uploadPageUpdateSelectedImagePath(response.uri);
-        this.props.uploadPageToggleIsSelected(true);
+        const { path } = response;
+        if (mediaType === 'image') {
+          this.props.uploadPageUpdateSelectedImagePath(`${response.uri}`);
+          this.props.uploadPageToggleIsSelected(true);
+          return;
+        }
+        if (path === null) { // For Video if path is null Show Error
+          Alert.alert(
+             'Upload Failed',
+             'Sorry, this Video appears to be missing. Please download it to your device.', [{
+                 text: 'Ok',
+                 onPress: () => {},
+                 style: 'cancel'
+             }], {
+                 cancelable: true
+             }
+          );
+        } else {
+          ProcessingManager.getVideoInfo(path)
+          .then(({ duration }) => {
+              if (duration > 60) {
+                Alert.alert(
+                   'Too Large File!',
+                   'Please upload a video of less than 60 Seconds', [{
+                       text: 'Ok',
+                       onPress: () => {},
+                       style: 'cancel'
+                   }], {
+                       cancelable: true
+                   }
+                );
+                return;
+              }
+          });
+          this.props.uploadPageUpdateSelectedImagePath(`${response.path}`);
+          this.props.uploadPageToggleIsSelected(true);
+        }
       }
     });
   }
@@ -136,9 +166,8 @@ class UploadPage extends Component {
           isRecording: true,
         });
         const data = await this.camera.recordAsync(options);
-        // console.log(data.uri);
-        this.props.uploadPageUpdateSelectedImagePath(data.uri);
-        this.props.uploadPageToggleIsSelected(true);
+          this.props.uploadPageUpdateSelectedImagePath(data.uri);
+          this.props.uploadPageToggleIsSelected(true);
       }
     };
 

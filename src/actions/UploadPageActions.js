@@ -48,13 +48,18 @@ export const uploadPageUpdateSelectedImagePath = (imgPath) => {
 };
 
 export const uploadPageUploadContent = ({ caption, selectedImagePath, userToken, personalUserId }) => {
+  // console.log('Path', selectedImagePath);
   return (dispatch) => {
     fileType(selectedImagePath).then(({ mime }) => {
+      // console.log('File Type', mime);
       if (mime.includes('image')) {
         resizeAndUploadImage(selectedImagePath, userToken, personalUserId, caption);
       } else if (mime.includes('video')) {
         resizeAndUploadVideo(selectedImagePath, userToken, personalUserId, caption);
       }
+    })
+    .catch((err) => {
+      console.log('fileType error', err);
     });
     dispatch({ type: 'uploadPageUploadContent' });
   };
@@ -63,13 +68,18 @@ export const uploadPageUploadContent = ({ caption, selectedImagePath, userToken,
 const resizeAndUploadVideo = (selectedVideoPath, userToken, personalUserId, caption) => {
   ProcessingManager.getVideoInfo(selectedVideoPath)
   .then((orig) => {
+    // console.log('Video Info', orig);
     const { height, width } = orig.size;
     const options = { width, height, bitrateMultiplier: 3, minimumBitrate: 300000 };
     ProcessingManager.compress(selectedVideoPath, options).then((d) => {
+        // console.log('Compressed Video Info ', d);
         fileType(d.source).then(({ mime }) => { uploadContent(d.source, mime, personalUserId, userToken, caption); });
     }).catch((err) => {
       console.log('Error in Compressing Video', err);
     });
+  })
+  .catch((err) => {
+    console.log('Get Video Info Error', err);
   });
 };
 
@@ -97,15 +107,19 @@ const uploadContent = (uri, type, personalUserId, userToken, caption) => {
   const file = { uri, name, type };
   RNS3.put(file, awsOptions).then(response => {
     if (response.status === 201) {
-      console.log('Content Uploaded');
-      updateDatabase(caption, type, response.postResponse.location, userToken);
+      console.log('Content Uploaded', response);
+      updateDatabase(caption, type, response.body.postResponse.location, userToken);
     } else {
       console.log('Error in Uploading Content', response, uri, name, type);
     }
+  })
+  .catch((err) => {
+    console.log('Catch Error in Uploading Content', err);
   });
 };
 
 const updateDatabase = (caption, mediaType, uploadUrl, userToken) => {
+  console.log(caption, mediaType, uploadUrl, userToken);
   const headers = {
     'Content-Type': 'application/json',
     Authorization: userToken
@@ -114,7 +128,7 @@ const updateDatabase = (caption, mediaType, uploadUrl, userToken) => {
       method: 'post',
       url: UploadPageUploadContentURL,
       headers,
-      data: { caption, mediaType, uploadUrl }
+      data: { caption, mediaType: mediaType.split('/')[0], uploadUrl }
       })
       .then((response) => {
           console.log('Content Uploaded updateDatabase', response.data);

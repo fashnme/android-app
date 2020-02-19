@@ -37,8 +37,8 @@ const RouterComponent = () => {
     return (
       <Router navigationBarStyle={{ backgroundColor: '#fff' }}>
         <Scene key='root' hideNavBar>
-            <Scene initial key='signupPage' title='SignUp' component={SignupPage} />
-            <Scene key='tabBar' tabs tabBarPosition="bottom" showLabel={false} tabBarStyle={styles.tabBarStyle} indicatorStyle={styles.indicatorStyle}>
+            <Scene key='signupPage' title='SignUp' component={SignupPage} />
+            <Scene initial key='tabBar' tabs tabBarPosition="bottom" showLabel={false} tabBarStyle={styles.tabBarStyle} indicatorStyle={styles.indicatorStyle}>
                 <Scene hideNavBar icon={TabIcon} iconName={'home'} tabStyle={styles.tabStyle}>
                     <Scene hideNavBar key='home' title='Home' component={HomePage} />
                     <Scene hideNavBar hideTabBar key='celebrityPage' title='Celebrity' component={CelebrityPage} />
