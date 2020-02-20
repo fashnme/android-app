@@ -17,5 +17,6 @@ export const CelebrityPageGetUserLikedPostsURL = 'https://fashn-backend.herokuap
 export const UploadPageUploadContentURL = 'https://fashn-backend.herokuapp.com/user/create-post';
 
 // SignupPage Urls
-export const SignupPageSendOtpURL = 'https://fashn-backend.herokuapp.com/auth/user/send-otp';
+export const SignupPageSendOtpURL = 'https://fashn-backend.herokuapp.com/auth/send-otp';
 export const SignupPageVerifyOtpURL = 'https://fashn-backend.herokuapp.com/auth/user/verify-otp';
+export const SignupPageSetUserDetails = 'https://fashn-backend.herokuapp.com/user/create-user';
