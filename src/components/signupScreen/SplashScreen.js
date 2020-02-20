@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { View, Image } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
-// import { Actions } from 'react-native-router-flux';
+import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux';
-import { ASYNCSTORAGE_USER_TOKEN_NAME } from '../../types';
-// import {
-//   loginPageUserTokenUpdate
-// } from '../../actions';
+import { ASYNCSTORAGE_USER_TOKEN_NAME, ASYNCSTORAGE_USER_USER_NAME } from '../../types';
+import {
+  signupPageUserTokenUpdate
+} from '../../actions';
 import { FadeInView } from '../basic';
 
 class SplashScreen extends Component {
@@ -15,13 +15,21 @@ class SplashScreen extends Component {
       (userToken) => {
         if (userToken) {
           setTimeout(() => {
-            // Actions.tabBar();
-          }, 1500);
-          this.props.loginPageUserTokenUpdate(userToken);
+            AsyncStorage.getItem(ASYNCSTORAGE_USER_USER_NAME).then(
+              (userName) => {
+                  if (userName.length !== 0) {
+                    Actions.tabBar();
+                  } else {
+                    Actions.enterDetailsPage();
+                  }
+              }
+            );
+          }, 1000);
+          this.props.signupPageUserTokenUpdate(userToken);
         } else {
           setTimeout(() => {
-            // Actions.loginPage();
-          }, 2000);
+            Actions.signupPage();
+          }, 1000);
         }
       }
     ).catch((error) => {
@@ -30,7 +38,7 @@ class SplashScreen extends Component {
   }
 
   render() {
-    console.log('Splash Screen Started Mishra Changed This FIle');
+    // console.log('Splash Screen Started Mishra Changed This FIle');
     return (
       <View style={{ backgroundColor: '#fff', resizeMode: 'cover', flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <FadeInView>
@@ -54,5 +62,5 @@ const styles = {
 };
 
 export default connect(null, {
-
+  signupPageUserTokenUpdate
 })(SplashScreen);

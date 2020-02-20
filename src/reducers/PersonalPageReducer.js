@@ -1,5 +1,5 @@
 import {
-
+  PERSONAL_PAGE_SET_USERTOKEN
 } from '../types';
 
 const INITIAL_STATE = {
@@ -9,6 +9,8 @@ const INITIAL_STATE = {
 
 export default (state = INITIAL_STATE, action) => {
     switch (action.type) {
+      case PERSONAL_PAGE_SET_USERTOKEN:
+        return { ...state, userToken: action.payload };
       default:
           return state;
     }

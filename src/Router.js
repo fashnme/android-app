@@ -2,13 +2,14 @@ import React, { Component } from 'react';
 import { View, Dimensions, Text } from 'react-native';
 import { Scene, Router } from 'react-native-router-flux';
 import { Icon } from 'react-native-elements';
-// import SplashScreen from './components/loginScreen/SplashScreen';
+import SplashScreen from './components/signupScreen/SplashScreen';
 import HomePage from './components/HomePage';
 import CelebrityPage from './components/CelebrityPage';
 import UploadPage from './components/UploadPage';
 import PersonalPage from './components/PersonalPage';
 import SignupPage from './components/SignupPage';
 import EnterDetailsPage from './components/signupScreen/EnterDetailsPage';
+import SettingsPage from './components/SettingsPage';
 
 class TabIcon extends Component {
   constructor(props) {
@@ -39,6 +40,7 @@ const RouterComponent = () => {
       <Router navigationBarStyle={{ backgroundColor: '#fff' }}>
         <Scene key='root' hideNavBar>
             <Scene initial hideNavBar title='SignUp'>
+                <Scene key='splashScreen' title='SignUp' component={SplashScreen} />
                 <Scene key='signupPage' title='SignUp' component={SignupPage} />
                 <Scene key='enterDetailsPage' title='Enter Details' component={EnterDetailsPage} />
             </Scene>
@@ -48,8 +50,13 @@ const RouterComponent = () => {
                     <Scene key='home' title='Home' component={HomePage} />
                     <Scene hideTabBar key='celebrityPage' title='Celebrity' component={CelebrityPage} />
                 </Scene>
+
                 <Scene hideNavBar icon={TabIcon} iconName={'upload'} key='uploadPage' title='Upload' component={UploadPage} tabStyle={styles.tabStyle} />
-                <Scene hideNavBar icon={TabIcon} iconName={'user'} key='personalPage' title='Personal' component={PersonalPage} tabStyle={styles.tabStyle} />
+
+                <Scene hideNavBar icon={TabIcon} iconName={'user'} tabStyle={styles.tabStyle}>
+                  <Scene key='personalPage' title='Personal' component={PersonalPage} />
+                  <Scene hideTabBar key='settings' title='Settings' component={SettingsPage} />
+                </Scene>
             </Scene>
         </Scene>
       </Router>

@@ -8,12 +8,18 @@ import {
   signupPageSubmitUserDetails as _signupPageSubmitUserDetails
 } from '../../actions';
 
+
+// signupPageUpdateUsername(userName)
+// signupPageUpdateFullname(fullName)
+// signupPageUpdateGender(gender)
+// signupPageSubmitUserDetails({ userName, fullName, gender, userToken })
+
 const EnterDetailsPage = ({
-  userName, fullName, gender, loading,
+  userName, fullName, gender, loading, error, userToken,
   signupPageUpdateUsername, signupPageUpdateFullname, signupPageUpdateGender, signupPageSubmitUserDetails
 }) => {
-  console.log('props', { userName, fullName, gender, loading });
-  console.log('actions', signupPageUpdateUsername, signupPageUpdateFullname, signupPageUpdateGender, signupPageSubmitUserDetails);
+  console.log('props', { userName, fullName, gender, loading, userToken, error });
+  // console.log('actions', signupPageUpdateUsername, signupPageUpdateFullname, signupPageUpdateGender, signupPageSubmitUserDetails);
 
 
   return (
@@ -23,9 +29,10 @@ const EnterDetailsPage = ({
   );
 };
 
-const mapStateToProps = ({ signupPageState }) => {
-  const { userName, fullName, gender, loading } = signupPageState;
-  return { userName, fullName, gender, loading };
+const mapStateToProps = ({ signupPageState, personalPageState }) => {
+  const { userName, fullName, gender, loading, error } = signupPageState;
+  const { userToken } = personalPageState;
+  return { userName, fullName, gender, loading, error, userToken };
 };
 
 export default connect(mapStateToProps, {

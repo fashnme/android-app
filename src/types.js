@@ -5,6 +5,7 @@
 // export const ECOM_SHARING_URL_INITIAL = 'https://fashn.me/cashback-intermediate-page';
 
 export const ASYNCSTORAGE_USER_TOKEN_NAME = 'userToken';
+export const ASYNCSTORAGE_USER_USER_NAME = 'userName';
 
 export const HOME_PAGE_PUBLIC_MODE = 1;
 export const HOME_PAGE_PERSONAL_MODE = 2;
@@ -50,5 +51,8 @@ export const SIGNUP_PAGE_TOGGLE_LOADING = 'signup_page_toggle_loading';
 export const SIGNUP_PAGE_USERNAME_UPDATE = 'signup_page_username_update';
 export const SIGNUP_PAGE_FULLNAME_UPDATE = 'signup_page_fullname_update';
 export const SIGNUP_PAGE_GENDER_UPDATE = 'signup_page_gender_update';
+
+// Personal Page
+export const PERSONAL_PAGE_SET_USERTOKEN = 'personal_page_set_usertoken';
 // export const WISHLIST_ADD_OPERATION = 'add';
 // export const WISHLIST_REMOVE_OPERATION = 'remove';

@@ -1,5 +1,7 @@
 import axios from 'axios';
 import { Actions } from 'react-native-router-flux';
+import AsyncStorage from '@react-native-community/async-storage';
+
 import {
   SIGNUP_PAGE_PHONE_UPDATE,
   SIGNUP_PAGE_OTP_UPDATE,
@@ -10,12 +12,16 @@ import {
   SIGNUP_PAGE_TOGGLE_LOADING,
   SIGNUP_PAGE_USERNAME_UPDATE,
   SIGNUP_PAGE_FULLNAME_UPDATE,
-  SIGNUP_PAGE_GENDER_UPDATE
+  SIGNUP_PAGE_GENDER_UPDATE,
+  PERSONAL_PAGE_SET_USERTOKEN,
+  ASYNCSTORAGE_USER_TOKEN_NAME,
+  ASYNCSTORAGE_USER_USER_NAME
 } from '../types';
 
 import {
   SignupPageSendOtpURL,
-  SignupPageVerifyOtpURL
+  SignupPageVerifyOtpURL,
+  SignupPageSetUserDetails
 } from '../URLS';
 
 export const signupPagePhoneUpdate = (phone) => {
@@ -48,6 +54,10 @@ export const signupPageUpdateFullname = (fullName) => {
 
 export const signupPageUpdateGender = (gender) => {
   return { type: SIGNUP_PAGE_GENDER_UPDATE, payload: gender };
+};
+
+export const signupPageUserTokenUpdate = (userToken) => {
+  return { type: PERSONAL_PAGE_SET_USERTOKEN, payload: userToken };
 };
 
 // Action to Send OTP on phone Number
@@ -87,9 +97,11 @@ export const signupPageVerifyOTP = (phone, otp, callingCode) => {
           })
           .then((response) => {
             console.log('signupPageVerifyOTP response', response);
+            dispatch({ type: PERSONAL_PAGE_SET_USERTOKEN, payload: response.data.jwt });
+            setUserToken(response.data.user.jwt);
             if (response.data.user === null) {
-              console.log('New User Encountered');
               Actions.enterDetailsPage();
+              setUserName('');
             } else {
               // Actions.home();
               console.log('signupPageVerifyOTP Set all the User details', response);
@@ -104,8 +116,36 @@ export const signupPageVerifyOTP = (phone, otp, callingCode) => {
   };
 };
 
+const setUserName = (userName) => {
+  AsyncStorage.setItem(ASYNCSTORAGE_USER_USER_NAME, userName);
+};
+
+const setUserToken = (jwt) => {
+    AsyncStorage.setItem(ASYNCSTORAGE_USER_TOKEN_NAME, jwt);
+    console.log('Phone JWT STORED', jwt);
+};
+
+
 // Action to set Users Details on First Time Signup
-export const signupPageSubmitUserDetails = ({ userName, fullName, gender }) => {
-  console.log('signupPageSubmitUserDetails', { userName, fullName, gender });
-  return { type: 'signupPageSubmitUserDetails' };
+export const signupPageSubmitUserDetails = ({ userName, fullName, gender, userToken }) => {
+  return (dispatch) => {
+    axios({
+        method: 'post',
+        url: SignupPageSetUserDetails,
+        data: { userName, fullName, gender, profilePic: '', registrationToken: '' },
+        headers: { 'Content-Type': 'application/json', Authorization: userToken }
+        })
+        .then((response) => {
+            console.log('signupPageSubmitUserDetails OTP Sent', response);
+            if (response.status === 422) {
+              dispatch({ type: SIGNUP_PAGE_ERROR_UPDATE, payload: 'Username Already Taken' });
+            } else if (response.state === 200) {
+              Actions.tabBar();
+            }
+        })
+        .catch((error) => {
+            console.log('signupPageSubmitUserDetails Error', error);
+            dispatch({ type: SIGNUP_PAGE_ERROR_UPDATE, payload: 'Problem in Creating User, Please try after some time' });
+      });
+  };
 };
