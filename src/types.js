@@ -54,5 +54,8 @@ export const SIGNUP_PAGE_GENDER_UPDATE = 'signup_page_gender_update';
 
 // Personal Page
 export const PERSONAL_PAGE_SET_USERTOKEN = 'personal_page_set_usertoken';
+
+// Settings
+export const SETTING_PAGE_SET_USER_ORDERS = 'setting_page_set_user_orders';
 // export const WISHLIST_ADD_OPERATION = 'add';
 // export const WISHLIST_REMOVE_OPERATION = 'remove';

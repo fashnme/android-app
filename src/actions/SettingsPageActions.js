@@ -1,0 +1,29 @@
+import { Linking } from 'react-native';
+import { Actions } from 'react-native-router-flux';
+import {
+  SettingsPageAboutUsURL,
+  SettingsPagePrivacyPolicyURL
+} from '../URLS';
+
+export const settingsPageRowPressed = ({ key }) => {
+  console.log('settingsPageRowPressed', key);
+  switch (key) {
+    case 'about':
+      Linking.openURL(SettingsPageAboutUsURL)
+      .catch(err => console.error("settingsPageRowPressed Coudn't Open the About Us Page", err));
+      break;
+
+    case 'privacy':
+      Linking.openURL(SettingsPagePrivacyPolicyURL)
+      .catch(err => console.error("settingsPageRowPressed Coudn't Open the About Us Page", err));
+      break;
+
+    case 'orders':
+      Actions.orders();
+      break;
+
+    default:
+      break;
+  }
+  return { type: 'settingsPageRowPressed ' };
+};

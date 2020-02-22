@@ -10,6 +10,7 @@ import PersonalPage from './components/PersonalPage';
 import SignupPage from './components/SignupPage';
 import EnterDetailsPage from './components/signupScreen/EnterDetailsPage';
 import SettingsPage from './components/SettingsPage';
+import Orders from './components/SettingScreen/Orders';
 
 class TabIcon extends Component {
   constructor(props) {
@@ -39,13 +40,13 @@ const RouterComponent = () => {
     return (
       <Router navigationBarStyle={{ backgroundColor: '#fff' }}>
         <Scene key='root' hideNavBar>
-            <Scene initial hideNavBar title='SignUp'>
-                <Scene key='splashScreen' title='SignUp' component={SplashScreen} />
+            <Scene hideNavBar title='SignUp'>
+                <Scene initial key='splashScreen' component={SplashScreen} />
                 <Scene key='signupPage' title='SignUp' component={SignupPage} />
                 <Scene key='enterDetailsPage' title='Enter Details' component={EnterDetailsPage} />
             </Scene>
 
-            <Scene key='tabBar' tabs tabBarPosition="bottom" showLabel={false} tabBarStyle={styles.tabBarStyle} indicatorStyle={styles.indicatorStyle}>
+            <Scene initial key='tabBar' tabs tabBarPosition="bottom" showLabel={false} tabBarStyle={styles.tabBarStyle} indicatorStyle={styles.indicatorStyle}>
                 <Scene hideNavBar icon={TabIcon} iconName={'home'} tabStyle={styles.tabStyle}>
                     <Scene key='home' title='Home' component={HomePage} />
                     <Scene hideTabBar key='celebrityPage' title='Celebrity' component={CelebrityPage} />
@@ -53,9 +54,10 @@ const RouterComponent = () => {
 
                 <Scene hideNavBar icon={TabIcon} iconName={'upload'} key='uploadPage' title='Upload' component={UploadPage} tabStyle={styles.tabStyle} />
 
-                <Scene hideNavBar icon={TabIcon} iconName={'user'} tabStyle={styles.tabStyle}>
+                <Scene initial hideNavBar icon={TabIcon} iconName={'user'} tabStyle={styles.tabStyle}>
                   <Scene key='personalPage' title='Personal' component={PersonalPage} />
                   <Scene hideTabBar key='settings' title='Settings' component={SettingsPage} />
+                  <Scene initial hideTabBar key='orders' title='Wishlist And Orders' component={Orders} />
                 </Scene>
             </Scene>
         </Scene>

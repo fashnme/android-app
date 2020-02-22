@@ -98,7 +98,7 @@ export const signupPageVerifyOTP = (phone, otp, callingCode) => {
           .then((response) => {
             console.log('signupPageVerifyOTP response', response);
             dispatch({ type: PERSONAL_PAGE_SET_USERTOKEN, payload: response.data.jwt });
-            setUserToken(response.data.user.jwt);
+            setUserToken(response.data.jwt);
             if (response.data.user === null) {
               Actions.enterDetailsPage();
               setUserName('');
@@ -141,6 +141,7 @@ export const signupPageSubmitUserDetails = ({ userName, fullName, gender, userTo
               dispatch({ type: SIGNUP_PAGE_ERROR_UPDATE, payload: 'Username Already Taken' });
             } else if (response.state === 200) {
               Actions.tabBar();
+              setUserName(userName);
             }
         })
         .catch((error) => {
