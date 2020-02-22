@@ -43,9 +43,9 @@ export default (state = INITIAL_STATE, action) => {
         const countryData = action.payload;
         return { ...state, countryData };
       }
-
+      // User Details Page
       case SIGNUP_PAGE_USERNAME_UPDATE:
-        return { ...state, userName: action.payload };
+        return { ...state, userName: action.payload, error: '' };
       case SIGNUP_PAGE_FULLNAME_UPDATE:
         return { ...state, fullName: action.payload };
       case SIGNUP_PAGE_GENDER_UPDATE:

@@ -20,3 +20,10 @@ export const UploadPageUploadContentURL = 'https://fashn-backend.herokuapp.com/u
 export const SignupPageSendOtpURL = 'https://fashn-backend.herokuapp.com/auth/send-otp';
 export const SignupPageVerifyOtpURL = 'https://fashn-backend.herokuapp.com/auth/user/verify-otp';
 export const SignupPageSetUserDetails = 'https://fashn-backend.herokuapp.com/user/create-user';
+
+// SettingsPage Urls
+export const SettingsPageAboutUsURL = 'https://fashn.me/about-us';
+export const SettingsPagePrivacyPolicyURL = 'https://fashn.me/about-us';
+
+// User Details
+export const SettingsPageGetUserOrders = 'https://fashn-backend.herokuapp.com/user/get-orders';

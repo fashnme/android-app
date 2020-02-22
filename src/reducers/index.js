@@ -6,6 +6,8 @@ import CelebrityPageReducer from './CelebrityPageReducer';
 import UploadPageReducer from './UploadPageReducer';
 import PersonalPageReducer from './PersonalPageReducer';
 import SignupPageReducer from './SignupPageReducer';
+import SettingsPageReducer from './SettingsPageReducer';
+import AccountSettingsReducer from './AccountSettingsReducer';
 
 export default combineReducers({
     homePageState: HomePageReducer,
@@ -14,5 +16,7 @@ export default combineReducers({
     celebPageState: CelebrityPageReducer,
     uploadPageState: UploadPageReducer,
     personalPageState: PersonalPageReducer,
-    signupPageState: SignupPageReducer
+    signupPageState: SignupPageReducer,
+    settingsPageState: SettingsPageReducer,
+    accountSettingState: AccountSettingsReducer
 });

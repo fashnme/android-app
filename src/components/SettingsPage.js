@@ -1,21 +1,108 @@
-import React from 'react';
-import { View, Text } from 'react-native';
-import { Header } from 'react-native-elements';
+import React, { Component } from 'react';
+import { View, FlatList } from 'react-native';
+import { ListItem } from 'react-native-elements';
+import { connect } from 'react-redux';
+import {
+  settingsPageRowPressed
+} from '../actions';
 
-const SettingsPage = () => {
-  return (
-    <View>
-      <Header
-        leftComponent={<View />}
-        centerComponent={{ text: 'MY TITLE', style: { color: '#fff' } }}
-        rightComponent={<View />}
-        backgroundColor={'#fff'}
+class SettingsPage extends Component {
+   profile({ avatarUrl, title, subtitle, key }) {
+    return (
+      <ListItem
+        leftAvatar={{ source: { uri: avatarUrl } }}
+        title={title}
+        titleStyle={styles.title}
+        subtitle={subtitle}
+        rightTitle={'Edit'}
+        rightTitleStyle={{ color: '#2089dc', fontWeight: 'bold' }}
+        containerStyle={styles.containerStyle}
+        onPress={() => { this.props.settingsPageRowPressed({ key }); }}
       />
-      <Text>
-        Settings Page
-      </Text>
-    </View>
-  );
+    );
+  }
+
+  defaultView({ avatarUrl, title, subtitle, key }) {
+    return (
+      <ListItem
+        leftAvatar={{ source: { uri: avatarUrl } }}
+        title={title}
+        titleStyle={styles.title}
+        subtitle={subtitle}
+        chevron={{ color: '#474747', size: 20 }}
+        containerStyle={styles.containerStyle}
+        onPress={() => { this.props.settingsPageRowPressed({ key }); }}
+      />
+    );
+  }
+
+  badgeView({ avatarUrl, title, subtitle, key }) {
+    return (
+      <ListItem
+        leftAvatar={{ source: { uri: avatarUrl } }}
+        title={title}
+        titleStyle={styles.title}
+        subtitle={subtitle}
+        badge={{ status: 'success', value: 10 }}
+        containerStyle={styles.containerStyle}
+        onPress={() => { this.props.settingsPageRowPressed({ key }); }}
+      />
+    );
+  }
+
+  headingView({ title }) {
+    return (
+      <ListItem
+        title={title}
+        titleStyle={[styles.title, { fontSize: 20 }]}
+        containerStyle={{ height: 60 }}
+        bottomDivider
+      />
+    );
+  }
+
+  renderItem({ item }) {
+    const { avatarUrl, title, type, subtitle, key } = item;
+    switch (type) {
+      case 'edit':
+        return this.profile({ avatarUrl, title, subtitle, key });
+      case 'badge':
+        return this.badgeView({ avatarUrl, title, subtitle, key });
+      case 'heading':
+        return this.headingView({ title });
+      default:
+        return this.defaultView({ avatarUrl, title, subtitle, key });
+    }
+  }
+
+  render() {
+    const { settingsArray } = this.props;
+    return (
+      <View style={{ flex: 1 }}>
+        <FlatList
+            keyExtractor={(item, index) => index.toString()}
+            data={settingsArray}
+            renderItem={this.renderItem.bind(this)}
+        />
+      </View>
+    );
+  }
+}
+
+const styles = {
+  title: {
+      fontWeight: 'bold'
+  },
+  containerStyle: {
+    height: 50
+  }
 };
 
-export default SettingsPage;
+const mapStateToProps = ({ settingsPageState }) => {
+    const { settingsArray } = settingsPageState;
+    return { settingsArray };
+};
+
+export default connect(mapStateToProps, {
+  settingsPageRowPressed
+})(SettingsPage);

@@ -13,14 +13,15 @@ class PersonalPage extends Component {
   });
     // this.props.celebrityPageVisitAndSetData({ userToken, userId: personalUserId, isPersonalPage: true });
   }
+  
   componentWillUnmount() {
-  this.focusListener.remove();
-}
+    this.focusListener.remove();
+  }
   onFocusFunction() {
   // do some stuff on every screen focus
    const { personalUserId, userToken } = this.props;
    this.props.celebrityPageVisitAndSetData({ userToken, userId: personalUserId, isPersonalPage: true });
-}
+  }
 
   render() {
     // const { userId, personalUserId, userToken } = this.props;

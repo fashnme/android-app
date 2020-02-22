@@ -17,7 +17,7 @@ class SplashScreen extends Component {
           setTimeout(() => {
             AsyncStorage.getItem(ASYNCSTORAGE_USER_USER_NAME).then(
               (userName) => {
-                  if (userName.length !== 0) {
+                  if (userName !== null && userName.length !== 0) {
                     Actions.tabBar();
                   } else {
                     Actions.enterDetailsPage();
