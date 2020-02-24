@@ -22,6 +22,10 @@ export const settingsPageRowPressed = ({ key }) => {
       Actions.orders();
       break;
 
+    case 'requests':
+      Actions.bidRequests();
+      break;
+
     default:
       break;
   }

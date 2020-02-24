@@ -56,7 +56,7 @@ class SettingsPage extends Component {
         title={title}
         titleStyle={[styles.title, { fontSize: 20 }]}
         containerStyle={{ height: 60 }}
-        bottomDivider
+        topDivider
       />
     );
   }

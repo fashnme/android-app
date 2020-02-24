@@ -30,6 +30,7 @@ class Orders extends Component {
           placement={'center'}
           leftComponent={{ icon: 'arrow-back', color: 'grey', onPress: () => { Actions.pop(); } }}
           centerComponent={{ text: 'NO ORDERS FOUND', style: { color: 'grey', fontWeight: 'bold', fontSize: 17 } }}
+          containerStyle={{ paddingTop: 0, height: 56 }}
         />
         <View style={{ height, width, backgroundColor: 'white', justifyContent: 'center' }} />
       </View>
@@ -123,13 +124,17 @@ class Orders extends Component {
           placement={'left'}
           leftComponent={{ icon: 'arrow-back', color: 'grey', onPress: () => { Actions.pop(); } }}
           centerComponent={{ text: 'ORDERS', style: { color: 'grey', fontWeight: 'bold', fontSize: 17 } }}
+          containerStyle={{ paddingTop: 0, height: 56 }}
         />
         <Divider style={{ backgroundColor: 'blue' }} />
-        <FlatList
-          keyExtractor={(item, index) => index.toString()}
-          data={ordersArray}
-          renderItem={this.renderOrderItem.bind(this)}
-        />
+        <View>
+          <FlatList
+            keyExtractor={(item, index) => index.toString()}
+            data={ordersArray}
+            renderItem={this.renderOrderItem.bind(this)}
+            contentContainerStyle={{ paddingBottom: 20 }}
+          />
+        </View>
       </View>
     );
   }
