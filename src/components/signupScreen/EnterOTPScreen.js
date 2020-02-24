@@ -7,7 +7,8 @@ import OTPInputView from '@twotalltotems/react-native-otp-input';
 import {
   signupPageOTPUpdate,
   signupPageVerifyOTP,
-  signupPageToggleOtpSent
+  signupPageToggleOtpSent,
+  signupPageSendOTP
 } from '../../actions';
 
 const screenHeight = Dimensions.get('window').height;
@@ -21,7 +22,7 @@ class EnterOTPScreen extends Component {
       };
   }
   render() {
-    const { loading, phoneNumber, otp, countryData } = this.props;
+    const { loading, phoneNumber, otp, countryData, callingCode } = this.props;
     return (
         <ScrollView>
             <View style={styles.container}>
@@ -52,7 +53,7 @@ class EnterOTPScreen extends Component {
                                     onPress={() => {
                                         if (this.state.resend === false) {
                                             this.setState({ resend: true });
-                                            this.props.signupPageSendOTP(phoneNumber);
+                                            this.props.signupPageSendOTP(phoneNumber, callingCode);
                                         }
                                     }}
                                     style={{ color: 'white', fontWeight: 'bold' }}
@@ -65,7 +66,10 @@ class EnterOTPScreen extends Component {
                             title="VERIFY"
                             titleStyle={{ color: '#FF4500', fontSize: 20, fontWeight: 'bold' }}
                             buttonStyle={{ backgroundColor: 'white', borderRadius: 30, paddingHorizontal: 20, marginTop: 30, elevation: 15, }}
-                            onPress={() => this.props.signupPageVerifyOTP(phoneNumber, otp, countryData.callingCode)}
+                            onPress={() => {
+                                console.log('Butotn clicked');
+                                this.props.signupPageVerifyOTP(phoneNumber, otp, countryData.callingCode); 
+                            }}
                         />
                     </View>
                 </LinearGradient>
@@ -149,5 +153,6 @@ const mapStateToProps = ({ signupPageState }) => {
 export default connect(mapStateToProps, {
   signupPageOTPUpdate,
   signupPageVerifyOTP,
-  signupPageToggleOtpSent
+  signupPageToggleOtpSent,
+  signupPageSendOTP,
 })(EnterOTPScreen);
