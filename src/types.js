@@ -59,5 +59,10 @@ export const PERSONAL_PAGE_SET_USERTOKEN = 'personal_page_set_usertoken';
 export const SETTING_PAGE_SET_USER_ORDERS = 'setting_page_set_user_orders';
 export const SETTING_PAGE_SET_RENT_BID_BY_ME = 'setting_page_set_rent_bid_by_me';
 export const SETTING_PAGE_SET_RENT_BID_FOR_ME = 'setting_page_set_rent_bid_for_me';
+
+export const SETTING_PAGE_USER_CAPTION_UPDATE = 'setting_page_user_caption_update';
+export const SETTING_PAGE_USER_DOB_UPDATE = 'setting_page_user_dob_update';
+export const SETTING_PAGE_USER_SOCIAL_LINK_UPDATE = 'setting_page_user_social_link_update';
+export const SETTING_PAGE_USER_PROFILE_PIC_UDPATE = 'setting_page_user_profile_pic_update';
 // export const WISHLIST_ADD_OPERATION = 'add';
 // export const WISHLIST_REMOVE_OPERATION = 'remove';

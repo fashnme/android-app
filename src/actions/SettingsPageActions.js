@@ -18,6 +18,10 @@ export const settingsPageRowPressed = ({ key }) => {
       .catch(err => console.error("settingsPageRowPressed Coudn't Open the About Us Page", err));
       break;
 
+    case 'profile':
+      Actions.editUserProfile();
+      break;
+      
     case 'orders':
       Actions.orders();
       break;

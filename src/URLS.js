@@ -29,3 +29,4 @@ export const SettingsPagePrivacyPolicyURL = 'https://fashn.me/about-us';
 export const SettingsPageGetUserOrdersURL = 'https://fashn-backend.herokuapp.com/user/get-orders';
 export const SettingsPageGetBidsByMeURL = 'https://fashn-backend.herokuapp.com/bid/get-bids-by-me';
 export const SettingsPageGetBidsForMeURL = 'https://fashn-backend.herokuapp.com/bid/get-bids-for-me';
+export const SettingsPageSaveProfileChangesURL = 'https://fashn-backend.herokuapp.com/user/edit-user-profile';

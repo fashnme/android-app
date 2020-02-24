@@ -89,27 +89,27 @@ const EnterDetailsPage = ({
           <View style={{ alignItems: 'center', justifyContent: 'flex-end', flex: 1 }}>
             <Text style={{ fontSize: 30, fontWeight: 'bold' }}> Create account </Text>
           </View>
-        </View>   
+        </View>
         <LinearGradient colors={['#FF7F50', '#FF8C00', '#FF4500']} style={styles.body}>
           <View style={{ paddingTop: 100, width: '100%', alignItems: 'center' }}>
-            <UserInputBox 
-              name="username" 
-              errorMessage={error} 
-              placeholder="Username" 
-              iconName="at" 
-              iconType="font-awesome" 
+            <UserInputBox
+              name="username"
+              errorMessage={error}
+              placeholder="Username"
+              iconName="at"
+              iconType="font-awesome"
               valueName={userName}
               changeAction={(txt) => signupPageUpdateUsername(txt)}
             />
-            <UserInputBox 
-              name="fullname" 
-              placeholder="Full Name" 
-              iconName="user" 
+            <UserInputBox
+              name="fullname"
+              placeholder="Full Name"
+              iconName="user"
               iconType="font-awesome"
               valueName={fullName}
               changeAction={(txt) => signupPageUpdateFullname(txt)}
             />
-            
+
             <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 20, alignSelf: 'flex-start', paddingHorizontal: 30 }}>Gender: </Text>
             <View style={{ flexDirection: 'row', padding: 10, alignItems: 'center' }}>
               <ButtonGroup
@@ -136,29 +136,6 @@ const EnterDetailsPage = ({
   );
 };
 
-const mapStateToProps = ({ signupPageState, personalPageState }) => {
-  const { userName, fullName, gender, loading, error } = signupPageState;
-  const { userToken } = personalPageState;
-  let genderIndex = 0;
-  if (gender !== '') {
-    if (gender === 'male') {
-      genderIndex = 0;
-    } else if (gender === 'female') {
-      genderIndex = 1;
-    } else {
-      genderIndex = 2;
-    }
-  }
-  return { userName, fullName, genderIndex, loading, error, userToken };
-};
-
-export default connect(mapStateToProps, {
-  signupPageUpdateUsername: _signupPageUpdateUsername,
-  signupPageUpdateFullname: _signupPageUpdateFullname,
-  signupPageUpdateGender: _signupPageUpdateGender,
-  signupPageSubmitUserDetails: _signupPageSubmitUserDetails
-})(EnterDetailsPage);
-
 const styles = StyleSheet.create({
   container: {
     height: screenHeight,
@@ -173,18 +150,18 @@ const styles = StyleSheet.create({
     marginTop: 20,
     alignItems: 'center',
   },
-  textInputStyle: { 
-    backgroundColor: 'white', 
-    paddingHorizontal: 10, 
-    width: '90%', 
+  textInputStyle: {
+    backgroundColor: 'white',
+    paddingHorizontal: 10,
+    width: '90%',
     borderRadius: 20,
-    elevation: 15, 
+    elevation: 15,
     margin: 10,
   },
-  genderRow: { 
-    height: 100, 
-    width: '100%', 
-    backgroundColor: 'transparent', 
+  genderRow: {
+    height: 100,
+    width: '100%',
+    backgroundColor: 'transparent',
     borderWidth: 0,
   },
   iconContainer: {
@@ -207,3 +184,24 @@ const styles = StyleSheet.create({
     fontSize: 15,
   },
 });
+
+const mapStateToProps = ({ signupPageState, personalPageState }) => {
+  const { userName, fullName, gender, loading, error } = signupPageState;
+  const { userToken } = personalPageState;
+  let genderIndex = 0;
+  if (gender === 'male') {
+      genderIndex = 0;
+  } else if (gender === 'female') {
+      genderIndex = 1;
+  } else {
+      genderIndex = 2;
+  }
+  return { userName, fullName, genderIndex, loading, error, userToken };
+};
+
+export default connect(mapStateToProps, {
+  signupPageUpdateUsername: _signupPageUpdateUsername,
+  signupPageUpdateFullname: _signupPageUpdateFullname,
+  signupPageUpdateGender: _signupPageUpdateGender,
+  signupPageSubmitUserDetails: _signupPageSubmitUserDetails
+})(EnterDetailsPage);
