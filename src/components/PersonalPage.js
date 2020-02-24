@@ -13,7 +13,7 @@ class PersonalPage extends Component {
   });
     // this.props.celebrityPageVisitAndSetData({ userToken, userId: personalUserId, isPersonalPage: true });
   }
-  
+
   componentWillUnmount() {
     this.focusListener.remove();
   }
@@ -46,7 +46,6 @@ const mapStateToProps = ({ personalPageState, celebPageState }) => {
   const { userId } = celebPageState;
   if (userId !== personalUserId) {
     console.log('PersonalPage', userId, personalUserId);
-    // this.props.celebrityPageVisitAndSetData({ userToken, userId: personalUserId, isPersonalPage: true });
   }
   return { personalUserId, userToken, userId };
 };

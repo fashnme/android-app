@@ -10,6 +10,7 @@ import PersonalPage from './components/PersonalPage';
 import SignupPage from './components/SignupPage';
 import EnterDetailsPage from './components/signupScreen/EnterDetailsPage';
 import SettingsPage from './components/SettingsPage';
+import EditUserProfile from './components/SettingScreen/EditUserProfile';
 import Orders from './components/SettingScreen/Orders';
 import BidRequests from './components/SettingScreen/BidRequests';
 
@@ -58,6 +59,7 @@ const RouterComponent = () => {
                 <Scene initial hideNavBar icon={TabIcon} iconName={'user'} tabStyle={styles.tabStyle}>
                   <Scene key='personalPage' title='Personal' component={PersonalPage} />
                   <Scene initial hideTabBar key='settings' title='Settings' component={SettingsPage} />
+                  <Scene hideTabBar key='editUserProfile' component={EditUserProfile} />
                   <Scene hideTabBar key='orders' title='Orders' component={Orders} />
                   <Scene hideTabBar key='bidRequests' title='Bids & Requests' component={BidRequests} />
                 </Scene>

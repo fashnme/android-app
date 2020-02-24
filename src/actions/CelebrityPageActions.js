@@ -6,7 +6,14 @@ import {
   USER_UNFOLLOWED_HIM,
   CELEBRITY_PAGE_SET_CELEB_DATA,
   CELEBRITY_PAGE_GET_CELEB_POSTS,
-  CELEBRITY_PAGE_GET_CELEB_LIKED_POSTS
+  CELEBRITY_PAGE_GET_CELEB_LIKED_POSTS,
+  SETTING_PAGE_USER_CAPTION_UPDATE,
+  SETTING_PAGE_USER_DOB_UPDATE,
+  SETTING_PAGE_USER_SOCIAL_LINK_UPDATE,
+  SETTING_PAGE_USER_PROFILE_PIC_UDPATE,
+  SIGNUP_PAGE_USERNAME_UPDATE,
+  SIGNUP_PAGE_FULLNAME_UPDATE,
+  SIGNUP_PAGE_GENDER_UPDATE,
 } from '../types';
 
 import {
@@ -20,7 +27,7 @@ import {
 
 // Method to Visit & Set the Celebrity Page
 export const celebrityPageVisitAndSetData = ({ userId, userToken, isPersonalPage }) => {
-  if (!isPersonalPage) {
+  if (isPersonalPage) {
     Actions.celebrityPage(); // Calling from Home Page, so go to Celebrity Page
   }
 
@@ -37,8 +44,17 @@ export const celebrityPageVisitAndSetData = ({ userId, userToken, isPersonalPage
         data: { userId }
         })
         .then((response) => {
-            // console.log('celebrityPageVisitAndSetData', response.data);
+            // Setting Data for Personal Page Tab
             dispatch({ type: CELEBRITY_PAGE_SET_CELEB_DATA, payload: { userDetails: response.data.userDetails, userId } });
+            // Setting Data for Setting's Page Update User Profile Page
+            const { fullName, gender, profilePic, userName, dob, socialMediaLinks, bio } = response.data.userDetails;
+            dispatch({ type: SETTING_PAGE_USER_CAPTION_UPDATE, payload: bio });
+            dispatch({ type: SETTING_PAGE_USER_DOB_UPDATE, payload: dob });
+            dispatch({ type: SETTING_PAGE_USER_SOCIAL_LINK_UPDATE, payload: socialMediaLinks });
+            dispatch({ type: SETTING_PAGE_USER_PROFILE_PIC_UDPATE, payload: profilePic });
+            dispatch({ type: SIGNUP_PAGE_USERNAME_UPDATE, payload: userName });
+            dispatch({ type: SIGNUP_PAGE_FULLNAME_UPDATE, payload: fullName });
+            dispatch({ type: SIGNUP_PAGE_GENDER_UPDATE, payload: gender });
         })
         .catch((error) => {
             //handle error

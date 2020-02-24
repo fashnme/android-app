@@ -22,7 +22,7 @@ const INITIAL_STATE = {
   // User Details
   userName: '',
   fullName: '',
-  gender: ''
+  gender: 'male'
 };
 
 export default (state = INITIAL_STATE, action) => {
