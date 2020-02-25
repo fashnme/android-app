@@ -13,6 +13,8 @@ import SettingsPage from './components/SettingsPage';
 import EditUserProfile from './components/SettingScreen/EditUserProfile';
 import Orders from './components/SettingScreen/Orders';
 import BidRequests from './components/SettingScreen/BidRequests';
+import BidDenyPage from './components/SettingScreen/BidDenyPage';
+import BidAcceptPage from './components/SettingScreen/BidAcceptPage';
 
 class TabIcon extends Component {
   constructor(props) {
@@ -62,6 +64,8 @@ const RouterComponent = () => {
                   <Scene hideTabBar key='editUserProfile' component={EditUserProfile} />
                   <Scene hideTabBar key='orders' title='Orders' component={Orders} />
                   <Scene hideTabBar key='bidRequests' title='Bids & Requests' component={BidRequests} />
+                  <Scene hideTabBar key='bidDenyPage' component={BidDenyPage} />
+                  <Scene hideTabBar key='bidAcceptPage' component={BidAcceptPage} />
                 </Scene>
             </Scene>
         </Scene>

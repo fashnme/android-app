@@ -48,6 +48,7 @@ export const celebrityPageVisitAndSetData = ({ userId, userToken, isPersonalPage
             dispatch({ type: CELEBRITY_PAGE_SET_CELEB_DATA, payload: { userDetails: response.data.userDetails, userId } });
             // Setting Data for Setting's Page Update User Profile Page
             const { fullName, gender, profilePic, userName, dob, socialMediaLinks, bio } = response.data.userDetails;
+            // console.log('celebrityPageVisitAndSetData', { fullName, gender, profilePic, userName, dob, socialMediaLinks, bio });
             dispatch({ type: SETTING_PAGE_USER_CAPTION_UPDATE, payload: bio });
             dispatch({ type: SETTING_PAGE_USER_DOB_UPDATE, payload: dob });
             dispatch({ type: SETTING_PAGE_USER_SOCIAL_LINK_UPDATE, payload: socialMediaLinks });
