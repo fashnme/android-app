@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Image, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Header, Avatar, Icon, Input, ButtonGroup } from 'react-native-elements';
+import ImagePicker from 'react-native-image-picker';
 import {
   signupPageUpdateUsername,
   signupPageUpdateFullname,
@@ -16,24 +17,53 @@ import {
 } from '../../actions';
 
 
-const UserInputBox = ({ placeholder, iconName, iconType, errorMessage, name, valueName, changeAction }) => {
+const MaleIcon = () => {
   return (
-    <Input
-      value={valueName}
-      onChangeText={(txt) => changeAction(txt)}
-      placeholder={placeholder}
-      inputContainerStyle={{ borderBottomWidth: 0 }}
-      containerStyle={styles.textInputStyle}
-      leftIcon={<Icon name={iconName} type={iconType} />}
-      leftIconContainerStyle={{ marginHorizontal: 20 }}
-      errorMessage={name === 'username' ? errorMessage : ''}
-      errorStyle={{ fontWeight: 'bold' }}
-    />
+    <View style={styles.iconContainer}>
+      <Image style={styles.genderIcon} source={{ uri: 'https://image.flaticon.com/icons/png/128/702/702023.png' }} />
+      <Text style={styles.iconCaption}>Male</Text>
+    </View>
+  );
+};
+const FemaleIcon = () => {
+  return (
+    <View style={styles.iconContainer}>
+      <Image style={styles.genderIcon} source={{ uri: 'https://image.flaticon.com/icons/png/128/145/145866.png' }} />
+      <Text style={styles.iconCaption}>Female</Text>
+    </View>
+  );
+};
+const OthersIcon = () => {
+  return (
+    <View style={styles.iconContainer}>
+      <Image style={styles.genderIcon} source={{ uri: 'https://image.flaticon.com/icons/png/128/1177/1177568.png' }} />
+      <Text style={styles.iconCaption}>Rather Not Say</Text>
+    </View>
   );
 };
 
+const genders = [
+  {
+    name: 'male',
+    element: MaleIcon
+  },
+  {
+    name: 'female',
+    element: FemaleIcon
+  },
+  {
+    name: 'others',
+    element: OthersIcon
+  }
+];
 
 class EditUserProfile extends Component {
+  constructor() {
+    super();
+    this.state = {
+      showDateTimePicker: false
+    };
+  }
   componentDidMount() {
     this.focusListener = this.props.navigation.addListener('didFocus', () => {
       this.onFocusFunction();
@@ -46,50 +76,38 @@ class EditUserProfile extends Component {
    const { personalUserId, userToken } = this.props;
    this.props.celebrityPageVisitAndSetData({ userToken, userId: personalUserId, isPersonalPage: false });
   }
+  pickImage() {
+    const options = {
+      title: 'Select Image/Video',
+      mediaType: 'image',
+      storageOptions: {
+        skipBackup: true,
+        noData: true,
+        waitUntilSaved: true,
+        cameraRoll: true
+      },
+    };
+    ImagePicker.launchImageLibrary(options, response => { // Open Image Library:
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+        this.props.selectImageFromLibraryVS(false);
+      } else {
+        const { path } = response;
+        this.accountSettingsUpdateUserProfilePic(response.uri);
+        // if (mediaType === 'image') {
+        //   this.props.uploadPageUpdateSelectedImagePath(`${response.uri}`);
+        //   this.props.uploadPageToggleIsSelected(true);
+        //   return;
+        // }
+      }
+    });
+  }
 
   render() {
     const { userName, fullName, genderIndex, loading, error, userToken, bio, dateOfBirth, socialMediaLinks, personalUserId } = this.props;
     console.log({ userName, fullName, genderIndex, loading, error, userToken, bio, dateOfBirth, socialMediaLinks, personalUserId });
-
-    const MaleIcon = () => {
-    return (
-      <View style={styles.iconContainer}>
-        <Image style={styles.genderIcon} source={{ uri: 'https://image.flaticon.com/icons/png/128/702/702023.png' }} />
-        <Text style={styles.iconCaption}>Male</Text>
-      </View>
-    );
-  };
-  const FemaleIcon = () => {
-    return (
-      <View style={styles.iconContainer}>
-        <Image style={styles.genderIcon} source={{ uri: 'https://image.flaticon.com/icons/png/128/145/145866.png' }} />
-        <Text style={styles.iconCaption}>Female</Text>
-      </View>
-    );
-  };
-  const OthersIcon = () => {
-    return (
-      <View style={styles.iconContainer}>
-        <Image style={styles.genderIcon} source={{ uri: 'https://image.flaticon.com/icons/png/128/1177/1177568.png' }} />
-        <Text style={styles.iconCaption}>Rather Not Say</Text>
-      </View>
-    );
-  };
-  
-  const genders = [
-    {
-      name: 'male',
-      element: MaleIcon
-    },
-    {
-      name: 'female',
-      element: FemaleIcon
-    },
-    {
-      name: 'others',
-      element: OthersIcon
-    }
-  ];
 
     return (
       <View style={styles.container}>
@@ -97,7 +115,11 @@ class EditUserProfile extends Component {
           <Header
             leftComponent={{ icon: 'chevron-left', size: 30 }}
             centerComponent={{ text: 'Edit Profile', style: { color: 'black', fontSize: 18, fontWeight: 'bold' } }}
-            rightComponent={{ text: 'Save', style: { color: 'blue', fontSize: 18 } }}
+            rightComponent={{ 
+              text: 'Save', 
+              style: { color: 'blue', fontSize: 18 },
+              onPress: () => this.props.accountSettingsSaveProfileChanges(dateOfBirth, userName, fullName, bio, socialMediaLinks, profilePic, userToken, genders[genderIndex].name)
+            }}
             containerStyle={{
               backgroundColor: 'white',
               justifyContent: 'space-around',
@@ -108,20 +130,31 @@ class EditUserProfile extends Component {
               rounded 
               containerStyle={{ alignSelf: 'center', margin: 10 }}
               showEditButton
-              editButton={{ name: 'upload', type: 'feather', iconStyle: { padding: 3 }, containerStyle: { backgroundColor: 'red', borderRadius: 20 } }}
+              editButton={{ 
+                name: 'upload', 
+                type: 'feather', 
+                iconStyle: { padding: 3 }, 
+                containerStyle: { backgroundColor: 'red', borderRadius: 20 },
+                onPress: () => {
+                  this.pickImage();
+                }
+              }}
               source={{ uri: 'https://pbs.twimg.com/media/EGsDw7nUYAUkiEn.jpg' }} 
+              
               size={110}
             />
-            <UserInputBox
-              name="username"
+            
+            <Input
+              onChangeText={(txt) => this.props.signupPageUpdateUsername(txt)}
+              value={userName}
               placeholder="Username"
-              iconName="at"
-              iconType="font-awesome"
-              valueName={userName}
-              changeAction={(txt) => signupPageUpdateUsername(txt)}
+              inputContainerStyle={{ borderBottomWidth: 0 }}
+              containerStyle={styles.textInputStyle}
+              leftIcon={<Icon name="at" type="font-awesome" />}
+              leftIconContainerStyle={{ marginHorizontal: 20 }}
             />
             <Input
-              onChangeText={(txt) => signupPageUpdateFullname(txt)}
+              onChangeText={(txt) => this.props.signupPageUpdateFullname(txt)}
               value={fullName}
               placeholder="Full Name"
               inputContainerStyle={{ borderBottomWidth: 0 }}
@@ -130,25 +163,61 @@ class EditUserProfile extends Component {
               leftIconContainerStyle={{ marginHorizontal: 20 }}
             />
             <View style={{ flexDirection: 'row', padding: 10, alignItems: 'center' }}>
-                <ButtonGroup
-                  onPress={(index) => signupPageUpdateGender(genders[index].name)}
-                  selectedIndex={genderIndex}
-                  buttons={genders}
-                  containerStyle={styles.genderRow}
-                  buttonStyle={{ borderWidth: 0, }}
-                />
+              <ButtonGroup
+                onPress={(index) => this.props.signupPageUpdateGender(genders[index].name)}
+                selectedIndex={genderIndex}
+                buttons={genders}
+                containerStyle={styles.genderRow}
+                buttonStyle={{ borderWidth: 0, }}
+              />
             </View>
-            <Input
-              value={bio}
-              onChangeText={(txt) => accountSettingsUpdateBio(txt)}
-              placeholder="Bio"
-              multiline
-              inputContainerStyle={{ borderBottomWidth: 0 }}
-              containerStyle={styles.textInputStyle}
-              leftIcon={<Icon name="bio" type="material-community" />}
-              leftIconContainerStyle={{ marginHorizontal: 20 }}
+            {
+            this.state.showDateTimePicker 
+            && 
+            <DateTimePicker
+              onChange={(event, selectedDate) => console.log(selectedDate.toString())}
+              value={new Date(1598051730000)} 
             />
-          </View>
+            }
+            <Text 
+              style={{ color: 'blue', fontSize: 16, }}
+              onPress={() => this.setState({ showDateTimePicker: true })}
+            >
+                {dateOfBirth != null ? 'Choose Date of Birth' : `Change DOB: ${dateOfBirth}`}
+            </Text>
+            <Input
+                value={bio}
+                onChangeText={(txt) => this.props.accountSettingsUpdateBio(txt)}
+                placeholder="Bio"
+                multiline
+                inputContainerStyle={{ borderBottomWidth: 0 }}
+                containerStyle={styles.textInputStyle}
+                leftIcon={<Icon name="bio" type="material-community" />}
+                leftIconContainerStyle={{ marginHorizontal: 20 }}
+            />
+            <Text style={{ fontSize: 16, }}>Social Handles</Text>
+            <Input
+                placeholder="Instagram Handle"
+                inputContainerStyle={{ borderBottomWidth: 0 }}
+                containerStyle={styles.textInputStyle}
+                leftIcon={<Image style={{ height: 25, width: 25 }} source={{ uri: 'https://image.flaticon.com/icons/png/128/1384/1384063.png' }} />}
+                leftIconContainerStyle={{ marginHorizontal: 20 }}
+            />
+            <Input
+                placeholder="Youtube Handle"
+                inputContainerStyle={{ borderBottomWidth: 0 }}
+                containerStyle={styles.textInputStyle}
+                leftIcon={<Image style={{ height: 25, width: 25 }} source={{ uri: 'https://image.flaticon.com/icons/png/128/1384/1384060.png' }} />}
+                leftIconContainerStyle={{ marginHorizontal: 20 }}
+            />
+            <Input
+                placeholder="Tiktok Handle"
+                inputContainerStyle={{ borderBottomWidth: 0 }}
+                containerStyle={styles.textInputStyle}
+                leftIcon={<Image style={{ height: 25, width: 25 }} source={{ uri: 'https://image.flaticon.com/icons/png/128/2504/2504942.png' }} />}
+                leftIconContainerStyle={{ marginHorizontal: 20 }}
+            />
+           </View>
         </ScrollView>
       </View>
     );
