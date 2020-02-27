@@ -80,7 +80,7 @@ const EnterDetailsPage = ({
   userName, fullName, genderIndex, loading, error, userToken,
   signupPageUpdateUsername, signupPageUpdateFullname, signupPageUpdateGender, signupPageSubmitUserDetails
   }) => {
-  console.log('props', { userName, fullName, genderIndex, loading, userToken, error });
+  // console.log('props', { userName, fullName, genderIndex, loading, userToken, error });
   // console.log('actions', signupPageUpdateUsername, signupPageUpdateFullname, signupPageUpdateGender, signupPageSubmitUserDetails);
   return (
     <ScrollView>

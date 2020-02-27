@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, FlatList, Image, Alert } from 'react-native';
+import { View, Text, FlatList, Image } from 'react-native';
 import { connect } from 'react-redux';
 import { ListItem, Button } from 'react-native-elements';
 import { Actions } from 'react-native-router-flux';

@@ -5,7 +5,9 @@ import {
   SETTING_PAGE_USER_CAPTION_UPDATE,
   SETTING_PAGE_USER_DOB_UPDATE,
   SETTING_PAGE_USER_SOCIAL_LINK_UPDATE,
-  SETTING_PAGE_USER_PROFILE_PIC_UDPATE
+  SETTING_PAGE_USER_PROFILE_PIC_UDPATE,
+  SETTING_PAGE_USER_ADD_ADDRESS,
+  SETTING_PAGE_GENERAL_LOADING_TOGGLE
 } from '../types';
 
 
@@ -15,13 +17,16 @@ const INITIAL_STATE = {
   dateOfBirth: '',
   socialMediaLinks: {},
   profilePic: '',
+  userAddressArray: [],
   // Other Details
   wishlistArray: [],
   ordersArray: [],
   rentBidsForMe: [],
   rentBidsByMe: [],
   personalProductRecomm: [],
-  notificationArray: []
+  notificationArray: [],
+  // Loading
+  loading: false
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -41,11 +46,17 @@ export default (state = INITIAL_STATE, action) => {
       case SETTING_PAGE_USER_DOB_UPDATE:
         return { ...state, dateOfBirth: action.payload };
 
+      case SETTING_PAGE_USER_ADD_ADDRESS:
+        return { ...state, userAddressArray: action.payload };
+
       case SETTING_PAGE_USER_SOCIAL_LINK_UPDATE:
         return { ...state, socialMediaLinks: action.payload };
 
       case SETTING_PAGE_USER_PROFILE_PIC_UDPATE:
         return { ...state, profilePic: action.payload };
+
+      case SETTING_PAGE_GENERAL_LOADING_TOGGLE:
+        return { ...state, loading: action.payload };
 
       default:
           return state;

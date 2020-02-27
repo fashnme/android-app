@@ -27,8 +27,6 @@ class EditUserProfile extends Component {
    this.props.celebrityPageVisitAndSetData({ userToken, userId: personalUserId, isPersonalPage: false });
   }
 
-
-  
   render() {
     const { userName, fullName, genderIndex, loading, error, userToken, bio, dateOfBirth, socialMediaLinks, personalUserId } = this.props;
     console.log({ userName, fullName, genderIndex, loading, error, userToken, bio, dateOfBirth, socialMediaLinks, personalUserId });

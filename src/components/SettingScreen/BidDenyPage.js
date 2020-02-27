@@ -1,19 +1,26 @@
-import React from 'react';
-import { View, Text } from 'react-native';
+import React, { useState } from 'react';
+import { View } from 'react-native';
 import { Actions } from 'react-native-router-flux';
-import { Header, Card } from 'react-native-elements';
+import { Header, Card, Input, Button } from 'react-native-elements';
+import { Dropdown } from 'react-native-material-dropdown';
+import { connect } from 'react-redux';
+import {
+  accountSettingsRejectBid as _accountSettingsRejectBid
+} from '../../actions';
 
 const reasons = [
-  { text: 'Bid Price is Low' },
-  { text: 'Bid Price is High' },
-  { text: 'This is not my Product' },
-  { text: 'I need this product between requested time' },
-  { text: "Don't want to Share" },
-  { text: 'Other Reason' }
+  { value: 'Bid Price is Low' },
+  { value: 'Bid Price is High' },
+  { value: 'This is not my Product' },
+  { value: 'Unable to Process the Request' },
+  { value: "Don't want to Share" },
+  { value: 'Other Reasons' }
 ];
 
-const BidDenyPage = ({ bidId }) => {
-  console.log('BidDenyPage', bidId);
+const BidDenyPage = ({ bidId, userToken, loading, accountSettingsRejectBid }) => {
+  const [index, updateIndex] = useState(0);
+  const [feedback, updateFeedback] = useState('');
+  // console.log('ind', index, feedback);
   return (
     <View style={{ backgroundColor: 'white', flex: 1 }}>
       <Header
@@ -23,15 +30,68 @@ const BidDenyPage = ({ bidId }) => {
         centerComponent={{ text: 'BIDS FOR ME', style: { color: 'grey', fontWeight: 'bold', fontSize: 17 } }}
         containerStyle={{ paddingTop: 0, height: 56 }}
       />
-      <Card>
-        <Text> BidDenyPage </Text>
+      <Card containerStyle={{ marginTop: 20, paddingBottom: 30, justifyContent: 'space-between' }}>
+          <Dropdown
+            label='Reason for Rejection'
+            data={reasons}
+            selectedItemColor='#1f7070'
+            itemCoun={10}
+            fontSize={18}
+            containerStyle={styles.dropdownContainer}
+            value={reasons[index].value}
+            onChangeText={(value, i) => updateIndex(i)}
+          />
+          <Card containerStyle={styles.inputContainer}>
+            <Input
+              placeholder='Please Provide Feedback'
+              label='Feedback'
+              multiline
+              value={feedback}
+              onChangeText={text => updateFeedback(text)}
+            />
+          </Card>
+
+            <Button
+              raised
+              containerStyle={{ marginTop: 30 }}
+              buttonStyle={{ borderColor: '#ff859a', borderWidth: 1 }}
+              titleStyle={{ color: '#ff859a', fontWeight: 'bold', fontSize: 18 }}
+              loading={loading}
+              loadingProps={{ color: '#ff859a' }}
+              title={'Reject Bid'}
+              type={'outline'}
+              onPress={() => accountSettingsRejectBid({ bidId, userToken, feedback, reason: reasons[index].value })}
+            />
       </Card>
     </View>
   );
 };
+
 const styles = {
-  container: {
-   minHeight: 228,
- }
+  buttonStyle: {
+		borderWidth: 1,
+		borderColor: '#1b83ea',
+  },
+  inputContainer: {
+    margin: 2,
+    padding: 5,
+    marginTop: 10,
+    elevation: 1
+  },
+  dropdownContainer: {
+    elevation: 1,
+    padding: 5,
+    paddingTop: 10,
+    marginBottom: 20,
+    borderColor: 'grey'
+  }
 };
-export default BidDenyPage;
+
+const mapStateToProps = ({ personalPageState, accountSettingState }) => {
+  const { userToken } = personalPageState;
+  const { loading } = accountSettingState;
+  return { userToken, loading };
+};
+export default connect(mapStateToProps, {
+  accountSettingsRejectBid: _accountSettingsRejectBid
+})(BidDenyPage);

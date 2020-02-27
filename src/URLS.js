@@ -30,3 +30,5 @@ export const SettingsPageGetUserOrdersURL = 'https://fashn-backend.herokuapp.com
 export const SettingsPageGetBidsByMeURL = 'https://fashn-backend.herokuapp.com/bid/get-bids-by-me';
 export const SettingsPageGetBidsForMeURL = 'https://fashn-backend.herokuapp.com/bid/get-bids-for-me';
 export const SettingsPageSaveProfileChangesURL = 'https://fashn-backend.herokuapp.com/user/edit-user-profile';
+
+export const SettingsPageRejectBidURL = 'https://fashn-backend.herokuapp.com/bid/reject-bid';
