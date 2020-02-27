@@ -40,6 +40,16 @@ const BuyNowButton = ({ onPress, title }) => {
   );
 };
 
+const BidForRentButton = ({ onPress, title }) => {
+  return (
+    <TouchableNativeFeedback onPress={onPress}>
+      <View style={globalStyles.bidForRentButton}>
+        <Text style={globalStyles.bidForRentButtonTitle}>{title}</Text>
+      </View>
+    </TouchableNativeFeedback>
+  );
+};
+
 const renderPriceBlock = ({ crossedPrice, price }) => {
   const discount = Math.floor(((crossedPrice - price) * 100) / crossedPrice);
   if (discount === 0) {
@@ -61,7 +71,7 @@ const ProductView = ({ productData }) => {
   return (
     <View style={styles.productView}>
       <View style={styles.productImage}>
-        <Image source={{ uri: image }} style={{ flex: 1 }} />
+        <Image source={{ uri: image }} style={{ flex: 1, resizeMode: 'contain' }} />
       </View>
       <View style={styles.productData}>
         <Text style={styles.productName}>{title}</Text>
@@ -70,6 +80,7 @@ const ProductView = ({ productData }) => {
         { renderPriceBlock({ crossedPrice, price }) }
         <AddToCartButton title="ADD TO CART" onPress={() => console.log('Add to Cart button Pressed')} />
         <BuyNowButton title="BUY NOW" onPress={() => console.log('Buy Now button Pressed')} />
+        <BidForRentButton title="BID FOR RENT" onPress={() => console.log('bid now button pressed!')} />
       </View>
     </View>
   );
