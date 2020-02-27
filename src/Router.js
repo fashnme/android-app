@@ -66,8 +66,8 @@ const RouterComponent = () => {
                   <Scene hideTabBar key='orders' title='Orders' component={Orders} />
                   <Scene hideTabBar key='bidRequests' title='Bids & Requests' component={BidRequests} />
                   <Scene hideTabBar key='bidDenyPage' component={BidDenyPage} />
-                  <Scene hideTabBar key='bidAcceptPage' component={BidAcceptPage} />
-                  <Scene initial hideTabBar key='addUserAddress' component={AddUserAddress} />
+                  <Scene initial hideTabBar key='bidAcceptPage' component={BidAcceptPage} />
+                  <Scene hideTabBar key='addUserAddress' component={AddUserAddress} />
                 </Scene>
             </Scene>
         </Scene>

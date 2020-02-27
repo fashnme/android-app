@@ -74,10 +74,11 @@ class EditUserProfile extends Component {
     this.focusListener.remove();
   }
   onFocusFunction() {
-   const { personalUserId, userToken } = this.props;
-   this.props.celebrityPageVisitAndSetData({ userToken, userId: personalUserId, isPersonalPage: false });
+     const { personalUserId, userToken } = this.props;
+     this.props.celebrityPageVisitAndSetData({ userToken, userId: personalUserId, isPersonalPage: true });
   }
   pickImage() {
+    const { personalUserId } = this.props;
     const options = {
       title: 'Select Image/Video',
       mediaType: 'image',
@@ -95,31 +96,36 @@ class EditUserProfile extends Component {
         console.log('ImagePicker Error: ', response.error);
         this.props.selectImageFromLibraryVS(false);
       } else {
-        const { path } = response;
-        this.props.accountSettingsUpdateUserProfilePic(response.uri);
-        // if (mediaType === 'image') {
-        //   this.props.uploadPageUpdateSelectedImagePath(`${response.uri}`);
-        //   this.props.uploadPageToggleIsSelected(true);
-        //   return;
-        // }
+        this.props.accountSettingsUpdateUserProfilePic({ profilePic: response.uri, personalUserId });
       }
     });
   }
 
   render() {
-    const { userName, fullName, genderIndex, loading, error, userToken, bio, dateOfBirth, socialMediaLinks, personalUserId } = this.props;
-    console.log({ userName, fullName, genderIndex, loading, error, userToken, bio, dateOfBirth, socialMediaLinks, personalUserId });
-
+    const { userName, fullName, genderIndex, loading, error, userToken, bio,
+      dateOfBirth, socialMediaLinks, oldUserName } = this.props;
+    // console.log({ userName, fullName, genderIndex, loading, error, userToken, bio, dateOfBirth, socialMediaLinks, personalUserId });
+    const profileDetailsChanges = {
+      dateOfBirth,
+      userName,
+      fullName,
+      bio,
+      socialMediaLinks,
+      profilePic: '',
+      userToken,
+      gender: genders[genderIndex].name,
+      oldUserName
+    };
     return (
       <View style={styles.container}>
         <ScrollView>
           <Header
             leftComponent={{ icon: 'chevron-left', size: 30, onPress: () => Actions.pop() }}
             centerComponent={{ text: 'Edit Profile', style: { color: 'black', fontSize: 18, fontWeight: 'bold' } }}
-            rightComponent={{ 
-              text: 'Save', 
+            rightComponent={{
+              text: 'Save',
               style: { color: 'blue', fontSize: 18 },
-              onPress: () => this.props.accountSettingsSaveProfileChanges({ dateOfBirth, userName, fullName, bio, socialMediaLinks, profilePic: '', userToken, gender: genders[genderIndex].name })
+              onPress: () => this.props.accountSettingsSaveProfileChanges({ profileDetailsChanges })
             }}
             containerStyle={{
               backgroundColor: 'white',
@@ -127,24 +133,24 @@ class EditUserProfile extends Component {
             }}
           />
           <View style={styles.body}>
-            <Avatar 
-              rounded 
+            <Avatar
+              rounded
               containerStyle={{ alignSelf: 'center', margin: 10 }}
               showEditButton
-              editButton={{ 
-                name: 'upload', 
-                type: 'feather', 
-                iconStyle: { padding: 3 }, 
+              editButton={{
+                name: 'upload',
+                type: 'feather',
+                iconStyle: { padding: 3 },
                 containerStyle: { backgroundColor: 'red', borderRadius: 20 },
                 onPress: () => {
                   this.pickImage();
                 }
               }}
-              source={{ uri: 'https://pbs.twimg.com/media/EGsDw7nUYAUkiEn.jpg' }} 
-              
+              source={{ uri: 'https://pbs.twimg.com/media/EGsDw7nUYAUkiEn.jpg' }}
+
               size={110}
             />
-            
+
             <Input
                 value={bio}
                 onChangeText={(txt) => this.props.accountSettingsUpdateBio(txt)}
@@ -156,7 +162,7 @@ class EditUserProfile extends Component {
                 leftIcon={<Icon name="bio" type="material-community" />}
                 leftIconContainerStyle={{ marginHorizontal: 20 }}
             />
-            
+
             <Text style={{ fontSize: 16, }}>Social Handles</Text>
             <Input
                 placeholder="Instagram Handle"
@@ -179,7 +185,7 @@ class EditUserProfile extends Component {
                 leftIcon={<Image style={{ height: 25, width: 25 }} source={{ uri: 'https://image.flaticon.com/icons/png/128/2504/2504942.png' }} />}
                 leftIconContainerStyle={{ marginHorizontal: 20 }}
             />
-            
+
             <Text style={{ fontSize: 16, }}>Profile Details</Text>
             <Input
               onChangeText={(txt) => this.props.signupPageUpdateUsername(txt)}
@@ -209,14 +215,14 @@ class EditUserProfile extends Component {
               />
             </View>
             {
-            this.state.showDateTimePicker 
-            && 
+            this.state.showDateTimePicker
+            &&
             <DateTimePicker
               onChange={(event, selectedDate) => this.props.accountSettingsUpdateDateOfBirth(selectedDate.toString())}
-              value={new Date(dateOfBirth)} 
+              value={new Date(dateOfBirth)}
             />
             }
-            
+
             <Input
               onChangeText={(txt) => this.props.signupPageUpdateFullname(txt)}
               value={dateOfBirth}
@@ -236,7 +242,8 @@ class EditUserProfile extends Component {
 
 const mapStateToProps = ({ signupPageState, personalPageState, accountSettingState }) => {
   const { userName, fullName, gender, loading, error } = signupPageState;
-  const { userToken, personalUserId } = personalPageState;
+  const { userToken, personalUserId, personalUserDetails } = personalPageState;
+  const oldUserName = personalUserDetails.userName; // This is the Old User Name
   const { bio, dateOfBirth, socialMediaLinks } = accountSettingState;
   let genderIndex = 0;
   if (gender === 'male') {
@@ -246,7 +253,7 @@ const mapStateToProps = ({ signupPageState, personalPageState, accountSettingSta
   } else {
       genderIndex = 2;
   }
-  return { userName, fullName, genderIndex, loading, error, userToken, bio, dateOfBirth, socialMediaLinks, personalUserId };
+  return { userName, fullName, genderIndex, loading, error, userToken, bio, dateOfBirth, socialMediaLinks, personalUserId, oldUserName };
 };
 export default connect(mapStateToProps, {
   signupPageUpdateUsername,

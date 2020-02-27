@@ -29,16 +29,39 @@ export const accountSettingsUpdateDateOfBirth = ({ dateOfBirth }) => {
   return { type: SETTING_PAGE_USER_DOB_UPDATE, payload: dateOfBirth };
 };
 
-export const accountSettingsUpdateUserProfilePic = ({ profilePic }) => {
+export const accountSettingsUpdateUserProfilePic = ({ profilePic, personalUserId }) => {
+  // TODO Upload this Image to S3
   return { type: SETTING_PAGE_USER_PROFILE_PIC_UDPATE, payload: profilePic };
 };
 
 export const accountSetttingsAddUserAddress = ({ userAddress, addressId, userToken }) => {
-  console.log('Done Added userAddress');
-  Actions.pop();
-  return { type: 'accountSetttingsAddUserAddress' }; // TODO
+  const headers = {
+    'Content-Type': 'application/json',
+    Authorization: userToken
+  };
+  let newAddressId = '';
+  if (typeof addressId === 'undefined') {
+    newAddressId = new Date().getTime();
+  }
+  return (dispatch) => {
+    axios({
+        method: 'post',
+        url: SettingsPageAddUserAddressURL,
+        headers,
+        data: { address: userAddress, addressId: newAddressId.toString() }
+        })
+        .then((response) => {
+            console.log('accountSetttingsAddUserAddress', response.data);
+            dispatch({ type: SETTING_PAGE_USER_ADD_ADDRESS, payload: response.data.deliveryDetailsArray });
+            Actions.pop();
+        })
+        .catch((error) => {
+            console.log('accountSetttingsAddUserAddress Actions Error ', error);
+      });
+  };
 };
-export const accountSettingsUpdateSocialMediaLinksLink = ({ socialMediaLinks, newSocialObject }) => {
+
+export const accountSettingsUpdateSocialMediaLinks = ({ socialMediaLinks, newSocialObject }) => {
   // newSocialObject { name: 'facebbok', profile: 'link or handle'}
   const { name, profile } = newSocialObject;
   const newSocialMediaLinks = { ...socialMediaLinks };
@@ -46,8 +69,10 @@ export const accountSettingsUpdateSocialMediaLinksLink = ({ socialMediaLinks, ne
   return { type: SETTING_PAGE_USER_SOCIAL_LINK_UPDATE, paload: newSocialMediaLinks };
 };
 
-export const accountSettingsSaveProfileChanges = ({ dateOfBirth, userName, fullName, bio,
-  socialMediaLinks, profilePic, userToken, gender }) => {
+export const accountSettingsSaveProfileChanges = ({ profileDetailsChanges }) => {
+    const { dateOfBirth, userName, fullName, bio,
+      socialMediaLinks, profilePic, userToken, gender, oldUserName } = profileDetailsChanges;
+    const userNameChanged = userName === oldUserName;
     const headers = {
       'Content-Type': 'application/json',
       Authorization: userToken
@@ -57,13 +82,10 @@ export const accountSettingsSaveProfileChanges = ({ dateOfBirth, userName, fullN
           method: 'post',
           url: SettingsPageSaveProfileChangesURL,
           headers,
-          data: { dob: dateOfBirth, userName, fullName, gender, bio, socialMediaLinks, profilePic }
+          data: { newProfile: { dob: dateOfBirth, userName, fullName, gender, bio, socialMediaLinks, profilePic }, userNameChanged }
           })
           .then((response) => {
               console.log('accountSettingsSaveProfileChanges', response.data);
-              // Setting Updated Data for Personal Page Tab
-              // dispatch({ type: CELEBRITY_PAGE_SET_CELEB_DATA, payload: { userDetails: response.data.userDetails, userId } });
-              // console.log('accountSettingsSaveProfileChanges', response.data);
           })
           .catch((error) => {
               console.log('accountSettingsSaveProfileChanges Actions Error ', error);
