@@ -52,7 +52,8 @@ export const accountSetttingsAddUserAddress = ({ userAddress, addressId, userTok
         })
         .then((response) => {
             console.log('accountSetttingsAddUserAddress', response.data);
-            dispatch({ type: SETTING_PAGE_USER_ADD_ADDRESS, payload: response.data.deliveryDetailsArray });
+            const deliveryDetailsArray = Object.values(response.data.deliveryDetails);
+            dispatch({ type: SETTING_PAGE_USER_ADD_ADDRESS, payload: deliveryDetailsArray });
             Actions.pop();
         })
         .catch((error) => {

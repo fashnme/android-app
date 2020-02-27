@@ -14,6 +14,7 @@ import {
   SIGNUP_PAGE_USERNAME_UPDATE,
   SIGNUP_PAGE_FULLNAME_UPDATE,
   SIGNUP_PAGE_GENDER_UPDATE,
+  SETTING_PAGE_USER_ADD_ADDRESS,
   PERSONAL_PAGE_SET_PERSONAL_DETAILS_AND_USERID
 } from '../types';
 
@@ -61,6 +62,8 @@ export const celebrityPageVisitAndSetData = ({ userId, userToken, isPersonalPage
               dispatch({ type: SIGNUP_PAGE_USERNAME_UPDATE, payload: userName });
               dispatch({ type: SIGNUP_PAGE_FULLNAME_UPDATE, payload: fullName });
               dispatch({ type: SIGNUP_PAGE_GENDER_UPDATE, payload: gender });
+              const deliveryDetailsArray = Object.values(response.data.userDetails.deliveryDetails);
+              dispatch({ type: SETTING_PAGE_USER_ADD_ADDRESS, payload: deliveryDetailsArray });
             }
         })
         .catch((error) => {
