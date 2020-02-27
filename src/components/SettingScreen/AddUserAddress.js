@@ -7,7 +7,7 @@ import {
   accountSetttingsAddUserAddress as _accountSetttingsAddUserAddress
 } from '../../actions';
 
-const AddUserAddress = ({ addressData, accountSetttingsAddUserAddress }) => {
+const AddUserAddress = ({ addressData, accountSetttingsAddUserAddress, userToken }) => {
   // Eg. const { name, pinCode, state, city, address, phoneNo, tag } = address;
   const [name, updateName] = useState(addressData.name);
   const [pinCode, updatePinCode] = useState(addressData.pinCode);
@@ -27,7 +27,7 @@ const AddUserAddress = ({ addressData, accountSetttingsAddUserAddress }) => {
         rightComponent={{
           text: 'Save',
           style: { color: '#00f', fontWeight: 'bold', fontSize: 16 },
-          onPress: () => { accountSetttingsAddUserAddress({ userAddress, addressId }); } }}
+          onPress: () => { accountSetttingsAddUserAddress({ userAddress, addressId, userToken }); } }}
         centerComponent={{ text: 'Add Address', style: { color: 'grey', fontWeight: 'bold', fontSize: 17 } }}
         containerStyle={{ paddingTop: 0, height: 56 }}
       />
