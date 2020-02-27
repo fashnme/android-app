@@ -17,7 +17,7 @@ const INITIAL_STATE = {
   dateOfBirth: '',
   socialMediaLinks: {},
   profilePic: '',
-  userAddressArray: [],
+  deliveryDetailsArray: [],
   // Other Details
   wishlistArray: [],
   ordersArray: [],
@@ -47,7 +47,7 @@ export default (state = INITIAL_STATE, action) => {
         return { ...state, dateOfBirth: action.payload };
 
       case SETTING_PAGE_USER_ADD_ADDRESS:
-        return { ...state, userAddressArray: action.payload };
+        return { ...state, deliveryDetailsArray: action.payload };
 
       case SETTING_PAGE_USER_SOCIAL_LINK_UPDATE:
         return { ...state, socialMediaLinks: action.payload };

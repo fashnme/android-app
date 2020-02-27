@@ -80,11 +80,7 @@ const EnterDetailsPage = ({
   userName, fullName, genderIndex, referralCode, loading, error, userToken,
   signupPageUpdateUsername, signupPageUpdateFullname, signupPageUpdateGender, signupPageSubmitUserDetails
   }) => {
-<<<<<<< HEAD
   // console.log('props', { userName, fullName, genderIndex, loading, userToken, error });
-=======
-  console.log('props', { userName, fullName, genderIndex, loading, referralCode, userToken, error });
->>>>>>> master
   // console.log('actions', signupPageUpdateUsername, signupPageUpdateFullname, signupPageUpdateGender, signupPageSubmitUserDetails);
   return (
     <View>
@@ -126,7 +122,7 @@ const EnterDetailsPage = ({
                 buttonStyle={{ borderWidth: 0, }}
               />
             </View>
-            
+
             <UserInputBox
               name="fullname"
               placeholder="Referral Code"
@@ -161,7 +157,7 @@ const styles = StyleSheet.create({
   body: {
     flex: 1,
     alignItems: 'center',
-    
+
   },
   textInputStyle: {
     backgroundColor: 'white',
