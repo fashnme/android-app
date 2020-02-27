@@ -15,7 +15,7 @@ const INITIAL_STATE = {
   // Profile Details
   bio: '',
   dateOfBirth: '',
-  socialMediaLinks: {},
+  socialMediaLinks: { instagram: '', youtube: '', tiktok: '', facebook: '' },
   profilePic: '',
   deliveryDetailsArray: [],
   // Other Details
@@ -49,8 +49,10 @@ export default (state = INITIAL_STATE, action) => {
       case SETTING_PAGE_USER_ADD_ADDRESS:
         return { ...state, deliveryDetailsArray: action.payload };
 
-      case SETTING_PAGE_USER_SOCIAL_LINK_UPDATE:
-        return { ...state, socialMediaLinks: action.payload };
+      case SETTING_PAGE_USER_SOCIAL_LINK_UPDATE: {
+        const newSocialMediaLinks = { ...state.socialMediaLinks, ...action.payload };
+        return { ...state, socialMediaLinks: newSocialMediaLinks };
+      }
 
       case SETTING_PAGE_USER_PROFILE_PIC_UDPATE:
         return { ...state, profilePic: action.payload };

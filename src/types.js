@@ -4,6 +4,15 @@
 // export const PRODUCT_SHARING_URL_INITIAL = 'https://fashn.me/p/';
 // export const ECOM_SHARING_URL_INITIAL = 'https://fashn.me/cashback-intermediate-page';
 
+export const AWS_OPTIONS = {
+    keyPrefix: 'uploads/', // Change this Folder Name
+    bucket: 'fashn-social',
+    accessKey: 'AKIAISBMFGYLRSA53ROQ',
+    secretKey: '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',
+    region: 'ap-south-1',
+    successActionStatus: 201
+};
+
 export const ASYNCSTORAGE_USER_TOKEN_NAME = 'userToken';
 export const ASYNCSTORAGE_USER_USER_NAME = 'userName';
 

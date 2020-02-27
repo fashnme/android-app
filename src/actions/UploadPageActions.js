@@ -7,6 +7,7 @@ import { RNS3 } from 'react-native-aws3';
 import { ProcessingManager } from 'react-native-video-processing';
 
 import {
+  AWS_OPTIONS,
   UPLOAD_PAGE_TOGGLE_ISSELECTED,
   UPLOAD_PAGE_UPDATE_CAPTION,
   UPLOAD_PAGE_UPDATE_SELECTED_IMAGE_PATH
@@ -15,16 +16,6 @@ import {
 import {
   UploadPageUploadContentURL
 } from '../URLS';
-
-
-const awsOptions = {
-  keyPrefix: 'uploads/',
-  bucket: 'fashn-social',
-  accessKey: 'AKIAISBMFGYLRSA53ROQ',
-  secretKey: '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',
-  region: 'ap-south-1',
-  successActionStatus: 201
-};
 
 export const uploadPageToggleIsSelected = (isSelected) => {
   return {
@@ -97,15 +88,15 @@ const uploadContent = (uri, type, personalUserId, userToken, caption) => {
   let name = '';
   let keyPrefix = '';
   if (type.includes('image')) {
-    name = `${personalUserId}-time-${Math.round((new Date().getTime()) / 1000)}.webp`;
+    name = `${personalUserId}-t-${Math.round((new Date().getTime()) / 1000)}.webp`;
     keyPrefix = 'images/';
   } else {
-    name = `${personalUserId}-time-${Math.round((new Date().getTime()) / 1000)}.mp4`;
+    name = `${personalUserId}-t-${Math.round((new Date().getTime()) / 1000)}.mp4`;
     keyPrefix = 'videos/';
   }
-  awsOptions.keyPrefix = keyPrefix;
+  AWS_OPTIONS.keyPrefix = keyPrefix;
   const file = { uri, name, type };
-  RNS3.put(file, awsOptions).then(response => {
+  RNS3.put(file, AWS_OPTIONS).then(response => {
     if (response.status === 201) {
       console.log('Content Uploaded', response);
       updateDatabase(caption, type, response.body.postResponse.location, userToken);
