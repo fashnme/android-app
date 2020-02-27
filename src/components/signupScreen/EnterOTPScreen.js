@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, ScrollView, Text, Image, Dimensions } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import { Button, Icon } from 'react-native-elements';
+import { Button, Icon, Header } from 'react-native-elements';
 import { connect } from 'react-redux';
 import OTPInputView from '@twotalltotems/react-native-otp-input';
 import {
@@ -24,57 +24,64 @@ class EnterOTPScreen extends Component {
   render() {
     const { loading, phoneNumber, otp, countryData, callingCode } = this.props;
     return (
-        <ScrollView>
-            <View style={styles.container}>
-                <View style={styles.header}>
-                    <View style={{ position: 'absolute', left: 0 }}><Icon onPress={() => this.props.signupPageToggleOtpSent(false)} color="#ff4500" name="chevron-left" type="font-awesome" /></View>
-                    <Text style={styles.headerTitle}> Enter Verification Code </Text>
-                </View>
-                <View style={styles.bodyIcon}>
-                    <Image style={styles.icon} source={require('../../resources/icons/mail.png')} />
-                    <Text style={{ color: '#C71585', fontSize: 18, fontWeight: 'bold' }}>Enter OTP</Text>
-                    <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 18, }}>We have sent OTP on {phoneNumber}</Text>
-                </View>
-                <LinearGradient colors={['#FF7F50', '#FF8C00', '#FF4500']} style={styles.body}>
-                    <View style={styles.topCropper} />
-                        <View style={styles.bodyForm}>
-                            <View style={styles.phoneNumberField}>
-                                <OTPInputView
-                                    style={{ width: '80%', height: 200 }}
-                                    pinCount={4}
-                                    autoFocusOnLoad
-                                    codeInputFieldStyle={styles.otpInput}
-                                    onCodeFilled={(code => {
-                                      this.props.signupPageOTPUpdate(code);
-                                    })}
-                                />
-                        </View>
-                                <Text
-                                    onPress={() => {
-                                        if (this.state.resend === false) {
-                                            this.setState({ resend: true });
-                                            this.props.signupPageSendOTP(phoneNumber, callingCode);
-                                        }
-                                    }}
-                                    style={{ color: 'white', fontWeight: 'bold' }}
-                                >
-                                    {this.state.resend ? 'OTP Sent!' : 'Resend OTP'}
-                                </Text>
-                               {this.props.error != null ? <Text style={{ fontWeight: 'bold', color: 'white', fontSize: 20, padding: 10, }}>{this.props.error}</Text> : <View />}
-                        <Button
-                            loading={loading}
-                            title="VERIFY"
-                            titleStyle={{ color: '#FF4500', fontSize: 20, fontWeight: 'bold' }}
-                            buttonStyle={{ backgroundColor: 'white', borderRadius: 30, paddingHorizontal: 20, marginTop: 30, elevation: 15, }}
-                            onPress={() => {
-                                console.log('Butotn clicked');
-                                this.props.signupPageVerifyOTP(phoneNumber, otp, countryData.callingCode); 
-                            }}
-                        />
+        <View>
+            <Header
+            backgroundColor={'white'}
+            placement={'center'}
+            leftComponent={<Icon onPress={() => this.props.signupPageToggleOtpSent(false)} color="#ff4500" name="chevron-left" type="font-awesome" />}
+            centerComponent={{ text: 'Enter Verification Code', style: styles.headerTitle }}
+            containerStyle={{ paddingTop: 0, height: 56, elevation: 5, }}
+            />
+            <ScrollView>
+                <View style={styles.container}>
+                    <View style={styles.bodyIcon}>
+                        <Image style={styles.icon} source={require('../../resources/icons/mail.png')} />
+                        <Text style={{ color: '#C71585', fontSize: 18, fontWeight: 'bold' }}>Enter OTP</Text>
+                        <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 18, }}>We have sent OTP on {phoneNumber}</Text>
+
+                        <Text style={{ fontWeight: 'bold', color: 'red', fontSize: 18, padding: 10, }}>{this.props.error}</Text>
                     </View>
-                </LinearGradient>
-            </View>
-        </ScrollView>
+                    <LinearGradient colors={['#FF7F50', '#FF8C00', '#FF4500']} style={styles.body}>
+                        <View style={styles.topCropper} />
+                            <View style={styles.bodyForm}>
+                                <View style={styles.phoneNumberField}>
+                                    <OTPInputView
+                                        style={{ width: '80%', height: 200 }}
+                                        pinCount={4}
+                                        autoFocusOnLoad
+                                        codeInputFieldStyle={styles.otpInput}
+                                        onCodeFilled={(code => {
+                                        this.props.signupPageOTPUpdate(code);
+                                        })}
+                                    />
+                            </View>
+                                    <Text
+                                        onPress={() => {
+                                            if (this.state.resend === false) {
+                                                this.setState({ resend: true });
+                                                this.props.signupPageSendOTP(phoneNumber, callingCode);
+                                            }
+                                        }}
+                                        style={{ color: 'white', fontWeight: 'bold' }}
+                                    >
+                                        {this.state.resend ? 'OTP Sent!' : 'Resend OTP'}
+                                    </Text>
+                            <Button
+                                loading={loading}
+                                loadingStyle={{ borderColor: 'orange' }}
+                                title="VERIFY"
+                                titleStyle={{ color: '#FF4500', fontSize: 20, fontWeight: 'bold' }}
+                                buttonStyle={{ backgroundColor: 'white', borderRadius: 30, paddingHorizontal: 20, marginTop: 15, marginBottom: 50, elevation: 15, }}
+                                onPress={() => {
+                                    console.log('Butotn clicked');
+                                    this.props.signupPageVerifyOTP(phoneNumber, otp, countryData.callingCode); 
+                                }}
+                            />
+                        </View>
+                    </LinearGradient>
+                </View>
+            </ScrollView>
+        </View>
     );
   }
 }
@@ -85,31 +92,24 @@ const styles = StyleSheet.create({
         height: screenHeight,
         backgroundColor: 'white'
     },
-    header: {
-        alignItems: 'center',
-        margin: 20,
-        flex: 1,
-        justifyContent: 'center',
-        flexDirection: 'row'
-    },
     headerTitle: {
-        color: '#ff4500',
-        fontSize: 20,
-        fontWeight: 'bold',
+      color: '#ff4500',
+      fontSize: 20,
+      fontWeight: 'bold',
     },
     bodyIcon: {
-        alignItems: 'center',
-        flex: 4,
-        justifyContent: 'center',
+      alignItems: 'center',
     },
     body: {
-        flex: 5,
+      flex: 1,
+      margin: 0,
     },
     icon: {
-        height: '50%',
-        width: '50%',
-        resizeMode: 'contain',
-        marginBottom: 10,
+      height: 100,
+      width: 100,
+      resizeMode: 'contain',
+      marginBottom: 10,
+      marginTop: 20,
     },
     topCropper: {
         height: 60,
@@ -123,7 +123,6 @@ const styles = StyleSheet.create({
     bodyForm: {
         justifyContent: 'center',
         alignItems: 'center',
-        flex: 1,
     },
     phoneNumberField: {
         flexDirection: 'row',
@@ -131,9 +130,10 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     otpInput: {
-        backgroundColor: '#F37344',
+        backgroundColor: 'white',
         height: 50,
         width: 50,
+        color: 'black',
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: 5,
