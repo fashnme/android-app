@@ -80,7 +80,11 @@ const EnterDetailsPage = ({
   userName, fullName, genderIndex, referralCode, loading, error, userToken,
   signupPageUpdateUsername, signupPageUpdateFullname, signupPageUpdateGender, signupPageSubmitUserDetails
   }) => {
+<<<<<<< HEAD
+  // console.log('props', { userName, fullName, genderIndex, loading, userToken, error });
+=======
   console.log('props', { userName, fullName, genderIndex, loading, referralCode, userToken, error });
+>>>>>>> master
   // console.log('actions', signupPageUpdateUsername, signupPageUpdateFullname, signupPageUpdateGender, signupPageSubmitUserDetails);
   return (
     <View>

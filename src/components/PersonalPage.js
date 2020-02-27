@@ -9,23 +9,18 @@ class PersonalPage extends Component {
   async componentDidMount() {
     // const { personalUserId, userToken } = this.props;
     this.focusListener = this.props.navigation.addListener('didFocus', () => {
-    this.onFocusFunction();
-  });
-    // this.props.celebrityPageVisitAndSetData({ userToken, userId: personalUserId, isPersonalPage: true });
+      this.onFocusFunction();
+    });
   }
-
   componentWillUnmount() {
     this.focusListener.remove();
   }
   onFocusFunction() {
-  // do some stuff on every screen focus
    const { personalUserId, userToken } = this.props;
    this.props.celebrityPageVisitAndSetData({ userToken, userId: personalUserId, isPersonalPage: true });
   }
 
   render() {
-    // const { userId, personalUserId, userToken } = this.props;
-
     return (
       <View style={{ flex: 1 }}>
         <FlatList

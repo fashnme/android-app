@@ -15,6 +15,7 @@ import Orders from './components/SettingScreen/Orders';
 import BidRequests from './components/SettingScreen/BidRequests';
 import BidDenyPage from './components/SettingScreen/BidDenyPage';
 import BidAcceptPage from './components/SettingScreen/BidAcceptPage';
+import AddUserAddress from './components/SettingScreen/AddUserAddress';
 
 class TabIcon extends Component {
   constructor(props) {
@@ -45,8 +46,8 @@ const RouterComponent = () => {
       <Router navigationBarStyle={{ backgroundColor: '#fff' }}>
         <Scene key='root' hideNavBar>
             <Scene hideNavBar title='SignUp'>
-                <Scene initial key='splashScreen' component={SplashScreen} />
-                <Scene key='signupPage' title='SignUp' component={SignupPage} />
+                <Scene key='splashScreen' component={SplashScreen} />
+                <Scene initial key='signupPage' title='SignUp' component={SignupPage} />
                 <Scene key='enterDetailsPage' title='Enter Details' component={EnterDetailsPage} />
             </Scene>
 
@@ -60,12 +61,13 @@ const RouterComponent = () => {
 
                 <Scene initial hideNavBar icon={TabIcon} iconName={'user'} tabStyle={styles.tabStyle}>
                   <Scene key='personalPage' title='Personal' component={PersonalPage} />
-                  <Scene initial hideTabBar key='settings' title='Settings' component={SettingsPage} />
+                  <Scene hideTabBar key='settings' title='Settings' component={SettingsPage} />
                   <Scene hideTabBar key='editUserProfile' component={EditUserProfile} />
                   <Scene hideTabBar key='orders' title='Orders' component={Orders} />
                   <Scene hideTabBar key='bidRequests' title='Bids & Requests' component={BidRequests} />
                   <Scene hideTabBar key='bidDenyPage' component={BidDenyPage} />
                   <Scene hideTabBar key='bidAcceptPage' component={BidAcceptPage} />
+                  <Scene initial hideTabBar key='addUserAddress' component={AddUserAddress} />
                 </Scene>
             </Scene>
         </Scene>

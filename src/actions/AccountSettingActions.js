@@ -1,5 +1,5 @@
 import axios from 'axios';
-
+import { Actions } from 'react-native-router-flux';
 import {
   SETTING_PAGE_SET_USER_ORDERS,
   SETTING_PAGE_SET_RENT_BID_BY_ME,
@@ -7,14 +7,17 @@ import {
   SETTING_PAGE_USER_CAPTION_UPDATE,
   SETTING_PAGE_USER_DOB_UPDATE,
   SETTING_PAGE_USER_SOCIAL_LINK_UPDATE,
-  SETTING_PAGE_USER_PROFILE_PIC_UDPATE
+  SETTING_PAGE_USER_PROFILE_PIC_UDPATE,
+  SETTING_PAGE_GENERAL_LOADING_TOGGLE,
+  SETTING_PAGE_USER_ADD_ADDRESS
 } from '../types';
 
 import {
   SettingsPageGetUserOrdersURL,
   SettingsPageGetBidsByMeURL,
   SettingsPageGetBidsForMeURL,
-  SettingsPageSaveProfileChangesURL
+  SettingsPageSaveProfileChangesURL,
+  SettingsPageRejectBidURL
 } from '../URLS';
 
 export const accountSettingsUpdateBio = ({ bio }) => {
@@ -26,9 +29,14 @@ export const accountSettingsUpdateDateOfBirth = ({ dateOfBirth }) => {
 };
 
 export const accountSettingsUpdateUserProfilePic = ({ profilePic }) => {
-  return { tpe: SETTING_PAGE_USER_PROFILE_PIC_UDPATE, payload: profilePic };
+  return { type: SETTING_PAGE_USER_PROFILE_PIC_UDPATE, payload: profilePic };
 };
 
+export const accountSetttingsAddUserAddress = ({ userAddress, addressId }) => {
+  console.log('Done Added userAddress');
+  Actions.pop();
+  return { type: 'accountSetttingsAddUserAddress' }; // TODO
+};
 export const accountSettingsUpdateSocialMediaLinksLink = ({ socialMediaLinks, newSocialObject }) => {
   // newSocialObject { name: 'facebbok', profile: 'link or handle'}
   const { name, profile } = newSocialObject;
@@ -52,6 +60,8 @@ export const accountSettingsSaveProfileChanges = ({ dateOfBirth, userName, fullN
           })
           .then((response) => {
               console.log('accountSettingsSaveProfileChanges', response.data);
+              // Setting Updated Data for Personal Page Tab
+              // dispatch({ type: CELEBRITY_PAGE_SET_CELEB_DATA, payload: { userDetails: response.data.userDetails, userId } });
               // console.log('accountSettingsSaveProfileChanges', response.data);
           })
           .catch((error) => {
@@ -134,4 +144,34 @@ export const accountSettingsGetBidsForMe = ({ userToken }) => {
   };
 };
 
-// Deny a Bid
+// Reject the Bid
+export const accountSettingsRejectBid = ({ bidId, reason, feedback, userToken }) => {
+  // console.log('accountSettingsRejectBid', { bidId, reason, feedback, userToken });
+  const headers = {
+    'Content-Type': 'application/json',
+    Authorization: userToken
+  };
+  return (dispatch) => {
+    dispatch({ type: SETTING_PAGE_GENERAL_LOADING_TOGGLE, payload: true });
+    axios({
+        method: 'post',
+        url: SettingsPageRejectBidURL,
+        headers,
+        data: { bidId, ownerRejectionReason: reason, ownerFeedback: feedback }
+        })
+        .then((response) => {
+            const { bids } = response.data;
+            if (typeof bids !== 'undefined') {
+              dispatch({ type: SETTING_PAGE_SET_RENT_BID_FOR_ME, payload: bids });
+            }
+            Actions.bidsForMe();
+            console.log('accountSettingsRejectBid', response.data);
+        })
+        .catch((error) => {
+            console.log('accountSettingsRejectBid Actions Error ', error);
+        })
+        .finally(() => {
+            dispatch({ type: SETTING_PAGE_GENERAL_LOADING_TOGGLE, payload: false });
+        });
+  };
+};
