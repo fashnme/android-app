@@ -17,7 +17,8 @@ import {
   SettingsPageGetBidsByMeURL,
   SettingsPageGetBidsForMeURL,
   SettingsPageSaveProfileChangesURL,
-  SettingsPageRejectBidURL
+  SettingsPageRejectBidURL,
+  SettingsPageAddUserAddressURL
 } from '../URLS';
 
 export const accountSettingsUpdateBio = ({ bio }) => {
@@ -32,7 +33,7 @@ export const accountSettingsUpdateUserProfilePic = ({ profilePic }) => {
   return { type: SETTING_PAGE_USER_PROFILE_PIC_UDPATE, payload: profilePic };
 };
 
-export const accountSetttingsAddUserAddress = ({ userAddress, addressId }) => {
+export const accountSetttingsAddUserAddress = ({ userAddress, addressId, userToken }) => {
   console.log('Done Added userAddress');
   Actions.pop();
   return { type: 'accountSetttingsAddUserAddress' }; // TODO
