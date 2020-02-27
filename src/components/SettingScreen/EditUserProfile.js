@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Header, Avatar, Icon, Input, ButtonGroup } from 'react-native-elements';
 import ImagePicker from 'react-native-image-picker';
+import { Actions } from 'react-native-router-flux';
 import {
   signupPageUpdateUsername,
   signupPageUpdateFullname,
@@ -113,7 +114,7 @@ class EditUserProfile extends Component {
       <View style={styles.container}>
         <ScrollView>
           <Header
-            leftComponent={{ icon: 'chevron-left', size: 30 }}
+            leftComponent={{ icon: 'chevron-left', size: 30, onPress: () => Actions.pop() }}
             centerComponent={{ text: 'Edit Profile', style: { color: 'black', fontSize: 18, fontWeight: 'bold' } }}
             rightComponent={{ 
               text: 'Save', 
