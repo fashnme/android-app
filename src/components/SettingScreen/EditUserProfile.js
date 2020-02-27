@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Image, ScrollView } from 'react-native';
+import { View, Text, StyleSheet,Image, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Header, Avatar, Icon, Input, ButtonGroup } from 'react-native-elements';
