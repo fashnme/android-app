@@ -95,7 +95,7 @@ class EditUserProfile extends Component {
         this.props.selectImageFromLibraryVS(false);
       } else {
         const { path } = response;
-        this.accountSettingsUpdateUserProfilePic(response.uri);
+        this.props.accountSettingsUpdateUserProfilePic(response.uri);
         // if (mediaType === 'image') {
         //   this.props.uploadPageUpdateSelectedImagePath(`${response.uri}`);
         //   this.props.uploadPageToggleIsSelected(true);
@@ -118,7 +118,7 @@ class EditUserProfile extends Component {
             rightComponent={{ 
               text: 'Save', 
               style: { color: 'blue', fontSize: 18 },
-              onPress: () => this.props.accountSettingsSaveProfileChanges(dateOfBirth, userName, fullName, bio, socialMediaLinks, profilePic, userToken, genders[genderIndex].name)
+              onPress: () => this.props.accountSettingsSaveProfileChanges({ dateOfBirth, userName, fullName, bio, socialMediaLinks, profilePic: '', userToken, gender: genders[genderIndex].name })
             }}
             containerStyle={{
               backgroundColor: 'white',
@@ -144,6 +144,42 @@ class EditUserProfile extends Component {
               size={110}
             />
             
+            <Input
+                value={bio}
+                onChangeText={(txt) => this.props.accountSettingsUpdateBio(txt)}
+                placeholder="Bio"
+                multiline
+                numberOfLines={3}
+                inputContainerStyle={{ borderBottomWidth: 0 }}
+                containerStyle={styles.textInputStyle}
+                leftIcon={<Icon name="bio" type="material-community" />}
+                leftIconContainerStyle={{ marginHorizontal: 20 }}
+            />
+            
+            <Text style={{ fontSize: 16, }}>Social Handles</Text>
+            <Input
+                placeholder="Instagram Handle"
+                inputContainerStyle={{ borderBottomWidth: 0 }}
+                containerStyle={styles.textInputStyle}
+                leftIcon={<Image style={{ height: 25, width: 25 }} source={{ uri: 'https://image.flaticon.com/icons/png/128/1384/1384063.png' }} />}
+                leftIconContainerStyle={{ marginHorizontal: 20 }}
+            />
+            <Input
+                placeholder="Youtube Handle"
+                inputContainerStyle={{ borderBottomWidth: 0 }}
+                containerStyle={styles.textInputStyle}
+                leftIcon={<Image style={{ height: 25, width: 25 }} source={{ uri: 'https://image.flaticon.com/icons/png/128/1384/1384060.png' }} />}
+                leftIconContainerStyle={{ marginHorizontal: 20 }}
+            />
+            <Input
+                placeholder="Tiktok Handle"
+                inputContainerStyle={{ borderBottomWidth: 0 }}
+                containerStyle={styles.textInputStyle}
+                leftIcon={<Image style={{ height: 25, width: 25 }} source={{ uri: 'https://image.flaticon.com/icons/png/128/2504/2504942.png' }} />}
+                leftIconContainerStyle={{ marginHorizontal: 20 }}
+            />
+            
+            <Text style={{ fontSize: 16, }}>Profile Details</Text>
             <Input
               onChangeText={(txt) => this.props.signupPageUpdateUsername(txt)}
               value={userName}
@@ -175,47 +211,20 @@ class EditUserProfile extends Component {
             this.state.showDateTimePicker 
             && 
             <DateTimePicker
-              onChange={(event, selectedDate) => console.log(selectedDate.toString())}
-              value={new Date(1598051730000)} 
+              onChange={(event, selectedDate) => this.props.accountSettingsUpdateDateOfBirth(selectedDate.toString())}
+              value={new Date(dateOfBirth)} 
             />
             }
-            <Text 
-              style={{ color: 'blue', fontSize: 16, }}
-              onPress={() => this.setState({ showDateTimePicker: true })}
-            >
-                {dateOfBirth != null ? 'Choose Date of Birth' : `Change DOB: ${dateOfBirth}`}
-            </Text>
+            
             <Input
-                value={bio}
-                onChangeText={(txt) => this.props.accountSettingsUpdateBio(txt)}
-                placeholder="Bio"
-                multiline
-                inputContainerStyle={{ borderBottomWidth: 0 }}
-                containerStyle={styles.textInputStyle}
-                leftIcon={<Icon name="bio" type="material-community" />}
-                leftIconContainerStyle={{ marginHorizontal: 20 }}
-            />
-            <Text style={{ fontSize: 16, }}>Social Handles</Text>
-            <Input
-                placeholder="Instagram Handle"
-                inputContainerStyle={{ borderBottomWidth: 0 }}
-                containerStyle={styles.textInputStyle}
-                leftIcon={<Image style={{ height: 25, width: 25 }} source={{ uri: 'https://image.flaticon.com/icons/png/128/1384/1384063.png' }} />}
-                leftIconContainerStyle={{ marginHorizontal: 20 }}
-            />
-            <Input
-                placeholder="Youtube Handle"
-                inputContainerStyle={{ borderBottomWidth: 0 }}
-                containerStyle={styles.textInputStyle}
-                leftIcon={<Image style={{ height: 25, width: 25 }} source={{ uri: 'https://image.flaticon.com/icons/png/128/1384/1384060.png' }} />}
-                leftIconContainerStyle={{ marginHorizontal: 20 }}
-            />
-            <Input
-                placeholder="Tiktok Handle"
-                inputContainerStyle={{ borderBottomWidth: 0 }}
-                containerStyle={styles.textInputStyle}
-                leftIcon={<Image style={{ height: 25, width: 25 }} source={{ uri: 'https://image.flaticon.com/icons/png/128/2504/2504942.png' }} />}
-                leftIconContainerStyle={{ marginHorizontal: 20 }}
+              onChangeText={(txt) => this.props.signupPageUpdateFullname(txt)}
+              value={dateOfBirth}
+              placeholder="Choose Date of Birth"
+              inputContainerStyle={{ borderBottomWidth: 0 }}
+              containerStyle={styles.textInputStyle}
+              rightIcon={<Icon onPress={() => this.setState({ showDateTimePicker: true })} name="calendar" type="font-awesome" />}
+              disabled
+              rightIconContainerStyle={{ marginHorizontal: 10 }}
             />
            </View>
         </ScrollView>
