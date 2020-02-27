@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, View, ScrollView, Text, Image, Dimensions } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import CountryPicker from 'react-native-country-picker-modal';
-import { Input, Button } from 'react-native-elements';
+import { Input, Button, Header } from 'react-native-elements';
 import { connect } from 'react-redux';
 import {
   signupPagePhoneUpdate,
@@ -17,15 +17,21 @@ class EnterPhoneNumberScreen extends Component {
   render() {
     const { countryCode, name, callingCode } = this.props.countryData;
     return (
+        <View>
+        <Header
+          backgroundColor={'white'}
+          placement={'center'}
+          centerComponent={{ text: 'OTP Verification', style: styles.headerTitle }}
+          containerStyle={{ paddingTop: 0, height: 56, elevation: 5, }}
+        />
         <ScrollView>
             <View style={styles.container}>
-                <View style={styles.header}>
-                  <Text style={styles.headerTitle}> OTP Verification </Text>
-                </View>
                 <View style={styles.bodyIcon}>
                   <Image style={styles.icon} source={require('../../resources/icons/mail.png')} />
                   <Text style={{ color: '#C71585', fontSize: 18, fontWeight: 'bold' }}>Enter your mobile number</Text>
                   <Text style={{ color: 'black', fontWeight: 'bold' }}>We will send you a OTP Message</Text>
+                  
+                  <Text style={{ fontWeight: 'bold', color: 'red', fontSize: 18, margin: 30, textAlign: 'center' }}>{this.props.error}</Text>
                 </View>
                 <LinearGradient colors={['#FF7F50', '#FF8C00', '#FF4500']} style={styles.body}>
                   <View style={styles.topCropper} />
@@ -50,7 +56,6 @@ class EnterPhoneNumberScreen extends Component {
                           onChangeText={(newPhone) => { this.props.signupPagePhoneUpdate(newPhone); }}
                           value={this.props.phoneNumber}
                       />
-                      {this.props.error !== '' ? <Text style={{ fontWeight: 'bold', color: 'white', fontSize: 20, padding: 10, }}>{this.props.error}</Text> : <View />}
                       <Button
                           title="Send OTP"
                           titleStyle={{ color: '#FF4500', fontSize: 20, fontWeight: 'bold' }}
@@ -61,6 +66,7 @@ class EnterPhoneNumberScreen extends Component {
                 </LinearGradient>
             </View>
         </ScrollView>
+        </View>
     );
   }
 }
@@ -71,12 +77,6 @@ const styles = StyleSheet.create({
       height: screenHeight,
       backgroundColor: 'white'
     },
-    header: {
-      alignItems: 'center',
-      margin: 20,
-      flex: 1,
-      justifyContent: 'center',
-    },
     headerTitle: {
       color: '#ff4500',
       fontSize: 20,
@@ -84,17 +84,17 @@ const styles = StyleSheet.create({
     },
     bodyIcon: {
       alignItems: 'center',
-      flex: 4,
-      justifyContent: 'center',
     },
     body: {
-      flex: 5,
+      flex: 1,
+      margin: 0,
     },
     icon: {
-      height: '50%',
-      width: '50%',
+      height: 100,
+      width: 100,
       resizeMode: 'contain',
       marginBottom: 10,
+      marginTop: 20,
     },
     topCropper: {
       height: 60,

@@ -28,6 +28,12 @@ const height = Dimensions.get('window').height + StatusBar.currentHeight;
 const tabs = { DISLIKE: 0, CONTENT: 1, LIKE: 2 };
 
 class HomePagePost extends Component {
+  constructor() {
+    super();
+    this.state = {
+      showFullCaption: false
+    };
+  }
   changeToNextContent(index) {
     const { activeTab, data, userToken, verticalPublicCarouselRef, verticalPersonalCarouselRef } = this.props;
     if (activeTab === HOME_PAGE_PUBLIC_MODE) {
@@ -83,20 +89,564 @@ class HomePagePost extends Component {
       );
   }
 
-  renderUserCaption(caption, userName) {
+  renderUserCaption(caption, userName, userToken, userId) {
       return (
         <View style={styles.postDetails}>
           <Text
-            style={styles.postCaption}
-            onPress={() => console.log('user caption clicked')}
+            style={styles.userName}
+            onPress={() => this.props.celebrityPageVisitAndSetData({ userToken, userId, isPersonalPage: false })}
           >
-            {caption}
+            {`@${userName}`}
           </Text>
           <Text
-            style={styles.userName}
-            onPress={() => console.log('username clicked')}
+            style={styles.postCaption}
+            numberOfLines={this.state.showFullCaption === false ? 1 : 0}
+            onPress={() => this.setState({ showFullCaption: !this.state.showFullCaption })}
           >
-            {userName}
+            slfk 
+            sdfklsd  ssd fsdsd
+            f s
+            dfsd 
+            Hello Everyone myself tushar ojha and i am great
+            therefore i call myself iAmTushar
+            sksj
+            sdfklsdjf
+            sdfklsdfdsjf
+            ksf
+            sd 
+            sdfklsd  ssd fsdsd
+            f s
+            dfsd 
+            Hello Everyone myself tushar ojha and i am great
+            therefore i call myself iAmTushar
+            sksj
+            sdfklsdjf
+            sdfklsdfdsjf
+            ksf
+            sd 
+            sdfklsd  ssd fsdsd
+            f s
+            dfsd 
+            Hello Everyone myself tushar ojha and i am great
+            therefore i call myself iAmTushar
+            sksj
+            sdfklsdjf
+            sdfklsdfdsjf
+            ksf
+            sd 
+            sdfklsd  ssd fsdsd
+            f s
+            dfsd 
+            Hello Everyone myself tushar ojha and i am great
+            therefore i call myself iAmTushar
+            sksj
+            sdfklsdjf
+            sdfklsdfdsjf
+            ksf
+            sd 
+            sdfklsd  ssd fsdsd
+            f s
+            dfsd 
+            Hello Everyone myself tushar ojha and i am great
+            therefore i call myself iAmTushar
+            sksj
+            sdfklsdjf
+            sdfklsdfdsjf
+            ksf
+            sd 
+            sdfklsd  ssd fsdsd
+            f s
+            dfsd 
+            Hello Everyone myself tushar ojha and i am great
+            therefore i call myself iAmTushar
+            sksj
+            sdfklsdjf
+            sdfklsdfdsjf
+            ksf
+            sd 
+            sdfklsd  ssd fsdsd
+            f s
+            dfsd 
+            Hello Everyone myself tushar ojha and i am great
+            therefore i call myself iAmTushar
+            sksj
+            sdfklsdjf
+            sdfklsdfdsjf
+            ksf
+            sd 
+            sdfklsd  ssd fsdsd
+            f s
+            dfsd 
+            Hello Everyone myself tushar ojha and i am great
+            therefore i call myself iAmTushar
+            sksj
+            sdfklsdjf
+            sdfklsdfdsjf
+            ksf
+            sd 
+            sdfklsd  ssd fsdsd
+            f s
+            dfsd 
+            Hello Everyone myself tushar ojha and i am great
+            therefore i call myself iAmTushar
+            sksj
+            sdfklsdjf
+            sdfklsdfdsjf
+            ksf
+            sd 
+            sdfklsd  ssd fsdsd
+            f s
+            dfsd 
+            Hello Everyone myself tushar ojha and i am great
+            therefore i call myself iAmTushar
+            sksj
+            sdfklsdjf
+            sdfklsdfdsjf
+            ksf
+            sd 
+            sdfklsd  ssd fsdsd
+            f s
+            dfsd 
+            Hello Everyone myself tushar ojha and i am great
+            therefore i call myself iAmTushar
+            sksj
+            sdfklsdjf
+            sdfklsdfdsjf
+            ksf
+            sd 
+            sdfklsd  ssd fsdsd
+            f s
+            dfsd 
+            Hello Everyone myself tushar ojha and i am great
+            therefore i call myself iAmTushar
+            sksj
+            sdfklsdjf
+            sdfklsdfdsjf
+            ksf
+            sd 
+            sdfklsd  ssd fsdsd
+            f s
+            dfsd 
+            Hello Everyone myself tushar ojha and i am great
+            therefore i call myself iAmTushar
+            sksj
+            sdfklsdjf
+            sdfklsdfdsjf
+            ksf
+            sd 
+            sdfklsd  ssd fsdsd
+            f s
+            dfsd 
+            Hello Everyone myself tushar ojha and i am great
+            therefore i call myself iAmTushar
+            sksj
+            sdfklsdjf
+            sdfklsdfdsjf
+            ksf
+            sd 
+            sdfklsd  ssd fsdsd
+            f s
+            dfsd 
+            Hello Everyone myself tushar ojha and i am great
+            therefore i call myself iAmTushar
+            sksj
+            sdfklsdjf
+            sdfklsdfdsjf
+            ksf
+            sd 
+            sdfklsd  ssd fsdsd
+            f s
+            dfsd 
+            Hello Everyone myself tushar ojha and i am great
+            therefore i call myself iAmTushar
+            sksj
+            sdfklsdjf
+            sdfklsdfdsjf
+            ksf
+            sd 
+            sdfklsd  ssd fsdsd
+            f s
+            dfsd 
+            Hello Everyone myself tushar ojha and i am great
+            therefore i call myself iAmTushar
+            sksj
+            sdfklsdjf
+            sdfklsdfdsjf
+            ksf
+            sd 
+            sdfklsd  ssd fsdsd
+            f s
+            dfsd 
+            Hello Everyone myself tushar ojha and i am great
+            therefore i call myself iAmTushar
+            sksj
+            sdfklsdjf
+            sdfklsdfdsjf
+            ksf
+            sd 
+            sdfklsd  ssd fsdsd
+            f s
+            dfsd 
+            Hello Everyone myself tushar ojha and i am great
+            therefore i call myself iAmTushar
+            sksj
+            sdfklsdjf
+            sdfklsdfdsjf
+            ksf
+            sd 
+            sdfklsd  ssd fsdsd
+            f s
+            dfsd 
+            Hello Everyone myself tushar ojha and i am great
+            therefore i call myself iAmTushar
+            sksj
+            sdfklsdjf
+            sdfklsdfdsjf
+            ksf
+            sd 
+            sdfklsd  ssd fsdsd
+            f s
+            dfsd 
+            Hello Everyone myself tushar ojha and i am great
+            therefore i call myself iAmTushar
+            sksj
+            sdfklsdjf
+            sdfklsdfdsjf
+            ksf
+            sd 
+            sdfklsd  ssd fsdsd
+            f s
+            dfsd 
+            Hello Everyone myself tushar ojha and i am great
+            therefore i call myself iAmTushar
+            sksj
+            sdfklsdjf
+            sdfklsdfdsjf
+            ksf
+            sd 
+            sdfklsd  ssd fsdsd
+            f s
+            dfsd 
+            Hello Everyone myself tushar ojha and i am great
+            therefore i call myself iAmTushar
+            sksj
+            sdfklsdjf
+            sdfklsdfdsjf
+            ksf
+            sd 
+            sdfklsd  ssd fsdsd
+            f s
+            dfsd 
+            Hello Everyone myself tushar ojha and i am great
+            therefore i call myself iAmTushar
+            sksj
+            sdfklsdjf
+            sdfklsdfdsjf
+            ksf
+            sd 
+            sdfklsd  ssd fsdsd
+            f s
+            dfsd 
+            Hello Everyone myself tushar ojha and i am great
+            therefore i call myself iAmTushar
+            sksj
+            sdfklsdjf
+            sdfklsdfdsjf
+            ksf
+            sd 
+            sdfklsd  ssd fsdsd
+            f s
+            dfsd 
+            Hello Everyone myself tushar ojha and i am great
+            therefore i call myself iAmTushar
+            sksj
+            sdfklsdjf
+            sdfklsdfdsjf
+            ksf
+            sd 
+            sdfklsd  ssd fsdsd
+            f s
+            dfsd 
+            Hello Everyone myself tushar ojha and i am great
+            therefore i call myself iAmTushar
+            sksj
+            sdfklsdjf
+            sdfklsdfdsjf
+            ksf
+            sd 
+            sdfklsd  ssd fsdsd
+            f s
+            dfsd 
+            Hello Everyone myself tushar ojha and i am great
+            therefore i call myself iAmTushar
+            sksj
+            sdfklsdjf
+            sdfklsdfdsjf
+            ksf
+            sd 
+            sdfklsd  ssd fsdsd
+            f s
+            dfsd 
+            Hello Everyone myself tushar ojha and i am great
+            therefore i call myself iAmTushar
+            sksj
+            sdfklsdjf
+            sdfklsdfdsjf
+            ksf
+            sd 
+            sdfklsd  ssd fsdsd
+            f s
+            dfsd 
+            Hello Everyone myself tushar ojha and i am great
+            therefore i call myself iAmTushar
+            sksj
+            sdfklsdjf
+            sdfklsdfdsjf
+            ksf
+            sd 
+            sdfklsd  ssd fsdsd
+            f s
+            dfsd 
+            Hello Everyone myself tushar ojha and i am great
+            therefore i call myself iAmTushar
+            sksj
+            sdfklsdjf
+            sdfklsdfdsjf
+            ksf
+            sd 
+            sdfklsd  ssd fsdsd
+            f s
+            dfsd 
+            Hello Everyone myself tushar ojha and i am great
+            therefore i call myself iAmTushar
+            sksj
+            sdfklsdjf
+            sdfklsdfdsjf
+            ksf
+            sd 
+            sdfklsd  ssd fsdsd
+            f s
+            dfsd 
+            Hello Everyone myself tushar ojha and i am great
+            therefore i call myself iAmTushar
+            sksj
+            sdfklsdjf
+            sdfklsdfdsjf
+            ksf
+            sd 
+            sdfklsd  ssd fsdsd
+            f s
+            dfsd 
+            Hello Everyone myself tushar ojha and i am great
+            therefore i call myself iAmTushar
+            sksj
+            sdfklsdjf
+            sdfklsdfdsjf
+            ksf
+            sd 
+            sdfklsd  ssd fsdsd
+            f s
+            dfsd 
+            Hello Everyone myself tushar ojha and i am great
+            therefore i call myself iAmTushar
+            sksj
+            sdfklsdjf
+            sdfklsdfdsjf
+            ksf
+            sd 
+            sdfklsd  ssd fsdsd
+            f s
+            dfsd 
+            Hello Everyone myself tushar ojha and i am great
+            therefore i call myself iAmTushar
+            sksj
+            sdfklsdjf
+            sdfklsdfdsjf
+            ksf
+            sd 
+            sdfklsd  ssd fsdsd
+            f s
+            dfsd 
+            Hello Everyone myself tushar ojha and i am great
+            therefore i call myself iAmTushar
+            sksj
+            sdfklsdjf
+            sdfklsdfdsjf
+            ksf
+            sd 
+            sdfklsd  ssd fsdsd
+            f s
+            dfsd 
+            Hello Everyone myself tushar ojha and i am great
+            therefore i call myself iAmTushar
+            sksj
+            sdfklsdjf
+            sdfklsdfdsjf
+            ksf
+            sd 
+            sdfklsd  ssd fsdsd
+            f s
+            dfsd 
+            Hello Everyone myself tushar ojha and i am great
+            therefore i call myself iAmTushar
+            sksj
+            sdfklsdjf
+            sdfklsdfdsjf
+            ksf
+            sd 
+            sdfklsd  ssd fsdsd
+            f s
+            dfsd 
+            Hello Everyone myself tushar ojha and i am great
+            therefore i call myself iAmTushar
+            sksj
+            sdfklsdjf
+            sdfklsdfdsjf
+            ksf
+            sd 
+            sdfklsd  ssd fsdsd
+            f s
+            dfsd 
+            Hello Everyone myself tushar ojha and i am great
+            therefore i call myself iAmTushar
+            sksj
+            sdfklsdjf
+            sdfklsdfdsjf
+            ksf
+            sd 
+            sdfklsd  ssd fsdsd
+            f s
+            dfsd 
+            Hello Everyone myself tushar ojha and i am great
+            therefore i call myself iAmTushar
+            sksj
+            sdfklsdjf
+            sdfklsdfdsjf
+            ksf
+            sd 
+            sdfklsd  ssd fsdsd
+            f s
+            dfsd 
+            Hello Everyone myself tushar ojha and i am great
+            therefore i call myself iAmTushar
+            sksj
+            sdfklsdjf
+            sdfklsdfdsjf
+            ksf
+            sd 
+            sdfklsd  ssd fsdsd
+            f s
+            dfsd 
+            Hello Everyone myself tushar ojha and i am great
+            therefore i call myself iAmTushar
+            sksj
+            sdfklsdjf
+            sdfklsdfdsjf
+            ksf
+            sd 
+            sdfklsd  ssd fsdsd
+            f s
+            dfsd 
+            Hello Everyone myself tushar ojha and i am great
+            therefore i call myself iAmTushar
+            sksj
+            sdfklsdjf
+            sdfklsdfdsjf
+            ksf
+            sd 
+            sdfklsd  ssd fsdsd
+            f s
+            dfsd 
+            Hello Everyone myself tushar ojha and i am great
+            therefore i call myself iAmTushar
+            sksj
+            sdfklsdjf
+            sdfklsdfdsjf
+            ksf
+            sd 
+            sdfklsd  ssd fsdsd
+            f s
+            dfsd 
+            Hello Everyone myself tushar ojha and i am great
+            therefore i call myself iAmTushar
+            sksj
+            sdfklsdjf
+            sdfklsdfdsjf
+            ksf
+            sd 
+            sdfklsd  ssd fsdsd
+            f s
+            dfsd 
+            Hello Everyone myself tushar ojha and i am great
+            therefore i call myself iAmTushar
+            sksj
+            sdfklsdjf
+            sdfklsdfdsjf
+            ksf
+            sd 
+            sdfklsd  ssd fsdsd
+            f s
+            dfsd 
+            Hello Everyone myself tushar ojha and i am great
+            therefore i call myself iAmTushar
+            sksj
+            sdfklsdjf
+            sdfklsdfdsjf
+            ksf
+            sd 
+            sdfklsd  ssd fsdsd
+            f s
+            dfsd 
+            Hello Everyone myself tushar ojha and i am great
+            therefore i call myself iAmTushar
+            sksj
+            sdfklsdjf
+            sdfklsdfdsjf
+            ksf
+            sd 
+            sdfklsd  ssd fsdsd
+            f s
+            dfsd 
+            Hello Everyone myself tushar ojha and i am great
+            therefore i call myself iAmTushar
+            sksj
+            sdfklsdjf
+            sdfklsdfdsjf
+            ksf
+            sd 
+            sdfklsd  ssd fsdsd
+            f s
+            dfsd 
+            Hello Everyone myself tushar ojha and i am great
+            therefore i call myself iAmTushar
+            sksj
+            sdfklsdjf
+            sdfklsdfdsjf
+            ksf
+            sd 
+            sdfklsd  ssd fsdsd
+            f s
+            dfsd 
+            Hello Everyone myself tushar ojha and i am great
+            therefore i call myself iAmTushar
+            sksj
+            sdfklsdjf
+            sdfklsdfdsjf
+            ksf
+            sd 
+            sdfklsd  ssd fsdsd
+            f s
+            dfsd 
+            Hello Everyone myself tushar ojha and i am great
+            therefore i call myself iAmTushar
+            sksj
+            sdfklsdjf
+            sdfklsdfdsjf
+            ksf
+            sd
+            d 
+            sdfklsds
+            {caption}
           </Text>
         </View>
       );
@@ -119,7 +669,7 @@ class HomePagePost extends Component {
       return (
           <View style={styles.exampleContainer}>
             {this.renderContent(parallaxProps, uploadUrl)}
-            {this.renderUserCaption(caption, userName)}
+            {this.renderUserCaption(caption, userName, userToken, userId)}
             <View style={styles.postActions}>
               {this.renderIconWithText({
                     style: styles.productTag,
@@ -228,11 +778,11 @@ const styles = StyleSheet.create({
   },
   postDetails: {
     position: 'absolute',
-    bottom: 0,
+    bottom: 100,
     left: 0,
-    marginBottom: 50,
     marginLeft: 10,
-    flexDirection: 'column-reverse',
+    width: '100%',
+    flexDirection: 'column',
   },
   userName: {
     color: 'white',

@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, Dimensions } from 'react-native';
 import { connect } from 'react-redux';
-import { Icon, Input, ButtonGroup, Image, Button } from 'react-native-elements';
+import { Icon, Input, ButtonGroup, Image, Button, Header } from 'react-native-elements';
 import LinearGradient from 'react-native-linear-gradient';
 import { ScrollView } from 'react-native-gesture-handler';
 import {
@@ -77,21 +77,23 @@ const UserInputBox = ({ placeholder, iconName, iconType, errorMessage, name, val
 
 
 const EnterDetailsPage = ({
-  userName, fullName, genderIndex, loading, error, userToken,
+  userName, fullName, genderIndex, referralCode, loading, error, userToken,
   signupPageUpdateUsername, signupPageUpdateFullname, signupPageUpdateGender, signupPageSubmitUserDetails
   }) => {
-  console.log('props', { userName, fullName, genderIndex, loading, userToken, error });
+  console.log('props', { userName, fullName, genderIndex, loading, referralCode, userToken, error });
   // console.log('actions', signupPageUpdateUsername, signupPageUpdateFullname, signupPageUpdateGender, signupPageSubmitUserDetails);
   return (
+    <View>
+        <Header
+          backgroundColor={'white'}
+          placement={'center'}
+          centerComponent={{ text: 'Create account', style: { fontSize: 30, color: '#FF7F50' } }}
+          containerStyle={{ paddingTop: 0, height: 60, elevation: 5, }}
+        />
     <ScrollView>
       <View style={styles.container}>
-        <View style={styles.header}>
-          <View style={{ alignItems: 'center', justifyContent: 'flex-end', flex: 1 }}>
-            <Text style={{ fontSize: 30, fontWeight: 'bold' }}> Create account </Text>
-          </View>
-        </View>
         <LinearGradient colors={['#FF7F50', '#FF8C00', '#FF4500']} style={styles.body}>
-          <View style={{ paddingTop: 100, width: '100%', alignItems: 'center' }}>
+          <View style={{ paddingTop: 50, width: '100%', alignItems: 'center' }}>
             <UserInputBox
               name="username"
               errorMessage={error}
@@ -120,6 +122,15 @@ const EnterDetailsPage = ({
                 buttonStyle={{ borderWidth: 0, }}
               />
             </View>
+            
+            <UserInputBox
+              name="fullname"
+              placeholder="Referral Code"
+              iconName="user-plus"
+              iconType="font-awesome"
+              valueName={referralCode}
+              // changeAction={(txt) => signupPageUpdateFullname(txt)}
+            />
             <Button
               loading={loading}
               title="Continue"
@@ -133,6 +144,7 @@ const EnterDetailsPage = ({
         </LinearGradient>
       </View>
     </ScrollView>
+    </View>
   );
 };
 
@@ -142,13 +154,10 @@ const styles = StyleSheet.create({
     width: screenWidth,
     backgroundColor: 'white'
   },
-  header: {
-    flex: 1,
-  },
   body: {
-    flex: 3,
-    marginTop: 20,
+    flex: 1,
     alignItems: 'center',
+    
   },
   textInputStyle: {
     backgroundColor: 'white',
@@ -159,16 +168,14 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   genderRow: {
-    height: 100,
+    height: 150,
     width: '100%',
     backgroundColor: 'transparent',
     borderWidth: 0,
   },
   iconContainer: {
-    height: '100%',
-    width: '100%',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   genderIcon: {
     height: 60,

@@ -7,7 +7,7 @@ export const globalStyles = StyleSheet.create({
         borderRadius: 25,
         justifyContent: 'center',
         alignItems: 'center',
-        margin: 10,
+        marginTop: 10,
     },
     addToCartButtonText: {
         color: 'black',
@@ -19,8 +19,20 @@ export const globalStyles = StyleSheet.create({
         borderRadius: 25,
         justifyContent: 'center',
         alignItems: 'center',
+        marginTop: 10,
     },
     buyNowButtonText: {
         color: 'white',
+    },
+    bidForRentButton: {
+        marginTop: 10,
+        padding: 10,
+        backgroundColor: 'orange',
+        borderRadius: 25,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    bidForRentButtonTitle: {
+        color: 'white'
     }
 });
