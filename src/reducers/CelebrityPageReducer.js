@@ -13,7 +13,7 @@ const INITIAL_STATE = {
       followingCount: '',
       followersCount: '',
       totalLikes: '',
-      firstName: '',
+      fullName: '',
   },
   selfPostArray: [], // Array to store the self posts
   postLikedArray: [], // Array to store the posts Liked

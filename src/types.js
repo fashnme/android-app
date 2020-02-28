@@ -74,6 +74,7 @@ export const SETTING_PAGE_USER_DOB_UPDATE = 'setting_page_user_dob_update';
 export const SETTING_PAGE_USER_SOCIAL_LINK_UPDATE = 'setting_page_user_social_link_update';
 export const SETTING_PAGE_USER_PROFILE_PIC_UDPATE = 'setting_page_user_profile_pic_update';
 export const SETTING_PAGE_USER_ADD_ADDRESS = 'setting_page_user_add_address';
+export const SETTING_PAGE_SET_SELECTED_ADDRESS = 'setting_page_set_selected_address';
 
 export const SETTING_PAGE_GENERAL_LOADING_TOGGLE = 'setting_page_general_loading_toggle';
 // export const WISHLIST_ADD_OPERATION = 'add';

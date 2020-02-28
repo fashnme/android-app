@@ -125,7 +125,7 @@ class EditUserProfile extends Component {
   }
 
   render() {
-    const { userName, fullName, genderIndex, loading, error, userToken, bio,
+    const { userName, fullName, genderIndex, error, userToken, bio,
       dateOfBirth, socialMediaLinks, profilePic, oldUserName, accountSettingLoader } = this.props;
     // console.log({ userName, fullName, genderIndex, loading, error, userToken, bio, dateOfBirth, socialMediaLinks, personalUserId });
     const profileDetailsChanges = {
@@ -169,10 +169,9 @@ class EditUserProfile extends Component {
                 }
               }}
               source={{ uri: profilePic }}
-
               size={110}
             />
-
+            <Text style={{ fontWeight: 'bold', color: 'red' }}>{ error}</Text>
             <Input
                 value={bio}
                 onChangeText={(txt) => this.props.accountSettingsUpdateBio({ bio: txt })}
@@ -258,12 +257,15 @@ class EditUserProfile extends Component {
             this.state.showDateTimePicker
             &&
             <DateTimePicker
-              onChange={(event, selectedDate) => this.props.accountSettingsUpdateDateOfBirth({ dateOfBirth: selectedDate.toString() })}
+              onChange={(event, selectedDate) => {
+                this.setState({ showDateTimePicker: false });
+                console.log('selected dateOfBirth', event, selectedDate, this.state.showDateTimePicker);
+                this.props.accountSettingsUpdateDateOfBirth({ dateOfBirth: selectedDate.toString() });
+              }}
               value={new Date(dateOfBirth)}
             />
             }
             <Input
-              onChangeText={(txt) => this.props.signupPageUpdateFullname(txt)}
               value={this.getFormattedDate(dateOfBirth)}
               placeholder="Choose Date of Birth"
               inputContainerStyle={{ borderBottomWidth: 0 }}
@@ -328,7 +330,7 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = ({ signupPageState, personalPageState, accountSettingState }) => {
-  const { userName, fullName, gender, loading, error } = signupPageState;
+  const { userName, fullName, gender, error } = signupPageState;
   const { userToken, personalUserId, personalUserDetails } = personalPageState;
   const oldUserName = personalUserDetails.userName; // This is the Old User Name
   const { bio, dateOfBirth, socialMediaLinks, profilePic } = accountSettingState;

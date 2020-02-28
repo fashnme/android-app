@@ -81,6 +81,7 @@ const UserDetailsComp = ({ userDetails, isFollowing, userId, userToken, celebrit
   const { profilePic, userName, followingCount, followersCount, totalLikes } = userDetails;
   return (
     <View style={{ flex: 1 }}>
+        
         <View style={styles.profile}>
           {renderAvatar({ profilePic })}
           <Text style={styles.userName}>@{userName}</Text>

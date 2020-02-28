@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
-import { View, FlatList } from 'react-native';
+import { View, FlatList, StatusBar } from 'react-native';
 import { connect } from 'react-redux';
 import { Header } from 'react-native-elements';
+import { Actions } from 'react-native-router-flux';
 import UserDetailsComp from './celebScreen/UserDetailsComp';
 import UserPostsComp from './celebScreen/UserPostsComp';
-import { celebrityPageVisitAndSetData } from '../actions';
+import { personalPageVisitAndSetData } from '../actions';
 
 class PersonalPage extends Component {
-  async componentDidMount() {
-    // const { personalUserId, userToken } = this.props;
+  componentDidMount() {
     this.focusListener = this.props.navigation.addListener('didFocus', () => {
       this.onFocusFunction();
     });
@@ -17,40 +17,40 @@ class PersonalPage extends Component {
     this.focusListener.remove();
   }
   onFocusFunction() {
-   const { personalUserId, userToken } = this.props;
-   this.props.celebrityPageVisitAndSetData({ userToken, userId: personalUserId, isPersonalPage: true });
+     const { personalUserId, userToken } = this.props;
+     this.props.personalPageVisitAndSetData({ userToken, userId: personalUserId });
   }
 
   render() {
     return (
       <View style={{ flex: 1 }}>
-        <Header
-          rightComponent={{ icon: 'chevron-left', size: 30, onPress: () => { console.log('Right Pressed'); } }}
-          centerComponent={{ text: 'Edit Profile', style: { color: 'black', fontSize: 18, fontWeight: 'bold' } }}
-          containerStyle={{ backgroundColor: 'white', justifyContent: 'space-around' }}
-        />
-        <FlatList
-          listKey={'mainList'}
-          ListHeaderComponent={<UserDetailsComp />}
-          ListFooterComponent={<UserPostsComp />}
-          data={['']}
-          keyExtractor={(item, index) => index.toString()}
-          renderItem={() => {}}
-        />
+        <StatusBar hidden />
+          <Header
+            backgroundColor={'white'}
+            placement={'center'}
+            centerComponent={{ text: this.props.fullName, style: { color: 'gray', fontWeight: 'bold', fontSize: 17 } }}
+            rightComponent={{ icon: 'settings', color: '#ee5f73', size: 28, onPress: () => { Actions.settings(); } }}
+            containerStyle={{ paddingTop: 0, height: 56 }}
+          />
+          <FlatList
+            listKey={'mainPersonalList'}
+            ListHeaderComponent={<UserDetailsComp />}
+            ListFooterComponent={<UserPostsComp />}
+            data={['']}
+            keyExtractor={(item, index) => index.toString()}
+            renderItem={() => {}}
+          />
       </View>
     );
   }
 }
 
-const mapStateToProps = ({ personalPageState, celebPageState }) => {
-  const { personalUserId, userToken } = personalPageState;
-  const { userId } = celebPageState;
-  if (userId !== personalUserId) {
-    console.log('PersonalPage', userId, personalUserId);
-  }
-  return { personalUserId, userToken, userId };
+const mapStateToProps = ({ personalPageState }) => {
+  const { personalUserId, userToken, personalUserDetails } = personalPageState;
+  const { fullName } = personalUserDetails;
+  return { personalUserId, userToken, fullName };
 };
 
 export default connect(mapStateToProps, {
-  celebrityPageVisitAndSetData
+  personalPageVisitAndSetData
 })(PersonalPage);

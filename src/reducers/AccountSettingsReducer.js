@@ -7,7 +7,8 @@ import {
   SETTING_PAGE_USER_SOCIAL_LINK_UPDATE,
   SETTING_PAGE_USER_PROFILE_PIC_UDPATE,
   SETTING_PAGE_USER_ADD_ADDRESS,
-  SETTING_PAGE_GENERAL_LOADING_TOGGLE
+  SETTING_PAGE_GENERAL_LOADING_TOGGLE,
+  SETTING_PAGE_SET_SELECTED_ADDRESS
 } from '../types';
 
 
@@ -18,6 +19,7 @@ const INITIAL_STATE = {
   socialMediaLinks: { instagram: '', youtube: '', tiktok: '', facebook: '' },
   profilePic: '',
   deliveryDetailsArray: [],
+  selectedAddress: {},
   // Other Details
   wishlistArray: [],
   ordersArray: [],
@@ -42,6 +44,9 @@ export default (state = INITIAL_STATE, action) => {
 
       case SETTING_PAGE_USER_CAPTION_UPDATE:
         return { ...state, bio: action.payload };
+
+      case SETTING_PAGE_SET_SELECTED_ADDRESS:
+        return { ...state, selectedAddress: action.payload };
 
       case SETTING_PAGE_USER_DOB_UPDATE:
         return { ...state, dateOfBirth: action.payload };
