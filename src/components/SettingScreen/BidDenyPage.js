@@ -5,7 +5,7 @@ import { Header, Card, Input, Button } from 'react-native-elements';
 import { Dropdown } from 'react-native-material-dropdown';
 import { connect } from 'react-redux';
 import {
-  accountSettingsRejectBid as _accountSettingsRejectBid
+  bidsPageRejectBid as _bidsPageRejectBid
 } from '../../actions';
 
 const reasons = [
@@ -17,7 +17,7 @@ const reasons = [
   { value: 'Other Reasons' }
 ];
 
-const BidDenyPage = ({ bidId, userToken, loading, accountSettingsRejectBid }) => {
+const BidDenyPage = ({ bidId, userToken, loading, bidsPageRejectBid }) => {
   const [index, updateIndex] = useState(0);
   const [feedback, updateFeedback] = useState('');
   // console.log('ind', index, feedback);
@@ -60,7 +60,7 @@ const BidDenyPage = ({ bidId, userToken, loading, accountSettingsRejectBid }) =>
               loadingProps={{ color: '#ff859a' }}
               title={'Reject Bid'}
               type={'outline'}
-              onPress={() => accountSettingsRejectBid({ bidId, userToken, feedback, reason: reasons[index].value })}
+              onPress={() => bidsPageRejectBid({ bidId, userToken, feedback, reason: reasons[index].value })}
             />
       </Card>
     </View>
@@ -93,5 +93,5 @@ const mapStateToProps = ({ personalPageState, accountSettingState }) => {
   return { userToken, loading };
 };
 export default connect(mapStateToProps, {
-  accountSettingsRejectBid: _accountSettingsRejectBid
+  bidsPageRejectBid: _bidsPageRejectBid
 })(BidDenyPage);

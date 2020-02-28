@@ -62,7 +62,7 @@ const RouterComponent = () => {
                 <Scene initial hideNavBar icon={TabIcon} iconName={'user'} tabStyle={styles.tabStyle}>
                   <Scene key='personalPage' title='Personal' component={PersonalPage} />
                   <Scene hideTabBar key='settings' title='Settings' component={SettingsPage} />
-                  <Scene initial hideTabBar key='editUserProfile' component={EditUserProfile} />
+                  <Scene hideTabBar key='editUserProfile' component={EditUserProfile} />
                   <Scene hideTabBar key='orders' title='Orders' component={Orders} />
                   <Scene hideTabBar key='bidRequests' title='Bids & Requests' component={BidRequests} />
                   <Scene hideTabBar key='bidDenyPage' component={BidDenyPage} />

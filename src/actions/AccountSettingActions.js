@@ -18,7 +18,9 @@ import {
   PERSONAL_PAGE_SET_PERSONAL_DETAILS_AND_USERID,
   SIGNUP_PAGE_USERNAME_UPDATE, // Using these reducer state to show username in username update section
   SIGNUP_PAGE_FULLNAME_UPDATE,
-  SIGNUP_PAGE_GENDER_UPDATE
+  SIGNUP_PAGE_GENDER_UPDATE,
+  SIGNUP_PAGE_ERROR_UPDATE,
+  SETTING_PAGE_SET_SELECTED_ADDRESS
 } from '../types';
 
 import {
@@ -26,7 +28,6 @@ import {
   SettingsPageGetBidsByMeURL,
   SettingsPageGetBidsForMeURL,
   SettingsPageSaveProfileChangesURL,
-  SettingsPageRejectBidURL,
   SettingsPageAddUserAddressURL,
   CelebrityPageGetUserDetailsURL
 } from '../URLS';
@@ -37,6 +38,10 @@ export const accountSettingsUpdateBio = ({ bio }) => {
 
 export const accountSettingsUpdateDateOfBirth = ({ dateOfBirth }) => {
   return { type: SETTING_PAGE_USER_DOB_UPDATE, payload: dateOfBirth };
+};
+
+export const accountSettingSetSelectedAddress = ({ selectedAddress }) => {
+  return { type: SETTING_PAGE_SET_SELECTED_ADDRESS, payload: selectedAddress };
 };
 
 // Get the User Personal Details
@@ -54,19 +59,24 @@ export const accountSettingGetAndSetUserData = ({ userId, userToken }) => {
         data: { userId }
         })
         .then((response) => {
-              const { fullName, gender, profilePic, userName, dob, socialMediaLinks, bio } = response.data.userDetails;
-              // Set the personal Details & Personal User Id in the Personal Page State
-              dispatch({ type: PERSONAL_PAGE_SET_PERSONAL_DETAILS_AND_USERID, payload: response.data.userDetails });
-              // Set these details for the Account Settings Screen
-              dispatch({ type: SETTING_PAGE_USER_CAPTION_UPDATE, payload: bio });
-              dispatch({ type: SETTING_PAGE_USER_DOB_UPDATE, payload: dob });
-              dispatch({ type: SETTING_PAGE_USER_SOCIAL_LINK_UPDATE, payload: socialMediaLinks });
-              dispatch({ type: SETTING_PAGE_USER_PROFILE_PIC_UDPATE, payload: profilePic });
-              dispatch({ type: SIGNUP_PAGE_USERNAME_UPDATE, payload: userName });
-              dispatch({ type: SIGNUP_PAGE_FULLNAME_UPDATE, payload: fullName });
-              dispatch({ type: SIGNUP_PAGE_GENDER_UPDATE, payload: gender });
+            console.log('accountSettingGetAndSetUserData', response.data.userDetails);
+            const { fullName, gender, profilePic, userName, dob, socialMediaLinks, bio } = response.data.userDetails;
+            // Set the personal Details & Personal User Id in the Personal Page State
+            dispatch({ type: PERSONAL_PAGE_SET_PERSONAL_DETAILS_AND_USERID, payload: response.data.userDetails });
+            // Set these details for the Account Settings Screen
+            dispatch({ type: SETTING_PAGE_USER_CAPTION_UPDATE, payload: bio });
+            dispatch({ type: SETTING_PAGE_USER_DOB_UPDATE, payload: dob });
+            dispatch({ type: SETTING_PAGE_USER_SOCIAL_LINK_UPDATE, payload: socialMediaLinks });
+            dispatch({ type: SETTING_PAGE_USER_PROFILE_PIC_UDPATE, payload: profilePic });
+            dispatch({ type: SIGNUP_PAGE_USERNAME_UPDATE, payload: userName });
+            dispatch({ type: SIGNUP_PAGE_FULLNAME_UPDATE, payload: fullName });
+            dispatch({ type: SIGNUP_PAGE_GENDER_UPDATE, payload: gender });
+            try {
               const deliveryDetailsArray = Object.values(response.data.userDetails.deliveryDetails);
               dispatch({ type: SETTING_PAGE_USER_ADD_ADDRESS, payload: deliveryDetailsArray });
+            } catch (err) {
+              console.log('Error deliveryDetailsArray accountSettingGetAndSetUserData', userId);
+            }
         })
         .catch((error) => {
             //handle error
@@ -155,6 +165,7 @@ export const accountSettingsSaveProfileChanges = ({ profileDetailsChanges }) => 
       'Content-Type': 'application/json',
       Authorization: userToken
     };
+    // console.log(' accountSettingsSaveProfileChanges, data', { newProfile: { dob: dateOfBirth, userName, fullName, gender, bio, socialMediaLinks, profilePic }, userNameChanged });
     return (dispatch) => {
       dispatch({ type: SETTING_PAGE_GENERAL_LOADING_TOGGLE, payload: true });
       axios({
@@ -164,10 +175,15 @@ export const accountSettingsSaveProfileChanges = ({ profileDetailsChanges }) => 
           data: { newProfile: { dob: dateOfBirth, userName, fullName, gender, bio, socialMediaLinks, profilePic }, userNameChanged }
           })
           .then((response) => {
-              console.log('accountSettingsSaveProfileChanges', response.data);
+              console.log('accountSettingsSaveProfileChanges', response.data, response.status);
           })
           .catch((error) => {
               console.log('accountSettingsSaveProfileChanges Actions Error ', error);
+              const errorMessage = error.response.data;
+              if (errorMessage.length > 25) {
+                dispatch({ type: SIGNUP_PAGE_ERROR_UPDATE, payload: 'Server Error, Please try in some time' });
+              }
+              dispatch({ type: SIGNUP_PAGE_ERROR_UPDATE, payload: errorMessage });
           })
           .finally(() => {
               dispatch({ type: SETTING_PAGE_GENERAL_LOADING_TOGGLE, payload: false });
@@ -248,38 +264,5 @@ export const accountSettingsGetBidsForMe = ({ userToken }) => {
         .catch((error) => {
             console.log('accountSettingsGetBidsForMe Actions Error ', error);
       });
-  };
-};
-
-
-// Reject the Bid
-export const accountSettingsRejectBid = ({ bidId, reason, feedback, userToken }) => {
-  // console.log('accountSettingsRejectBid', { bidId, reason, feedback, userToken });
-  const headers = {
-    'Content-Type': 'application/json',
-    Authorization: userToken
-  };
-  return (dispatch) => {
-    dispatch({ type: SETTING_PAGE_GENERAL_LOADING_TOGGLE, payload: true });
-    axios({
-        method: 'post',
-        url: SettingsPageRejectBidURL,
-        headers,
-        data: { bidId, ownerRejectionReason: reason, ownerFeedback: feedback }
-        })
-        .then((response) => {
-            const { bids } = response.data;
-            if (typeof bids !== 'undefined') {
-              dispatch({ type: SETTING_PAGE_SET_RENT_BID_FOR_ME, payload: bids });
-            }
-            Actions.bidsForMe();
-            console.log('accountSettingsRejectBid', response.data);
-        })
-        .catch((error) => {
-            console.log('accountSettingsRejectBid Actions Error ', error);
-        })
-        .finally(() => {
-            dispatch({ type: SETTING_PAGE_GENERAL_LOADING_TOGGLE, payload: false });
-        });
   };
 };
