@@ -11,7 +11,8 @@ import {
   SettingsPageRejectBidURL,
   SettingsPageAcceptBidURL,
   SettingsPageCancelBidURL,
-  SettingsPageCreateBidURL
+  SettingsPageCreateBidURL,
+  SettingsPageEditBidURL
 } from '../URLS';
 
 // Accept a Bid
@@ -34,7 +35,7 @@ export const bidsPageAcceptBid = ({ bidId, price, size, ownerAddress, securityAm
             if (typeof bids !== 'undefined') {
               dispatch({ type: SETTING_PAGE_SET_RENT_BID_FOR_ME, payload: bids });
             }
-            Actions.bidsForMe();
+            Actions.bidRequests();
             console.log('bidsPageAcceptBid', response.data);
         })
         .catch((error) => {
@@ -67,7 +68,7 @@ export const bidsPageRejectBid = ({ bidId, reason, feedback, userToken }) => {
             if (typeof bids !== 'undefined') {
               dispatch({ type: SETTING_PAGE_SET_RENT_BID_FOR_ME, payload: bids });
             }
-            Actions.bidsForMe();
+            Actions.bidRequests();
             console.log('bidsPageRejectBid', response.data);
         })
         .catch((error) => {
@@ -100,7 +101,7 @@ export const bidsPageCancelBid = ({ bidId, reason, feedback, userToken }) => {
             if (typeof bids !== 'undefined') {
               dispatch({ type: SETTING_PAGE_SET_RENT_BID_BY_ME, payload: bids });
             }
-            Actions.bidsForMe();
+            Actions.bidRequests();
             console.log('bidsPageRejectBid', response.data);
         })
         .catch((error) => {
@@ -134,11 +135,45 @@ export const bidsPageCreateBid = (item) => {
             if (typeof bids !== 'undefined') {
               dispatch({ type: SETTING_PAGE_SET_RENT_BID_BY_ME, payload: bids });
             }
-            Actions.pop();
+            Actions.bidRequests();
             console.log('bidsPageCreateBid', response.data);
         })
         .catch((error) => {
             console.log('bidsPageCreateBid Actions Error ', error);
+        })
+        .finally(() => {
+            dispatch({ type: SETTING_PAGE_GENERAL_LOADING_TOGGLE, payload: false });
+        });
+  };
+};
+
+
+// Edit Bid
+export const bidsPageEditBid = (item) => {
+  const { startDate, endDate, bidId, amount, userToken, deliveryAddress,
+    comment, updatedTimeStamp } = item;
+  const headers = {
+    'Content-Type': 'application/json',
+    Authorization: userToken
+  };
+  return (dispatch) => {
+    dispatch({ type: SETTING_PAGE_GENERAL_LOADING_TOGGLE, payload: true });
+    axios({
+        method: 'post',
+        url: SettingsPageEditBidURL,
+        headers,
+        data: { startDate, endDate, amount, deliveryAddress, comment, updatedTimeStamp, bidId }
+        })
+        .then((response) => {
+            const { bids } = response.data;
+            if (typeof bids !== 'undefined') {
+              dispatch({ type: SETTING_PAGE_SET_RENT_BID_BY_ME, payload: bids });
+            }
+            Actions.bidRequests();
+            console.log('bidsPageEditBid', response.data);
+        })
+        .catch((error) => {
+            console.log('bidsPageEditBid Actions Error ', error);
         })
         .finally(() => {
             dispatch({ type: SETTING_PAGE_GENERAL_LOADING_TOGGLE, payload: false });
