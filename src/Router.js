@@ -18,6 +18,7 @@ import BidAcceptPage from './components/SettingScreen/BidAcceptPage';
 import AddUserAddress from './components/SettingScreen/AddUserAddress';
 import BidCancelPage from './components/SettingScreen/BidCancelPage';
 import BidCreatePage from './components/SettingScreen/BidCreatePage';
+import BidEditPage from './components/SettingScreen/BidEditPage';
 
 class TabIcon extends Component {
   constructor(props) {
@@ -71,6 +72,7 @@ const RouterComponent = () => {
                   <Scene hideTabBar key='bidAcceptPage' component={BidAcceptPage} />
                   <Scene hideTabBar key='bidCancelPage' component={BidCancelPage} />
                   <Scene hideTabBar key='bidCreatePage' component={BidCreatePage} />
+                  <Scene hideTabBar key='bidEditPage' component={BidEditPage} />
                   <Scene hideTabBar key='addUserAddress' component={AddUserAddress} />
                 </Scene>
             </Scene>

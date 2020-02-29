@@ -49,7 +49,7 @@ const renderTitleComponent = ({ startDate, endDate, amount, comment, category, d
   );
 };
 
-const renderButtons = ({ bidId }) => {
+const renderButtons = ({ bidId, item }) => {
   return (
     <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginTop: 10 }}>
       <Button
@@ -59,7 +59,7 @@ const renderButtons = ({ bidId }) => {
         titleStyle={{ color: '#fb56c1', fontWeight: 'bold' }}
         buttonStyle={{ borderColor: '#fb56c1', borderWidth: 1 }}
         type={'outline'}
-        onPress={() => { }} // Visit BidUpdatePage to update Bid
+        onPress={() => { Actions.bidEditPage({ bidDetails: item }); }} // Visit BidUpdatePage to update Bid
       />
       <Button
         title={'Cancel'}
@@ -68,18 +68,18 @@ const renderButtons = ({ bidId }) => {
         titleStyle={{ color: '#ee5f73', fontWeight: 'bold' }}
         buttonStyle={{ borderColor: '#ee5f73', borderWidth: 1 }}
         type={'outline'}
-        onPress={() => { Actions.bidCancelPage({ bidId }); }} // Visit BidCancelPage to Cancel & take response
+        onPress={() => { Actions.bidCancelPage({ bidId }); }}
       />
     </View>
   );
 };
 
 const renderItem = ({ item }) => {
-  const { bidId, postContentUrl, startDate, endDate, amount, conmment, category, deliveryDetails } = item;
+  const { bidId, postContentUrl, startDate, endDate, amount, comment, category, deliveryDetails } = item;
   return (
     <ListItem
-      title={renderTitleComponent({ startDate, endDate, amount, conmment, category, deliveryDetails })}
-      subtitle={renderButtons({ bidId })}
+      title={renderTitleComponent({ startDate, endDate, amount, comment, category, deliveryDetails })}
+      subtitle={renderButtons({ bidId, item })}
       leftAvatar={renderImage({ postContentUrl })}
       bottomDivider
       pad={10}
