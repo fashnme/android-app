@@ -16,7 +16,7 @@ const reasons = [
   { value: "Don't want to Share" },
   { value: 'Other Reasons' }
 ];
-
+// Add Header 
 const BidDenyPage = ({ bidId, userToken, loading, bidsPageRejectBid }) => {
   const [index, updateIndex] = useState(0);
   const [feedback, updateFeedback] = useState('');

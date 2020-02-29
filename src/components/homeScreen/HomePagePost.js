@@ -133,7 +133,7 @@ class HomePagePost extends Component {
                     name: 'shopping-bag',
                     type: 'font-awesome',
                     text: '',
-                    onPress: () => { this.props.homePageOpenProductsModal({ isVisible: true, productsData: taggedProducts }); }
+                    onPress: () => { this.props.homePageOpenProductsModal({ isVisible: true, productsData: taggedProducts, postDetails: this.props.data }); }
                })}
 
                {this.renderIconWithText({

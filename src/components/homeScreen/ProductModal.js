@@ -3,6 +3,7 @@ import { StyleSheet, View, Text, FlatList, Image, TouchableWithoutFeedback, Touc
 import { Icon } from 'react-native-elements';
 import Modal from 'react-native-modal';
 import { connect } from 'react-redux';
+import { Actions } from 'react-native-router-flux';
 import { globalStyles } from '../../Styles';
 import {
   homePageOpenProductsModal as _homePageOpenProductsModal,
@@ -62,7 +63,7 @@ const renderPriceBlock = ({ crossedPrice, price }) => {
     </View>
   );
 };
-const ProductView = ({ productData }) => {
+const ProductView = ({ productData, postId, posterId, homePageOpenProductsModal }) => {
   // console.log('ProductModal productData', productData);
   if (productData === undefined) {
     return <View />;
@@ -80,16 +81,22 @@ const ProductView = ({ productData }) => {
         { renderPriceBlock({ crossedPrice, price }) }
         <AddToCartButton title="ADD TO CART" onPress={() => console.log('Add to Cart button Pressed')} />
         <BuyNowButton title="BUY NOW" onPress={() => console.log('Buy Now button Pressed')} />
-        <BidForRentButton title="BID FOR RENT" onPress={() => console.log('bid now button pressed!')} />
+        <BidForRentButton
+          title="BID FOR RENT" onPress={() => {
+          Actions.bidCreatePage({ postId, posterId, productData });
+          homePageOpenProductsModal({ isVisible: false, productsData: [], postDetails: { postId, posterId } });
+        }}
+        />
       </View>
     </View>
   );
 };
 
-const ProductModal = ({ selectedItem, productsData, productsModalVisible, homePageOpenProductsModal, productPageSelectedProductUpdate }) => {
+const ProductModal = ({ selectedItem, productsData, productsModalVisible, postId, posterId,
+  homePageOpenProductsModal, productPageSelectedProductUpdate }) => {
     return (
         <Modal
-          onSwipeComplete={() => homePageOpenProductsModal({ isVisible: false, productsData: [] })}
+          onSwipeComplete={() => homePageOpenProductsModal({ isVisible: false, productsData: [], postDetails: { postId, posterId } })}
           swipeDirection={['down']}
           scroll
           isVisible={productsModalVisible}
@@ -103,7 +110,7 @@ const ProductModal = ({ selectedItem, productsData, productsModalVisible, homePa
             <View style={styles.commentsModalHeader}>
               <Text style={styles.commentsModalHeaderTitle}>Products</Text>
                 <View style={styles.commentsModalHeaderExitButton}>
-                  <Icon name='cross' type='entypo' onPress={() => homePageOpenProductsModal({ isVisible: false, productsData: [] })} />
+                  <Icon name='cross' type='entypo' onPress={() => homePageOpenProductsModal({ isVisible: false, productsData: [], postDetails: { postId, posterId } })} />
                 </View>
             </View>
             <View style={styles.body}>
@@ -115,7 +122,7 @@ const ProductModal = ({ selectedItem, productsData, productsModalVisible, homePa
                     renderItem={({ item, index }) => <ProductThumbnail item={item} index={index} productPageSelectedProductUpdate={productPageSelectedProductUpdate} productsData={productsData} />}
                 />
               </View>
-              <ProductView productData={productsData[selectedItem]} />
+              <ProductView productData={productsData[selectedItem]} postId={postId} posterId={posterId} homePageOpenProductsModal={homePageOpenProductsModal} />
             </View>
 
             <View style={styles.editBox} />
@@ -205,8 +212,8 @@ const styles = StyleSheet.create({
       }
 });
 const mapStateToProps = ({ productPageState }) => {
-    const { productsData, productsModalVisible, selectedItem } = productPageState;
-    return { productsData, productsModalVisible, selectedItem };
+    const { productsData, productsModalVisible, selectedItem, postId, posterId } = productPageState;
+    return { productsData, productsModalVisible, selectedItem, postId, posterId };
 };
 export default connect(mapStateToProps, {
   homePageOpenProductsModal: _homePageOpenProductsModal,
