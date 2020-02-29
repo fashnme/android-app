@@ -34,3 +34,5 @@ export const SettingsPageAddUserAddressURL = 'https://fashn-backend.herokuapp.co
 
 export const SettingsPageRejectBidURL = 'https://fashn-backend.herokuapp.com/bid/reject-bid';
 export const SettingsPageAcceptBidURL = 'https://fashn-backend.herokuapp.com/bid/accept-bid';
+export const SettingsPageCancelBidURL = 'https://fashn-backend.herokuapp.com/bid/cancel-bid'; // TODO
+export const SettingsPageCreateBidURL = 'https://fashn-backend.herokuapp.com/bid/create-bid';

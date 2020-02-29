@@ -48,6 +48,7 @@ export const UPLOAD_PAGE_UPDATE_SELECTED_IMAGE_PATH = 'upload_page_update_select
 
 // Product Related types
 export const PRODUCT_PAGE_SELECTED_PRODUCT_UPDATE = 'product_page_selected_product_update';
+export const PRODUCT_PAGE_SET_POSTID_AND_POSTERID = 'product_page_set_postid_and_posterid';
 
 // Signup page
 export const SIGNUP_PAGE_PHONE_UPDATE = 'signup_page_phone_update';

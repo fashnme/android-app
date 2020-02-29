@@ -47,7 +47,7 @@ const checkPropsAndAcceptBid = ({ bidId, selectedAddress, sliderValue, amount, s
     return;
   }
   if (Object.values(selectedAddress).length === 0) {
-    setPropError('Please Select a Address Below');
+    setPropError('Scroll Down And Select a Address Below');
     return;
   }
   setPropError('');

@@ -17,8 +17,8 @@ const getFormattedDate = (date) => {
   return `${d[1]} ${d[2]}, ${d[3]}`;
 };
 
-const renderTitleComponent = ({ startDate, endDate, amount, category, deliveryDetails }) => {
-  const conmment = "This is for my friends for my friend's party";
+const renderTitleComponent = ({ startDate, endDate, amount, comment, category, deliveryDetails }) => {
+  // console.log('BidsForMe', deliveryDetails);
   return (
     <View>
       <View style={{ flexDirection: 'row' }}>
@@ -43,7 +43,7 @@ const renderTitleComponent = ({ startDate, endDate, amount, category, deliveryDe
       </View>
       <View>
         <Text style={styles.headingStyle}> Occassion: </Text>
-        <Text style={[styles.fieldStyle]}>{conmment}</Text>
+        <Text style={[styles.fieldStyle]}>{comment}</Text>
       </View>
     </View>
   );
