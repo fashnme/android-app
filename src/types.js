@@ -27,7 +27,6 @@ export const HOME_PAGE_SET_PERSONAL_VERTICAL_CAROUSEL_REF = 'home_page_set_perso
 export const HOME_PAGE_ACTIVE_TAB_UPDATE = 'home_page_active_tab_update';
 export const HOME_PAGE_TOGGLE_COMMENTS_MODAL = 'home_page_toggle_comments_modal';
 export const HOME_PAGE_TOGGLE_SHARE_MODAL = 'home_page_toggle_share_modal';
-export const HOME_PAGE_SET_TOGGLE_PRODUCTS_DATA = 'home_page_set_toggle_products_data';
 
 // Keeping track of users Actions
 export const USER_SET_ACTION_DATA = 'user_set_action_data';
@@ -35,6 +34,8 @@ export const USER_LIKED_POST = 'user_liked_post';
 export const USER_UNLIKED_POST = 'user_unliked_post';
 export const USER_FOLLOWED_HIM = 'user_followed_him';
 export const USER_UNFOLLOWED_HIM = 'user_unfollowed_him';
+export const USER_ADDED_PRODUCT_TO_CART = 'user_added_product_to_cart';
+export const USER_REMOVED_PRODUCT_FROM_CART = 'user_removed_product_from_cart';
 
 // Celebrity Page
 export const CELEBRITY_PAGE_SET_CELEB_DATA = 'celebrity_page_set_celeb_data';
@@ -49,6 +50,9 @@ export const UPLOAD_PAGE_UPDATE_SELECTED_IMAGE_PATH = 'upload_page_update_select
 // Product Related types
 export const PRODUCT_PAGE_SELECTED_PRODUCT_UPDATE = 'product_page_selected_product_update';
 export const PRODUCT_PAGE_SET_POSTID_AND_POSTERID = 'product_page_set_postid_and_posterid';
+export const PRODUCT_PAGE_SET_TOGGLE_PRODUCTS_DATA = 'product_page_set_toggle_products_data';
+export const PRODUCT_PAGE_SET_COMPLETE_PRODUCTS_DATA = 'product_page_set_complete_products_data';
+export const PRODUCT_PAGE_PRICE_AND_SIZE_UPDATE = 'product_page_price_and_size_update';
 
 // Signup page
 export const SIGNUP_PAGE_PHONE_UPDATE = 'signup_page_phone_update';
