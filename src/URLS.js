@@ -21,6 +21,10 @@ export const SignupPageSendOtpURL = 'https://fashn-backend.herokuapp.com/auth/se
 export const SignupPageVerifyOtpURL = 'https://fashn-backend.herokuapp.com/auth/user/verify-otp';
 export const SignupPageSetUserDetails = 'https://fashn-backend.herokuapp.com/user/create-user';
 
+// ProductPage Urls
+export const ProductPageFetchProductsInfoURL = 'https://fashn-backend.herokuapp.com/product/fetch-products';
+export const ProductPageAddProductToCartURL = 'https://fashn-backend.herokuapp.com/user/add-to-cart';
+
 // SettingsPage Urls
 export const SettingsPageAboutUsURL = 'https://fashn.me/about-us';
 export const SettingsPagePrivacyPolicyURL = 'https://fashn.me/about-us';

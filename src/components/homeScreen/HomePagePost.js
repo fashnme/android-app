@@ -9,7 +9,7 @@ import { HOME_PAGE_PUBLIC_MODE, HOME_PAGE_PERSONAL_MODE } from '../../types';
 import AvatarComp from './AvatarComp';
 import HeartComp from './HeartComp';
 import CommentsModal from './CommentsModal';
-import ProductModal from './ProductModal';
+import ProductModal from '../productScreen/ProductModal';
 // import ShareModal from './ShareModal';
 import {
   homePageLikePost,
@@ -20,7 +20,7 @@ import {
   celebrityPageVisitAndSetData,
   homePageToggleCommentsModal,
   homePageSharePost,
-  homePageOpenProductsModal
+  productPageOpenProductModal
 } from '../../actions';
 
 const screenWidth = Dimensions.get('window').width;
@@ -133,7 +133,7 @@ class HomePagePost extends Component {
                     name: 'shopping-bag',
                     type: 'font-awesome',
                     text: '',
-                    onPress: () => { this.props.homePageOpenProductsModal({ isVisible: true, productsData: taggedProducts, postDetails: this.props.data }); }
+                    onPress: () => { this.props.productPageOpenProductModal({ isVisible: true, productsData: taggedProducts, postDetails: this.props.data }); }
                })}
 
                {this.renderIconWithText({
@@ -294,5 +294,5 @@ const mapStateToProps = ({ homePageState, userActionData, personalPageState }) =
     celebrityPageVisitAndSetData,
     homePageToggleCommentsModal,
     homePageSharePost,
-    homePageOpenProductsModal
+    productPageOpenProductModal
   })(HomePagePost);

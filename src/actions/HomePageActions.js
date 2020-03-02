@@ -14,8 +14,6 @@ import {
   USER_UNLIKED_POST,
   HOME_PAGE_TOGGLE_COMMENTS_MODAL,
   HOME_PAGE_TOGGLE_SHARE_MODAL,
-  HOME_PAGE_SET_TOGGLE_PRODUCTS_DATA,
-  PRODUCT_PAGE_SET_POSTID_AND_POSTERID
 } from '../types';
 
 import {
@@ -186,16 +184,6 @@ export const homePageToggleShareModal = (isVisible) => {
   return {
     type: HOME_PAGE_TOGGLE_SHARE_MODAL,
     payload: isVisible
-  };
-};
-
-// Method to Toggle Products Modal on HomePage
-export const homePageOpenProductsModal = ({ isVisible, productsData, postDetails }) => {
-  // console.log('homePageOpenProductsModal productsData', isVisible, productsData, postDetails);
-  return (dispatch) => {
-    dispatch({ type: HOME_PAGE_TOGGLE_COMMENTS_MODAL, payload: false });
-    dispatch({ type: HOME_PAGE_SET_TOGGLE_PRODUCTS_DATA, payload: { isVisible, productsData } });
-    dispatch({ type: PRODUCT_PAGE_SET_POSTID_AND_POSTERID, payload: postDetails });
   };
 };
 
