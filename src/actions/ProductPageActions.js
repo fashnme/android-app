@@ -7,12 +7,10 @@ import {
   HOME_PAGE_TOGGLE_COMMENTS_MODAL,
   PRODUCT_PAGE_SET_COMPLETE_PRODUCTS_DATA,
   PRODUCT_PAGE_PRICE_AND_SIZE_UPDATE,
-  USER_ADDED_PRODUCT_TO_CART
 } from '../types';
 
 import {
-  ProductPageFetchProductsInfoURL,
-  ProductPageAddProductToCartURL
+  ProductPageFetchProductsInfoURL
 } from '../URLS';
 
 
@@ -79,28 +77,4 @@ const fetchExtraProductsData = (productsData, dispatch) => {
       .catch((error) => {
           console.log('productPageOpenProductModal fetchExtraProductsData Actions Error ', error);
       });
-};
-
-export const productPageAddToCart = (item) => {
-  console.log('Product Added to Cart', item);
-  const { productId, quantity, sizeSelected, postId, posterId, userToken } = item;
-  return (dispatch) => {
-    const headers = {
-      'Content-Type': 'application/json',
-      Authorization: userToken
-    };
-    axios({
-        method: 'post',
-        url: ProductPageAddProductToCartURL,
-        headers,
-        data: { productId, quantity, size: sizeSelected, referrerPost: postId, referrerId: posterId }
-        })
-        .then((response) => {
-            console.log('productPageAddToCart', response.data);
-            dispatch({ type: USER_ADDED_PRODUCT_TO_CART, payload: productId });
-        })
-        .catch((error) => {
-            console.log('productPageAddToCart  Actions Error ', error);
-        });
-  };
 };

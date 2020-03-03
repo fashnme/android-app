@@ -343,7 +343,7 @@ const mapStateToProps = ({ signupPageState, personalPageState, accountSettingSta
   } else {
       genderIndex = 2;
   }
-  return { userName, fullName, genderIndex, loading, error, userToken, bio, dateOfBirth, socialMediaLinks, profilePic, personalUserId, oldUserName, accountSettingLoader };
+  return { userName, fullName, genderIndex, error, userToken, bio, dateOfBirth, socialMediaLinks, profilePic, personalUserId, oldUserName, accountSettingLoader };
 };
 export default connect(mapStateToProps, {
   signupPageUpdateUsername,

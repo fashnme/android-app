@@ -7,7 +7,7 @@ import { globalStyles } from '../../Styles';
 import {
   productPageOpenProductModal as _productPageOpenProductModal,
   productPageUpdatePriceAndSize as _productPageUpdatePriceAndSize,
-  productPageAddToCart as _productPageAddToCart
+  manageCartAddProductToCart as _manageCartAddProductToCart
 } from '../../actions';
 
 const AddToCartButton = ({ onPress, title }) => {
@@ -93,12 +93,13 @@ const renderPriceBlock = ({ crossedPrice, price }) => {
   );
 };
 
-const checkAndCompleteRequest = ({ productId, sizeSelected, postId, userToken, setError, posterId, visitCart, productPageAddToCart }) => {
+const checkAndCompleteRequest = ({ productId, sizeSelected, postId, userToken, setError, posterId,
+  visitCart, manageCartAddProductToCart, productPageOpenProductModal }) => {
   if (sizeSelected === null) {
     setError('Please Scroll Down & Select Size');
     return;
   }
-  productPageAddToCart({
+  manageCartAddProductToCart({
     productId,
     quantity: 1,
     sizeSelected,
@@ -108,12 +109,14 @@ const checkAndCompleteRequest = ({ productId, sizeSelected, postId, userToken, s
   });
   if (visitCart) {
     console.log('Visit Cart', visitCart);
+    Actions.manageCart();
   }
+  productPageOpenProductModal({ isVisible: false, productsData: [], postDetails: { postId, posterId } });
   setError('Added to Cart!');
 };
 
 const ProductPriceSizeView = ({ productData, postId, posterId, askForSize, userToken,
-  productPageOpenProductModal, productPageUpdatePriceAndSize, productPageAddToCart }) => {
+  productPageOpenProductModal, productPageUpdatePriceAndSize, manageCartAddProductToCart }) => {
   const [sizeSelected, setSizeSelected] = useState(null);
   const [error, setError] = useState('');
   if (productData === undefined) {
@@ -138,12 +141,12 @@ const ProductPriceSizeView = ({ productData, postId, posterId, askForSize, userT
           { renderPriceBlock({ crossedPrice, price }) }
           <AddToCartButton
             title="ADD TO BAG" onPress={() => {
-              checkAndCompleteRequest({ productId, sizeSelected, postId, posterId, userToken, setError, visitCart: false, productPageAddToCart });
+              checkAndCompleteRequest({ productId, sizeSelected, postId, posterId, userToken, setError, visitCart: false, manageCartAddProductToCart, productPageOpenProductModal });
             }}
           />
           <BuyNowButton
             title="BUY NOW" onPress={() => {
-              checkAndCompleteRequest({ productId, sizeSelected, postId, posterId, userToken, setError, visitCart: true, productPageAddToCart });
+              checkAndCompleteRequest({ productId, sizeSelected, postId, posterId, userToken, setError, visitCart: true, manageCartAddProductToCart, productPageOpenProductModal });
             }}
           />
           <BidForRentButton
@@ -233,5 +236,5 @@ const mapStateToProps = ({ productPageState, personalPageState }) => {
 export default connect(mapStateToProps, {
   productPageOpenProductModal: _productPageOpenProductModal,
   productPageUpdatePriceAndSize: _productPageUpdatePriceAndSize,
-  productPageAddToCart: _productPageAddToCart
+  manageCartAddProductToCart: _manageCartAddProductToCart
 })(ProductPriceSizeView);

@@ -21,13 +21,21 @@ export const settingsPageRowPressed = ({ key }) => {
     case 'profile':
       Actions.editUserProfile();
       break;
-      
+
     case 'orders':
       Actions.orders();
       break;
 
     case 'requests':
       Actions.bidRequests();
+      break;
+
+    case 'bag':
+      Actions.manageCart();
+      break;
+
+    case 'wishlist':
+      Actions.wishlistPage();
       break;
 
     default:

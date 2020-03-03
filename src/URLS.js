@@ -23,7 +23,6 @@ export const SignupPageSetUserDetails = 'https://fashn-backend.herokuapp.com/use
 
 // ProductPage Urls
 export const ProductPageFetchProductsInfoURL = 'https://fashn-backend.herokuapp.com/product/fetch-products';
-export const ProductPageAddProductToCartURL = 'https://fashn-backend.herokuapp.com/user/add-to-cart';
 
 // SettingsPage Urls
 export const SettingsPageAboutUsURL = 'https://fashn.me/about-us';
@@ -41,3 +40,10 @@ export const SettingsPageAcceptBidURL = 'https://fashn-backend.herokuapp.com/bid
 export const SettingsPageCancelBidURL = 'https://fashn-backend.herokuapp.com/bid/cancel-bid';
 export const SettingsPageCreateBidURL = 'https://fashn-backend.herokuapp.com/bid/create-bid';
 export const SettingsPageEditBidURL = 'https://fashn-backend.herokuapp.com/bid/edit-bid';
+
+// Checkout Page
+export const ManageCartGetUserCartURL = 'https://fashn-backend.herokuapp.com/user/get-user-cart';
+export const ManageCartAddProductToCartURL = 'https://fashn-backend.herokuapp.com/user/add-to-cart';
+export const ManageCartRemoveProductFromCartURL = 'https://fashn-backend.herokuapp.com/user/remove-from-cart';
+export const ManageCartAddProductToWishlistURL = 'https://fashn-backend.herokuapp.com/user/add-to-wishlist';
+export const ManageCartPlaceOrderURL = 'https://fashn-backend.herokuapp.com/payments/checkout-cart';
