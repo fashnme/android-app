@@ -30,7 +30,7 @@ export default (state = INITIAL_STATE, action) => {
 
       case PRODUCT_PAGE_PRICE_AND_SIZE_UPDATE: {
         const newObj = { ...state.sizeAndPriceObject, ...action.payload };
-        console.log('CompleteProductData newObj', newObj);
+        console.log('CompleteProductData Reducer Price & Size', newObj);
         return { ...state, sizeAndPriceObject: newObj };
       }
 

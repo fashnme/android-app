@@ -38,6 +38,10 @@ export const settingsPageRowPressed = ({ key }) => {
       Actions.wishlistPage();
       break;
 
+    case 'personalStore':
+      Actions.personalStorePage();
+      break;
+
     default:
       break;
   }

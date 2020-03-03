@@ -1,9 +1,5 @@
 import React, { Component } from 'react';
-import {
-  Dimensions,
-  StatusBar,
-  View
-} from 'react-native';
+import { Dimensions, StatusBar, View } from 'react-native';
 import { connect } from 'react-redux';
 import Carousel from 'react-native-snap-carousel';
 import {
@@ -11,7 +7,8 @@ import {
   homePageUpdateActiveTab,
   homePageGetInitialPublicFeedData,
   homePageSetPublicVerticalCarouselRef,
-  homePageSetPersonalVerticalCarouselRef
+  homePageSetPersonalVerticalCarouselRef,
+  homePageFetchUserColdStartDetails
 } from '../actions';
 import HomePagePost from './homeScreen/HomePagePost';
 
@@ -25,33 +22,40 @@ class HomePage extends Component {
     const { userToken } = this.props;
     this.props.homePageGetInitialFeedData({ userToken });
     this.props.homePageGetInitialPublicFeedData({ userToken });
+    this.props.homePageFetchUserColdStartDetails({ userToken });
   }
 
   render() {
     const { feedData, activeTab, publicFeedData } = this.props;
     if (activeTab === 1) {
       return (
-        <Carousel
-          data={publicFeedData}
-          ref={(c) => { this.props.homePageSetPublicVerticalCarouselRef(c); }}
-          sliderHeight={WINDOW_HEIGHT}
-          itemHeight={WINDOW_HEIGHT}
-          vertical
-          useScrollView={false}
-          renderItem={({ item }) => (<HomePagePost data={item} />)}
-        />
+        <View>
+          <StatusBar hidden />
+          <Carousel
+            data={publicFeedData}
+            ref={(c) => { this.props.homePageSetPublicVerticalCarouselRef(c); }}
+            sliderHeight={WINDOW_HEIGHT}
+            itemHeight={WINDOW_HEIGHT}
+            vertical
+            useScrollView={false}
+            renderItem={({ item }) => (<HomePagePost data={item} />)}
+          />
+        </View>
       );
     } else if (activeTab === 2) {
       return (
-        <Carousel
-          data={feedData}
-          ref={(c) => { this.props.homePageSetPersonalVerticalCarouselRef(c); }}
-          sliderHeight={WINDOW_HEIGHT}
-          itemHeight={WINDOW_HEIGHT}
-          vertical
-          useScrollView={false}
-          renderItem={({ item }) => (<HomePagePost data={item} />)}
-        />
+        <View>
+          <StatusBar hidden />
+          <Carousel
+            data={feedData}
+            ref={(c) => { this.props.homePageSetPersonalVerticalCarouselRef(c); }}
+            sliderHeight={WINDOW_HEIGHT}
+            itemHeight={WINDOW_HEIGHT}
+            vertical
+            useScrollView={false}
+            renderItem={({ item }) => (<HomePagePost data={item} />)}
+          />
+        </View>
       );
     }
 
@@ -72,5 +76,6 @@ export default connect(mapStateToProps, {
   homePageUpdateActiveTab,
   homePageGetInitialPublicFeedData,
   homePageSetPublicVerticalCarouselRef,
-  homePageSetPersonalVerticalCarouselRef
+  homePageSetPersonalVerticalCarouselRef,
+  homePageFetchUserColdStartDetails
 })(HomePage);

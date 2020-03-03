@@ -9,7 +9,8 @@ import {
   SETTING_PAGE_USER_ADD_ADDRESS,
   SETTING_PAGE_GENERAL_LOADING_TOGGLE,
   SETTING_PAGE_SET_SELECTED_ADDRESS,
-  MANAGE_CART_PAGE_SET_CART_ARRAY
+  MANAGE_CART_PAGE_SET_CART_ARRAY,
+  SETTING_PAGE_SET_USER_WISHLIST
 } from '../types';
 
 
@@ -60,6 +61,9 @@ export default (state = INITIAL_STATE, action) => {
         const newSocialMediaLinks = { ...state.socialMediaLinks, ...action.payload };
         return { ...state, socialMediaLinks: newSocialMediaLinks };
       }
+
+      case SETTING_PAGE_SET_USER_WISHLIST:
+        return { ...state, wishlistArray: action.payload };
 
       case SETTING_PAGE_USER_PROFILE_PIC_UDPATE:
         return { ...state, profilePic: action.payload };

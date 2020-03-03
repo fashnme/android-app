@@ -5,6 +5,7 @@ export const HomePageGetInitialPublicFeedDataURL = 'https://fashn-backend.heroku
 export const HomePageLikePostURL = 'https://fashn-backend.herokuapp.com/user/like-post';
 export const HomePageUnlikePostURL = 'https://fashn-backend.herokuapp.com/user/unlike-post';
 export const HomePageDislikePostURL = 'https://fashn-backend.herokuapp.com/user/unlike-post'; // TODO
+export const HomePageFetchUserColdStartDetailsURL = 'https://fashn-backend.herokuapp.com/user/fetch-user-coldstart';
 
 // CelebrityPage Urls
 export const CelebrityPageFollowURL = 'https://fashn-backend.herokuapp.com/user/follow-user';
@@ -23,6 +24,7 @@ export const SignupPageSetUserDetails = 'https://fashn-backend.herokuapp.com/use
 
 // ProductPage Urls
 export const ProductPageFetchProductsInfoURL = 'https://fashn-backend.herokuapp.com/product/fetch-products';
+export const ProductPageGetUpdatePriceAndSizeURL = 'https://fashn-backend.herokuapp.com/product/get-updated-price-and-size';
 
 // SettingsPage Urls
 export const SettingsPageAboutUsURL = 'https://fashn.me/about-us';
@@ -40,10 +42,12 @@ export const SettingsPageAcceptBidURL = 'https://fashn-backend.herokuapp.com/bid
 export const SettingsPageCancelBidURL = 'https://fashn-backend.herokuapp.com/bid/cancel-bid';
 export const SettingsPageCreateBidURL = 'https://fashn-backend.herokuapp.com/bid/create-bid';
 export const SettingsPageEditBidURL = 'https://fashn-backend.herokuapp.com/bid/edit-bid';
+export const SettingsPageGetUserWishlistURL = 'https://fashn-backend.herokuapp.com/user/get-user-wishlist';
 
 // Checkout Page
 export const ManageCartGetUserCartURL = 'https://fashn-backend.herokuapp.com/user/get-user-cart';
 export const ManageCartAddProductToCartURL = 'https://fashn-backend.herokuapp.com/user/add-to-cart';
 export const ManageCartRemoveProductFromCartURL = 'https://fashn-backend.herokuapp.com/user/remove-from-cart';
 export const ManageCartAddProductToWishlistURL = 'https://fashn-backend.herokuapp.com/user/add-to-wishlist';
+export const ManageCartRemoveProductFromWishlistURL = 'https://fashn-backend.herokuapp.com/user/remove-from-wishlist';
 export const ManageCartPlaceOrderURL = 'https://fashn-backend.herokuapp.com/payments/checkout-cart';
