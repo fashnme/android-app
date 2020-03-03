@@ -132,7 +132,7 @@ class Orders extends Component {
             keyExtractor={(item, index) => index.toString()}
             data={ordersArray}
             renderItem={this.renderOrderItem.bind(this)}
-            contentContainerStyle={{ paddingBottom: 20 }}
+            contentContainerStyle={{ paddingBottom: 200 }}
           />
         </View>
       </View>

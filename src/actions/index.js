@@ -7,3 +7,4 @@ export * from './SettingsPageActions';
 export * from './AccountSettingActions';
 export * from './BidsRelatedActions';
 export * from './PersonalPageActions';
+export * from './ManageCartActions';

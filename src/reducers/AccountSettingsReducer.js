@@ -8,7 +8,8 @@ import {
   SETTING_PAGE_USER_PROFILE_PIC_UDPATE,
   SETTING_PAGE_USER_ADD_ADDRESS,
   SETTING_PAGE_GENERAL_LOADING_TOGGLE,
-  SETTING_PAGE_SET_SELECTED_ADDRESS
+  SETTING_PAGE_SET_SELECTED_ADDRESS,
+  MANAGE_CART_PAGE_SET_CART_ARRAY
 } from '../types';
 
 
@@ -27,6 +28,7 @@ const INITIAL_STATE = {
   rentBidsByMe: [],
   personalProductRecomm: [],
   notificationArray: [],
+  userCartArray: [],
   // Loading
   loading: false
 };
@@ -64,6 +66,9 @@ export default (state = INITIAL_STATE, action) => {
 
       case SETTING_PAGE_GENERAL_LOADING_TOGGLE:
         return { ...state, loading: action.payload };
+
+      case MANAGE_CART_PAGE_SET_CART_ARRAY:
+        return { ...state, userCartArray: action.payload };
 
       default:
           return state;

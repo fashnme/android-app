@@ -36,6 +36,8 @@ export const USER_FOLLOWED_HIM = 'user_followed_him';
 export const USER_UNFOLLOWED_HIM = 'user_unfollowed_him';
 export const USER_ADDED_PRODUCT_TO_CART = 'user_added_product_to_cart';
 export const USER_REMOVED_PRODUCT_FROM_CART = 'user_removed_product_from_cart';
+export const USER_ADDED_PRODUCT_TO_WISHLIST = 'user_added_product_to_wishlist';
+export const USER_REMOVED_PRODUCT_FROM_WISHLIST = 'user_removed_product_from_wishlist';
 
 // Celebrity Page
 export const CELEBRITY_PAGE_SET_CELEB_DATA = 'celebrity_page_set_celeb_data';
@@ -82,5 +84,12 @@ export const SETTING_PAGE_USER_ADD_ADDRESS = 'setting_page_user_add_address';
 export const SETTING_PAGE_SET_SELECTED_ADDRESS = 'setting_page_set_selected_address';
 
 export const SETTING_PAGE_GENERAL_LOADING_TOGGLE = 'setting_page_general_loading_toggle';
+
+// Cart Operation
+export const MANAGE_CART_PAGE_SET_CART_ARRAY = 'manage_cart_page_set_cart_array';
+
+
+
+
 // export const WISHLIST_ADD_OPERATION = 'add';
 // export const WISHLIST_REMOVE_OPERATION = 'remove';
