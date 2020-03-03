@@ -1,21 +1,22 @@
 import React, { Component } from 'react';
 import { View, Text, FlatList, TouchableWithoutFeedback, Dimensions, ImageBackground } from 'react-native';
-import { Header, Button, Icon } from 'react-native-elements';
+import { Header, Button } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { Actions } from 'react-native-router-flux';
 import {
   manageCartGetUserWishlist,
-  manageCartRemoveProductFromWishlist,
   manageCartAddProductToCart
 } from '../../actions';
 
+// TODO TODO TODO
+// Fix the Action & Reducer to Show PersonalStore Products instead of Wishlist Array
 
 const screenWidth = Dimensions.get('window').width;
 const itemSpacing = 10;
 const rowWidth = (screenWidth - (3 * itemSpacing)) / 2;
 const aspectRatio = 3 / 4;
 
-class WishlistPage extends Component {
+class PersonalStorePage extends Component {
   componentDidMount() {
     this.focusListener = this.props.navigation.addListener('didFocus', () => {
       this.onFocusFunction();
@@ -49,14 +50,7 @@ class WishlistPage extends Component {
         <TouchableWithoutFeedback>
           <View>
             <ImageBackground source={{ uri: image }} style={styles.image}>
-              <Icon
-                name='circle-with-cross'
-                type='entypo'
-                size={26}
-                iconStyle={{ color: 'grey' }}
-                containerStyle={styles.crossStyle}
-                onPress={() => { this.props.manageCartRemoveProductFromWishlist({ productId, userToken }); }}
-              />
+              <View />
             </ImageBackground>
             <Text numberOfLines={1} ellipsizeMode='tail' style={styles.brand}>{ brandName }</Text>
             <Text numberOfLines={1} ellipsizeMode='tail' style={styles.desc}>{ title }</Text>
@@ -89,7 +83,7 @@ class WishlistPage extends Component {
           backgroundColor={'white'}
           placement={'left'}
           leftComponent={{ icon: 'arrow-back', color: 'grey', onPress: () => { Actions.pop(); } }}
-          centerComponent={{ text: 'WISHLIST', style: { color: 'grey', fontWeight: 'bold', fontSize: 17 } }}
+          centerComponent={{ text: 'Personal Store', style: { color: 'grey', fontWeight: 'bold', fontSize: 17 } }}
           rightComponent={
             <Button
               title={'CHECKOUT BAG'}
@@ -181,6 +175,5 @@ const mapStateToProps = ({ personalPageState, accountSettingState }) => {
 
 export default connect(mapStateToProps, {
   manageCartGetUserWishlist,
-  manageCartRemoveProductFromWishlist,
   manageCartAddProductToCart
-})(WishlistPage);
+})(PersonalStorePage);

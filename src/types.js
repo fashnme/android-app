@@ -82,6 +82,7 @@ export const SETTING_PAGE_USER_SOCIAL_LINK_UPDATE = 'setting_page_user_social_li
 export const SETTING_PAGE_USER_PROFILE_PIC_UDPATE = 'setting_page_user_profile_pic_update';
 export const SETTING_PAGE_USER_ADD_ADDRESS = 'setting_page_user_add_address';
 export const SETTING_PAGE_SET_SELECTED_ADDRESS = 'setting_page_set_selected_address';
+export const SETTING_PAGE_SET_USER_WISHLIST = 'setting_page_set_user_wishlist';
 
 export const SETTING_PAGE_GENERAL_LOADING_TOGGLE = 'setting_page_general_loading_toggle';
 
@@ -89,7 +90,6 @@ export const SETTING_PAGE_GENERAL_LOADING_TOGGLE = 'setting_page_general_loading
 export const MANAGE_CART_PAGE_SET_CART_ARRAY = 'manage_cart_page_set_cart_array';
 
 
-
-
+// Wishlist Page
 // export const WISHLIST_ADD_OPERATION = 'add';
 // export const WISHLIST_REMOVE_OPERATION = 'remove';

@@ -14,6 +14,7 @@ import {
   USER_UNLIKED_POST,
   HOME_PAGE_TOGGLE_COMMENTS_MODAL,
   HOME_PAGE_TOGGLE_SHARE_MODAL,
+  USER_SET_ACTION_DATA
 } from '../types';
 
 import {
@@ -21,8 +22,38 @@ import {
   HomePageGetInitialPublicFeedDataURL,
   HomePageLikePostURL,
   HomePageUnlikePostURL,
-  HomePageDislikePostURL
+  HomePageDislikePostURL,
+  HomePageFetchUserColdStartDetailsURL
 } from '../URLS';
+
+
+// Fetch Cold Start User Details
+export const homePageFetchUserColdStartDetails = ({ userToken }) => {
+  return (dispatch) => {
+    axios.get(HomePageFetchUserColdStartDetailsURL, { headers: { Authorization: userToken } })
+    .then(response => {
+      // console.log('Actions homePageFetchUserColdStartDetails', response.data);
+      const { followingMap, likedPostsMap, userCartMap, userWishlistMap } = response.data;
+      const payload = { likedPosts: {}, followingDataMap: {}, userCartMap: {}, userWishlistMap: {} };
+      if (followingMap !== undefined) {
+        payload.followingDataMap = followingMap;
+      }
+      if (likedPostsMap !== undefined) {
+        payload.likedPosts = likedPostsMap;
+      }
+      if (userCartMap !== undefined) {
+        payload.userCartMap = userCartMap;
+      }
+      if (userWishlistMap !== undefined) {
+        payload.userWishlistMap = userWishlistMap;
+      }
+      dispatch({ type: USER_SET_ACTION_DATA, payload });
+    })
+    .catch(error => {
+      console.log('HomePageActions homePageFetchUserColdStartDetails Error', error);
+    });
+  };
+};
 
 
 // Method to Get the Initial Personal Feed Data

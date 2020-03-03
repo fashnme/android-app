@@ -158,11 +158,11 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = ({ userActionData, celebPageState, homePageState }) => {
-    const { followingData } = userActionData;
+    const { followingDataMap } = userActionData;
     const { userDetails, userId } = celebPageState;
     const { userToken } = homePageState;
     let isFollowing = false;
-    if (userId in followingData) {
+    if (userId in followingDataMap) {
       isFollowing = true;
     }
     return { userDetails, isFollowing, userId, userToken };

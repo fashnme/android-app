@@ -10,7 +10,8 @@ import {
 } from '../types';
 
 import {
-  ProductPageFetchProductsInfoURL
+  ProductPageFetchProductsInfoURL,
+  ProductPageGetUpdatePriceAndSizeURL
 } from '../URLS';
 
 
@@ -19,29 +20,29 @@ export const productPageSelectedProductUpdate = (index) => {
 };
 
 export const productPageUpdatePriceAndSize = ({ productId }) => {
-  // TODO Update the Price of the Product
   console.log('productPageUpdatePriceAndSize', productId);
-  const payload = { };
-  payload[productId] = { sizesAvailable: [
-        {
-          "size": "30",
-          "sizeStandard": ""
-        },
-        {
-          "size": "One Size",
-          "sizeStandard": ""
-        },
-        {
-          "size": "S",
-          "sizeStandard": ""
-        },
-        {
-          "size": "XXL",
-          "sizeStandard": ""
-        }
-      ]};
-  return { type: PRODUCT_PAGE_PRICE_AND_SIZE_UPDATE, payload };
+  // TODO TEST
+  const headers = {
+    'Content-Type': 'application/json'
+  };
+  return (dispatch) => {
+    axios({
+        method: 'post',
+        url: ProductPageGetUpdatePriceAndSizeURL,
+        headers,
+        data: { productId, priceRequired: true, similarRequired: false }
+        })
+        .then((response) => {
+            const { updatedPriceAndSize } = response.data;
+            const payload = { ...updatedPriceAndSize };
+            dispatch({ type: PRODUCT_PAGE_PRICE_AND_SIZE_UPDATE, payload });
+        })
+        .catch((error) => {
+            console.log('productPageOpenProductModal fetchExtraProductsData Actions Error ', error);
+        });
+    };
 };
+
 
 // Method to Toggle Products Modal And Set Detail
 export const productPageOpenProductModal = ({ isVisible, productsData, postDetails }) => {

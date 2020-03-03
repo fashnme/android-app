@@ -1,41 +1,42 @@
-export const cartArray = [
+export const wishlistArray = [
   {
-     title: 'Printed Slim Fit Shirt with Button-Down Collar',
-     price: 544,
-     crossedPrice: 3000,
-     discount: 54,
-     image: 'https://assets.ajio.com/medias/sys_master/root/he6/hf4/11264618856478/-473Wx593H-440866356-navy-MODEL.jpg',
-     brandName: 'Nike',
-     quantity: 1,
-     size: 'S',
-     ecommerce: 'Shein',
-     deliveryCharges: 50,
-     productId: 'sh-323232'
-  },
-  {
-     title: 'Printed Slim Fit Shirt with Button-Down Collar',
-     price: 544,
-     crossedPrice: 3000,
-     discount: 54,
-     image: 'https://assets.ajio.com/medias/sys_master/root/h5d/h61/10504396341278/-473Wx593H-460083992-brown-MODEL.jpg',
-     brandName: 'Nike',
-     quantity: 2,
-     size: 'One Size',
-     ecommerce: 'myntra',
-     deliveryCharges: 100,
-     productId: 'my-232'
-  },
-  {
-     title: 'Printed Slim Fit Shirt with Button-Down Collar',
-     price: 544,
-     crossedPrice: 3000,
-     discount: 54,
-     image: 'https://assets.ajio.com/medias/sys_master/root/h5d/h61/10504396341278/-473Wx593H-460083992-brown-MODEL.jpg',
-     brandName: 'Nike',
-     quantity: 2,
-     size: 'One Size',
-     ecommerce: 'flipkart',
-     deliveryCharges: 100,
-     productId: 'my-232'
-  },
+           "title": "Men Tropical & Floral Print Drawstring Bermuda Shorts",
+           "price": 899,
+           "crossedPrice": 999,
+           "discount": 10,
+           "image": "https://img.ltwebstatic.com/images2_pi/2019/03/22/15532347903503201355.webp",
+           "brandName": "Myntra",
+           "productId": "sh-702991",
+           "userId": "PDo5gm8BMgKYZ1P4YhlZ",
+           "referrerPost": "hC-1LnABtwtk_tS7hSOI",
+           "referrerId": "YmiSjm8BuJISDM2-cz5j",
+           "timeStamp": "2020-03-03T16:20:45.428Z"
+       },
+       {
+           "title": "Men Tropical & Floral Print Drawstring Bermuda Shorts",
+           "price": 899,
+           "crossedPrice": 999,
+           "discount": 10,
+           "image": "https://img.ltwebstatic.com/images2_pi/2019/03/22/15532347903503201355.webp",
+           "brandName": "Nike",
+           "productId": "sh-702991",
+           "userId": "PDo5gm8BMgKYZ1P4YhlZ",
+           "referrerPost": "hC-1LnABtwtk_tS7hSOI",
+           "referrerId": "YmiSjm8BuJISDM2-cz5j",
+           "timeStamp": "2020-03-03T16:20:45.428Z"
+       },
+       {
+           "title": "Men Tropical & Floral Print Drawstring Bermuda Shorts",
+           "price": 899,
+           "crossedPrice": 999,
+           "discount": 10,
+           "image": "https://img.ltwebstatic.com/images2_pi/2019/03/22/15532347903503201355.webp",
+           "brandName": "United Colors of Benetton Co.",
+           "productId": "sh-702991",
+           "userId": "PDo5gm8BMgKYZ1P4YhlZ",
+           "referrerPost": "hC-1LnABtwtk_tS7hSOI",
+           "referrerId": "YmiSjm8BuJISDM2-cz5j",
+           "timeStamp": "2020-03-03T16:20:45.428Z"
+       },
+
 ];

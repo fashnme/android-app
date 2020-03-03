@@ -6,18 +6,21 @@ import {
   USER_REMOVED_PRODUCT_FROM_CART,
   USER_ADDED_PRODUCT_TO_WISHLIST,
   USER_REMOVED_PRODUCT_FROM_WISHLIST,
-  SETTING_PAGE_GENERAL_LOADING_TOGGLE
+  SETTING_PAGE_GENERAL_LOADING_TOGGLE,
+  SETTING_PAGE_SET_USER_WISHLIST
 } from '../types';
 
 import {
   ManageCartGetUserCartURL,
   ManageCartAddProductToCartURL,
   ManageCartRemoveProductFromCartURL,
+  ManageCartPlaceOrderURL,
+  SettingsPageGetUserWishlistURL,
   ManageCartAddProductToWishlistURL,
-  ManageCartPlaceOrderURL
+  ManageCartRemoveProductFromWishlistURL
 } from '../URLS';
 
-import { cartArray } from './dummyCartData';
+// import { wishlistArray } from './dummyCartData';
 
 // Fetch User Cart Details
 export const manageCartGetUserCartDetails = ({ userToken }) => {
@@ -26,17 +29,16 @@ export const manageCartGetUserCartDetails = ({ userToken }) => {
     Authorization: userToken
   };
   return (dispatch) => {
-    dispatch({ type: MANAGE_CART_PAGE_SET_CART_ARRAY, payload: cartArray });
-
     axios({
         method: 'get',
         url: ManageCartGetUserCartURL,
         headers,
         })
         .then((response) => {
+            const { products } = response.data;
             console.log('manageCartGetUserCartDetails', response.data);
-            // dispatch({ type: MANAGE_CART_PAGE_SET_CART_ARRAY, payload: cartArray });
-            // TODO Fix this Fetching
+            dispatch({ type: MANAGE_CART_PAGE_SET_CART_ARRAY, payload: products });
+            // TODO TEST
         })
         .catch((error) => {
             console.log('manageCartGetUserCartDetails Actions Error ', error);
@@ -86,8 +88,7 @@ export const manageCartRemoveProductFromCart = (item) => {
         })
         .then((response) => {
             console.log('manageCartRemoveProductFromCart Actions', response.data);
-            // TODO Fix This, get the update Cart in Response & dispatch it as new cart
-            // dispatch({ type: MANAGE_CART_PAGE_SET_CART_ARRAY, payload: cartArray });
+            manageCartGetUserCartDetails({ userToken }); // Again Fetch the Cart Details
             dispatch({ type: USER_REMOVED_PRODUCT_FROM_CART, payload: productId });
         })
         .catch((error) => {
@@ -131,9 +132,56 @@ export const manageCartAddProductToWishlist = ({ productId, userToken, posterId,
   };
 };
 
+// Get User Wishlist
+export const manageCartGetUserWishlist = ({ userToken }) => {
+  const headers = {
+    'Content-Type': 'application/json',
+    Authorization: userToken
+  };
+  return (dispatch) => {
+    axios({
+        method: 'get',
+        url: SettingsPageGetUserWishlistURL,
+        headers,
+        })
+        .then((response) => {
+            console.log('manageCartGetUserWishlist resp', response.data);
+            const { products } = response.data;
+            dispatch({ type: SETTING_PAGE_SET_USER_WISHLIST, payload: products });
+        })
+        .catch((error) => {
+            console.log('manageCartGetUserWishlist Actions Error ', error);
+        });
+  };
+};
+
+// Remove Product from Wishlist
+export const manageCartRemoveProductFromWishlist = ({ productId, userToken }) => {
+  // console.log('manageCartRemoveProductFromWishlist pressed', productId, userToken);
+  const headers = {
+    'Content-Type': 'application/json',
+    Authorization: userToken
+  };
+  return (dispatch) => {
+    axios({
+        method: 'post',
+        url: ManageCartRemoveProductFromWishlistURL,
+        headers,
+        data: { productId }
+        })
+        .then((response) => {
+            dispatch({ type: USER_REMOVED_PRODUCT_FROM_WISHLIST, payload: productId });
+            manageCartGetUserWishlist({ userToken }); // Fetch the updated Wishlist
+            console.log('manageCartRemoveProductFromWishlist resp', response.data);
+        })
+        .catch((error) => {
+            console.log('manageCartRemoveProductFromWishlist Actions Error ', error);
+        });
+  };
+};
+
 // Checkout Orders
 export const manageCartPlaceOrder = (item) => {
-  console.log('manageCartPlaceOrder', item);
   const { userToken, userCartArray, selectedAddress, totalCartValue, totalDeliveryCharges } = item;
   const headers = {
     'Content-Type': 'application/json',
@@ -152,7 +200,7 @@ export const manageCartPlaceOrder = (item) => {
             }
         })
         .then((response) => {
-            // TODO Fix the Checkout 
+            // TODO Fix the Checkout
             console.log('manageCartPlaceOrder resp', response.data);
             // Empty the Cart
             dispatch({ type: MANAGE_CART_PAGE_SET_CART_ARRAY, payload: [] });

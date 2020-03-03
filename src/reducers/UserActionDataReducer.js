@@ -13,15 +13,16 @@ import {
 
 const INITIAL_STATE = {
   likedPosts: {}, // Stores the Map of Liked Posts { postId: 1 }
-  followingData: {}, // Stores the Map of stars this user follow { userId: 1 }
-  userCart: {}, // Stores the Map of Products in the users cart { productId: 1 }
-  userWishlist: {}, // Stores Map of Products in Wishlist { productId: 1 }
+  followingDataMap: {}, // Stores the Map of stars this user follow { userId: 1 }
+  userCartMap: {}, // Stores the Map of Products in the users cart { productId: 1 }
+  userWishlistMap: {}, // Stores Map of Products in Wishlist { productId: 1 }
 };
 
 export default (state = INITIAL_STATE, action) => {
     switch (action.type) {
       case USER_SET_ACTION_DATA: {
-        return { ...state, likedPosts: action.payload.likedPosts, followingData: action.payload.followingData };
+        const { likedPosts, followingDataMap, userCartMap, userWishlistMap } = action.payload;
+        return { ...state, likedPosts, followingDataMap, userCartMap, userWishlistMap };
       }
 
       case USER_LIKED_POST: {
@@ -40,40 +41,40 @@ export default (state = INITIAL_STATE, action) => {
       case USER_FOLLOWED_HIM: {
         const newObject = {};
         newObject[action.payload] = 1;
-        const newfollowedData = { ...state.followingData, ...newObject };
-        return { ...state, followingData: newfollowedData };
+        const newfollowedData = { ...state.followingDataMap, ...newObject };
+        return { ...state, followingDataMap: newfollowedData };
       }
 
       case USER_UNFOLLOWED_HIM: {
-        const newObject = { ...state.followingData };
+        const newObject = { ...state.followingDataMap };
         delete newObject[action.payload];
-        return { ...state, followingData: newObject };
+        return { ...state, followingDataMap: newObject };
       }
 
       case USER_ADDED_PRODUCT_TO_CART: {
         const newObject = {};
         newObject[action.payload] = 1;
-        const newCart = { ...state.userCart, ...newObject };
-        return { ...state, userCart: newCart };
+        const newCart = { ...state.userCartMap, ...newObject };
+        return { ...state, userCartMap: newCart };
       }
 
       case USER_REMOVED_PRODUCT_FROM_CART: {
-        const newObject = { ...state.userCart };
+        const newObject = { ...state.userCartMap };
         delete newObject[action.payload];
-        return { ...state, userCart: newObject };
+        return { ...state, userCartMap: newObject };
       }
 
       case USER_ADDED_PRODUCT_TO_WISHLIST: {
         const newObject = {};
         newObject[action.payload] = 1;
-        const newWishlist = { ...state.userWishlist, ...newObject };
-        return { ...state, userWishlist: newWishlist };
+        const newWishlist = { ...state.userWishlistMap, ...newObject };
+        return { ...state, userWishlistMap: newWishlist };
       }
 
       case USER_REMOVED_PRODUCT_FROM_WISHLIST: {
-        const newObject = { ...state.userWishlist };
+        const newObject = { ...state.userWishlistMap };
         delete newObject[action.payload];
-        return { ...state, userWishlist: newObject };
+        return { ...state, userWishlistMap: newObject };
       }
 
       default:

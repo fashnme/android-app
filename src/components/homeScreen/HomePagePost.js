@@ -279,10 +279,10 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = ({ homePageState, userActionData, personalPageState }) => {
-    const { likedPosts, followingData } = userActionData;
+    const { likedPosts, followingDataMap } = userActionData;
     const { activeTab, verticalPublicCarouselRef, verticalPersonalCarouselRef } = homePageState;
     const { userToken } = personalPageState;
-    return { activeTab, verticalPublicCarouselRef, verticalPersonalCarouselRef, userToken, likedPosts, followingData };
+    return { activeTab, verticalPublicCarouselRef, verticalPersonalCarouselRef, userToken, likedPosts, followingDataMap };
 };
 
   export default connect(mapStateToProps, {

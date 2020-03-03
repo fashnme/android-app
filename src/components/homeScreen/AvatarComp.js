@@ -2,9 +2,9 @@ import React from 'react';
 import { Avatar } from 'react-native-elements';
 import { connect } from 'react-redux';
 
-const AvatarComp = ({ userId, userPic, onFollowPress, onProfileClick, followingData }) => {
-  // console.log('followingData', followingData);
-  if (userId in followingData) {
+const AvatarComp = ({ userId, userPic, onFollowPress, onProfileClick, followingDataMap }) => {
+  // console.log('followingDataMap', followingDataMap);
+  if (userId in followingDataMap) {
     return (
       <Avatar
         rounded
@@ -48,7 +48,7 @@ const styles = {
 };
 
 const mapStateToProps = ({ userActionData }) => {
-    const { followingData } = userActionData;
-    return { followingData };
+    const { followingDataMap } = userActionData;
+    return { followingDataMap };
 };
 export default connect(mapStateToProps)(AvatarComp);

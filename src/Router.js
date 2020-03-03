@@ -21,6 +21,7 @@ import BidCreatePage from './components/SettingScreen/BidCreatePage';
 import BidEditPage from './components/SettingScreen/BidEditPage';
 import ManageCartPage from './components/SettingScreen/ManageCartPage';
 import WishlistPage from './components/SettingScreen/WishlistPage';
+import PersonalStorePage from './components/SettingScreen/PersonalStorePage';
 
 class TabIcon extends Component {
   constructor(props) {
@@ -70,6 +71,7 @@ const RouterComponent = () => {
                   <Scene hideTabBar key='editUserProfile' component={EditUserProfile} />
                   <Scene hideTabBar key='orders' title='Orders' component={Orders} />
                   <Scene hideTabBar key='wishlistPage' title='Wishlist' component={WishlistPage} />
+                  <Scene hideTabBar key='personalStorePage' title='Personal Store' component={PersonalStorePage} />
                   <Scene hideTabBar key='manageCart' title='Cart' component={ManageCartPage} />
                   <Scene hideTabBar key='bidRequests' title='Bids & Requests' component={BidRequests} />
                   <Scene hideTabBar key='bidDenyPage' component={BidDenyPage} />
