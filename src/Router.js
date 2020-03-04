@@ -22,6 +22,7 @@ import BidEditPage from './components/SettingScreen/BidEditPage';
 import ManageCartPage from './components/SettingScreen/ManageCartPage';
 import WishlistPage from './components/SettingScreen/WishlistPage';
 import PersonalStorePage from './components/SettingScreen/PersonalStorePage';
+import RewardsPage from './components/SettingScreen/RewardsPage';
 
 class TabIcon extends Component {
   constructor(props) {
@@ -65,7 +66,7 @@ const RouterComponent = () => {
 
                 <Scene hideNavBar icon={TabIcon} iconName={'upload'} key='uploadPage' title='Upload' component={UploadPage} tabStyle={styles.tabStyle} />
 
-                <Scene hideNavBar icon={TabIcon} iconName={'user'} tabStyle={styles.tabStyle}>
+                <Scene initial hideNavBar icon={TabIcon} iconName={'user'} tabStyle={styles.tabStyle}>
                   <Scene key='personalPage' title='Personal' component={PersonalPage} />
                   <Scene hideTabBar key='settings' title='Settings' component={SettingsPage} />
                   <Scene hideTabBar key='editUserProfile' component={EditUserProfile} />
@@ -73,6 +74,7 @@ const RouterComponent = () => {
                   <Scene hideTabBar key='wishlistPage' title='Wishlist' component={WishlistPage} />
                   <Scene hideTabBar key='personalStorePage' title='Personal Store' component={PersonalStorePage} />
                   <Scene hideTabBar key='manageCart' title='Cart' component={ManageCartPage} />
+                  <Scene initial hideTabBar key='rewardsPage' title='Rewards' component={RewardsPage} />
                   <Scene hideTabBar key='bidRequests' title='Bids & Requests' component={BidRequests} />
                   <Scene hideTabBar key='bidDenyPage' component={BidDenyPage} />
                   <Scene hideTabBar key='bidAcceptPage' component={BidAcceptPage} />

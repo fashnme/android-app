@@ -55,7 +55,7 @@ class WishlistPage extends Component {
                 size={26}
                 iconStyle={{ color: 'grey' }}
                 containerStyle={styles.crossStyle}
-                onPress={() => { this.props.manageCartRemoveProductFromWishlist({ productId, userToken }); }}
+                onPress={() => { this.props.manageCartRemoveProductFromWishlist({ productId, userToken, updateWishlistArray: true }); }}
               />
             </ImageBackground>
             <Text numberOfLines={1} ellipsizeMode='tail' style={styles.brand}>{ brandName }</Text>

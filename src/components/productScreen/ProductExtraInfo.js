@@ -45,7 +45,7 @@ const renderDescription = ({ description }) => {
 };
 
 const ProductExtraInfo = ({ selectedItem, productsCompleteData, allFine }) => {
-  // const { features } = productsCompleteData[selectedItem];
+  // const { features, description } = productsCompleteData[selectedItem];
   const { features, description } = testData;
   if (!allFine) {
     return <View />;
