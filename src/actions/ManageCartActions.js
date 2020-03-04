@@ -156,7 +156,7 @@ export const manageCartGetUserWishlist = ({ userToken }) => {
 };
 
 // Remove Product from Wishlist
-export const manageCartRemoveProductFromWishlist = ({ productId, userToken }) => {
+export const manageCartRemoveProductFromWishlist = ({ productId, userToken, updateWishlistArray }) => {
   // console.log('manageCartRemoveProductFromWishlist pressed', productId, userToken);
   const headers = {
     'Content-Type': 'application/json',
@@ -171,7 +171,9 @@ export const manageCartRemoveProductFromWishlist = ({ productId, userToken }) =>
         })
         .then((response) => {
             dispatch({ type: USER_REMOVED_PRODUCT_FROM_WISHLIST, payload: productId });
-            manageCartGetUserWishlist({ userToken }); // Fetch the updated Wishlist
+            if (updateWishlistArray) { // Whether Calling from Product Page or Wishlist Page 
+              manageCartGetUserWishlist({ userToken }); // Fetch the updated Wishlist
+            }
             console.log('manageCartRemoveProductFromWishlist resp', response.data);
         })
         .catch((error) => {

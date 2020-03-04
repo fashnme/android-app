@@ -34,11 +34,29 @@ export const productPageUpdatePriceAndSize = ({ productId }) => {
         })
         .then((response) => {
             const { updatedPriceAndSize } = response.data;
-            const payload = { ...updatedPriceAndSize };
+            const payload = {};
+            payload[productId] = updatedPriceAndSize;
             dispatch({ type: PRODUCT_PAGE_PRICE_AND_SIZE_UPDATE, payload });
         })
         .catch((error) => {
-            console.log('productPageOpenProductModal fetchExtraProductsData Actions Error ', error);
+            console.log('productPageUpdatePriceAndSize Actions Error ', error);
+            // TODO Remove this dummy data 
+            const dumdata = {
+                "price": 575,
+                "crossedPrice": 1199,
+                "discount": 52,
+                "offers": [],
+                "sizesAvailable": [
+                    {
+                        "size": "Onesize",
+                        "sizeStandard": ""
+                    }
+                ],
+                "stockAvailability": true
+            };
+            const payload = {};
+            payload[productId] = dumdata;
+            dispatch({ type: PRODUCT_PAGE_PRICE_AND_SIZE_UPDATE, payload });
         });
     };
 };
@@ -64,6 +82,7 @@ const fetchExtraProductsData = (productsData, dispatch) => {
   const headers = {
     'Content-Type': 'application/json'
   };
+
   axios({
       method: 'post',
       url: ProductPageFetchProductsInfoURL,
@@ -77,5 +96,8 @@ const fetchExtraProductsData = (productsData, dispatch) => {
       })
       .catch((error) => {
           console.log('productPageOpenProductModal fetchExtraProductsData Actions Error ', error);
+      })
+      .finally(() => {
+        console.log('productPageOpenProductModal fetchExtraProductsData idsArray', idsArray);
       });
 };

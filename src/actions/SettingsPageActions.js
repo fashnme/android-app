@@ -42,6 +42,10 @@ export const settingsPageRowPressed = ({ key }) => {
       Actions.personalStorePage();
       break;
 
+    case 'rewards':
+      Actions.rewardsPage();
+      break;
+
     default:
       break;
   }

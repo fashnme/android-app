@@ -4,21 +4,12 @@ import { Card, Badge } from 'react-native-elements';
 import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux';
 import { globalStyles } from '../../Styles';
+import AddToCartAndWishlistIcon from './AddToCartAndWishlistIcon';
 import {
   productPageOpenProductModal as _productPageOpenProductModal,
   productPageUpdatePriceAndSize as _productPageUpdatePriceAndSize,
   manageCartAddProductToCart as _manageCartAddProductToCart
 } from '../../actions';
-
-const AddToCartButton = ({ onPress, title }) => {
-  return (
-    <TouchableNativeFeedback onPress={onPress}>
-      <View style={globalStyles.addToCartButton}>
-        <Text style={globalStyles.addToCartButtonText}>{title}</Text>
-      </View>
-    </TouchableNativeFeedback>
-  );
-};
 
 const BuyNowButton = ({ onPress, title }) => {
   return (
@@ -51,7 +42,12 @@ const renderError = ({ error }) => {
 const renderSizeBlock = ({ sizesAvailable, sizeSelected, setSizeSelected }) => {
   // console.log('sizesAvailable', sizesAvailable);
   if (typeof sizesAvailable === 'undefined') {
-    return <ActivityIndicator />;
+    return (
+      <View>
+        <ActivityIndicator />
+        <Text style={{ justifyContent: 'center', flexDirection: 'row', flex: 1 }}> Updating Size </Text>
+      </View>
+    );
   }
   if (sizesAvailable.length === 0) {
     return <Text> Out of Stock </Text>;
@@ -108,11 +104,10 @@ const checkAndCompleteRequest = ({ productId, sizeSelected, postId, userToken, s
     userToken
   });
   if (visitCart) {
-    console.log('Visit Cart', visitCart);
     Actions.manageCart();
   }
   productPageOpenProductModal({ isVisible: false, productsData: [], postDetails: { postId, posterId } });
-  setError('Added to Cart!');
+  setError('Added to Bag!');
 };
 
 const ProductPriceSizeView = ({ productData, postId, posterId, askForSize, userToken,
@@ -127,6 +122,7 @@ const ProductPriceSizeView = ({ productData, postId, posterId, askForSize, userT
     // Hit the Server to Update the Price & Sizes Available
     productPageUpdatePriceAndSize({ productId });
   }
+  const productRelatedData = { productId, sizeSelected, postId, posterId, userToken, setError };
   return (
     <View>
       {renderError({ error })}
@@ -139,11 +135,7 @@ const ProductPriceSizeView = ({ productData, postId, posterId, askForSize, userT
           <Text style={styles.productBrand}>{brandName}</Text>
           <Text style={styles.productPrice}>{`\u20B9${price}`}</Text>
           { renderPriceBlock({ crossedPrice, price }) }
-          <AddToCartButton
-            title="ADD TO BAG" onPress={() => {
-              checkAndCompleteRequest({ productId, sizeSelected, postId, posterId, userToken, setError, visitCart: false, manageCartAddProductToCart, productPageOpenProductModal });
-            }}
-          />
+          <AddToCartAndWishlistIcon productRelatedData={productRelatedData} />
           <BuyNowButton
             title="BUY NOW" onPress={() => {
               checkAndCompleteRequest({ productId, sizeSelected, postId, posterId, userToken, setError, visitCart: true, manageCartAddProductToCart, productPageOpenProductModal });
