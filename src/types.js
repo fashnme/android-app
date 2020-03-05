@@ -75,6 +75,7 @@ export const PERSONAL_PAGE_SET_PERSONAL_DETAILS_AND_USERID = 'personal_page_set_
 export const SETTING_PAGE_SET_USER_ORDERS = 'setting_page_set_user_orders';
 export const SETTING_PAGE_SET_RENT_BID_BY_ME = 'setting_page_set_rent_bid_by_me';
 export const SETTING_PAGE_SET_RENT_BID_FOR_ME = 'setting_page_set_rent_bid_for_me';
+export const SETTING_PAGE_SET_USER_REWARDS = 'setting_page_set_user_rewards';
 
 export const SETTING_PAGE_USER_CAPTION_UPDATE = 'setting_page_user_caption_update';
 export const SETTING_PAGE_USER_DOB_UPDATE = 'setting_page_user_dob_update';

@@ -52,9 +52,9 @@ const RouterComponent = () => {
     return (
       <Router navigationBarStyle={{ backgroundColor: '#fff' }}>
         <Scene key='root' hideNavBar>
-            <Scene hideNavBar title='SignUp'>
+            <Scene initial hideNavBar title='SignUp'>
                 <Scene key='splashScreen' component={SplashScreen} />
-                <Scene initial key='signupPage' title='SignUp' component={SignupPage} />
+                <Scene key='signupPage' title='SignUp' component={SignupPage} />
                 <Scene key='enterDetailsPage' title='Enter Details' component={EnterDetailsPage} />
             </Scene>
 
@@ -66,7 +66,7 @@ const RouterComponent = () => {
 
                 <Scene hideNavBar icon={TabIcon} iconName={'upload'} key='uploadPage' title='Upload' component={UploadPage} tabStyle={styles.tabStyle} />
 
-                <Scene initial hideNavBar icon={TabIcon} iconName={'user'} tabStyle={styles.tabStyle}>
+                <Scene hideNavBar icon={TabIcon} iconName={'user'} tabStyle={styles.tabStyle}>
                   <Scene key='personalPage' title='Personal' component={PersonalPage} />
                   <Scene hideTabBar key='settings' title='Settings' component={SettingsPage} />
                   <Scene hideTabBar key='editUserProfile' component={EditUserProfile} />
@@ -74,7 +74,7 @@ const RouterComponent = () => {
                   <Scene hideTabBar key='wishlistPage' title='Wishlist' component={WishlistPage} />
                   <Scene hideTabBar key='personalStorePage' title='Personal Store' component={PersonalStorePage} />
                   <Scene hideTabBar key='manageCart' title='Cart' component={ManageCartPage} />
-                  <Scene initial hideTabBar key='rewardsPage' title='Rewards' component={RewardsPage} />
+                  <Scene hideTabBar key='rewardsPage' title='Rewards' component={RewardsPage} />
                   <Scene hideTabBar key='bidRequests' title='Bids & Requests' component={BidRequests} />
                   <Scene hideTabBar key='bidDenyPage' component={BidDenyPage} />
                   <Scene hideTabBar key='bidAcceptPage' component={BidAcceptPage} />
