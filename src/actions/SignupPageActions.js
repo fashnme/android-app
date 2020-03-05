@@ -21,7 +21,7 @@ import {
 import {
   SignupPageSendOtpURL,
   SignupPageVerifyOtpURL,
-  SignupPageSetUserDetails
+  SignupPageSubmitUserDetailsURL
 } from '../URLS';
 
 export const signupPagePhoneUpdate = (phone) => {
@@ -103,15 +103,18 @@ export const signupPageVerifyOTP = (phone, otp, callingCode) => {
               Actions.enterDetailsPage();
               setUserName('');
             } else {
-              // Actions.home();
+              Actions.home();
+              setUserName('Already a User');
               console.log('signupPageVerifyOTP Set all the User details', response);
             }
-            dispatch({ type: SIGNUP_PAGE_TOGGLE_LOADING, payload: false });
           })
           .catch((error) => {
               //handle error
               console.log('signupPageVerifyOTP Error', error.response);
               dispatch({ type: SIGNUP_PAGE_ERROR_UPDATE, payload: 'Problem in verifying OTP, Please try after some time' });
+        })
+        .finally(() => {
+          dispatch({ type: SIGNUP_PAGE_TOGGLE_LOADING, payload: false });
         });
   };
 };
@@ -127,26 +130,31 @@ const setUserToken = (jwt) => {
 
 
 // Action to set Users Details on First Time Signup
-export const signupPageSubmitUserDetails = ({ userName, fullName, gender, userToken }) => {
+export const signupPageSubmitUserDetails = ({ userName, fullName, gender, userToken, referralCode }) => {
   return (dispatch) => {
+    dispatch({ type: SIGNUP_PAGE_TOGGLE_LOADING, payload: true });
     axios({
         method: 'post',
-        url: SignupPageSetUserDetails,
-        data: { userName, fullName, gender, profilePic: '', registrationToken: '' },
+        url: SignupPageSubmitUserDetailsURL,
+        data: { userName, fullName, gender, referralCode },
         headers: { 'Content-Type': 'application/json', Authorization: userToken }
         })
         .then((response) => {
-            console.log('signupPageSubmitUserDetails OTP Sent', response);
-            if (response.status === 422) {
-              dispatch({ type: SIGNUP_PAGE_ERROR_UPDATE, payload: 'Username Already Taken' });
-            } else if (response.state === 200) {
+            console.log('signupPageSubmitUserDetails', response);
+            if (response.state === 200) {
               Actions.tabBar();
               setUserName(userName);
             }
         })
         .catch((error) => {
+            if (error.response.status === 422) {
+              dispatch({ type: SIGNUP_PAGE_ERROR_UPDATE, payload: 'Username Already Taken' });
+            }
             console.log('signupPageSubmitUserDetails Error', error);
             dispatch({ type: SIGNUP_PAGE_ERROR_UPDATE, payload: 'Problem in Creating User, Please try after some time' });
-      });
+        })
+        .finally(() => {
+          dispatch({ type: SIGNUP_PAGE_TOGGLE_LOADING, payload: false });
+        });
   };
 };

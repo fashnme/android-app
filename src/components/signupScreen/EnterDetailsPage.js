@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, Dimensions } from 'react-native';
 import { connect } from 'react-redux';
 import { Icon, Input, ButtonGroup, Image, Button, Header } from 'react-native-elements';
@@ -77,9 +77,10 @@ const UserInputBox = ({ placeholder, iconName, iconType, errorMessage, name, val
 
 
 const EnterDetailsPage = ({
-  userName, fullName, genderIndex, referralCode, loading, error, userToken,
+  userName, fullName, genderIndex, loading, error, userToken,
   signupPageUpdateUsername, signupPageUpdateFullname, signupPageUpdateGender, signupPageSubmitUserDetails
   }) => {
+  const [referralCode, setReferralCode] = useState('');
   // console.log('props', { userName, fullName, genderIndex, loading, userToken, error });
   // console.log('actions', signupPageUpdateUsername, signupPageUpdateFullname, signupPageUpdateGender, signupPageSubmitUserDetails);
   return (
@@ -87,13 +88,11 @@ const EnterDetailsPage = ({
         <Header
           backgroundColor={'white'}
           placement={'center'}
-          centerComponent={{ text: 'Create account', style: { fontSize: 30, color: '#FF7F50' } }}
-          containerStyle={{ paddingTop: 0, height: 60, elevation: 5, }}
+          centerComponent={{ text: 'Create Account', style: { fontSize: 24, color: '#FF7F50' } }}
+          containerStyle={{ paddingTop: 0, height: 60, elevation: 5 }}
         />
-    <ScrollView>
-      <View style={styles.container}>
+        <ScrollView>
         <LinearGradient colors={['#FF7F50', '#FF8C00', '#FF4500']} style={styles.body}>
-          <View style={{ paddingTop: 50, width: '100%', alignItems: 'center' }}>
             <UserInputBox
               name="username"
               errorMessage={error}
@@ -129,35 +128,33 @@ const EnterDetailsPage = ({
               iconName="user-plus"
               iconType="font-awesome"
               valueName={referralCode}
-              // changeAction={(txt) => signupPageUpdateFullname(txt)}
+              changeAction={(txt) => setReferralCode(txt)}
             />
             <Button
               loading={loading}
               title="Continue"
+              loadingProps={{ color: '#FF7F50' }}
+              loadingStyle={{ borderColor: 'orange' }}
               titleStyle={{ color: '#FF4500', fontSize: 20, fontWeight: 'bold' }}
-              buttonStyle={{ backgroundColor: 'white', borderRadius: 30, paddingHorizontal: 20, marginTop: 30, elevation: 15, }}
+              buttonStyle={{ backgroundColor: 'white', borderRadius: 20, paddingHorizontal: 20, marginTop: 30, elevation: 15, marginBottom: 70 }}
               onPress={() => {
-                signupPageSubmitUserDetails(userName, fullName, genders[genderIndex].name, userToken);
+                signupPageSubmitUserDetails({ userName, fullName, gender: genders[genderIndex].name, userToken, referralCode });
               }}
             />
-          </View>
         </LinearGradient>
-      </View>
-    </ScrollView>
+      </ScrollView>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    height: screenHeight,
-    width: screenWidth,
     backgroundColor: 'white'
   },
   body: {
     flex: 1,
     alignItems: 'center',
-
+    marginBottom: 60,
   },
   textInputStyle: {
     backgroundColor: 'white',

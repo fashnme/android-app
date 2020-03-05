@@ -1,9 +1,14 @@
-import { Linking } from 'react-native';
+import { Linking, BackHandler } from 'react-native';
 import { Actions } from 'react-native-router-flux';
+import AsyncStorage from '@react-native-community/async-storage';
 import {
   SettingsPageAboutUsURL,
   SettingsPagePrivacyPolicyURL
 } from '../URLS';
+import {
+  ASYNCSTORAGE_USER_TOKEN_NAME,
+  ASYNCSTORAGE_USER_USER_NAME
+} from '../types';
 
 export const settingsPageRowPressed = ({ key }) => {
   console.log('settingsPageRowPressed', key);
@@ -50,4 +55,17 @@ export const settingsPageRowPressed = ({ key }) => {
       break;
   }
   return { type: 'settingsPageRowPressed ' };
+};
+
+export const settingsPageLogoutPressed = () => {
+  return (dispatch) => {
+    AsyncStorage.removeItem(ASYNCSTORAGE_USER_TOKEN_NAME);
+    BackHandler.exitApp();
+    setUserName('');
+    dispatch({ type: 'settingsPageLogoutPressed' });
+  };
+};
+
+const setUserName = (userName) => {
+  AsyncStorage.setItem(ASYNCSTORAGE_USER_USER_NAME, userName);
 };
