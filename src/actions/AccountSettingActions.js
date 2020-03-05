@@ -9,6 +9,7 @@ import {
   SETTING_PAGE_SET_USER_ORDERS,
   SETTING_PAGE_SET_RENT_BID_BY_ME,
   SETTING_PAGE_SET_RENT_BID_FOR_ME,
+  SETTING_PAGE_SET_USER_REWARDS,
   SETTING_PAGE_USER_CAPTION_UPDATE,
   SETTING_PAGE_USER_DOB_UPDATE,
   SETTING_PAGE_USER_SOCIAL_LINK_UPDATE,
@@ -29,7 +30,8 @@ import {
   SettingsPageGetBidsForMeURL,
   SettingsPageSaveProfileChangesURL,
   SettingsPageAddUserAddressURL,
-  CelebrityPageGetUserDetailsURL
+  CelebrityPageGetUserDetailsURL,
+  SettingsPageGetUserRewardsURL
 } from '../URLS';
 
 export const accountSettingsUpdateBio = ({ bio }) => {
@@ -263,6 +265,28 @@ export const accountSettingsGetBidsForMe = ({ userToken }) => {
         })
         .catch((error) => {
             console.log('accountSettingsGetBidsForMe Actions Error ', error);
+      });
+  };
+};
+
+// Get User Rewards
+export const accountSettingsGetUserRewards = ({ userToken }) => {
+  const headers = {
+    'Content-Type': 'application/json',
+    Authorization: userToken
+  };
+  return (dispatch) => {
+    axios({
+        method: 'get',
+        url: SettingsPageGetUserRewardsURL,
+        headers,
+        })
+        .then((response) => {
+          dispatch({ type: SETTING_PAGE_SET_USER_REWARDS, payload: response.data });
+          console.log('accountSettingsGetUserRewards', response.data);
+        })
+        .catch((error) => {
+            console.log('accountSettingsGetUserRewards Actions Error ', error);
       });
   };
 };

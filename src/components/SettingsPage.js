@@ -43,7 +43,7 @@ class SettingsPage extends Component {
         title={title}
         titleStyle={styles.title}
         subtitle={subtitle}
-        badge={{ status: 'success', value: 10 }}
+        badge={{ status: 'success', value: '' }}
         containerStyle={styles.containerStyle}
         onPress={() => { this.props.settingsPageRowPressed({ key }); }}
       />
