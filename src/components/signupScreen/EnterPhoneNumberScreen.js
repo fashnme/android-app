@@ -30,7 +30,7 @@ class EnterPhoneNumberScreen extends Component {
                   <Image style={styles.icon} source={require('../../resources/icons/mail.png')} />
                   <Text style={{ color: '#C71585', fontSize: 18, fontWeight: 'bold' }}>Enter your mobile number</Text>
                   <Text style={{ color: 'black', fontWeight: 'bold' }}>We will send you a OTP Message</Text>
-                  
+
                   <Text style={{ fontWeight: 'bold', color: 'red', fontSize: 18, margin: 30, textAlign: 'center' }}>{this.props.error}</Text>
                 </View>
                 <LinearGradient colors={['#FF7F50', '#FF8C00', '#FF4500']} style={styles.body}>
@@ -59,7 +59,7 @@ class EnterPhoneNumberScreen extends Component {
                       <Button
                           title="Send OTP"
                           titleStyle={{ color: '#FF4500', fontSize: 20, fontWeight: 'bold' }}
-                          buttonStyle={{ backgroundColor: 'white', borderRadius: 30, paddingHorizontal: 20, marginTop: 30, elevation: 15, }}
+                          buttonStyle={{ backgroundColor: 'white', borderRadius: 30, paddingHorizontal: 20, marginTop: 30, elevation: 15, marginBottom: 30 }}
                           onPress={() => this.props.signupPageSendOTP(this.props.phoneNumber, callingCode)}
                       />
                   </View>
@@ -75,7 +75,8 @@ const styles = StyleSheet.create({
     container: {
       width: screenWidth,
       height: screenHeight,
-      backgroundColor: 'white'
+      backgroundColor: 'white',
+      flex: 1
     },
     headerTitle: {
       color: '#ff4500',

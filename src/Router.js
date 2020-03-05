@@ -58,7 +58,7 @@ const RouterComponent = () => {
                 <Scene key='enterDetailsPage' title='Enter Details' component={EnterDetailsPage} />
             </Scene>
 
-            <Scene initial key='tabBar' tabs tabBarPosition="bottom" showLabel={false} tabBarStyle={styles.tabBarStyle} indicatorStyle={styles.indicatorStyle}>
+            <Scene key='tabBar' tabs tabBarPosition="bottom" showLabel={false} tabBarStyle={styles.tabBarStyle} indicatorStyle={styles.indicatorStyle}>
                 <Scene hideNavBar icon={TabIcon} iconName={'home'} tabStyle={styles.tabStyle}>
                     <Scene key='home' title='Home' component={HomePage} />
                     <Scene hideTabBar key='celebrityPage' title='Celebrity' component={CelebrityPage} />

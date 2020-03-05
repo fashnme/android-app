@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { View, FlatList } from 'react-native';
-import { ListItem } from 'react-native-elements';
+import { ListItem, Button } from 'react-native-elements';
 import { connect } from 'react-redux';
 import {
-  settingsPageRowPressed
+  settingsPageRowPressed,
+  settingsPageLogoutPressed
 } from '../actions';
 
 class SettingsPage extends Component {
@@ -83,7 +84,18 @@ class SettingsPage extends Component {
             keyExtractor={(item, index) => index.toString()}
             data={settingsArray}
             renderItem={this.renderItem.bind(this)}
+            ListFooterComponent={
+              <Button
+                title="Logout"
+                type="outline"
+                buttonStyle={{ margin: 20, borderColor: '#d00' }}
+                titleStyle={{ color: '#ff859a', fontWeight: '600' }}
+                onPress={() => { this.props.settingsPageLogoutPressed(); }}
+                raised
+              />
+            }
         />
+
       </View>
     );
   }
@@ -104,5 +116,6 @@ const mapStateToProps = ({ settingsPageState }) => {
 };
 
 export default connect(mapStateToProps, {
-  settingsPageRowPressed
+  settingsPageRowPressed,
+  settingsPageLogoutPressed
 })(SettingsPage);
