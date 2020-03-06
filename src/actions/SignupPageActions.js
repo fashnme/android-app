@@ -97,13 +97,14 @@ export const signupPageVerifyOTP = (phone, otp, callingCode) => {
           })
           .then((response) => {
             console.log('signupPageVerifyOTP response', response);
-            dispatch({ type: PERSONAL_PAGE_SET_USERTOKEN, payload: response.data.jwt });
-            setUserToken(response.data.jwt);
+            const userToken = `Bearer ${response.data.jwt}`;
+            dispatch({ type: PERSONAL_PAGE_SET_USERTOKEN, payload: userToken });
+            setUserToken(userToken);
             if (response.data.user === null) {
               Actions.enterDetailsPage();
               setUserName('');
             } else {
-              Actions.home();
+              Actions.tabBar();
               setUserName('Already a User');
               console.log('signupPageVerifyOTP Set all the User details', response);
             }
@@ -131,6 +132,7 @@ const setUserToken = (jwt) => {
 
 // Action to set Users Details on First Time Signup
 export const signupPageSubmitUserDetails = ({ userName, fullName, gender, userToken, referralCode }) => {
+  console.log('signupPageSubmitUserDetails', { userName, fullName, gender, userToken, referralCode });
   return (dispatch) => {
     dispatch({ type: SIGNUP_PAGE_TOGGLE_LOADING, payload: true });
     axios({
@@ -147,11 +149,13 @@ export const signupPageSubmitUserDetails = ({ userName, fullName, gender, userTo
             }
         })
         .catch((error) => {
-            if (error.response.status === 422) {
-              dispatch({ type: SIGNUP_PAGE_ERROR_UPDATE, payload: 'Username Already Taken' });
-            }
             console.log('signupPageSubmitUserDetails Error', error);
-            dispatch({ type: SIGNUP_PAGE_ERROR_UPDATE, payload: 'Problem in Creating User, Please try after some time' });
+            const errorMessage = error.response.data;
+            if (errorMessage.length <= 30) {
+              dispatch({ type: SIGNUP_PAGE_ERROR_UPDATE, payload: errorMessage });
+            } else {
+              dispatch({ type: SIGNUP_PAGE_ERROR_UPDATE, payload: 'Problem in Creating User, Please try after some time' });
+            }
         })
         .finally(() => {
           dispatch({ type: SIGNUP_PAGE_TOGGLE_LOADING, payload: false });

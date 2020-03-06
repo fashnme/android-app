@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Dimensions } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import { Icon, Input, ButtonGroup, Image, Button, Header } from 'react-native-elements';
 import LinearGradient from 'react-native-linear-gradient';
@@ -10,9 +10,6 @@ import {
   signupPageUpdateGender as _signupPageUpdateGender,
   signupPageSubmitUserDetails as _signupPageSubmitUserDetails
 } from '../../actions';
-
-const screenHeight = Dimensions.get('window').height;
-const screenWidth = Dimensions.get('window').width;
 
 // signupPageUpdateUsername(userName)
 // signupPageUpdateFullname(fullName)
