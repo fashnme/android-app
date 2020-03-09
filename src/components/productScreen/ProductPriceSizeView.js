@@ -43,10 +43,9 @@ const renderSizeBlock = ({ sizesAvailable, sizeSelected, setSizeSelected }) => {
   // console.log('sizesAvailable', sizesAvailable);
   if (typeof sizesAvailable === 'undefined') {
     return (
-      <View>
-        <ActivityIndicator />
-        <Text style={{ justifyContent: 'center', flexDirection: 'row', flex: 1 }}> Updating Size </Text>
-      </View>
+      <Card>
+        <Text style={{ justifyContent: 'center', flexDirection: 'row', flex: 1 }}> Updating Sizes...... </Text>
+      </Card>
     );
   }
   if (sizesAvailable.length === 0) {

@@ -48,6 +48,7 @@ export const CELEBRITY_PAGE_GET_CELEB_LIKED_POSTS = 'celebrity_page_get_celeb_li
 export const UPLOAD_PAGE_TOGGLE_ISSELECTED = 'upload_page_toggle_isselected';
 export const UPLOAD_PAGE_UPDATE_CAPTION = 'upload_page_update_caption';
 export const UPLOAD_PAGE_UPDATE_SELECTED_IMAGE_PATH = 'upload_page_update_selected_image_path';
+export const UPLOAD_PAGE_UPDATE_UPLOADING_STATUS = 'upload_page_update_uploading_status';
 
 // Product Related types
 export const PRODUCT_PAGE_SELECTED_PRODUCT_UPDATE = 'product_page_selected_product_update';

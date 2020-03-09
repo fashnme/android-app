@@ -95,7 +95,7 @@ class UploadPage extends Component {
         console.log('User cancelled image picker');
       } else if (response.error) {
         console.log('ImagePicker Error: ', response.error);
-        this.props.selectImageFromLibraryVS(false);
+        // this.props.selectImageFromLibraryVS(false);
       } else {
         const { path } = response;
         if (mediaType === 'image') {
@@ -153,7 +153,7 @@ class UploadPage extends Component {
 
     const takePicture = async () => {
       if (this.camera) {
-        const options = { quality: 1, base64: true };
+        const options = { quality: 1, orientation: 'portrait' };
         const data = await this.camera.takePictureAsync(options);
         this.props.uploadPageUpdateSelectedImagePath(data.uri);
         this.props.uploadPageToggleIsSelected(true);
@@ -161,7 +161,11 @@ class UploadPage extends Component {
     };
     const takeVideo = async () => {
       if (this.camera) {
-        const options = { maxDuration: 30 };
+        const options = { maxDuration: 30,
+              orientation: 'portrait',
+              videoBitrate: 1 * 1000 * 1000, // 1Mbps
+              quality: RNCamera.Constants.VideoQuality['480p']
+            };
         this.setState({
           isRecording: true,
         });
@@ -211,9 +215,9 @@ class UploadPage extends Component {
               </TouchableNativeFeedback>
             </View>
             <View style={styles.cameraActions}>
-              <CustomIcon name="swap-vertical" type="material-community" onPress={() => this.setState({ frontCamera: !this.state.frontCamera })} />
+              <CustomIcon name="camera-switch" type="material-community" onPress={() => this.setState({ frontCamera: !this.state.frontCamera })} />
               <RecordButton onLongPress={() => takeVideo()} onPress={() => (this.state.isRecording ? this.camera.stopRecording() : takePicture())} />
-              <CustomIcon name="images" type="entypo" onPress={() => this.setModalVisible(true)} />
+              <CustomIcon name="folder-multiple-image" type="material-community" onPress={() => this.setModalVisible(true)} />
             </View>
           </SafeAreaView>
           </RNCamera>

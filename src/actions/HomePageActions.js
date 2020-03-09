@@ -14,7 +14,8 @@ import {
   USER_UNLIKED_POST,
   HOME_PAGE_TOGGLE_COMMENTS_MODAL,
   HOME_PAGE_TOGGLE_SHARE_MODAL,
-  USER_SET_ACTION_DATA
+  USER_SET_ACTION_DATA,
+  PERSONAL_PAGE_SET_PERSONAL_DETAILS_AND_USERID
 } from '../types';
 
 import {
@@ -33,7 +34,12 @@ export const homePageFetchUserColdStartDetails = ({ userToken }) => {
     axios.get(HomePageFetchUserColdStartDetailsURL, { headers: { Authorization: userToken } })
     .then(response => {
       // console.log('Actions homePageFetchUserColdStartDetails', response.data);
-      const { followingMap, likedPostsMap, userCartMap, userWishlistMap } = response.data;
+      const { followingMap, likedPostsMap, userCartMap, userWishlistMap, userDetails } = response.data;
+      // Set the User Details
+      if (userDetails !== undefined) {
+        dispatch({ type: PERSONAL_PAGE_SET_PERSONAL_DETAILS_AND_USERID, payload: userDetails });
+      }
+
       const payload = { likedPosts: {}, followingDataMap: {}, userCartMap: {}, userWishlistMap: {} };
       if (followingMap !== undefined) {
         payload.followingDataMap = followingMap;

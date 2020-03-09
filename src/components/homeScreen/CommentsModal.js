@@ -1,7 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, Text, FlatList, TouchableWithoutFeedback } from 'react-native';
-import { Icon, ListItem, Input } from 'react-native-elements';
-import Modal from 'react-native-modal';
+import { Icon, ListItem, Input, Overlay } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { homePageToggleCommentsModal as _homePageToggleCommentsModal } from '../../actions';
 
@@ -28,7 +27,7 @@ const renderListItem = ({ item }) => {
 };
 
 const CommentsModal = ({ comments, commentModalVisible, homePageToggleCommentsModal }) => {
-  console.log('CommentsModal', comments, commentModalVisible);
+  // console.log('CommentsModal', comments, commentModalVisible);
   const data = {
     comments: [{
     comment_id: '52342',
@@ -82,21 +81,28 @@ const CommentsModal = ({ comments, commentModalVisible, homePageToggleCommentsMo
   totalComments: 6,
 };
     return (
-        <Modal
-          swipeDirection={['down']}
-          scroll
+        // <Modal
+        //   swipeDirection={['down']}
+        //   scroll
+        //   isVisible={commentModalVisible}
+        //   style={{
+        //     margin: 0,
+        //     justifyContent: 'flex-end',
+        //   }}
+        //   backdropOpacity={0}
+        // >
+        <Overlay
           isVisible={commentModalVisible}
-          style={{
-            margin: 0,
-            justifyContent: 'flex-end',
-          }}
-          backdropOpacity={0}
+          overlayStyle={{ borderTopLeftRadius: 15, borderTopRightRadius: 15, padding: 2, bottom: 0, position: 'absolute' }}
+          width={'100%'}
+          height={'70%'}
+          windowBackgroundColor={'transparent'}
         >
           <View style={styles.modalStyle}>
             <View style={styles.commentsModalHeader}>
               <Text style={styles.commentsModalHeaderTitle}>{data.totalComments} comments</Text>
                 <View style={styles.commentsModalHeaderExitButton}>
-                  <Icon name='cross' type='entypo' onPress={() => homePageToggleCommentsModal(false)} />
+                  <Icon name='cross' type='entypo' size={18} raised containerStyle={styles.crossStyle} onPress={() => homePageToggleCommentsModal(false)} />
                 </View>
             </View>
             <View style={styles.body}>
@@ -116,13 +122,14 @@ const CommentsModal = ({ comments, commentModalVisible, homePageToggleCommentsMo
               />
             </View>
           </View>
-        </Modal>
+        </Overlay>
+        // </Modal>
     );
 };
 
 const styles = StyleSheet.create({
     modalStyle: {
-        height: '70%',
+        height: '100%',
         backgroundColor: 'white',
         borderTopLeftRadius: 15,
         borderTopRightRadius: 15,
@@ -132,6 +139,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         padding: 10,
+        marginBottom: 10
       },
       commentsModalHeaderTitle: {
         fontSize: 13,
@@ -162,6 +170,11 @@ const styles = StyleSheet.create({
       },
       title: {
         fontSize: 10,
+      },
+      crossStyle: {
+        marginRight: 0,
+        marginTop: 0,
+        padding: 0
       }
 });
 
