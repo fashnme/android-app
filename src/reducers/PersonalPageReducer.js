@@ -4,8 +4,8 @@ import {
 } from '../types';
 
 const INITIAL_STATE = {
-  userToken: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiWW1pU2ptOEJ1SklTRE0yLWN6NWoiLCJpYXQiOjE1ODMzMDk2Nzd9.3FJ-WP8Z-EWEl9z7dredlkEMUk2FiyBQmGr5aRdfxQA',
-  personalUserId: 'PDo5gm8BMgKYZ1P4YhlZ', // Set this to empty in production
+  userToken: '',
+  personalUserId: '', // Set this to empty in production
   personalUserDetails: {},
 };
 

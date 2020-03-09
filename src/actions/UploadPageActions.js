@@ -1,16 +1,18 @@
 // import axios from 'axios';
-import { Image } from 'react-native';
+import { Image, Alert } from 'react-native';
 import axios from 'axios';
 import fileType from 'react-native-file-type';
 import ImageResizer from 'react-native-image-resizer/index.android';
 import { RNS3 } from 'react-native-aws3';
 import { ProcessingManager } from 'react-native-video-processing';
+import { Actions } from 'react-native-router-flux';
 
 import {
   AWS_OPTIONS,
   UPLOAD_PAGE_TOGGLE_ISSELECTED,
   UPLOAD_PAGE_UPDATE_CAPTION,
-  UPLOAD_PAGE_UPDATE_SELECTED_IMAGE_PATH
+  UPLOAD_PAGE_UPDATE_SELECTED_IMAGE_PATH,
+  UPLOAD_PAGE_UPDATE_UPLOADING_STATUS
 } from '../types';
 
 import {
@@ -41,12 +43,13 @@ export const uploadPageUpdateSelectedImagePath = (imgPath) => {
 export const uploadPageUploadContent = ({ caption, selectedImagePath, userToken, personalUserId }) => {
   // console.log('Path', selectedImagePath);
   return (dispatch) => {
+    dispatch({ type: UPLOAD_PAGE_UPDATE_UPLOADING_STATUS, payload: { status: 'Preparing...', isUploading: true, progress: 0 } });
     fileType(selectedImagePath).then(({ mime }) => {
       // console.log('File Type', mime);
       if (mime.includes('image')) {
-        resizeAndUploadImage(selectedImagePath, userToken, personalUserId, caption);
+        resizeAndUploadImage(selectedImagePath, userToken, personalUserId, caption, dispatch);
       } else if (mime.includes('video')) {
-        resizeAndUploadVideo(selectedImagePath, userToken, personalUserId, caption);
+        resizeAndUploadVideo(selectedImagePath, userToken, personalUserId, caption, dispatch);
       }
     })
     .catch((err) => {
@@ -56,15 +59,15 @@ export const uploadPageUploadContent = ({ caption, selectedImagePath, userToken,
   };
 };
 
-const resizeAndUploadVideo = (selectedVideoPath, userToken, personalUserId, caption) => {
+const resizeAndUploadVideo = (selectedVideoPath, userToken, personalUserId, caption, dispatch) => {
   ProcessingManager.getVideoInfo(selectedVideoPath)
   .then((orig) => {
-    // console.log('Video Info', orig);
+    console.log('Original Video Info', orig);
     const { height, width } = orig.size;
     const options = { width, height, bitrateMultiplier: 3, minimumBitrate: 300000 };
     ProcessingManager.compress(selectedVideoPath, options).then((d) => {
-        // console.log('Compressed Video Info ', d);
-        fileType(d.source).then(({ mime }) => { uploadContent(d.source, mime, personalUserId, userToken, caption); });
+        console.log('Compressed Video Info ', d);
+        fileType(d.source).then(({ mime }) => { uploadContent(d.source, mime, personalUserId, userToken, caption, dispatch); });
     }).catch((err) => {
       console.log('Error in Compressing Video', err);
     });
@@ -74,17 +77,18 @@ const resizeAndUploadVideo = (selectedVideoPath, userToken, personalUserId, capt
   });
 };
 
-const resizeAndUploadImage = (selectedImagePath, userToken, personalUserId, caption) => {
+const resizeAndUploadImage = (selectedImagePath, userToken, personalUserId, caption, dispatch) => {
   Image.getSize(selectedImagePath, (w, h) => {
     ImageResizer.createResizedImage(selectedImagePath, w, h, 'WEBP', 50).then((response) => {
-      uploadContent(response.uri, 'image/webp', personalUserId, userToken, caption);
+      uploadContent(response.uri, 'image/webp', personalUserId, userToken, caption, dispatch);
     }).catch((err) => {
       console.log('Error in Image Compression', err);
     });
   });
 };
 
-const uploadContent = (uri, type, personalUserId, userToken, caption) => {
+const uploadContent = (uri, type, personalUserId, userToken, caption, dispatch) => {
+  dispatch({ type: UPLOAD_PAGE_UPDATE_UPLOADING_STATUS, payload: { status: 'Uploading...', isUploading: true, progress: 0 } });
   let name = '';
   let keyPrefix = '';
   if (type.includes('image')) {
@@ -96,10 +100,14 @@ const uploadContent = (uri, type, personalUserId, userToken, caption) => {
   }
   AWS_OPTIONS.keyPrefix = keyPrefix;
   const file = { uri, name, type };
-  RNS3.put(file, AWS_OPTIONS).then(response => {
+  RNS3.put(file, AWS_OPTIONS)
+  .progress(({ percent }) => {
+    dispatch({ type: UPLOAD_PAGE_UPDATE_UPLOADING_STATUS, payload: { status: 'Uploading...', isUploading: true, progress: percent - 0.02 } });
+  })
+  .then(response => {
     if (response.status === 201) {
       console.log('Content Uploaded', response);
-      updateDatabase(caption, type, response.body.postResponse.location, userToken);
+      updateDatabase(caption, type, response.body.postResponse.location, userToken, dispatch);
     } else {
       console.log('Error in Uploading Content', response, uri, name, type);
     }
@@ -109,8 +117,9 @@ const uploadContent = (uri, type, personalUserId, userToken, caption) => {
   });
 };
 
-const updateDatabase = (caption, mediaType, uploadUrl, userToken) => {
+const updateDatabase = (caption, mediaType, uploadUrl, userToken, dispatch) => {
   console.log(caption, mediaType, uploadUrl, userToken);
+  dispatch({ type: UPLOAD_PAGE_UPDATE_UPLOADING_STATUS, payload: { status: 'Almost Done...', isUploading: true, progress: 0.99 } });
   const headers = {
     'Content-Type': 'application/json',
     Authorization: userToken
@@ -123,6 +132,17 @@ const updateDatabase = (caption, mediaType, uploadUrl, userToken) => {
       })
       .then((response) => {
           console.log('Content Uploaded updateDatabase', response.data);
+          dispatch({ type: UPLOAD_PAGE_TOGGLE_ISSELECTED, payload: false }); // No path is Selected
+          dispatch({ type: UPLOAD_PAGE_UPDATE_UPLOADING_STATUS, payload: { status: '', isUploading: false, progress: 0 } });
+          Alert.alert(
+               'Congrats!',
+               'Your Content is Posted', [{
+                   text: 'Ok',
+               }], {
+                   cancelable: true
+               }
+            );
+          Actions.uploadPage();
       })
       .catch((error) => {
           //handle error

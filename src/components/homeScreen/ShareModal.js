@@ -1,7 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
-import Modal from 'react-native-modal';
-import { Button } from 'react-native-elements';
+import { Button, Overlay } from 'react-native-elements';
 import { connect } from 'react-redux';
 import ShareList from './ShareList';
 import ReactionList from './ReactionList';
@@ -31,17 +30,13 @@ const ShareModal = ({ shareModalVisible, homePageToggleShareModal, postData }) =
     ];
 
     return (
-        <Modal
-          onSwipeComplete={() => homePageToggleShareModal(false)}
-          swipeDirection={['down']}
-          scroll
-          isVisible={shareModalVisible}
-          style={{
-            margin: 0,
-            justifyContent: 'flex-end',
-          }}
-          backdropOpacity={0}
-        >
+      <Overlay
+        isVisible={shareModalVisible}
+        overlayStyle={{ borderTopLeftRadius: 15, borderTopRightRadius: 15, padding: 2, bottom: 0, position: 'absolute' }}
+        width={'100%'}
+        height={'70%'}
+        windowBackgroundColor={'transparent'}
+      >
           <View style={styles.modalStyle}>
             <View style={styles.commentsModalHeader}>
               <Text style={styles.commentsModalHeaderTitle}>Share to</Text>
@@ -57,7 +52,7 @@ const ShareModal = ({ shareModalVisible, homePageToggleShareModal, postData }) =
                 <Button title={'Cancel'} type="outline" onPress={() => homePageToggleShareModal(false)} />
             </View>
           </View>
-        </Modal>
+      </Overlay>
     );
 };
 
