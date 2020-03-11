@@ -35,6 +35,7 @@ export const SettingsPageGetUserOrdersURL = 'https://fashn-backend.herokuapp.com
 export const SettingsPageGetBidsByMeURL = 'https://fashn-backend.herokuapp.com/bid/get-bids-by-me';
 export const SettingsPageGetBidsForMeURL = 'https://fashn-backend.herokuapp.com/bid/get-bids-for-me';
 export const SettingsPageSaveProfileChangesURL = 'https://fashn-backend.herokuapp.com/user/edit-user-profile';
+export const SettingsPageGetCityAndAddressFromPinURL = 'https://fashn-backend.herokuapp.com/search/fetch-pin-code-details';
 export const SettingsPageAddUserAddressURL = 'https://fashn-backend.herokuapp.com/user/update-delivery-details';
 export const SettingsPageGetUserRewardsURL = 'https://fashn-backend.herokuapp.com/user/get-rewards-list';
 
