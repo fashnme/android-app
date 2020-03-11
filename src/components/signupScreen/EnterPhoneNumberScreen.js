@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, ScrollView, Text, Image, Dimensions } from 'react-native';
+import { StyleSheet, View, ScrollView, Text, Image } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import CountryPicker from 'react-native-country-picker-modal';
-import { Input, Button, Header } from 'react-native-elements';
+import { Input, Icon, Header, Card } from 'react-native-elements';
 import { connect } from 'react-redux';
 import {
   signupPagePhoneUpdate,
@@ -10,118 +10,86 @@ import {
   signupPageCountryCodeUpdate
 } from '../../actions';
 
-const screenHeight = Dimensions.get('window').height;
-const screenWidth = Dimensions.get('window').width;
-
 class EnterPhoneNumberScreen extends Component {
   render() {
-    const { countryCode, name, callingCode } = this.props.countryData;
-    return (
-        <View>
-        <Header
-          backgroundColor={'white'}
-          placement={'center'}
-          centerComponent={{ text: 'OTP Verification', style: styles.headerTitle }}
-          containerStyle={{ paddingTop: 0, height: 56, elevation: 5, }}
-        />
-        <ScrollView>
-            <View style={styles.container}>
-                <View style={styles.bodyIcon}>
-                  <Image style={styles.icon} source={require('../../resources/icons/mail.png')} />
-                  <Text style={{ color: '#C71585', fontSize: 18, fontWeight: 'bold' }}>Enter your mobile number</Text>
-                  <Text style={{ color: 'black', fontWeight: 'bold' }}>We will send you a OTP Message</Text>
+    const { phoneNumber, error, countryData } = this.props;
+    const { countryCode, name, callingCode } = countryData;
 
-                  <Text style={{ fontWeight: 'bold', color: 'red', fontSize: 18, margin: 30, textAlign: 'center' }}>{this.props.error}</Text>
+    return (
+        <View style={{ flex: 1 }}>
+          <Header
+            backgroundColor={'white'}
+            placement={'center'}
+            centerComponent={{ text: 'OTP Verification', style: { fontSize: 16, fontWeight: 'bold', color: '#FF4B2B' } }}
+            containerStyle={{ paddingTop: 0, height: 50 }}
+          />
+          <LinearGradient colors={['#FF4B2B', '#FF416C']} style={{ flex: 1 }}>
+            <ScrollView>
+
+              <Card containerStyle={styles.topContainer}>
+                <View style={{ alignItems: 'center' }}>
+                  <Image style={{ height: 80, width: 80 }} source={require('../../resources/icons/phone.png')} />
                 </View>
-                <LinearGradient colors={['#FF7F50', '#FF8C00', '#FF4500']} style={styles.body}>
-                  <View style={styles.topCropper} />
-                  <View style={styles.bodyForm}>
-                      <View style={styles.phoneNumberField}>
-                          <View style={{ alignItems: 'center', flexDirection: 'row', marginHorizontal: 10, justifyContent: 'center' }}>
-                            <CountryPicker
-                                containerButtonStyle={{ backgroundColor: 'white', borderRadius: 20, height: 40, width: 40, padding: 5, justifyContent: 'center', alignItems: 'center' }}
-                                withCallingCode
-                                countryCode={countryCode}
-                                onSelect={(data) => this.props.signupPageCountryCodeUpdate({ countryCode: data.cca2, name: data.name, callingCode: data.callingCode[0] })}
-                            />
-                          </View>
-                          <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 20, }}>(+{callingCode}) {name}</Text>
-                      </View>
-                      <Input
-                          containerStyle={{ paddingHorizontal: 50, marginTop: 20, }}
-                          inputStyle={styles.inputStyle}
-                          placeholder="Enter Phone"
-                          placeholderTextColor="white"
-                          keyboardType="phone-pad"
-                          onChangeText={(newPhone) => { this.props.signupPagePhoneUpdate(newPhone); }}
-                          value={this.props.phoneNumber}
-                      />
-                      <Button
-                          title="Send OTP"
-                          titleStyle={{ color: '#FF4500', fontSize: 20, fontWeight: 'bold' }}
-                          buttonStyle={{ backgroundColor: 'white', borderRadius: 30, paddingHorizontal: 20, marginTop: 30, elevation: 15, marginBottom: 30 }}
-                          onPress={() => this.props.signupPageSendOTP(this.props.phoneNumber, callingCode)}
-                      />
-                  </View>
-                </LinearGradient>
-            </View>
-        </ScrollView>
+                <Text style={{ color: 'grey', marginTop: 20, textAlign: 'center' }}>We will send you a One time SMS message.</Text>
+                <Text style={{ fontWeight: 'bold', color: 'red', fontSize: 16, margin: 20, textAlign: 'center' }}>{error}</Text>
+              </Card>
+
+
+              <Card containerStyle={styles.bottomContainer}>
+                <View style={{ alignItems: 'center', flexDirection: 'row', justifyContent: 'center' }}>
+                  <CountryPicker
+                      containerButtonStyle={{ backgroundColor: 'white', borderRadius: 20, height: 40, width: 40, padding: 5, justifyContent: 'center', alignItems: 'center' }}
+                      withCallingCode
+                      countryCode={countryCode}
+                      onSelect={(data) => this.props.signupPageCountryCodeUpdate({ countryCode: data.cca2, name: data.name, callingCode: data.callingCode[0] })}
+                  />
+                  <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 20, }}> {name} (+{callingCode})</Text>
+                </View>
+                <Input
+                  containerStyle={{ marginTop: 10, marginRight: 0, marginLeft: 0 }}
+                  inputStyle={{ textAlign: 'center', color: 'white', fontWeight: 'bold', fontSize: 22 }}
+                  placeholder="Your Phone Number"
+                  placeholderTextColor="white"
+                  keyboardType="phone-pad"
+                  onChangeText={(newPhone) => { this.props.signupPagePhoneUpdate(newPhone); }}
+                  value={this.props.phoneNumber}
+                />
+                <Icon
+                  raised
+                  name='chevron-right'
+                  type='font-awesome'
+                  color='#FF4B2B'
+                  containerStyle={{ alignItems: 'center', marginTop: 20, elevation: 10 }}
+                  onPress={() => this.props.signupPageSendOTP(phoneNumber, callingCode)}
+                />
+              </Card>
+
+
+            </ScrollView>
+          </LinearGradient>
+
         </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
-    container: {
-      width: screenWidth,
-      height: screenHeight,
-      backgroundColor: 'white',
-      flex: 1
-    },
-    headerTitle: {
-      color: '#ff4500',
-      fontSize: 20,
-      fontWeight: 'bold',
-    },
-    bodyIcon: {
-      alignItems: 'center',
-    },
-    body: {
-      flex: 1,
+    topContainer: {
       margin: 0,
-    },
-    icon: {
-      height: 100,
-      width: 100,
-      resizeMode: 'contain',
-      marginBottom: 10,
-      marginTop: 20,
-    },
-    topCropper: {
-      height: 60,
-      width: screenWidth,
-      position: 'absolute',
-      borderRadius: 80,
-      top: -30,
       backgroundColor: 'white',
-      alignSelf: 'center'
-    },
-    bodyForm: {
-      justifyContent: 'center',
+      borderWidth: 0,
+      height: 250,
       alignItems: 'center',
-      flex: 1,
+      flexDirection: 'column',
+      justifyContent: 'flex-start',
+      borderBottomLeftRadius: 25,
+      borderBottomRightRadius: 25
     },
-    phoneNumberField: {
-      flexDirection: 'row',
-      justifyContent: 'center',
-      alignItems: 'center'
-    },
-    inputStyle: {
-      color: 'white',
-      fontWeight: '700',
-      fontSize: 30,
-      textAlign: 'center',
-    },
+    bottomContainer: {
+      backgroundColor: 'transparent',
+      elevation: 0,
+      borderWidth: 0
+    }
   });
 
 

@@ -31,7 +31,8 @@ import {
   SettingsPageSaveProfileChangesURL,
   SettingsPageAddUserAddressURL,
   CelebrityPageGetUserDetailsURL,
-  SettingsPageGetUserRewardsURL
+  SettingsPageGetUserRewardsURL,
+  SettingsPageGetCityAndAddressFromPinURL
 } from '../URLS';
 
 export const accountSettingsUpdateBio = ({ bio }) => {
@@ -118,6 +119,34 @@ export const accountSettingsUpdateUserProfilePic = ({ profilePic, personalUserId
 };
 
 
+// Get City & State from Pincode
+export const accountSettingsGetCityAndStateFromPin = ({ pincode, updateState, updateCity }) => {
+  const headers = {
+    'Content-Type': 'application/json',
+  };
+  return (dispatch) => {
+    dispatch({ type: 'accountSettingsGetCityAndStateFromPin' });
+    axios({
+        method: 'get',
+        url: SettingsPageGetCityAndAddressFromPinURL,
+        headers,
+        params: { pincode }
+        })
+        .then((response) => {
+            console.log('pinCode resp', response.data);
+            const { stateName, city, status } = response.data;
+            if (status === 'OK') {
+              updateState(stateName);
+              updateCity(city);
+            }
+        })
+        .catch((error) => {
+            console.log('accountSettingsGetCityAndStateFromPin Actions Error ', error);
+      });
+  };
+};
+
+
 // Add or Update the user Address Details
 export const accountSetttingsAddUserAddress = ({ userAddress, addressId, userToken }) => {
   const headers = {
@@ -129,6 +158,7 @@ export const accountSetttingsAddUserAddress = ({ userAddress, addressId, userTok
     newAddressId = new Date().getTime();
   }
   return (dispatch) => {
+    dispatch({ type: SETTING_PAGE_GENERAL_LOADING_TOGGLE, payload: true });
     axios({
         method: 'post',
         url: SettingsPageAddUserAddressURL,
@@ -143,7 +173,10 @@ export const accountSetttingsAddUserAddress = ({ userAddress, addressId, userTok
         })
         .catch((error) => {
             console.log('accountSetttingsAddUserAddress Actions Error ', error);
-      });
+        })
+        .finally(() => {
+            dispatch({ type: SETTING_PAGE_GENERAL_LOADING_TOGGLE, payload: false });
+        });
   };
 };
 

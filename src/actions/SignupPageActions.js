@@ -111,7 +111,7 @@ export const signupPageVerifyOTP = (phone, otp, callingCode) => {
           })
           .catch((error) => {
               //handle error
-              console.log('signupPageVerifyOTP Error', error.response);
+              console.log('signupPageVerifyOTP Error', error);
               dispatch({ type: SIGNUP_PAGE_ERROR_UPDATE, payload: 'Problem in verifying OTP, Please try after some time' });
         })
         .finally(() => {
