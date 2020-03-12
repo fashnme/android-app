@@ -143,7 +143,7 @@ export const signupPageSubmitUserDetails = ({ userName, fullName, gender, userTo
         })
         .then((response) => {
             console.log('signupPageSubmitUserDetails', response);
-            if (response.state === 200) {
+            if (response.status === 200) {
               Actions.tabBar();
               setUserName(userName);
             }
