@@ -9,10 +9,12 @@ import {
 
 class SettingsPage extends Component {
    profile({ avatarUrl, title, subtitle, key }) {
+    const { fullName, profilePic } = this.props;
+    // console.log('{ fullName, profilePic }', { fullName, profilePic });
     return (
       <ListItem
-        leftAvatar={{ source: { uri: avatarUrl } }}
-        title={title}
+        leftAvatar={{ source: { uri: profilePic === undefined ? avatarUrl : profilePic } }}
+        title={fullName === undefined ? title : fullName}
         titleStyle={styles.title}
         subtitle={subtitle}
         rightTitle={'Edit'}
@@ -110,9 +112,11 @@ const styles = {
   }
 };
 
-const mapStateToProps = ({ settingsPageState }) => {
-    const { settingsArray } = settingsPageState;
-    return { settingsArray };
+const mapStateToProps = ({ settingsPageState, personalPageState }) => {
+  const { personalUserDetails } = personalPageState;
+  const { settingsArray } = settingsPageState;
+  const { fullName, profilePic } = personalUserDetails;
+  return { settingsArray, fullName, profilePic };
 };
 
 export default connect(mapStateToProps, {

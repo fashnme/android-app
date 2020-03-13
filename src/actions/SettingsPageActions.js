@@ -51,6 +51,10 @@ export const settingsPageRowPressed = ({ key }) => {
       Actions.rewardsPage();
       break;
 
+    case 'refer':
+      Actions.referAndEarnPage();
+      break;
+      
     default:
       break;
   }

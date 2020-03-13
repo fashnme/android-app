@@ -23,6 +23,7 @@ import ManageCartPage from './components/SettingScreen/ManageCartPage';
 import WishlistPage from './components/SettingScreen/WishlistPage';
 import PersonalStorePage from './components/SettingScreen/PersonalStorePage';
 import RewardsPage from './components/SettingScreen/RewardsPage';
+import ReferAndEarnPage from './components/SettingScreen/ReferAndEarnPage';
 
 class TabIcon extends Component {
   constructor(props) {
@@ -58,7 +59,7 @@ const RouterComponent = () => {
                 <Scene key='enterDetailsPage' title='Enter Details' component={EnterDetailsPage} />
             </Scene>
 
-            <Scene key='tabBar' tabs tabBarPosition="bottom" showLabel={false} tabBarStyle={styles.tabBarStyle} indicatorStyle={styles.indicatorStyle}>
+            <Scene initial key='tabBar' tabs tabBarPosition="bottom" showLabel={false} tabBarStyle={styles.tabBarStyle} indicatorStyle={styles.indicatorStyle}>
                 <Scene hideNavBar icon={TabIcon} iconName={'home'} tabStyle={styles.tabStyle}>
                     <Scene key='home' title='Home' component={HomePage} />
                     <Scene hideTabBar key='celebrityPage' title='Celebrity' component={CelebrityPage} />
@@ -66,15 +67,16 @@ const RouterComponent = () => {
 
                 <Scene hideNavBar icon={TabIcon} iconName={'upload'} key='uploadPage' title='Upload' component={UploadPage} tabStyle={styles.tabStyle} />
 
-                <Scene hideNavBar icon={TabIcon} iconName={'user'} tabStyle={styles.tabStyle}>
+                <Scene initial hideNavBar icon={TabIcon} iconName={'user'} tabStyle={styles.tabStyle}>
                   <Scene key='personalPage' title='Personal' component={PersonalPage} />
-                  <Scene hideTabBar key='settings' title='Settings' component={SettingsPage} />
+                  <Scene initial hideTabBar key='settings' title='Settings' component={SettingsPage} />
                   <Scene hideTabBar key='editUserProfile' component={EditUserProfile} />
                   <Scene hideTabBar key='orders' title='Orders' component={Orders} />
                   <Scene hideTabBar key='wishlistPage' title='Wishlist' component={WishlistPage} />
                   <Scene hideTabBar key='personalStorePage' title='Personal Store' component={PersonalStorePage} />
                   <Scene hideTabBar key='manageCart' title='Cart' component={ManageCartPage} />
                   <Scene hideTabBar key='rewardsPage' title='Rewards' component={RewardsPage} />
+                  <Scene hideTabBar key='referAndEarnPage' title='Refer And Earn' component={ReferAndEarnPage} />
                   <Scene hideTabBar key='bidRequests' title='Bids & Requests' component={BidRequests} />
                   <Scene hideTabBar key='bidDenyPage' component={BidDenyPage} />
                   <Scene hideTabBar key='bidAcceptPage' component={BidAcceptPage} />
