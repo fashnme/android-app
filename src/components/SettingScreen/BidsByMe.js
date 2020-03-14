@@ -3,6 +3,7 @@ import { View, Text, FlatList, Image } from 'react-native';
 import { Button, ListItem } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { Actions } from 'react-native-router-flux';
+import { EmptyPage } from '../basic';
 
 const renderImage = ({ postContentUrl }) => {
   return (
@@ -94,6 +95,7 @@ const BidsByMe = ({ rentBidsByMe }) => {
         keyExtractor={(item, index) => index.toString()}
         data={rentBidsByMe}
         renderItem={renderItem}
+        ListEmptyComponent={<EmptyPage title={'No Requests!'} subtitle={'Scroll the Feed to find interesting products'} />}
       />
     </View>
   );

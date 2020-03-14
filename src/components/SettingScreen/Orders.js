@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
-import { View, Text, FlatList, Image, Dimensions } from 'react-native';
+import { View, Text, FlatList, Image } from 'react-native';
 import { connect } from 'react-redux';
 import { ListItem, Header, Divider } from 'react-native-elements';
 import { Actions } from 'react-native-router-flux';
 import {
   accountSettingsGetUserOrders
 } from '../../actions';
+import { EmptyPage } from '../basic';
+
 
 class Orders extends Component {
   componentDidMount() {
@@ -19,22 +21,6 @@ class Orders extends Component {
   onFocusFunction() {
     const { userToken } = this.props;
     this.props.accountSettingsGetUserOrders({ userToken });
-  }
-
-  renderEmpty() {
-    const { height, width } = Dimensions.get('window');
-    return (
-      <View>
-        <Header
-          backgroundColor={'white'}
-          placement={'center'}
-          leftComponent={{ icon: 'arrow-back', color: 'grey', onPress: () => { Actions.pop(); } }}
-          centerComponent={{ text: 'NO ORDERS FOUND', style: { color: 'grey', fontWeight: 'bold', fontSize: 17 } }}
-          containerStyle={{ paddingTop: 0, height: 56 }}
-        />
-        <View style={{ height, width, backgroundColor: 'white', justifyContent: 'center' }} />
-      </View>
-    );
   }
 
   renderImage(image) {
@@ -115,7 +101,7 @@ class Orders extends Component {
     );
   }
 
-  renderOrders() {
+  render() {
     const { ordersArray } = this.props;
     return (
       <View>
@@ -132,18 +118,10 @@ class Orders extends Component {
             keyExtractor={(item, index) => index.toString()}
             data={ordersArray}
             renderItem={this.renderOrderItem.bind(this)}
+            ListEmptyComponent={<EmptyPage title={'No Orders Found!'} subtitle={'Visit Cart & Add Products!'} />}
             contentContainerStyle={{ paddingBottom: 200 }}
           />
         </View>
-      </View>
-    );
-  }
-
-  render() {
-    const { isEmpty } = this.props;
-    return (
-      <View>
-        {isEmpty ? this.renderEmpty() : this.renderOrders()}
       </View>
     );
   }
@@ -191,11 +169,11 @@ const styles = {
 const mapStateToProps = ({ personalPageState, accountSettingState }) => {
   const { userToken } = personalPageState;
   const { ordersArray } = accountSettingState;
-  let isEmpty = true;
-  if (ordersArray.length !== 0) {
-    isEmpty = false;
-  }
-  return { userToken, ordersArray, isEmpty };
+  // let isEmpty = true;
+  // if (ordersArray.length !== 0) {
+  //   isEmpty = false;
+  // }
+  return { userToken, ordersArray };
 };
 
 export default connect(mapStateToProps, {

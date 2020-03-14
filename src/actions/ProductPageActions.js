@@ -39,8 +39,8 @@ export const productPageUpdatePriceAndSize = ({ productId }) => {
             dispatch({ type: PRODUCT_PAGE_PRICE_AND_SIZE_UPDATE, payload });
         })
         .catch((error) => {
-            console.log('productPageUpdatePriceAndSize Actions Error ', error);
-            // TODO Remove this dummy data 
+            console.log('productPageUpdatePriceAndSize Actions Error ', error, productId);
+            // TODO Remove this dummy data
             const dumdata = {
                 "price": 575,
                 "crossedPrice": 1199,

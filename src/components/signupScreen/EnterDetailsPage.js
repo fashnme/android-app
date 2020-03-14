@@ -89,7 +89,7 @@ const EnterDetailsPage = ({
           containerStyle={{ paddingTop: 0, height: 60, elevation: 5 }}
         />
         <ScrollView>
-        <LinearGradient colors={['#FF7F50', '#FF8C00', '#FF4500']} style={styles.body}>
+        <LinearGradient colors={['#FF4B2B', '#FF416C']} style={styles.body}>
             <UserInputBox
               name="username"
               errorMessage={error}

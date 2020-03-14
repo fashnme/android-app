@@ -209,14 +209,6 @@ const styles = StyleSheet.create({
   exampleContainer: {
     flex: 1,
   },
-  title: {
-    paddingHorizontal: 30,
-    backgroundColor: 'transparent',
-    color: 'rgba(255, 255, 255, 0.9)',
-    fontSize: 20,
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
   slider: {
     overflow: 'visible', // for custom animations
   },

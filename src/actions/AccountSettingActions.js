@@ -195,12 +195,12 @@ export const accountSettingsUpdateSocialMediaLinks = ({ socialMediaLinks, newSoc
 export const accountSettingsSaveProfileChanges = ({ profileDetailsChanges }) => {
     const { dateOfBirth, userName, fullName, bio,
       socialMediaLinks, profilePic, userToken, gender, oldUserName } = profileDetailsChanges;
-    const userNameChanged = userName === oldUserName;
+    const userNameChanged = userName !== oldUserName;
     const headers = {
       'Content-Type': 'application/json',
       Authorization: userToken
     };
-    // console.log(' accountSettingsSaveProfileChanges, data', { newProfile: { dob: dateOfBirth, userName, fullName, gender, bio, socialMediaLinks, profilePic }, userNameChanged });
+    // console.log(' accountSettingsSaveProfileChanges, data', { newProfile: { dob: dateOfBirth, oldUserName, userName, fullName, gender, bio, socialMediaLinks, profilePic }, userNameChanged });
     return (dispatch) => {
       dispatch({ type: SETTING_PAGE_GENERAL_LOADING_TOGGLE, payload: true });
       axios({

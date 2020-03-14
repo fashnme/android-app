@@ -14,7 +14,7 @@ const SocialIconButton = ({ name, clicked, profile }) => {
   return (
       <SocialIcon
         iconSize={15}
-        style={{ height: 30, width: 30 }}
+        style={{ height: 25, width: 25 }}
         onPress={() => clicked({ name, profile })}
         type={name}
       />
@@ -49,7 +49,7 @@ const renderAvatar = ({ profilePic }) => {
         source={{
           uri: profilePic,
         }}
-        size={100}
+        size={80}
         activeOpacity={0.7}
         containerStyle={{ borderColor: 'black', borderWidth: 1 }}
         onPress={() => console.log('Profile clicked')}
@@ -81,14 +81,13 @@ const UserDetailsComp = ({ userDetails, isFollowing, userId, userToken, celebrit
   const { profilePic, userName, followingCount, followersCount, totalLikes } = userDetails;
   return (
     <View style={{ flex: 1 }}>
-        
         <View style={styles.profile}>
           {renderAvatar({ profilePic })}
           <Text style={styles.userName}>@{userName}</Text>
           <View style={styles.userData}>
             {userDetailBlock(followingCount, 'Following', false)}
             {isFollowing ? userDetailBlock(followersCount + 1, 'Fans', true) : userDetailBlock(followersCount, 'Fans', true)}
-            {userDetailBlock(totalLikes, 'Hearts', false)}
+            {userDetailBlock(totalLikes, 'Loved', false)}
           </View>
           {renderFollowButton({ isFollowing, userId, userToken, celebrityPageFollow, celebrityPageUnfollow })}
           <View style={{ flex: 1 }}>
@@ -111,7 +110,8 @@ const UserDetailsComp = ({ userDetails, isFollowing, userId, userToken, celebrit
 const styles = StyleSheet.create({
   profile: {
     alignItems: 'center',
-    padding: 25,
+    padding: 10,
+    paddingBottom: 20
   },
   userName: {
     fontSize: 18,

@@ -3,6 +3,7 @@ import { View, Text, FlatList, Image } from 'react-native';
 import { connect } from 'react-redux';
 import { ListItem, Button } from 'react-native-elements';
 import { Actions } from 'react-native-router-flux';
+import { EmptyPage } from '../basic';
 
 const renderImage = ({ postContentUrl }) => {
   return (
@@ -94,6 +95,7 @@ const BidsForMe = ({ rentBidsForMe }) => {
         keyExtractor={(item, index) => index.toString()}
         data={rentBidsForMe}
         renderItem={renderItem}
+        ListEmptyComponent={<EmptyPage title={'No Requests!'} subtitle={'Post your daily looks to get more requests'} />}
       />
     </View>
   );

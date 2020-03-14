@@ -7,6 +7,7 @@ import {
   manageCartGetUserWishlist,
   manageCartAddProductToCart
 } from '../../actions';
+import { EmptyPage } from '../basic';
 
 // TODO TODO TODO
 // Fix the Action & Reducer to Show PersonalStore Products instead of Wishlist Array
@@ -102,6 +103,7 @@ class PersonalStorePage extends Component {
             data={wishlistArray}
             numColumns={2}
             renderItem={this.renderItem.bind(this)}
+            ListEmptyComponent={<EmptyPage title={'Empty Store!'} subtitle={'We will fill the bucket soon!'} />}
             contentContainerStyle={{ paddingBottom: 100 }}
           />
         </View>

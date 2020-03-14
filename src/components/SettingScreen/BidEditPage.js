@@ -49,6 +49,7 @@ const renderDatePicker = (setState, showCalender, setPropError) => {
         }
       }}
       value={new Date()}
+      minimumDate={new Date()}
     />
   );
 };
