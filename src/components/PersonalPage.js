@@ -30,7 +30,7 @@ class PersonalPage extends Component {
             placement={'center'}
             centerComponent={{ text: this.props.fullName, style: { color: 'gray', fontWeight: 'bold', fontSize: 17 } }}
             rightComponent={{ icon: 'settings', color: '#ee5f73', size: 28, onPress: () => { Actions.settings(); } }}
-            containerStyle={{ paddingTop: 0, height: 56 }}
+            containerStyle={{ paddingTop: 0, height: 50 }}
           />
           <FlatList
             listKey={'mainPersonalList'}

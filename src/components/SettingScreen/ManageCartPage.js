@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { Actions } from 'react-native-router-flux';
 import LinearGradient from 'react-native-linear-gradient';
 import RenderAddressComponent from './RenderAddressComponent';
+import { EmptyPage } from '../basic';
 
 import {
   manageCartGetUserCartDetails,
@@ -162,11 +163,8 @@ class ManageCartPage extends Component {
   }
 
   render() {
-    const { userCartArray, totalCartValue, totalDeliveryCharges, isEmpty } = this.props;
+    const { userCartArray, totalCartValue, totalDeliveryCharges } = this.props;
     // console.log({ userToken, userCartArray, totalCartValue, totalDeliveryCharges, isEmpty });
-    if (isEmpty) {
-      return <View />;
-    }
     return (
       <View style={{ flex: 1 }}>
         <Header
@@ -183,7 +181,7 @@ class ManageCartPage extends Component {
               onPress={() => { Actions.wishlistPage(); }}
             />
           }
-          containerStyle={{ paddingTop: 0, height: 56 }}
+          containerStyle={{ paddingTop: 0, height: 50 }}
         />
         <View>
           <FlatList
@@ -200,6 +198,7 @@ class ManageCartPage extends Component {
                 <RenderAddressComponent />
               </View>
             }
+            ListEmptyComponent={<EmptyPage title={'Empty Bag!'} subtitle={'Add Products that you Love'} />}
             contentContainerStyle={{ paddingBottom: 150 }}
           />
         </View>
@@ -214,7 +213,7 @@ class ManageCartPage extends Component {
                 ViewComponent={LinearGradient}
                 titleStyle={{ fontWeight: 'bold' }}
                 linearGradientProps={{
-                  colors: ['#ff4b1f', '#ff9068'],
+                  colors: ['#FF4B2B', '#FF416C'],
                   start: { x: 1.0, y: 0.0 },
                   end: { y: 1.0, x: 1.0 },
                 }}
@@ -252,11 +251,11 @@ const mapStateToProps = ({ personalPageState, accountSettingState }) => {
     totalCartValue += (item.price * item.quantity);
     totalDeliveryCharges += item.deliveryCharges;
   });
-  let isEmpty = true;
-  if (userCartArray.length !== 0) {
-    isEmpty = false;
-  }
-  return { userToken, userCartArray, selectedAddress, totalCartValue, totalDeliveryCharges, isEmpty, loading };
+  // let isEmpty = true;
+  // if (userCartArray.length !== 0) {
+  //   isEmpty = false;
+  // }
+  return { userToken, userCartArray, selectedAddress, totalCartValue, totalDeliveryCharges, loading };
 };
 
 export default connect(mapStateToProps, {

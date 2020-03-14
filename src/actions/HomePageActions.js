@@ -33,7 +33,7 @@ export const homePageFetchUserColdStartDetails = ({ userToken }) => {
   return (dispatch) => {
     axios.get(HomePageFetchUserColdStartDetailsURL, { headers: { Authorization: userToken } })
     .then(response => {
-      // console.log('Actions homePageFetchUserColdStartDetails', response.data);
+      console.log('Actions homePageFetchUserColdStartDetails', response.data);
       const { followingMap, likedPostsMap, userCartMap, userWishlistMap, userDetails } = response.data;
       // Set the User Details
       if (userDetails !== undefined) {

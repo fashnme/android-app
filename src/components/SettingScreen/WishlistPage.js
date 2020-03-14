@@ -8,6 +8,7 @@ import {
   manageCartRemoveProductFromWishlist,
   manageCartAddProductToCart
 } from '../../actions';
+import { EmptyPage } from '../basic';
 
 
 const screenWidth = Dimensions.get('window').width;
@@ -109,6 +110,7 @@ class WishlistPage extends Component {
             numColumns={2}
             renderItem={this.renderItem.bind(this)}
             contentContainerStyle={{ paddingBottom: 100 }}
+            ListEmptyComponent={<EmptyPage title={'Empty Wishlist!'} subtitle={'Add Products to Wishlist'} />}
           />
         </View>
       </View>
@@ -172,11 +174,11 @@ const styles = {
 const mapStateToProps = ({ personalPageState, accountSettingState }) => {
   const { userToken } = personalPageState;
   const { wishlistArray } = accountSettingState;
-  let isEmpty = true;
-  if (wishlistArray.length !== 0) {
-    isEmpty = false;
-  }
-  return { userToken, wishlistArray, isEmpty };
+  // let isEmpty = true;
+  // if (wishlistArray.length !== 0) {
+  //   isEmpty = false;
+  // }
+  return { userToken, wishlistArray };
 };
 
 export default connect(mapStateToProps, {

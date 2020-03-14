@@ -125,8 +125,8 @@ const setUserName = (userName) => {
 };
 
 const setUserToken = (jwt) => {
-    AsyncStorage.setItem(ASYNCSTORAGE_USER_TOKEN_NAME, jwt);
-    console.log('Phone JWT STORED', jwt);
+  AsyncStorage.setItem(ASYNCSTORAGE_USER_TOKEN_NAME, jwt);
+  console.log('Phone JWT STORED', jwt);
 };
 
 
@@ -144,6 +144,9 @@ export const signupPageSubmitUserDetails = ({ userName, fullName, gender, userTo
         .then((response) => {
             console.log('signupPageSubmitUserDetails', response);
             if (response.status === 200) {
+              const jwt = `Bearer ${response.data.jwt}`;
+              dispatch({ type: PERSONAL_PAGE_SET_USERTOKEN, payload: jwt });
+              setUserToken(jwt);
               Actions.tabBar();
               setUserName(userName);
             }

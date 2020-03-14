@@ -4,6 +4,7 @@ import { Icon } from 'react-native-elements';
 import { TabView, TabBar } from 'react-native-tab-view';
 import { connect } from 'react-redux';
 import PostThumbnail from './PostThumbnail';
+import { EmptyPage } from '../basic';
 
 import {
   celebrityPageGetUserPosts as _celebrityPageGetUserPosts,
@@ -45,8 +46,8 @@ const UserPosts = ({ postsData, getMethod, selfPostPageNum, userId, userToken })
               onPress={() => console.log('UserPosts Thumbnail Pressed')}
             />
           );
-      }
-      }
+        }}
+      ListEmptyComponent={<EmptyPage title={''} subtitle={'No Posts Found!'} />}
       keyExtractor={(item, index) => index.toString()}
       onEndReached={() => console.log('UserPosts onEndReached', selfPostPageNum)}
       style={styles.postFeeds}
@@ -67,6 +68,7 @@ const LikedPosts = ({ postsData, getMethod, postLikedPageNum, userId, userToken 
           onPress={() => console.log('LikedPosts Thumbnail Pressed')}
         />
       )}
+      ListEmptyComponent={<EmptyPage title={''} subtitle={'No Posts Found!'} />}
       keyExtractor={(item, index) => index.toString() + item}
       onEndReached={() => console.log('LikedPosts onEndReached', postLikedPageNum)}
       style={styles.postFeeds}

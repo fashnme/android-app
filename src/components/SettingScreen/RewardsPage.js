@@ -6,6 +6,7 @@ import { Actions } from 'react-native-router-flux';
 import {
   accountSettingsGetUserRewards
 } from '../../actions';
+import { EmptyPage } from '../basic';
 
 const screenWidth = Dimensions.get('window').width;
 const rowWidth = screenWidth - 10;
@@ -131,6 +132,7 @@ class RewardsPage extends Component {
               {this.renderHeading('Rewards Earned')}
               </View>
           }
+          ListEmptyComponent={<EmptyPage title={'No Rewards!'} subtitle={'Invite Your Friends And Earn Rewards'} />}
           keyExtractor={(item, index) => index.toString()}
           data={rewardsArray}
           renderItem={this.renderRewardItem.bind(this)}

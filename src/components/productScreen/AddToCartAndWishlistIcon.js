@@ -62,9 +62,9 @@ const renderBookmarkIcon = ({ productRelatedData, isPresent,
               manageCartAddProductToWishlist, manageCartRemoveProductFromWishlist }) => {
   const { productId, postId, posterId, userToken } = productRelatedData;
   if (isPresent) {
-    return <Icon type="font-awesome" name="bookmark-o" color='grey' size={36} onPress={() => manageCartRemoveProductFromWishlist({ productId, userToken })} />;
+    return <Icon type="font-awesome" name="bookmark" color='#ea4e9d' size={36} onPress={() => manageCartRemoveProductFromWishlist({ productId, userToken })} />;
   }
-  return <Icon type="font-awesome" name="bookmark" color='#ea4e9d' size={36} onPress={() => manageCartAddProductToWishlist({ productId, userToken, posterId, postId })} />;
+  return <Icon type="font-awesome" name="bookmark-o" color='grey' size={36} onPress={() => manageCartAddProductToWishlist({ productId, userToken, posterId, postId })} />;
 };
 
 // Main Component
