@@ -59,7 +59,7 @@ const RouterComponent = () => {
                 <Scene key='enterDetailsPage' title='Enter Details' component={EnterDetailsPage} />
             </Scene>
 
-            <Scene initial key='tabBar' tabs tabBarPosition="bottom" showLabel={false} tabBarStyle={styles.tabBarStyle} activeBackgroundColor={'transparent'} indicatorStyle={styles.indicatorStyle}>
+            <Scene key='tabBar' tabs tabBarPosition="bottom" showLabel={false} tabBarStyle={styles.tabBarStyle} activeBackgroundColor={'transparent'} indicatorStyle={styles.indicatorStyle}>
                 <Scene hideNavBar icon={TabIcon} iconName={'home'} tabStyle={styles.tabStyle}>
                     <Scene initial key='home' title='Home' component={HomePage} />
                     <Scene hideTabBar key='celebrityPage' title='Celebrity' component={CelebrityPage} />
@@ -67,9 +67,9 @@ const RouterComponent = () => {
 
                 <Scene hideNavBar icon={TabIcon} iconName={'upload'} key='uploadPage' title='Upload' component={UploadPage} tabStyle={styles.tabStyle} />
 
-                <Scene initial hideNavBar icon={TabIcon} iconName={'user'} tabStyle={styles.tabStyle}>
-                  <Scene key='personalPage' title='Personal' component={PersonalPage} />
-                  <Scene initial hideTabBar key='settings' title='Settings' component={SettingsPage} />
+                <Scene hideNavBar icon={TabIcon} iconName={'user'} tabStyle={styles.tabStyle}>
+                  <Scene initial key='personalPage' title='Personal' component={PersonalPage} />
+                  <Scene hideTabBar key='settings' title='Settings' component={SettingsPage} />
                   <Scene hideTabBar key='editUserProfile' component={EditUserProfile} />
                   <Scene hideTabBar key='orders' title='Orders' component={Orders} />
                   <Scene hideTabBar key='wishlistPage' title='Wishlist' component={WishlistPage} />

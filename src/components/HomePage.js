@@ -26,22 +26,24 @@ class HomePage extends Component {
   }
 
   render() {
-    const { feedData, activeTab, publicFeedData } = this.props;
+    // const { feedData, activeTab, publicFeedData } = this.props;
+    const { feedData, activeTab } = this.props;
     if (activeTab === 1) {
-      return (
-        <View>
-          <StatusBar hidden />
-          <Carousel
-            data={publicFeedData}
-            ref={(c) => { this.props.homePageSetPublicVerticalCarouselRef(c); }}
-            sliderHeight={WINDOW_HEIGHT}
-            itemHeight={WINDOW_HEIGHT}
-            vertical
-            useScrollView={false}
-            renderItem={({ item }) => (<HomePagePost data={item} />)}
-          />
-        </View>
-      );
+      return (<View />); // No need for Now
+      // return (
+      //   <View>
+      //     <StatusBar hidden />
+      //     <Carousel
+      //       data={publicFeedData}
+      //       ref={(c) => { this.props.homePageSetPublicVerticalCarouselRef(c); }}
+      //       sliderHeight={WINDOW_HEIGHT}
+      //       itemHeight={WINDOW_HEIGHT}
+      //       vertical
+      //       useScrollView={false}
+      //       renderItem={({ item }) => (<HomePagePost data={item} />)}
+      //     />
+      //   </View>
+      // );
     } else if (activeTab === 2) {
       return (
         <View>

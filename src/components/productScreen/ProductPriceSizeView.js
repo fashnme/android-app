@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, Image, TouchableNativeFeedback, FlatList, ActivityIndicator } from 'react-native';
+import { View, Text, Image, TouchableNativeFeedback, FlatList } from 'react-native';
 import { Card, Badge } from 'react-native-elements';
 import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux';

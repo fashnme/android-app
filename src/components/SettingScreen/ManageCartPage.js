@@ -249,7 +249,7 @@ const mapStateToProps = ({ personalPageState, accountSettingState }) => {
   let totalDeliveryCharges = 0;
   userCartArray.forEach((item) => {
     totalCartValue += (item.price * item.quantity);
-    totalDeliveryCharges += item.deliveryCharges;
+    // totalDeliveryCharges += item.deliveryCharges; // TODO Uncomment it to add deliveryCharges
   });
   // let isEmpty = true;
   // if (userCartArray.length !== 0) {

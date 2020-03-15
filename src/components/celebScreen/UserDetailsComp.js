@@ -78,7 +78,7 @@ const renderFollowButton = ({ isFollowing, userId, userToken, celebrityPageFollo
 };
 
 const UserDetailsComp = ({ userDetails, isFollowing, userId, userToken, celebrityPageFollow, celebrityPageUnfollow, celebrityPageSocialIconClicked }) => {
-  const { profilePic, userName, followingCount, followersCount, totalLikes } = userDetails;
+  const { profilePic, userName, followingCount, followersCount, totalLikes, bio } = userDetails;
   return (
     <View style={{ flex: 1 }}>
         <View style={styles.profile}>
@@ -100,7 +100,7 @@ const UserDetailsComp = ({ userDetails, isFollowing, userId, userToken, celebrit
             />
           </View>
           <Text numberOfLines={3} style={styles.userBio}>
-            follow me on instagram, Actor | Comedian | Entertainer
+            {bio}
           </Text>
         </View>
     </View>

@@ -3,6 +3,8 @@ import { View, Image, TouchableNativeFeedback } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { Actions } from 'react-native-router-flux';
+import { showMessage } from 'react-native-flash-message';
+
 import {
   productPageOpenProductModal as _productPageOpenProductModal,
   manageCartAddProductToCart as _manageCartAddProductToCart,
@@ -25,7 +27,7 @@ const checkAndCompleteRequest = ({ productRelatedData, manageCartAddProductToCar
     posterId,
     userToken
   });
-  setError('Added to Bag!');
+  showMessage({ message: 'Added to Bag!', type: 'success', floating: true, icon: 'success' });
 };
 
 // Render the Bag Icon
@@ -48,7 +50,9 @@ const renderAddToBagIcon = ({ productRelatedData, isPresent,
     );
   }
   return (
-    <TouchableNativeFeedback onPress={() => checkAndCompleteRequest({ productRelatedData, manageCartAddProductToCart })}>
+    <TouchableNativeFeedback
+      onPress={() => { checkAndCompleteRequest({ productRelatedData, manageCartAddProductToCart }); }}
+    >
       <Image
         style={{ width: 36, height: 36 }}
         source={require('../../resources/icons/add-to-cart.png')}
@@ -62,9 +66,9 @@ const renderBookmarkIcon = ({ productRelatedData, isPresent,
               manageCartAddProductToWishlist, manageCartRemoveProductFromWishlist }) => {
   const { productId, postId, posterId, userToken } = productRelatedData;
   if (isPresent) {
-    return <Icon type="font-awesome" name="bookmark" color='#ea4e9d' size={36} onPress={() => manageCartRemoveProductFromWishlist({ productId, userToken })} />;
+    return <Icon type="font-awesome" name="bookmark" color='#ea4e9d' size={36} onPress={() => { manageCartRemoveProductFromWishlist({ productId, userToken }); showMessage({ message: 'Removed from Wishlist!', type: 'danger', floating: true, icon: 'danger' }); }} />;
   }
-  return <Icon type="font-awesome" name="bookmark-o" color='grey' size={36} onPress={() => manageCartAddProductToWishlist({ productId, userToken, posterId, postId })} />;
+  return <Icon type="font-awesome" name="bookmark-o" color='grey' size={36} onPress={() => { manageCartAddProductToWishlist({ productId, userToken, posterId, postId }); showMessage({ message: 'Added to Wishlist!', type: 'success', floating: true, icon: 'success' }); }} />;
 };
 
 // Main Component
