@@ -173,7 +173,19 @@ export const manageCartRemoveProductFromWishlist = ({ productId, userToken, upda
         .then((response) => {
             dispatch({ type: USER_REMOVED_PRODUCT_FROM_WISHLIST, payload: productId });
             if (updateWishlistArray) { // Whether Calling from Product Page or Wishlist Page
-              manageCartGetUserWishlist({ userToken }); // Fetch the updated Wishlist
+              axios({
+                  method: 'get',
+                  url: SettingsPageGetUserWishlistURL,
+                  headers,
+                  })
+                  .then((resp) => {
+                      console.log('manageCartRemoveProductFromWishlist manageCartGetUserWishlist resp', resp.data);
+                      const { products } = resp.data;
+                      dispatch({ type: SETTING_PAGE_SET_USER_WISHLIST, payload: products });
+                  })
+                  .catch((error) => {
+                      console.log('manageCartGetUserWishlist Actions Error ', error);
+                  });
             }
             console.log('manageCartRemoveProductFromWishlist resp', response.data);
         })

@@ -28,6 +28,7 @@ const ProductModal = ({ productsData, productsModalVisible, postId, posterId,
           width={'100%'}
           height={'80%'}
           windowBackgroundColor={'transparent'}
+          animationType={'slide'}
         >
         <View style={styles.modalStyle}>
         <ScrollView>
@@ -52,7 +53,6 @@ const ProductModal = ({ productsData, productsModalVisible, postId, posterId,
         </ScrollView>
         </View>
         </Overlay>
-        // </Modal>
     );
 };
 

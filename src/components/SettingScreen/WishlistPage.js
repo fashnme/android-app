@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
-import { View, Text, FlatList, TouchableWithoutFeedback, Dimensions, ImageBackground } from 'react-native';
-import { Header, Button, Icon } from 'react-native-elements';
+import { View, Text, FlatList, TouchableWithoutFeedback, Dimensions, ImageBackground, ScrollView } from 'react-native';
+import { Header, Button, Icon, Overlay, Card, Badge } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { Actions } from 'react-native-router-flux';
+import FlashMessage, { showMessage } from 'react-native-flash-message';
 import {
   manageCartGetUserWishlist,
   manageCartRemoveProductFromWishlist,
-  manageCartAddProductToCart
+  manageCartAddProductToCart,
+  productPageUpdatePriceAndSize
 } from '../../actions';
 import { EmptyPage } from '../basic';
 
@@ -17,6 +19,14 @@ const rowWidth = (screenWidth - (3 * itemSpacing)) / 2;
 const aspectRatio = 3 / 4;
 
 class WishlistPage extends Component {
+  constructor() {
+      super();
+      this.state = {
+          sizeSelected: null,
+          openSizeModal: false,
+          item: null
+      };
+  }
   componentDidMount() {
     this.focusListener = this.props.navigation.addListener('didFocus', () => {
       this.onFocusFunction();
@@ -28,6 +38,102 @@ class WishlistPage extends Component {
   onFocusFunction() {
     const { userToken } = this.props;
     this.props.manageCartGetUserWishlist({ userToken });
+  }
+
+  moveToBagPressed({ item }) {
+    const { productId, referrerId, referrerPost } = item;
+    const { userToken } = this.props;
+    const { sizeSelected } = this.state;
+    // console.log('moveToBagPressed', { productId, referrerId, referrerPost, sizeSelected });
+    if (sizeSelected === null) {
+      this.setState({ openSizeModal: true, item }); // Open Size Modal
+      // console.log('sizeSelected is Null');
+      return;
+    }
+    this.props.manageCartAddProductToCart({ productId,
+      quantity: 1,
+      sizeSelected,
+      postId: referrerPost,
+      posterId: referrerId,
+      userToken });
+
+    showMessage({
+      message: 'Product Added to Bag',
+      type: 'success',
+      floating: true,
+      icon: 'success'
+    });
+    this.setState({ openSizeModal: false, item: null, sizeSelected: null }); // Close Size Modal
+  }
+
+  renderSizeModal() {
+    const { openSizeModal, item, sizeSelected } = this.state;
+    if (!openSizeModal) {
+      return <View />;
+    }
+    const { sizeAndPriceObject } = this.props;
+    const { productId } = item;
+    if (!(productId in sizeAndPriceObject)) {
+      this.props.productPageUpdatePriceAndSize({ productId });
+    }
+    const updatedData = sizeAndPriceObject[productId];
+
+    if (updatedData === undefined) {
+      return (
+        <Card>
+          <Text style={{ justifyContent: 'center' }}> Updating Sizes...... </Text>
+        </Card>
+      );
+    }
+    const { sizesAvailable } = updatedData;
+    return (
+        <Overlay
+          isVisible={openSizeModal}
+          overlayStyle={{ borderTopLeftRadius: 15, borderTopRightRadius: 15, padding: 2, bottom: 0, position: 'absolute' }}
+          width={'100%'}
+          height={'30%'}
+          windowBackgroundColor={'transparent'}
+          animationType={'slide'}
+        >
+          <View style={{ flex: 1 }}>
+            <ScrollView>
+              <Card containerStyle={{ margin: 0 }}>
+                <Text style={styles.headingStyle}> Select Size </Text>
+                <View>
+                  <FlatList
+                    horizontal
+                    keyExtractor={(i, index) => index.toString()}
+                    data={sizesAvailable}
+                    renderItem={(sizes) => {
+                      console.log('sizes', sizes);
+                      return (
+                        <Badge
+                          badgeStyle={[styles.sizeContainerStyle, sizeSelected === sizes.item.size ? { borderColor: '#ee5f73' } : { borderColor: 'grey' }]}
+                          textStyle={[styles.sizeTextStyle, sizeSelected === sizes.item.size ? { color: '#ee5f73' } : { color: 'grey' }]}
+                          value={sizes.item.size}
+                          onPress={() => this.setState({ sizeSelected: sizes.item.size })}
+                        />
+                      );
+                    }}
+                    ListEmptyComponent={
+                        <Card>
+                          <Text style={{ justifyContent: 'center', color: 'red', alignItems: 'center' }}> Product Out Of Stock </Text>
+                        </Card>
+                    }
+                  />
+                </View>
+                <Button
+                  title="Done"
+                  type="outline"
+                  buttonStyle={{ marginTop: 20, marginBottom: 2, borderColor: '#d00' }}
+                  titleStyle={{ color: '#ff859a', fontWeight: '600' }}
+                  onPress={() => { this.moveToBagPressed({ item }); }}
+                />
+              </Card>
+            </ScrollView>
+          </View>
+        </Overlay>
+    );
   }
 
   renderPriceBlock({ crossedPrice, discount, price }) {
@@ -43,7 +149,7 @@ class WishlistPage extends Component {
     );
   }
   renderItem({ item }) {
-    const { title, brandName, price, image, crossedPrice, discount, productId, referrerPost, referrerId } = item;
+    const { title, brandName, price, image, crossedPrice, discount, productId } = item;
     const { userToken } = this.props;
     return (
       <View style={styles.container}>
@@ -56,7 +162,7 @@ class WishlistPage extends Component {
                 size={26}
                 iconStyle={{ color: 'grey' }}
                 containerStyle={styles.crossStyle}
-                onPress={() => { this.props.manageCartRemoveProductFromWishlist({ productId, userToken, updateWishlistArray: true }); }}
+                onPress={() => { this.props.manageCartRemoveProductFromWishlist({ productId, userToken, updateWishlistArray: true }); showMessage({ message: 'Removed from Bag!', type: 'danger', floating: true, icon: 'danger' }); }}
               />
             </ImageBackground>
             <Text numberOfLines={1} ellipsizeMode='tail' style={styles.brand}>{ brandName }</Text>
@@ -65,18 +171,11 @@ class WishlistPage extends Component {
           </View>
         </TouchableWithoutFeedback>
         <Button
-          title={'MOVE TO BAG'}
+          title={'ADD TO BAG'}
           type={'outline'}
           containerStyle={{ marginTop: 3, borderColor: '#03a685' }}
           titleStyle={{ fontWeight: '600', fontSize: 14, color: '#03a685' }}
-          onPress={() => {
-                this.props.manageCartAddProductToCart({ productId,
-                  quantity: 1,
-                  sizeSelected: '', // TODO, Prompt User to Select Size
-                  postId: referrerPost,
-                  posterId: referrerId,
-                  userToken });
-              }}
+          onPress={() => { this.moveToBagPressed({ item }); }}
         />
       </View>
     );
@@ -113,6 +212,8 @@ class WishlistPage extends Component {
             ListEmptyComponent={<EmptyPage title={'Empty Wishlist!'} subtitle={'Add Products to Wishlist'} />}
           />
         </View>
+        {this.renderSizeModal()}
+        <FlashMessage position="bottom" />
       </View>
     );
   }
@@ -168,21 +269,37 @@ const styles = {
       position: 'absolute',
       right: 3,
       top: 3
+    },
+    headingStyle: {
+      fontWeight: 'bold',
+      marginBottom: 5,
+      marginTop: 5
+    },
+    sizeContainerStyle: {
+      margin: 6,
+      padding: 3,
+      height: 28,
+      backgroundColor: 'white',
+      borderWidth: 1,
+    },
+    sizeTextStyle: {
+      fontSize: 18,
+      fontWeight: 'bold',
+      margin: 2,
+      color: 'grey'
     }
 };
 
-const mapStateToProps = ({ personalPageState, accountSettingState }) => {
+const mapStateToProps = ({ personalPageState, accountSettingState, productPageState }) => {
   const { userToken } = personalPageState;
   const { wishlistArray } = accountSettingState;
-  // let isEmpty = true;
-  // if (wishlistArray.length !== 0) {
-  //   isEmpty = false;
-  // }
-  return { userToken, wishlistArray };
+  const { sizeAndPriceObject } = productPageState;
+  return { userToken, wishlistArray, sizeAndPriceObject };
 };
 
 export default connect(mapStateToProps, {
   manageCartGetUserWishlist,
   manageCartRemoveProductFromWishlist,
-  manageCartAddProductToCart
+  manageCartAddProductToCart,
+  productPageUpdatePriceAndSize
 })(WishlistPage);

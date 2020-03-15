@@ -3,7 +3,6 @@ import { View, Text, TouchableNativeFeedback } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { connect } from 'react-redux';
 
-
 const convertIntToString = (num) => {
   if (String(num).length >= 7) {
     return `${String(num / 1000000)}M`;
