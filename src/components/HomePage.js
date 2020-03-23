@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { Dimensions, StatusBar, View } from 'react-native';
+import { Dimensions, StatusBar, View, BackHandler, Alert } from 'react-native';
 import { connect } from 'react-redux';
+import { Actions } from 'react-native-router-flux';
 import Carousel from 'react-native-snap-carousel';
 import {
   homePageGetInitialFeedData,
@@ -23,6 +24,31 @@ class HomePage extends Component {
     this.props.homePageGetInitialFeedData({ userToken });
     this.props.homePageGetInitialPublicFeedData({ userToken });
     this.props.homePageFetchUserColdStartDetails({ userToken });
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackButton.bind(this));
+  }
+  componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
+  }
+  handleBackButton() {
+    if (Actions.currentScene === 'home') {
+        Alert.alert(
+         'Exit App',
+         'Exiting the application?', [{
+             text: 'No',
+             onPress: () => console.log('Cancel Pressed'),
+             style: 'cancel'
+         }, {
+             text: 'Yes',
+             onPress: () => BackHandler.exitApp()
+         }], {
+             cancelable: true
+         }
+      );
+    }
+    if (Actions.currentScene === 'home' || Actions.currentScene === 'enterDetailsPage') {
+      return true;
+    }
+    return false;
   }
 
   render() {
