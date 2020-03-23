@@ -18,6 +18,16 @@ class EnterOTPScreen extends Component {
           resend: false
       };
   }
+  renderError(error) {
+    if (error.length === 0) {
+      return <View />;
+    }
+    return (
+      <Card containerStyle={{ margin: 0, padding: 0, borderRadius: 5, elevation: 4 }}>
+        <Text style={{ fontWeight: 'bold', color: '#FF4B2B', fontSize: 16, margin: 5, textAlign: 'center' }}>{error}</Text>
+      </Card>
+    );
+  }
   render() {
     const { loading, phoneNumber, otp, countryData, error } = this.props;
     const { callingCode } = countryData;
@@ -41,7 +51,7 @@ class EnterOTPScreen extends Component {
                       codeInputFieldStyle={styles.otpInput}
                       onCodeFilled={(code => { this.props.signupPageOTPUpdate(code); })}
                   />
-                  <Text style={{ fontWeight: 'bold', color: '#fafafa', fontSize: 16, margin: 5, textAlign: 'center' }}>{error}</Text>
+                  {this.renderError(error)}
                 </Card>
 
                 <View style={{ flexDirection: 'row', justifyContent: 'flex-end', marginRight: 10 }}>
