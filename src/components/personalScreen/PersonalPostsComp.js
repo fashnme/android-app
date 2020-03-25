@@ -56,7 +56,7 @@ const UserPosts = ({ postsData, getMethod, selfPostPageNum, userId, userToken })
 };
 
 const LikedPosts = ({ postsData, getMethod, postLikedPageNum, userId, userToken }) => {
-  // console.log('UserPostsComp LikedPosts', postsData);
+  console.log('UserPostsComp LikedPosts', postsData);
   return (
     <FlatList
       data={postsData}
@@ -77,9 +77,8 @@ const LikedPosts = ({ postsData, getMethod, postLikedPageNum, userId, userToken 
   );
 };
 
-const UserPostsComp = ({ selfPostArray,
-    postLikedArray, selfPostPageNum,
-    postLikedPageNum, userId,
+const PersonalPostsComp = ({
+  selfPostArray, postLikedArray, selfPostPageNum, postLikedPageNum, userId,
     userToken, celebrityPageGetUserPosts, celebrityPageGetUserLikedPosts }) => {
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([{ key: 'posts' }, { key: 'likedposts' }]);
@@ -114,13 +113,14 @@ const styles = StyleSheet.create({
   }
 });
 
-const mapStateToProps = ({ celebPageState, homePageState }) => {
-    const { selfPostArray, postLikedArray, selfPostPageNum, postLikedPageNum, userId } = celebPageState;
+const mapStateToProps = ({ personalPageState, celebPageState, homePageState }) => {
+    const { selfPostArray, postLikedArray, selfPostPageNum, postLikedPageNum } = celebPageState;
     const { userToken } = homePageState;
-    return { selfPostArray, postLikedArray, selfPostPageNum, postLikedPageNum, userId, userToken };
+    const { personalUserId } = personalPageState;
+    return { selfPostArray, postLikedArray, selfPostPageNum, postLikedPageNum, userId: personalUserId, userToken };
 };
 
 export default connect(mapStateToProps, {
   celebrityPageGetUserPosts: _celebrityPageGetUserPosts,
   celebrityPageGetUserLikedPosts: _celebrityPageGetUserLikedPosts
-})(UserPostsComp);
+})(PersonalPostsComp);

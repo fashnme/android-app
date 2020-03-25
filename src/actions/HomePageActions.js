@@ -34,7 +34,7 @@ export const homePageFetchUserColdStartDetails = ({ userToken }) => {
     axios.get(HomePageFetchUserColdStartDetailsURL, { headers: { Authorization: userToken } })
     .then(response => {
       console.log('Actions homePageFetchUserColdStartDetails', response.data);
-      const { followingMap, likedPostsMap, userCartMap, userWishlistMap, userDetails } = response.data;
+      const { followingMap, userLikedPostsMap, userCartMap, userWishlistMap, userDetails } = response.data;
       // Set the User Details
       if (userDetails !== undefined) {
         dispatch({ type: PERSONAL_PAGE_SET_PERSONAL_DETAILS_AND_USERID, payload: userDetails });
@@ -44,8 +44,8 @@ export const homePageFetchUserColdStartDetails = ({ userToken }) => {
       if (followingMap !== undefined) {
         payload.followingDataMap = followingMap;
       }
-      if (likedPostsMap !== undefined) {
-        payload.likedPosts = likedPostsMap;
+      if (userLikedPostsMap !== undefined) {
+        payload.likedPosts = userLikedPostsMap;
       }
       if (userCartMap !== undefined) {
         payload.userCartMap = userCartMap;

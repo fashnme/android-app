@@ -3,9 +3,13 @@ import { View, FlatList, StatusBar } from 'react-native';
 import { connect } from 'react-redux';
 import { Header } from 'react-native-elements';
 import { Actions } from 'react-native-router-flux';
-import UserDetailsComp from './celebScreen/UserDetailsComp';
-import UserPostsComp from './celebScreen/UserPostsComp';
-import { personalPageVisitAndSetData } from '../actions';
+import PersonalDetailsComp from './personalScreen/PersonalDetailsComp';
+import PersonalPostsComp from './personalScreen/PersonalPostsComp';
+import {
+  personalPageVisitAndSetData,
+  celebrityPageGetUserPosts,
+  celebrityPageGetUserLikedPosts
+ } from '../actions';
 
 class PersonalPage extends Component {
   componentDidMount() {
@@ -19,6 +23,9 @@ class PersonalPage extends Component {
   onFocusFunction() {
      const { personalUserId, userToken } = this.props;
      this.props.personalPageVisitAndSetData({ userToken, userId: personalUserId });
+     // Setting the First Request Data for User's own Liked and posted posts
+     this.props.celebrityPageGetUserPosts({ userId: personalUserId, userToken, selfPostPageNum: 1 });
+     this.props.celebrityPageGetUserLikedPosts({ userId: personalUserId, userToken, postLikedPageNum: 1 });
   }
 
   render() {
@@ -34,8 +41,8 @@ class PersonalPage extends Component {
           />
           <FlatList
             listKey={'mainPersonalList'}
-            ListHeaderComponent={<UserDetailsComp />}
-            ListFooterComponent={<UserPostsComp />}
+            ListHeaderComponent={<PersonalDetailsComp />}
+            ListFooterComponent={<PersonalPostsComp />}
             data={['']}
             keyExtractor={(item, index) => index.toString()}
             renderItem={() => {}}
@@ -52,5 +59,7 @@ const mapStateToProps = ({ personalPageState }) => {
 };
 
 export default connect(mapStateToProps, {
-  personalPageVisitAndSetData
+  personalPageVisitAndSetData,
+  celebrityPageGetUserPosts,
+  celebrityPageGetUserLikedPosts
 })(PersonalPage);

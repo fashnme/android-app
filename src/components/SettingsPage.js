@@ -97,7 +97,6 @@ class SettingsPage extends Component {
               />
             }
         />
-
       </View>
     );
   }

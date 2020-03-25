@@ -13,6 +13,7 @@ const convertIntToString = (num) => {
 };
 
 const HeartComp = ({ postId, likes, onLikePress, onUnlikePress, likedPosts }) => {
+  // console.log('HeartComp', postId, likedPosts, postId in likedPosts);
   if (postId in likedPosts) {
     return (
       <TouchableNativeFeedback onPress={onUnlikePress}>

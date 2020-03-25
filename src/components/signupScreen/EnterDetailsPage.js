@@ -81,12 +81,12 @@ const EnterDetailsPage = ({
   // console.log('props', { userName, fullName, genderIndex, loading, userToken, error });
   // console.log('actions', signupPageUpdateUsername, signupPageUpdateFullname, signupPageUpdateGender, signupPageSubmitUserDetails);
   return (
-    <View>
+    <View style={{ flex: 1 }}>
         <Header
           backgroundColor={'white'}
           placement={'center'}
-          centerComponent={{ text: 'Create Account', style: { fontSize: 24, color: '#FF7F50' } }}
-          containerStyle={{ paddingTop: 0, height: 60, elevation: 5 }}
+          centerComponent={{ text: 'Join Now', style: { fontSize: 24, color: '#FF4B2B', fontWeight: 'bold' } }}
+          containerStyle={{ paddingTop: 0, height: 50, elevation: 5 }}
         />
         <ScrollView>
         <LinearGradient colors={['#FF4B2B', '#FF416C']} style={styles.body}>
@@ -151,7 +151,6 @@ const styles = StyleSheet.create({
   body: {
     flex: 1,
     alignItems: 'center',
-    marginBottom: 60,
   },
   textInputStyle: {
     backgroundColor: 'white',
