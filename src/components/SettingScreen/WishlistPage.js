@@ -3,7 +3,7 @@ import { View, Text, FlatList, TouchableWithoutFeedback, Dimensions, ImageBackgr
 import { Header, Button, Icon, Overlay, Card, Badge } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { Actions } from 'react-native-router-flux';
-import FlashMessage, { showMessage } from 'react-native-flash-message';
+import FlashMessage from 'react-native-flash-message';
 import {
   manageCartGetUserWishlist,
   manageCartRemoveProductFromWishlist,
@@ -57,11 +57,11 @@ class WishlistPage extends Component {
       posterId: referrerId,
       userToken });
 
-    showMessage({
+    this.refs.wishlistPage.showMessage({
       message: 'Product Added to Bag',
       type: 'success',
       floating: true,
-      icon: 'success'
+      icon: 'success',
     });
     this.setState({ openSizeModal: false, item: null, sizeSelected: null }); // Close Size Modal
   }
@@ -105,7 +105,7 @@ class WishlistPage extends Component {
                     keyExtractor={(i, index) => index.toString()}
                     data={sizesAvailable}
                     renderItem={(sizes) => {
-                      console.log('sizes', sizes);
+                      // console.log('sizes', sizes);
                       return (
                         <Badge
                           badgeStyle={[styles.sizeContainerStyle, sizeSelected === sizes.item.size ? { borderColor: '#ee5f73' } : { borderColor: 'grey' }]}
@@ -162,7 +162,7 @@ class WishlistPage extends Component {
                 size={26}
                 iconStyle={{ color: 'grey' }}
                 containerStyle={styles.crossStyle}
-                onPress={() => { this.props.manageCartRemoveProductFromWishlist({ productId, userToken, updateWishlistArray: true }); showMessage({ message: 'Removed from Bag!', type: 'danger', floating: true, icon: 'danger' }); }}
+                onPress={() => { this.props.manageCartRemoveProductFromWishlist({ productId, userToken, updateWishlistArray: true }); this.refs.wishlistPage.showMessage({ message: 'Removed from Bag!', type: 'danger', floating: true, icon: 'danger' }); }}
               />
             </ImageBackground>
             <Text numberOfLines={1} ellipsizeMode='tail' style={styles.brand}>{ brandName }</Text>
@@ -213,7 +213,7 @@ class WishlistPage extends Component {
           />
         </View>
         {this.renderSizeModal()}
-        <FlashMessage position="bottom" />
+        <FlashMessage position="bottom" ref="wishlistPage" />
       </View>
     );
   }
@@ -294,7 +294,11 @@ const mapStateToProps = ({ personalPageState, accountSettingState, productPageSt
   const { userToken } = personalPageState;
   const { wishlistArray } = accountSettingState;
   const { sizeAndPriceObject } = productPageState;
-  return { userToken, wishlistArray, sizeAndPriceObject };
+  let firstProduct = {}; // Using this to rerender Screen
+  if (wishlistArray.length !== 0) {
+    firstProduct = wishlistArray[0];
+  }
+  return { userToken, wishlistArray, sizeAndPriceObject, firstProduct };
 };
 
 export default connect(mapStateToProps, {

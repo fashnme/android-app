@@ -3,6 +3,7 @@ import { Dimensions, StatusBar, View, BackHandler, Alert } from 'react-native';
 import { connect } from 'react-redux';
 import { Actions } from 'react-native-router-flux';
 import Carousel from 'react-native-snap-carousel';
+import FlashMessage from 'react-native-flash-message';
 import {
   homePageGetInitialFeedData,
   homePageUpdateActiveTab,
@@ -68,6 +69,7 @@ class HomePage extends Component {
       //       useScrollView={false}
       //       renderItem={({ item }) => (<HomePagePost data={item} />)}
       //     />
+      //   <FlashMessage position="top" duration={500} />
       //   </View>
       // );
     } else if (activeTab === 2) {
@@ -83,6 +85,7 @@ class HomePage extends Component {
             useScrollView={false}
             renderItem={({ item }) => (<HomePagePost data={item} />)}
           />
+          <FlashMessage position="top" duration={500} ref="homePage" />
         </View>
       );
     }
@@ -91,6 +94,7 @@ class HomePage extends Component {
     return <View />;
   }
 }
+// <FlashMessage position="top" duration={500} />
 
 const mapStateToProps = ({ homePageState, personalPageState }) => {
   const { feedData, feedPageNum, publicFeedData, activeTab } = homePageState;

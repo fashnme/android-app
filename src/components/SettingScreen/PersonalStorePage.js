@@ -3,7 +3,7 @@ import { View, Text, FlatList, TouchableWithoutFeedback, Dimensions, ImageBackgr
 import { Header, Button, Overlay, Card, Badge } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { Actions } from 'react-native-router-flux';
-import FlashMessage, { showMessage } from 'react-native-flash-message';
+import FlashMessage from 'react-native-flash-message';
 
 import {
   manageCartGetUserWishlist,
@@ -59,7 +59,7 @@ class PersonalStorePage extends Component {
       posterId: referrerId,
       userToken });
 
-    showMessage({
+    this.refs.storePage.showMessage({
       message: 'Product Added to Bag',
       description: '',
       type: 'success',
@@ -208,7 +208,7 @@ class PersonalStorePage extends Component {
           />
         </View>
         {this.renderSizeModal()}
-        <FlashMessage position="bottom" />
+        <FlashMessage position="bottom" ref="storePage" />
       </View>
     );
   }

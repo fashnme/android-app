@@ -79,7 +79,7 @@ export const signupPageSendOTP = (phone, callingCode) => {
               dispatch({ type: SIGNUP_PAGE_ERROR_UPDATE, payload: 'Problem in sending OTP, Please try after some time' });
         });
     } else {
-      dispatch({ type: SIGNUP_PAGE_ERROR_UPDATE, payload: 'Please enter Phone Number in correct format' });
+      dispatch({ type: SIGNUP_PAGE_ERROR_UPDATE, payload: 'Please enter a 10 Digit Phone Number' });
     }
   };
 };
@@ -112,7 +112,7 @@ export const signupPageVerifyOTP = (phone, otp, callingCode) => {
           .catch((error) => {
               //handle error
               console.log('signupPageVerifyOTP Error', error);
-              dispatch({ type: SIGNUP_PAGE_ERROR_UPDATE, payload: 'Problem in verifying OTP, Please try after some time' });
+              dispatch({ type: SIGNUP_PAGE_ERROR_UPDATE, payload: 'Please Enter Correct OTP or Try Later' });
         })
         .finally(() => {
           dispatch({ type: SIGNUP_PAGE_TOGGLE_LOADING, payload: false });

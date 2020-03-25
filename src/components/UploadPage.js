@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { ProcessingManager } from 'react-native-video-processing';
 import ImagePicker from 'react-native-image-picker';
 import PostScreen from './uploadScreen/PostScreen';
+import { CamNotAuthView } from './basic';
 import {
   uploadPageToggleIsSelected,
   uploadPageUpdateSelectedImagePath
@@ -25,7 +26,6 @@ class UploadPage extends Component {
   setModalVisible(visible) {
     this.setState({ isModalVisible: visible });
   }
-
 
  uploadPickerModal() {
   return (
@@ -190,12 +190,14 @@ class UploadPage extends Component {
         type={this.state.frontCamera ? RNCamera.Constants.Type.front : RNCamera.Constants.Type.back}
         flashMode={RNCamera.Constants.FlashMode.off}
         autoFocus
+        playSoundOnCapture
         androidCameraPermissionOptions={{
           title: 'Permission to use camera',
           message: 'We need your permission to use your camera',
           buttonPositive: 'Ok',
           buttonNegative: 'Cancel',
         }}
+        notAuthorizedView={<CamNotAuthView />}
         androidRecordAudioPermissionOptions={{
           title: 'Permission to use audio recording',
           message: 'We need your permission to use your audio',

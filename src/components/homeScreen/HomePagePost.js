@@ -3,7 +3,7 @@ import { View, StyleSheet, StatusBar, Dimensions, Text, TouchableNativeFeedback 
 import { connect } from 'react-redux';
 import Carousel, { ParallaxImage } from 'react-native-snap-carousel';
 import { Icon } from 'react-native-elements';
-import FlashMessage, { showMessage } from 'react-native-flash-message';
+import { showMessage } from 'react-native-flash-message';
 import LikeScreen from './LikeScreen';
 import DislikeScreen from './DislikeScreen';
 import { HOME_PAGE_PUBLIC_MODE, HOME_PAGE_PERSONAL_MODE } from '../../types';
@@ -201,7 +201,6 @@ class HomePagePost extends Component {
                 firstItem={1}
               />
         </View>
-        <FlashMessage position="top" duration={500} />
       </View>
     );
   }

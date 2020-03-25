@@ -30,6 +30,7 @@ export const personalPageVisitAndSetData = ({ userId, userToken }) => {
         data: { userId }
         })
         .then((response) => {
+              // console.log('personalPageVisitAndSetData response', response.data);
               // Setting Data for Personal Page Tab
               dispatch({ type: CELEBRITY_PAGE_SET_CELEB_DATA, payload: { userDetails: response.data.userDetails, userId } });
               // Setting Data for Setting's Page Update User Profile Page
