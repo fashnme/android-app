@@ -54,7 +54,7 @@ const RenderAddressComponent = ({ deliveryDetailsArray, selectedAddress, account
   const emptyItem = { label: '', addressId: '', city: '', pinCode: '', name: '', address: '', state: '', phoneNo: '' };
   return (
     <View>
-      <Card containerStyle={{ padding: 0 }}>
+      <Card containerStyle={{ padding: 0, marginBottom: 10, borderRadius: 5 }}>
         <FlatList
           keyExtractor={(item, index) => index.toString()}
           data={deliveryDetailsArray}
