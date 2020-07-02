@@ -10,7 +10,7 @@ import { HOME_PAGE_PUBLIC_MODE, HOME_PAGE_PERSONAL_MODE } from '../../types';
 import AvatarComp from './AvatarComp';
 import HeartComp from './HeartComp';
 import CommentsModal from './CommentsModal';
-import ProductModal from '../productScreen/ProductModal';
+// import ProductModal from '../productScreen/ProductModal';
 // import ShareModal from './ShareModal';
 import {
   homePageLikePost,
@@ -183,11 +183,12 @@ class HomePagePost extends Component {
                     onProfileClick={() => this.props.celebrityPageVisitAndSetData({ userToken, userId })}
                  />
                  <CommentsModal comments={topComments} />
-                 <ProductModal />
+                 {/*<ProductModal /> */}
               </View>
           </View>
       );
     }
+
 
   render() {
     return (
