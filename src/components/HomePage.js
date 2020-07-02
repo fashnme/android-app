@@ -13,6 +13,7 @@ import {
   homePageFetchUserColdStartDetails
 } from '../actions';
 import HomePagePost from './homeScreen/HomePagePost';
+import ProductModal from './productScreen/ProductModal';
 
 // Store height(Window + StatusBar) in variable
 const WINDOW_HEIGHT = Dimensions.get('window').height + StatusBar.currentHeight;
@@ -85,6 +86,7 @@ class HomePage extends Component {
             useScrollView={false}
             renderItem={({ item }) => (<HomePagePost data={item} />)}
           />
+          <ProductModal />
           <FlashMessage position="top" duration={500} ref="homePage" />
         </View>
       );
