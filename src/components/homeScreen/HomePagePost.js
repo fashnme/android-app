@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, StatusBar, Dimensions, Text, TouchableNativeFeedback } from 'react-native';
+import { View, StyleSheet, StatusBar, Dimensions, Text, Image, TouchableNativeFeedback } from 'react-native';
 import { connect } from 'react-redux';
 import Carousel, { ParallaxImage } from 'react-native-snap-carousel';
-import { Icon } from 'react-native-elements';
+// import { Icon } from 'react-native-elements';
 import { showMessage } from 'react-native-flash-message';
 import LikeScreen from './LikeScreen';
 import DislikeScreen from './DislikeScreen';
@@ -73,16 +73,30 @@ class HomePagePost extends Component {
       );
   }
 
-  renderIconWithText({ style, name, type, text, color = '#fafafa', onPress }) {
+  // renderIconWithText({ style, name, type, source, text, color = '#fafafa', onPress }) {
+  //     return (
+  //       <TouchableNativeFeedback onPress={onPress} style={style}>
+  //         <View>
+  //           <Icon
+  //             name={name}
+  //             type={type}
+  //             color={color}
+  //             size={32}
+  //             iconStyle={styles.icons}
+  //           />
+  //           <Text style={styles.actionCaption}>{text}</Text>
+  //         </View>
+  //       </TouchableNativeFeedback>
+  //     );
+  // }
+
+  renderIconWithText({ source, text, onPress }) {
       return (
-        <TouchableNativeFeedback onPress={onPress} style={style}>
+        <TouchableNativeFeedback onPress={onPress}>
           <View>
-            <Icon
-              name={name}
-              type={type}
-              color={color}
-              size={32}
-              iconStyle={styles.icons}
+            <Image
+              style={[{ width: 38, height: 38 }]}
+              source={source}
             />
             <Text style={styles.actionCaption}>{text}</Text>
           </View>
@@ -130,17 +144,19 @@ class HomePagePost extends Component {
             {this.renderUserCaption(caption, userName, userToken, userId)}
             <View style={styles.postActions}>
               {this.renderIconWithText({
-                    style: styles.productTag,
+                    style: styles.actionButton,
                     name: 'shopping-bag',
                     type: 'font-awesome',
+                    source: require('../../resources/icons/shopping_bag.png'),
                     text: '',
                     onPress: () => { this.props.productPageOpenProductModal({ isVisible: true, productsData: taggedProducts, postDetails: this.props.data }); }
                })}
 
                {this.renderIconWithText({
                      style: styles.actionButton,
-                     name: 'share',
+                     name: 'whatsapp',
                      type: 'font-awesome',
+                     source: require('../../resources/icons/whatsapp.png'),
                      text: 'Share',
                      onPress: () => { this.props.homePageSharePost({ postData: this.props.data }); }
                 })}
@@ -149,6 +165,7 @@ class HomePagePost extends Component {
                       style: styles.actionButton,
                       name: 'commenting',
                       type: 'font-awesome',
+                      source: require('../../resources/icons/comments.png'),
                       text: totalComments,
                       onPress: () => { this.props.homePageToggleCommentsModal(true); }
                  })}
@@ -266,9 +283,10 @@ const styles = StyleSheet.create({
    bottom: 0,
    right: 0,
    marginBottom: 100,
-   marginRight: 10,
+   marginRight: 2,
    flexDirection: 'column-reverse',
  },
+ actionButton: {}
 });
 
 const mapStateToProps = ({ homePageState, userActionData, personalPageState }) => {
