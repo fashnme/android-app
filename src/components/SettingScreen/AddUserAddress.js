@@ -69,14 +69,14 @@ const AddUserAddress = ({ addressData, userToken, loading, accountSetttingsAddUs
         leftComponent={{ icon: 'arrow-back', color: 'grey', onPress: () => { Actions.pop(); } }}
         rightComponent={{
           text: 'Save',
-          style: { color: '#2089dc', fontWeight: 'bold', fontSize: 16 },
+          style: { color: '#2089dc', fontWeight: 'bold', fontSize: 18 },
           onPress: () => { checkAndAddAddress({ userAddress, addressId, userToken, accountSetttingsAddUserAddress }); } }}
         centerComponent={{ text: 'Add Address', style: { color: 'grey', fontWeight: 'bold', fontSize: 17 } }}
-        containerStyle={{ paddingTop: 0, height: 56 }}
+        containerStyle={{ paddingTop: 0, height: 50 }}
       />
       <ScrollView>
 
-        <Card containerStyle={styles.cardContainer}>
+        <Card containerStyle={[styles.cardContainer, { borderColor: '#a7bffc' }]}>
           <Input
             placeholder='Enter Name'
             label='Name'
@@ -97,7 +97,7 @@ const AddUserAddress = ({ addressData, userToken, loading, accountSetttingsAddUs
         </Card>
 
 
-        <Card containerStyle={styles.cardContainer}>
+        <Card containerStyle={[styles.cardContainer, { borderColor: '#a7bffc' }]}>
           <View style={{ flexDirection: 'row', justifyContent: 'space-around', padding: 3 }}>
             <Input
               label='Pincode'
@@ -141,7 +141,7 @@ const AddUserAddress = ({ addressData, userToken, loading, accountSetttingsAddUs
           />
         </Card>
 
-        <Card containerStyle={styles.cardContainer}>
+        <Card containerStyle={[styles.cardContainer, { borderColor: '#a7bffc' }]}>
           <Text> Type of Address </Text>
           <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginTop: 5 }}>
             <CheckBox
@@ -170,7 +170,7 @@ const AddUserAddress = ({ addressData, userToken, loading, accountSetttingsAddUs
 
 const styles = StyleSheet.create({
   inputStyle: { fontSize: 16, fontWeight: 'bold', paddingBottom: 0 },
-  cardContainer: { margin: 0, marginTop: 10, marginBottom: 10 }
+  cardContainer: { margin: 5, marginTop: 10, marginBottom: 10, borderRadius: 10, borderWidth: 2 }
 });
 
 const mapStateToProps = ({ personalPageState, accountSettingState }) => {

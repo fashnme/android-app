@@ -4,6 +4,7 @@ import { Actions } from 'react-native-router-flux';
 import { Header, Card, Input, Button, Icon, Overlay } from 'react-native-elements';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { connect } from 'react-redux';
+import LinearGradient from 'react-native-linear-gradient';
 import RenderAddressComponent from './RenderAddressComponent';
 import { bidsPageCreateBid as _bidsPageCreateBid } from '../../actions';
 
@@ -118,13 +119,19 @@ const BidCreatePage = ({ postId, posterId, productData, userToken, selectedAddre
         backgroundColor={'white'}
         placement={'left'}
         leftComponent={{ icon: 'arrow-back', color: 'grey', onPress: () => { Actions.home(); } }}
-        centerComponent={{ text: 'BID', style: { color: 'grey', fontWeight: 'bold', fontSize: 17 } }}
+        centerComponent={{ text: 'RENT IT', style: { color: 'grey', fontWeight: 'bold', fontSize: 17 } }}
         rightComponent={
           <Button
-            title={'Create'}
-            type={'outline'}
+            ViewComponent={LinearGradient}
+            titleStyle={{ fontWeight: 'bold' }}
+            linearGradientProps={{
+              colors: ['#FF4B2B', '#FF416C'],
+              start: { x: 1.0, y: 0.0 },
+              end: { y: 1.0, x: 1.0 },
+            }}
+            title={'CREATE'}
+            buttonStyle={{ paddingLeft: 30, paddingRight: 30 }}
             raised
-            titleStyle={{ color: 'green', fontWeight: 'bold', fontSize: 17 }}
             onPress={() => {
               checkPropsAndCreateBid({
                 amount, message, selectedAddress, startDate, endDate, postId, posterId, productData, setPropError, userToken, bidsPageCreateBid
@@ -132,12 +139,12 @@ const BidCreatePage = ({ postId, posterId, productData, userToken, selectedAddre
             }}
           />
         }
-        containerStyle={{ paddingTop: 0, height: 56 }}
+        containerStyle={{ paddingTop: 0, height: 50 }}
       />
       <ScrollView>
         <Card containerStyle={{ padding: 0, margin: 0 }}>
 
-          <Card>
+          <Card containerStyle={{ borderRadius: 10, borderColor: '#e1fade', borderWidth: 2 }}>
             <Input
               placeholder='Enter the of Bid Amount'
               label={'Amount (\u20B9)'}
@@ -149,7 +156,7 @@ const BidCreatePage = ({ postId, posterId, productData, userToken, selectedAddre
 
           { propError.length === 0 ? <View /> : renderError({ propError })}
 
-          <Card>
+          <Card containerStyle={{ borderRadius: 10, borderColor: '#e3eafc', borderWidth: 2 }}>
             <Input
               value={getFormattedDate(startDate)}
               label={'Start Date'}
@@ -164,7 +171,7 @@ const BidCreatePage = ({ postId, posterId, productData, userToken, selectedAddre
             { showStartCalender ? renderDatePicker(setStartDate, toggleStartCalander, setPropError) : <View /> }
           </Card>
 
-          <Card>
+          <Card containerStyle={{ borderRadius: 10, borderColor: '#fad9e1', borderWidth: 2 }}>
             <Input
               value={getFormattedDate(endDate)}
               label={'End Date'}
@@ -177,7 +184,7 @@ const BidCreatePage = ({ postId, posterId, productData, userToken, selectedAddre
             { showEndCalender ? renderDatePicker(setEndDate, toggleEndCalander, setPropError) : <View /> }
           </Card>
 
-          <Card>
+          <Card containerStyle={{ borderRadius: 10, borderWidth: 2 }}>
             <Input
               placeholder='Share why you love this Product'
               label={'Message for Owner (Optional)'}

@@ -43,7 +43,7 @@ class EnterOTPScreen extends Component {
             <LinearGradient colors={['#FF4B2B', '#FF416C']} style={{ flex: 1 }}>
               <ScrollView>
                 <Card containerStyle={styles.topContainer}>
-                  <Text style={{ color: '#fafafa', marginTop: 20, fontWeight: 'bold', fontSize: 16, textAlign: 'center' }}>{`Please type the verification code sent to +${callingCode}-${phoneNumber}`}</Text>
+                  <Text style={{ color: '#fafafa', marginTop: 20, fontWeight: 'bold', fontSize: 16, textAlign: 'center' }}>{`Please Enter the verification code sent to +${callingCode}-${phoneNumber}`}</Text>
                   <OTPInputView
                       style={{ width: '80%', height: 200, justifyContent: 'center', alignItems: 'center' }}
                       pinCount={4}
