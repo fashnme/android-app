@@ -62,11 +62,11 @@ export const uploadPageUploadContent = ({ caption, selectedImagePath, userToken,
 const resizeAndUploadVideo = (selectedVideoPath, userToken, personalUserId, caption, dispatch) => {
   ProcessingManager.getVideoInfo(selectedVideoPath)
   .then((orig) => {
-    console.log('Original Video Info', orig);
+    // console.log('Original Video Info', orig);
     const { height, width } = orig.size;
     const options = { width, height, bitrateMultiplier: 3, minimumBitrate: 300000 };
     ProcessingManager.compress(selectedVideoPath, options).then((d) => {
-        console.log('Compressed Video Info ', d);
+        // console.log('Compressed Video Info ', d);
         fileType(d.source).then(({ mime }) => { uploadContent(d.source, mime, personalUserId, userToken, caption, dispatch); });
     }).catch((err) => {
       console.log('Error in Compressing Video', err);
