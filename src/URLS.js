@@ -53,3 +53,10 @@ export const ManageCartRemoveProductFromCartURL = 'https://fashn-backend.herokua
 export const ManageCartAddProductToWishlistURL = 'https://fashn-backend.herokuapp.com/user/add-to-wishlist';
 export const ManageCartRemoveProductFromWishlistURL = 'https://fashn-backend.herokuapp.com/user/remove-from-wishlist';
 export const ManageCartPlaceOrderURL = 'https://fashn-backend.herokuapp.com/payments/checkout-cart';
+
+// Comments Page
+export const CommentsPageLikeCommentURL = 'https://fashn-backend.herokuapp.com/user/like-comment';
+export const CommentsPageUnlikeCommentURL = 'https://fashn-backend.herokuapp.com/user/unlike-comment';
+export const CommentsPageDeleteCommentURL = 'https://fashn-backend.herokuapp.com/user/delete-comment-post';
+export const CommentsPageFetchMoreCommentsURL = 'https://fashn-backend.herokuapp.com/user/get-comments';
+export const CommentsPageWriteCommentURL = 'https://fashn-backend.herokuapp.com/user/comment-post';

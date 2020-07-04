@@ -14,6 +14,7 @@ import {
 } from '../actions';
 import HomePagePost from './homeScreen/HomePagePost';
 import ProductModal from './productScreen/ProductModal';
+import CommentsModal from './homeScreen/CommentsModal';
 
 // Store height(Window + StatusBar) in variable
 const WINDOW_HEIGHT = Dimensions.get('window').height + StatusBar.currentHeight;
@@ -87,7 +88,8 @@ class HomePage extends Component {
             renderItem={({ item }) => (<HomePagePost data={item} />)}
           />
           <ProductModal />
-          <FlashMessage position="top" duration={500} ref="homePage" />
+          <CommentsModal />
+          <FlashMessage position="top" duration={1000} ref="homePage" />
         </View>
       );
     }

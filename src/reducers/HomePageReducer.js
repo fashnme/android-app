@@ -6,7 +6,6 @@ import {
   HOME_PAGE_PUBLIC_FEED_EXTRA_DATA_UPDATE,
   HOME_PAGE_SET_PUBLIC_VERTICAL_CAROUSEL_REF,
   HOME_PAGE_SET_PERSONAL_VERTICAL_CAROUSEL_REF,
-  HOME_PAGE_TOGGLE_COMMENTS_MODAL,
   HOME_PAGE_TOGGLE_SHARE_MODAL,
   HOME_PAGE_PERSONAL_MODE
 } from '../types';
@@ -18,7 +17,6 @@ const INITIAL_STATE = {
   userToken: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiUERvNWdtOEJNZ0tZWjFQNFlobFoiLCJpYXQiOjE1Nzg0ODgzODF9.f_0FHHWMZ1Javvvmtl72yO5m_1pICYjggYZA0-ccFQM',
   publicFeedData: [],
   publicFeedPageNum: 1,
-  commentModalVisible: false,
   shareModalVisible: false,
   verticalPublicCarouselRef: null,
   verticalPersonalCarouselRef: null,
@@ -61,11 +59,8 @@ export default (state = INITIAL_STATE, action) => {
       case HOME_PAGE_ACTIVE_TAB_UPDATE:
           return { ...state, activeTab: action.payload };
 
-      case HOME_PAGE_TOGGLE_COMMENTS_MODAL:
-          return { ...state, commentModalVisible: action.payload, shareModalVisible: false };
-
       case HOME_PAGE_TOGGLE_SHARE_MODAL:
-          return { ...state, shareModalVisible: action.payload, commentModalVisible: false };
+          return { ...state, shareModalVisible: action.payload };
 
       default:
           return state;

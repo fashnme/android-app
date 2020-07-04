@@ -9,9 +9,10 @@ import DislikeScreen from './DislikeScreen';
 import { HOME_PAGE_PUBLIC_MODE, HOME_PAGE_PERSONAL_MODE } from '../../types';
 import AvatarComp from './AvatarComp';
 import HeartComp from './HeartComp';
-import CommentsModal from './CommentsModal';
+// import CommentsModal from './CommentsModal';
 // import ProductModal from '../productScreen/ProductModal';
 // import ShareModal from './ShareModal';
+
 import {
   homePageLikePost,
   homePageDislikePost,
@@ -19,7 +20,7 @@ import {
   celebrityPageFollow,
   celebrityPageUnfollow,
   celebrityPageVisitAndSetData,
-  homePageToggleCommentsModal,
+  commentsPageOpenCommentsModal,
   homePageSharePost,
   productPageOpenProductModal
 } from '../../actions';
@@ -93,9 +94,9 @@ class HomePagePost extends Component {
   renderIconWithText({ source, text, onPress }) {
       return (
         <TouchableNativeFeedback onPress={onPress}>
-          <View>
+          <View style={styles.icons}>
             <Image
-              style={[{ width: 38, height: 38 }]}
+              style={[{ width: 32, height: 32, justifyContent: 'center', alignSelf: 'center' }]}
               source={source}
             />
             <Text style={styles.actionCaption}>{text}</Text>
@@ -148,7 +149,7 @@ class HomePagePost extends Component {
                     name: 'shopping-bag',
                     type: 'font-awesome',
                     source: require('../../resources/icons/shopping_bag.png'),
-                    text: '',
+                    text: 'Shop',
                     onPress: () => { this.props.productPageOpenProductModal({ isVisible: true, productsData: taggedProducts, postDetails: this.props.data }); }
                })}
 
@@ -167,7 +168,7 @@ class HomePagePost extends Component {
                       type: 'font-awesome',
                       source: require('../../resources/icons/comments.png'),
                       text: totalComments,
-                      onPress: () => { this.props.homePageToggleCommentsModal(true); }
+                      onPress: () => { this.props.commentsPageOpenCommentsModal({ isVisible: true, commentsData: topComments, totalComments, postId }); }
                  })}
 
                  <HeartComp
@@ -182,7 +183,7 @@ class HomePagePost extends Component {
                     onFollowPress={() => { this.props.celebrityPageFollow({ userToken, userId }); showMessage({ message: 'Celeb Followed!', type: 'success', floating: true, icon: 'success' }); }}
                     onProfileClick={() => this.props.celebrityPageVisitAndSetData({ userToken, userId })}
                  />
-                 <CommentsModal comments={topComments} />
+                 {/*<CommentsModal /> */}
                  {/*<ProductModal /> */}
               </View>
           </View>
@@ -278,13 +279,15 @@ const styles = StyleSheet.create({
   actionCaption: {
     color: 'white',
     textAlign: 'center',
+    marginTop: 4,
   },
   postActions: {
    position: 'absolute',
    bottom: 0,
    right: 0,
    marginBottom: 100,
-   marginRight: 2,
+   marginRight: 5,
+   paddingRight: 0,
    flexDirection: 'column-reverse',
  },
  actionButton: {}
@@ -304,7 +307,7 @@ const mapStateToProps = ({ homePageState, userActionData, personalPageState }) =
     celebrityPageFollow,
     celebrityPageUnfollow,
     celebrityPageVisitAndSetData,
-    homePageToggleCommentsModal,
+    commentsPageOpenCommentsModal,
     homePageSharePost,
     productPageOpenProductModal
   })(HomePagePost);

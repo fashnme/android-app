@@ -4,7 +4,7 @@ import {
   PRODUCT_PAGE_SELECTED_PRODUCT_UPDATE,
   PRODUCT_PAGE_SET_TOGGLE_PRODUCTS_DATA,
   PRODUCT_PAGE_SET_POSTID_AND_POSTERID,
-  HOME_PAGE_TOGGLE_COMMENTS_MODAL,
+  COMMENTS_PAGE_TOGGLE_COMMENTS_MODAL,
   PRODUCT_PAGE_SET_COMPLETE_PRODUCTS_DATA,
   PRODUCT_PAGE_PRICE_AND_SIZE_UPDATE,
 } from '../types';
@@ -68,7 +68,7 @@ export const productPageOpenProductModal = ({ isVisible, productsData, postDetai
     if (isVisible) {
       fetchExtraProductsData(productsData, dispatch);
     }
-    dispatch({ type: HOME_PAGE_TOGGLE_COMMENTS_MODAL, payload: false });
+    dispatch({ type: COMMENTS_PAGE_TOGGLE_COMMENTS_MODAL, payload: false });
     dispatch({ type: PRODUCT_PAGE_SET_TOGGLE_PRODUCTS_DATA, payload: { isVisible, productsData } });
     dispatch({ type: PRODUCT_PAGE_SET_POSTID_AND_POSTERID, payload: postDetails });
   };

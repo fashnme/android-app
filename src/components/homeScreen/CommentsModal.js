@@ -1,126 +1,130 @@
-import React from 'react';
-import { StyleSheet, View, Text, FlatList, TouchableWithoutFeedback } from 'react-native';
-import { Icon, ListItem, Input, Overlay } from 'react-native-elements';
+import React, { useState } from 'react';
+import { StyleSheet, View, Text, FlatList, Keyboard } from 'react-native';
+import { Icon, ListItem, Input, Overlay, Card, Button } from 'react-native-elements';
+import { showMessage } from 'react-native-flash-message';
 import { connect } from 'react-redux';
-import { homePageToggleCommentsModal as _homePageToggleCommentsModal } from '../../actions';
+import {
+  commentsPageOpenCommentsModal as _commentsPageOpenCommentsModal,
+  commentsPageWriteComment as _commentsPageWriteComment,
+} from '../../actions';
+// import { dummyComments as data } from './dummyComments';
+import CommentsRightComp from './CommentsRightComp';
+
+const timeDifference = (timestamp) => {
+	const previous = new Date(timestamp).getTime();
+	const current = new Date().getTime();
+	const msPerMinute = 60 * 1000;
+	const msPerHour = msPerMinute * 60;
+	const msPerDay = msPerHour * 24;
+	const msPerMonth = msPerDay * 30;
+	const msPerYear = msPerDay * 365;
+	const elapsed = current - previous;
+	if (elapsed < msPerMinute) return `${Math.round(elapsed / 1000) + 5}s`;
+	else if (elapsed < msPerHour) return `${Math.round(elapsed / msPerMinute)}min`;
+	else if (elapsed < msPerDay) return `${Math.round(elapsed / msPerHour)}h`;
+	else if (elapsed < msPerMonth) return `${Math.round(elapsed / msPerDay)}d`;
+	else if (elapsed < msPerYear) return `${Math.round(elapsed / msPerMonth)}m`;
+  return `${Math.round(elapsed / msPerYear)}y`;
+};
 
 const renderListItem = ({ item }) => {
+  const { commentId, profilePic, userName, commentText, timeStamp, totalLikes, userId } = item;
   return (
-    <TouchableWithoutFeedback>
       <ListItem
-        onPress={() => console.log(item.comment_id, ' this comment is pressed')}
-        leftAvatar={{ source: { uri: item.imageUri } }}
-        title={<Text style={styles.commentUserName}>iAmTushar</Text>}
+        // onPress={() => console.log(item.commentId, ' this comment is pressed')}
+        leftAvatar={{ source: { uri: profilePic } }}
+        title={userName}
+        titleStyle={styles.commentUserName}
         subtitle={
           <View>
-            <Text style={styles.commentContent} numberOfLines={3}>
-              {item.commentContent}
+            <Text style={styles.commentContent}>
+              {commentText}
             </Text>
-            <Text style={styles.commentDate}>{item.commentDate}</Text>
+            <Text style={styles.commentDate}>{timeDifference(timeStamp)}</Text>
           </View>
         }
-        rightIcon={<View><Icon onPress={() => console.log(item.comment_id, ' this comment is liked by user')} name="heart" type="font-awesome" color={item.isLiked ? 'red' : 'grey'} size={20} /><Text style={styles.likeCountOfComment}>{item.commentLikeCount}</Text></View>}
+        rightIcon={
+          <CommentsRightComp
+            commentId={commentId}
+            totalLikes={totalLikes}
+            commenterId={userId}
+          />
+        }
         bottomDivider
       />
-    </TouchableWithoutFeedback>
   );
 };
 
-const CommentsModal = ({ comments, commentModalVisible, homePageToggleCommentsModal }) => {
-  // console.log('CommentsModal', comments, commentModalVisible);
-  const data = {
-    comments: [{
-    comment_id: '52342',
-    imageUri: 'https://pbs.twimg.com/media/EGsDw7nUYAUkiEn.jpg',
-    commentContent: "Want to make your timeline sorted? If yes, then download WorDo. A Complete Solution. Don't think, Just WorDo it!",
-    commentUserName: 'iAmTushar',
-    commentDate: '2020-01-04',
-    commentLikeCount: '32K',
-    isLiked: true
-  }, {
-    comment_id: '524342',
-    imageUri: 'https://pbs.twimg.com/media/EGsDw7nUYAUkiEn.jpg',
-    commentContent: "Want to make your timeline sorted? If yes, then download WorDo. A Complete Solution. Don't think, Just WorDo it!",
-    commentUserName: 'iAmTushar',
-    commentDate: '2020-01-04',
-    commentLikeCount: '32K',
-    isLiked: false
-  }, {
-    comment_id: '522342',
-    imageUri: 'https://pbs.twimg.com/media/EGsDw7nUYAUkiEn.jpg',
-    commentContent: "Want to make your timeline sorted? If yes, then download WorDo. A Complete Solution. Don't think, Just WorDo it!",
-    commentUserName: 'iAmTushar',
-    commentDate: '2020-01-04',
-    commentLikeCount: '32K',
-    isLiked: true
-  }, {
-    comment_id: '523425',
-    imageUri: 'https://pbs.twimg.com/media/EGsDw7nUYAUkiEn.jpg',
-    commentContent: "Want to make 2your timeline sorted? If yes, then download WorDo. A Complete Solution. Don't think, Just WorDo it!",
-    commentUserName: 'iAmTushar',
-    commentDate: '2020-01-04',
-    commentLikeCount: '32K',
-    isLiked: false
-  }, {
-    comment_id: '572342',
-    imageUri: 'https://pbs.twimg.com/media/EGsDw7nUYAUkiEn.jpg',
-    commentContent: "Want to mfake your timeline sorted? If yes, then download WorDo. A Complete Solution. Don't think, Just WorDo it!",
-    commentUserName: 'iAmTushar',
-    commentDate: '2020-01-04',
-    commentLikeCount: '32K',
-    isLiked: false
-  }, {
-    comment_id: '57234s2',
-    imageUri: 'https://pbs.twimg.com/media/EGsDw7nUYAUkiEn.jpg',
-    commentContent: "Wandt to make your timeline sorted? If yes, then download WorDo. A Complete Solution. Don't think, Just WorDo it!",
-    commentUserName: 'iAmTushar',
-    commentDate: '2020-01-04',
-    commentLikeCount: '32K',
-    isLiked: true
-  }],
-  totalComments: 6,
+const renderSendButton = ({ newComment, postId, userId, userToken, setNewComment, commentsPageWriteComment }) => {
+  return (
+    <Button
+      title={'Post'}
+      type="clear"
+      disabled={newComment.length === 0}
+      color={'#2089dc'}
+      onPress={() => {
+        commentsPageWriteComment({ postId, userId, commentText: newComment, userToken });
+        Keyboard.dismiss();
+        showMessage({ message: 'Comment Posted!', type: 'success', floating: true, icon: 'success', duration: 1000 });
+        setNewComment('');
+      }}
+    />
+  );
 };
+
+const CommentsModal = ({ commentsArray, commentsModalVisible, totalComments, postId, userToken, personalUserId,
+  commentsPageOpenCommentsModal, commentsPageWriteComment }) => {
+  // console.log('CommentsModal Up', commentsArray, commentsModalVisible);
+
+  const [newComment, setNewComment] = useState('');
     return (
-        // <Modal
-        //   swipeDirection={['down']}
-        //   scroll
-        //   isVisible={commentModalVisible}
-        //   style={{
-        //     margin: 0,
-        //     justifyContent: 'flex-end',
-        //   }}
-        //   backdropOpacity={0}
-        // >
         <Overlay
-          isVisible={commentModalVisible}
+          isVisible={commentsModalVisible}
           overlayStyle={{ borderTopLeftRadius: 15, borderTopRightRadius: 15, padding: 2, bottom: 0, position: 'absolute' }}
           width={'100%'}
-          height={'70%'}
+          height={'80%'}
           windowBackgroundColor={'transparent'}
+          animationType={'slide'}
         >
           <View style={styles.modalStyle}>
             <View style={styles.commentsModalHeader}>
-              <Text style={styles.commentsModalHeaderTitle}>{data.totalComments} comments</Text>
+              <Text style={styles.commentsModalHeaderTitle}>{totalComments} Comments</Text>
+              { /* <Text style={styles.commentsModalHeaderTitle}>{data.totalComments} Comments</Text> */ }
                 <View style={styles.commentsModalHeaderExitButton}>
-                  <Icon name='cross' type='entypo' size={18} raised containerStyle={styles.crossStyle} onPress={() => homePageToggleCommentsModal(false)} />
+                  <Icon
+                    name='cross'
+                    type='entypo'
+                    size={18}
+                    raised
+                    containerStyle={styles.crossStyle}
+                    onPress={() => {
+                      commentsPageOpenCommentsModal({ isVisible: false, commentsData: [], totalComments: 0 });
+                      setNewComment('');
+                    }}
+                  />
                 </View>
             </View>
             <View style={styles.body}>
                 <FlatList
-                    data={data.comments}
+                    // data={data.comments} // commentsArray
+                    data={commentsArray}
                     scrollEnabled
-                    keyExtractor={(item) => item.comment_id}
+                    keyExtractor={(item) => item.commentId}
                     renderItem={renderListItem}
                 />
               </View>
 
-            <View>
+            <Card containerStyle={{ margin: 0, padding: 0, borderRadius: 10, maxHeight: 200 }}>
               <Input
                 placeholder='Say Something...'
-                style={styles.title}
-                rightIcon={<Icon name="at" type="font-awesome" onPress={() => console.log('@ button pressed')} />}
+                value={newComment}
+                onChangeText={(txt) => setNewComment(txt)}
+                inputStyle={styles.commentInputStyle}
+                maxLength={280}
+                multiline
+                rightIcon={renderSendButton({ newComment: newComment.trim(), postId, userId: personalUserId, userToken, setNewComment, commentsPageWriteComment })}
               />
-            </View>
+            </Card>
           </View>
         </Overlay>
         // </Modal>
@@ -148,41 +152,47 @@ const styles = StyleSheet.create({
       },
       commentsModalHeaderExitButton: {
         position: 'absolute',
-        right: 8,
-        top: 8,
-        opacity: 0.6,
+        right: 2,
+        top: 0,
+        opacity: 0.8,
       },
       body: {
         flex: 1,
       },
       commentUserName: {
-        fontSize: 12,
-        opacity: 0.6,
+        fontSize: 14,
+        opacity: 0.8,
+        fontWeight: 'bold',
+        color: 'grey'
       },
       commentDate: {
-        opacity: 0.6,
-        fontSize: 12,
+        opacity: 0.5,
+        fontSize: 11,
+        fontWeight: 'bold'
       },
-      likeCountOfComment: {
-        fontSize: 12,
-        opacity: 0.6,
-        textAlign: 'center',
-      },
-      title: {
-        fontSize: 10,
+      commentInputStyle: {
+        fontSize: 17,
+        textAlignVertical: 'top',
+        maxHeight: 200
       },
       crossStyle: {
         marginRight: 0,
         marginTop: 0,
         padding: 0
+      },
+      commentContent: {
+        color: 'black',
+        fontWeight: 'bold'
       }
 });
 
-const mapStateToProps = ({ homePageState }) => {
-    const { commentModalVisible } = homePageState;
-    return { commentModalVisible };
+const mapStateToProps = ({ postCommentState, personalPageState }) => {
+    const { commentsModalVisible, commentsArray, totalComments, postId } = postCommentState;
+    const { userToken, personalUserId } = personalPageState;
+    return { commentsModalVisible, commentsArray, totalComments, userToken, personalUserId, postId };
 };
 
 export default connect(mapStateToProps, {
-  homePageToggleCommentsModal: _homePageToggleCommentsModal
+  commentsPageOpenCommentsModal: _commentsPageOpenCommentsModal,
+  commentsPageWriteComment: _commentsPageWriteComment
 })(CommentsModal);

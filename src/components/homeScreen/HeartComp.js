@@ -34,7 +34,7 @@ const HeartComp = ({ postId, likes, onLikePress, onUnlikePress, likedPosts }) =>
         <TouchableNativeFeedback onPress={onUnlikePress}>
           <View>
             <Image
-              style={[{ width: 70, height: 70 }]}
+              style={[{ width: 46, height: 46, justifyContent: 'center', alignSelf: 'center' }]}
               source={require('../../resources/icons/liked_icon.png')}
             />
             <Text style={styles.actionCaption}>{convertIntToString(likes + 1)}</Text>
@@ -59,7 +59,7 @@ const HeartComp = ({ postId, likes, onLikePress, onUnlikePress, likedPosts }) =>
       <TouchableNativeFeedback onPress={onLikePress}>
         <View style={styles.icons}>
           <Image
-            style={[{ width: 70, height: 70 }]}
+            style={[{ width: 46, height: 46, justifyContent: 'center', alignSelf: 'center' }]}
             source={require('../../resources/icons/not_liked_icon.png')}
           />
           <Text style={styles.actionCaption}>{convertIntToString(likes + 1)}</Text>
