@@ -12,7 +12,8 @@ import {
   homePageSetPersonalVerticalCarouselRef,
   homePageFetchUserColdStartDetails
 } from '../actions';
-import HomePagePost from './homeScreen/HomePagePost';
+import HomePageImagePost from './homeScreen/HomePageImagePost';
+import HomePageVideoPost from './homeScreen/HomePageVideoPost';
 import ProductModal from './productScreen/ProductModal';
 import CommentsModal from './homeScreen/CommentsModal';
 
@@ -21,6 +22,14 @@ const WINDOW_HEIGHT = Dimensions.get('window').height + StatusBar.currentHeight;
 
 
 class HomePage extends Component {
+  constructor() {
+    super();
+    this.state = {
+      currentVisibleIndex: 0
+    };
+    this.handleViewableItemsChanged = this.onViewableItemsChanged.bind(this);
+    this.viewabilityConfig = { viewAreaCoveragePercentThreshold: 95 };
+  }
   componentDidMount() {
     // Getting the Initial Feed Data, when App in opened
     const { userToken } = this.props;
@@ -32,6 +41,13 @@ class HomePage extends Component {
   componentWillUnmount() {
     BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
   }
+
+  onViewableItemsChanged({ viewableItems }) {
+    if (viewableItems && viewableItems.length > 0) {
+        this.setState({ currentVisibleIndex: viewableItems[0].index });
+    }
+  }
+
   handleBackButton() {
     if (Actions.currentScene === 'home') {
         Alert.alert(
@@ -69,7 +85,7 @@ class HomePage extends Component {
       //       itemHeight={WINDOW_HEIGHT}
       //       vertical
       //       useScrollView={false}
-      //       renderItem={({ item }) => (<HomePagePost data={item} />)}
+      //       renderItem={({ item }) => (<HomePageImagePost data={item} />)}
       //     />
       //   <FlashMessage position="top" duration={500} />
       //   </View>
@@ -85,7 +101,15 @@ class HomePage extends Component {
             itemHeight={WINDOW_HEIGHT}
             vertical
             useScrollView={false}
-            renderItem={({ item }) => (<HomePagePost data={item} />)}
+            renderItem={({ item, index }) => {
+              const { mediaType } = item;
+              if (mediaType === 'image') {
+                return <HomePageImagePost data={item} currentIndex={index} currentVisibleIndex={this.state.currentVisibleIndex} />;
+              }
+              return <HomePageVideoPost data={item} currentIndex={index} currentVisibleIndex={this.state.currentVisibleIndex} />;
+            }}
+            onViewableItemsChanged={this.handleViewableItemsChanged}
+            viewabilityConfig={this.viewabilityConfig}
           />
           <ProductModal />
           <CommentsModal />
