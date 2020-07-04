@@ -24,7 +24,6 @@ export const HOME_PAGE_PUBLIC_FEED_EXTRA_DATA_UPDATE = 'home_page_public_feed_ex
 export const HOME_PAGE_SET_PUBLIC_VERTICAL_CAROUSEL_REF = 'home_page_set_public_vertical_carousel_ref';
 export const HOME_PAGE_SET_PERSONAL_VERTICAL_CAROUSEL_REF = 'home_page_set_personal_vertical_carousel_ref';
 export const HOME_PAGE_ACTIVE_TAB_UPDATE = 'home_page_active_tab_update';
-export const HOME_PAGE_TOGGLE_COMMENTS_MODAL = 'home_page_toggle_comments_modal';
 export const HOME_PAGE_TOGGLE_SHARE_MODAL = 'home_page_toggle_share_modal';
 
 // Keeping track of users Actions
@@ -37,6 +36,8 @@ export const USER_ADDED_PRODUCT_TO_CART = 'user_added_product_to_cart';
 export const USER_REMOVED_PRODUCT_FROM_CART = 'user_removed_product_from_cart';
 export const USER_ADDED_PRODUCT_TO_WISHLIST = 'user_added_product_to_wishlist';
 export const USER_REMOVED_PRODUCT_FROM_WISHLIST = 'user_removed_product_from_wishlist';
+export const USER_LIKED_COMMENT = 'user_liked_comment';
+export const USER_UNLIKED_COMMENT = 'user_unliked_comment';
 
 // Celebrity Page
 export const CELEBRITY_PAGE_SET_CELEB_DATA = 'celebrity_page_set_celeb_data';
@@ -90,6 +91,11 @@ export const SETTING_PAGE_GENERAL_LOADING_TOGGLE = 'setting_page_general_loading
 // Cart Operation
 export const MANAGE_CART_PAGE_SET_CART_ARRAY = 'manage_cart_page_set_cart_array';
 
+// Comments Page
+export const COMMENTS_PAGE_TOGGLE_COMMENTS_MODAL = 'comments_page_toggle_comments_modal';
+export const COMMENTS_PAGE_ADD_MORE_COMMENTS = 'comments_page_add_more_comments';
+export const COMMENTS_PAGE_ADD_USER_COMMENT = 'comments_page_add_user_comment';
+export const COMMENTS_PAGE_DELETE_USER_COMMENT = 'comments_page_delete_user_comment';
 
 // Wishlist Page
 // export const WISHLIST_ADD_OPERATION = 'add';

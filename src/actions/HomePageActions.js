@@ -12,7 +12,6 @@ import {
   HOME_PAGE_SET_PERSONAL_VERTICAL_CAROUSEL_REF,
   USER_LIKED_POST,
   USER_UNLIKED_POST,
-  HOME_PAGE_TOGGLE_COMMENTS_MODAL,
   HOME_PAGE_TOGGLE_SHARE_MODAL,
   USER_SET_ACTION_DATA,
   PERSONAL_PAGE_SET_PERSONAL_DETAILS_AND_USERID
@@ -34,13 +33,13 @@ export const homePageFetchUserColdStartDetails = ({ userToken }) => {
     axios.get(HomePageFetchUserColdStartDetailsURL, { headers: { Authorization: userToken } })
     .then(response => {
       console.log('Actions homePageFetchUserColdStartDetails', response.data);
-      const { followingMap, userLikedPostsMap, userCartMap, userWishlistMap, userDetails } = response.data;
+      const { followingMap, userLikedPostsMap, userCartMap, userWishlistMap, userLikedCommentsMap, userDetails } = response.data;
       // Set the User Details
       if (userDetails !== undefined) {
         dispatch({ type: PERSONAL_PAGE_SET_PERSONAL_DETAILS_AND_USERID, payload: userDetails });
       }
 
-      const payload = { likedPosts: {}, followingDataMap: {}, userCartMap: {}, userWishlistMap: {} };
+      const payload = { likedPosts: {}, followingDataMap: {}, userCartMap: {}, userWishlistMap: {}, likedComments: {} };
       if (followingMap !== undefined) {
         payload.followingDataMap = followingMap;
       }
@@ -52,6 +51,9 @@ export const homePageFetchUserColdStartDetails = ({ userToken }) => {
       }
       if (userWishlistMap !== undefined) {
         payload.userWishlistMap = userWishlistMap;
+      }
+      if (userLikedCommentsMap !== undefined) {
+        payload.likedComments = userLikedCommentsMap;
       }
       dispatch({ type: USER_SET_ACTION_DATA, payload });
     })
@@ -140,6 +142,7 @@ export const homePageLikePost = ({ userToken, postId, userId }) => {
     'Content-Type': 'application/json',
     Authorization: userToken
   };
+  // console.log('usertoken', userToken);
   return (dispatch) => {
     dispatch({ type: USER_LIKED_POST, payload: postId });
     axios({
@@ -208,13 +211,13 @@ export const homePageDislikePost = ({ userToken, postId, userId }) => {
   };
 };
 
-// Method to Toggle Comments Modal on HomePage
-export const homePageToggleCommentsModal = (isVisible) => {
-  return {
-    type: HOME_PAGE_TOGGLE_COMMENTS_MODAL,
-    payload: isVisible
-  };
-};
+// // Method to Toggle Comments Modal on HomePage :: SHIFTED TO CommentsActions.js file
+// export const commentsPageOpenCommentsModal = (isVisible) => {
+//   return {
+//     type: COMMENTS_PAGE_TOGGLE_COMMENTS_MODAL,
+//     payload: isVisible
+//   };
+// };
 
 // Method to Toggle Share Modal on HomePage
 export const homePageToggleShareModal = (isVisible) => {

@@ -29,6 +29,7 @@ const AvatarComp = ({ userId, userPic, onFollowPress, onProfileClick, followingD
             onPress: onFollowPress
         }}
         onPress={onProfileClick}
+        containerStyle={{ justifyContent: 'center', alignSelf: 'center' }}
     />
   );
 };

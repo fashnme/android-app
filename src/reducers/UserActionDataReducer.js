@@ -7,7 +7,9 @@ import {
   USER_ADDED_PRODUCT_TO_CART,
   USER_REMOVED_PRODUCT_FROM_CART,
   USER_ADDED_PRODUCT_TO_WISHLIST,
-  USER_REMOVED_PRODUCT_FROM_WISHLIST
+  USER_REMOVED_PRODUCT_FROM_WISHLIST,
+  USER_LIKED_COMMENT,
+  USER_UNLIKED_COMMENT
 } from '../types';
 
 
@@ -16,13 +18,14 @@ const INITIAL_STATE = {
   followingDataMap: {}, // Stores the Map of stars this user follow { userId: 1 }
   userCartMap: {}, // Stores the Map of Products in the users cart { productId: 1 }
   userWishlistMap: {}, // Stores Map of Products in Wishlist { productId: 1 }
+  likedComments: {}, // Stores the Map of Liked Comments { commentId: 1 }
 };
 
 export default (state = INITIAL_STATE, action) => {
     switch (action.type) {
       case USER_SET_ACTION_DATA: {
-        const { likedPosts, followingDataMap, userCartMap, userWishlistMap } = action.payload;
-        return { ...state, likedPosts, followingDataMap, userCartMap, userWishlistMap };
+        const { likedPosts, followingDataMap, userCartMap, userWishlistMap, likedComments } = action.payload;
+        return { ...state, likedPosts, followingDataMap, userCartMap, userWishlistMap, likedComments };
       }
 
       case USER_LIKED_POST: {
@@ -75,6 +78,19 @@ export default (state = INITIAL_STATE, action) => {
         const newObject = { ...state.userWishlistMap };
         delete newObject[action.payload];
         return { ...state, userWishlistMap: newObject };
+      }
+
+      case USER_LIKED_COMMENT: {
+        const newObject = {};
+        newObject[action.payload] = 1;
+        const newLikedComments = { ...state.likedComments, ...newObject };
+        return { ...state, likedComments: newLikedComments };
+      }
+
+      case USER_UNLIKED_COMMENT: {
+        const newObject = { ...state.likedComments };
+        delete newObject[action.payload];
+        return { ...state, likedComments: newObject };
       }
 
       default:

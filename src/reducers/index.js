@@ -8,6 +8,7 @@ import PersonalPageReducer from './PersonalPageReducer';
 import SignupPageReducer from './SignupPageReducer';
 import SettingsPageReducer from './SettingsPageReducer';
 import AccountSettingsReducer from './AccountSettingsReducer';
+import CommentsPageReducer from './CommentsPageReducer';
 
 export default combineReducers({
     homePageState: HomePageReducer,
@@ -18,5 +19,6 @@ export default combineReducers({
     personalPageState: PersonalPageReducer,
     signupPageState: SignupPageReducer,
     settingsPageState: SettingsPageReducer,
-    accountSettingState: AccountSettingsReducer
+    accountSettingState: AccountSettingsReducer,
+    postCommentState: CommentsPageReducer
 });

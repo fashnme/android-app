@@ -8,3 +8,4 @@ export * from './AccountSettingActions';
 export * from './BidsRelatedActions';
 export * from './PersonalPageActions';
 export * from './ManageCartActions';
+export * from './CommentsActions';
