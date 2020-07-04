@@ -32,7 +32,7 @@ export const homePageFetchUserColdStartDetails = ({ userToken }) => {
   return (dispatch) => {
     axios.get(HomePageFetchUserColdStartDetailsURL, { headers: { Authorization: userToken } })
     .then(response => {
-      console.log('Actions homePageFetchUserColdStartDetails', response.data);
+      // console.log('Actions homePageFetchUserColdStartDetails', response.data);
       const { followingMap, userLikedPostsMap, userCartMap, userWishlistMap, userLikedCommentsMap, userDetails } = response.data;
       // Set the User Details
       if (userDetails !== undefined) {
@@ -210,14 +210,6 @@ export const homePageDislikePost = ({ userToken, postId, userId }) => {
       });
   };
 };
-
-// // Method to Toggle Comments Modal on HomePage :: SHIFTED TO CommentsActions.js file
-// export const commentsPageOpenCommentsModal = (isVisible) => {
-//   return {
-//     type: COMMENTS_PAGE_TOGGLE_COMMENTS_MODAL,
-//     payload: isVisible
-//   };
-// };
 
 // Method to Toggle Share Modal on HomePage
 export const homePageToggleShareModal = (isVisible) => {

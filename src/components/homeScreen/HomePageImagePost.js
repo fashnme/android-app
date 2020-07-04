@@ -29,7 +29,7 @@ const screenWidth = Dimensions.get('window').width;
 const height = Dimensions.get('window').height + StatusBar.currentHeight;
 const tabs = { DISLIKE: 0, CONTENT: 1, LIKE: 2 };
 
-class HomePagePost extends Component {
+class HomePageImagePost extends Component {
   constructor() {
     super();
     this.state = {
@@ -73,23 +73,6 @@ class HomePagePost extends Component {
           />
       );
   }
-
-  // renderIconWithText({ style, name, type, source, text, color = '#fafafa', onPress }) {
-  //     return (
-  //       <TouchableNativeFeedback onPress={onPress} style={style}>
-  //         <View>
-  //           <Icon
-  //             name={name}
-  //             type={type}
-  //             color={color}
-  //             size={32}
-  //             iconStyle={styles.icons}
-  //           />
-  //           <Text style={styles.actionCaption}>{text}</Text>
-  //         </View>
-  //       </TouchableNativeFeedback>
-  //     );
-  // }
 
   renderIconWithText({ source, text, onPress }) {
       return (
@@ -192,6 +175,11 @@ class HomePagePost extends Component {
 
 
   render() {
+    const { currentIndex, currentVisibleIndex } = this.props;
+    const absDifference = Math.abs(currentIndex - currentVisibleIndex);
+    if (absDifference > 2) {
+      return <View />;
+    }
     return (
       <View style={{ flex: 1 }}>
         <StatusBar translucent backgroundColor="transparent" />
@@ -310,4 +298,4 @@ const mapStateToProps = ({ homePageState, userActionData, personalPageState }) =
     commentsPageOpenCommentsModal,
     homePageSharePost,
     productPageOpenProductModal
-  })(HomePagePost);
+  })(HomePageImagePost);
