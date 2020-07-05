@@ -1,11 +1,13 @@
 // import axios from 'axios';
-import { Image, Alert } from 'react-native';
+import { Image, Alert, Platform } from 'react-native';
 import axios from 'axios';
 import fileType from 'react-native-file-type';
 import ImageResizer from 'react-native-image-resizer/index.android';
 import { RNS3 } from 'react-native-aws3';
 import { ProcessingManager } from 'react-native-video-processing';
 import { Actions } from 'react-native-router-flux';
+import RNFS from 'react-native-fs';
+
 
 import {
   AWS_OPTIONS,
@@ -40,6 +42,7 @@ export const uploadPageUpdateselectedContentPath = ({ selectedContentPath, media
   };
 };
 
+// Main method to recieve uploading content order
 export const uploadPageUploadContent = ({ caption, selectedContentPath, userToken, personalUserId }) => {
   // console.log('Path', selectedContentPath);
   return (dispatch) => {
@@ -47,9 +50,9 @@ export const uploadPageUploadContent = ({ caption, selectedContentPath, userToke
     fileType(selectedContentPath).then(({ mime }) => {
       // console.log('File Type', mime);
       if (mime.includes('image')) {
-        resizeAndUploadImage(selectedContentPath, userToken, personalUserId, caption, dispatch);
+        resizeAndUploadImage({ selectedImagePath: selectedContentPath, userToken, personalUserId, caption, dispatch });
       } else if (mime.includes('video')) {
-        resizeAndUploadVideo(selectedContentPath, userToken, personalUserId, caption, dispatch);
+        resizeAndUploadVideo({ selectedVideoPath: selectedContentPath, userToken, personalUserId, caption, dispatch });
       }
     })
     .catch((err) => {
@@ -59,17 +62,28 @@ export const uploadPageUploadContent = ({ caption, selectedContentPath, userToke
   };
 };
 
-const resizeAndUploadVideo = (selectedVideoPath, userToken, personalUserId, caption, dispatch) => {
+// Method to resize & compress Video
+const resizeAndUploadVideo = ({ selectedVideoPath, userToken, personalUserId, caption, dispatch }) => {
+  // console.log('resizeAndUploadVideo', selectedVideoPath);
   ProcessingManager.getVideoInfo(selectedVideoPath)
   .then((orig) => {
-    // console.log('Original Video Info', orig);
     const { height, width } = orig.size;
-    const options = { width, height, bitrateMultiplier: 3, minimumBitrate: 300000 };
-    ProcessingManager.compress(selectedVideoPath, options).then((d) => {
-        // console.log('Compressed Video Info ', d);
-        fileType(d.source).then(({ mime }) => { uploadContent(d.source, mime, personalUserId, userToken, caption, dispatch); });
+    // console.log('Size', { height, width });
+    // Create Thumbnail
+    ProcessingManager.getPreviewForSecond(selectedVideoPath, 5, { height, width })
+    .then((thumbnailData) => {
+        // console.log('get getPreviewForSecond', typeof thumbnailData, thumbnailData);
+        const options = { width, height, bitrateMultiplier: 3, minimumBitrate: 300000 };
+        ProcessingManager.compress(selectedVideoPath, options).then((d) => {
+            // console.log('Compressed Video Info ', d);
+            fileType(d.source).then(({ mime }) => {
+              uploadContent({ uri: d.source, type: mime, personalUserId, userToken, caption, dispatch, thumbnailData });
+            });
+        }).catch((err) => {
+          console.log('Error in Compressing Video', err);
+        });
     }).catch((err) => {
-      console.log('Error in Compressing Video', err);
+      console.log('Error in Creating Thumbnail Video', err);
     });
   })
   .catch((err) => {
@@ -77,26 +91,33 @@ const resizeAndUploadVideo = (selectedVideoPath, userToken, personalUserId, capt
   });
 };
 
-const resizeAndUploadImage = (selectedContentPath, userToken, personalUserId, caption, dispatch) => {
-  Image.getSize(selectedContentPath, (w, h) => {
-    ImageResizer.createResizedImage(selectedContentPath, w, h, 'WEBP', 50).then((response) => {
-      uploadContent(response.uri, 'image/webp', personalUserId, userToken, caption, dispatch);
+// Method to resize & compress Image
+const resizeAndUploadImage = ({ selectedImagePath, userToken, personalUserId, caption, dispatch }) => {
+  Image.getSize(selectedImagePath, (w, h) => {
+    ImageResizer.createResizedImage(selectedImagePath, w, h, 'WEBP', 50).then((response) => {
+      uploadContent({ uri: response.uri, type: 'image/webp', personalUserId, userToken, caption, dispatch });
     }).catch((err) => {
       console.log('Error in Image Compression', err);
     });
   });
 };
 
-const uploadContent = (uri, type, personalUserId, userToken, caption, dispatch) => {
+// Method to upload content on AWS
+const uploadContent = ({ uri, type, personalUserId, userToken, caption, dispatch, thumbnailData }) => {
   dispatch({ type: UPLOAD_PAGE_UPDATE_UPLOADING_STATUS, payload: { status: 'Uploading...', isUploading: true, progress: 0 } });
   let name = '';
   let keyPrefix = '';
+  let thumbName = '';
+  let thumbkeyPrefix = '';
   if (type.includes('image')) {
     name = `${personalUserId}-t-${Math.round((new Date().getTime()) / 1000)}.webp`;
     keyPrefix = 'images/';
   } else {
-    name = `${personalUserId}-t-${Math.round((new Date().getTime()) / 1000)}.mp4`;
+    const time = Math.round((new Date().getTime()) / 1000);
+    name = `${personalUserId}-t-${time}.mp4`;
     keyPrefix = 'videos/';
+    thumbName = `${personalUserId}-t-${time}-preview.jpg`;
+    thumbkeyPrefix = 'images/';
   }
   AWS_OPTIONS.keyPrefix = keyPrefix;
   const file = { uri, name, type };
@@ -106,8 +127,13 @@ const uploadContent = (uri, type, personalUserId, userToken, caption, dispatch) 
   })
   .then(response => {
     if (response.status === 201) {
-      console.log('Content Uploaded', response);
-      updateDatabase(caption, type, response.body.postResponse.location, userToken, dispatch);
+      // console.log('Content Uploaded', response);
+      if (type.includes('image')) {
+        updateDatabase({ caption, mediaType: type, uploadUrl: response.body.postResponse.location, userToken, dispatch });
+      } else {
+        uploadThumbnailMethod({ thumbnailData, thumbName, thumbkeyPrefix, mediaType: type, caption, uploadUrl: response.body.postResponse.location, userToken, dispatch, });
+        // updateDatabase({ caption, mediaType: type, uploadUrl: response.body.postResponse.location, userToken, dispatch, thumbnailUrl });
+      }
     } else {
       console.log('Error in Uploading Content', response, uri, name, type);
     }
@@ -117,13 +143,50 @@ const uploadContent = (uri, type, personalUserId, userToken, caption, dispatch) 
   });
 };
 
-const updateDatabase = (caption, mediaType, uploadUrl, userToken, dispatch) => {
-  console.log(caption, mediaType, uploadUrl, userToken);
+// Method to upload the Video thumbnail on AWS
+const uploadThumbnailMethod = ({ thumbnailData, thumbkeyPrefix, thumbName, mediaType, caption, uploadUrl, userToken, dispatch, }) => {
+  const cacheDir = `${RNFS.DocumentDirectoryPath}/Cache`;
+  const FILE = Platform.OS === 'ios' ? '' : 'file://';
+  const outputPath = `${FILE}${cacheDir}/image.jpg`;
+  RNFS.exists(cacheDir)
+    .then(response => {
+         if (response !== true) {
+          // Directory not exists
+          RNFS.mkdir(cacheDir);
+         }
+         RNFS.writeFile(outputPath, thumbnailData, 'base64')
+          .then(() => {
+            // console.log('writeFile', res);
+            AWS_OPTIONS.keyPrefix = thumbkeyPrefix;
+            const file = { uri: outputPath, name: thumbName, type: 'image/jpeg' };
+            RNS3.put(file, AWS_OPTIONS)
+            .then(awsresponse => {
+              const thumbnailUrl = awsresponse.body.postResponse.location;
+              updateDatabase({ caption, mediaType, uploadUrl, userToken, dispatch, thumbnailUrl });
+            }).catch((err) => {
+              console.log('Error in Uploading Thumbnail', err);
+            });
+          }).catch((error) => {
+            Alert(JSON.stringify(error));
+          });
+     })
+     .catch((error) => {
+         console.log('Error while writing Thumbnail to file', error);
+    });
+};
+
+// Final Step to update Database
+const updateDatabase = ({ caption, mediaType, uploadUrl, userToken, dispatch, thumbnailUrl }) => {
+  // console.log('updateDatabase', caption, mediaType, uploadUrl, userToken, dispatch, thumbnailUrl);
   dispatch({ type: UPLOAD_PAGE_UPDATE_UPLOADING_STATUS, payload: { status: 'Almost Done...', isUploading: true, progress: 0.99 } });
   const headers = {
     'Content-Type': 'application/json',
     Authorization: userToken
   };
+  const data = { caption, mediaType: mediaType.split('/')[0], uploadUrl };
+  if (mediaType.includes('video')) {
+    data.thumbnailUrl = thumbnailUrl;
+  }
   axios({
       method: 'post',
       url: UploadPageUploadContentURL,

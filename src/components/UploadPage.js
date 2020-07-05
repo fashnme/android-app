@@ -130,10 +130,10 @@ class UploadPage extends Component {
         } else {
           ProcessingManager.getVideoInfo(path)
           .then(({ duration }) => {
-              if (duration > 60) {
+              if (duration > 120 || duration < 10) {
                 Alert.alert(
-                   'Too Large File!',
-                   'Please upload a video of less than 60 Seconds', [{
+                   'Too Large or Short File!',
+                   'Please upload a video of between 10 & 120 Seconds', [{
                        text: 'Ok',
                        onPress: () => {},
                        style: 'cancel'
@@ -141,6 +141,8 @@ class UploadPage extends Component {
                        cancelable: true
                    }
                 );
+                Actions.home();
+                this.props.uploadPageUpdateselectedContentPath({ selectedContentPath: '', mediaType: '' });
                 return;
               }
           });

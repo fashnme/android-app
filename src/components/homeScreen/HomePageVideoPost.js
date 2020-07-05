@@ -114,7 +114,7 @@ class HomePageVideoPost extends Component {
 
   render() {
     const { currentIndex, currentVisibleIndex, data } = this.props;
-    const { uploadUrl } = data;
+    const { uploadUrl, thumbnailUrl } = data;
     const absDifference = Math.abs(currentIndex - currentVisibleIndex);
     if (absDifference > 3) {
       return <View />;
@@ -130,7 +130,8 @@ class HomePageVideoPost extends Component {
            resizeMode={'cover'}
            paused={absDifference !== 0}
            fullscreen
-           // poster={'https://scontent.fdel15-1.fna.fbcdn.net/v/t1.0-9/12190970_1065949860091603_2210139939726579912_n.jpg?_nc_cat=100&_nc_sid=09cbfe&_nc_ohc=Zgj8MrL1sHwAX9tT0DV&_nc_ht=scontent.fdel15-1.fna&oh=96b8680e4616d86b0e65771a013aeb57&oe=5F25B9F2'}
+           poster={thumbnailUrl}
+           posterResizeMode={'cover'}
            repeat
           />
         </TouchableWithoutFeedback>
