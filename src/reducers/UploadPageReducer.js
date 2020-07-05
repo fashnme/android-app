@@ -7,9 +7,10 @@ import {
 
 
 const INITIAL_STATE = {
-  selectedImagePath: '',
+  selectedContentPath: '',
   isSelected: false,
   caption: '',
+  mediaType: '',
   uploadingStatus: { status: '', isUploading: false, progress: 0 }
 };
 
@@ -21,8 +22,10 @@ export default (state = INITIAL_STATE, action) => {
       case UPLOAD_PAGE_UPDATE_CAPTION:
           return { ...state, caption: action.payload };
 
-      case UPLOAD_PAGE_UPDATE_SELECTED_IMAGE_PATH:
-          return { ...state, selectedImagePath: action.payload };
+      case UPLOAD_PAGE_UPDATE_SELECTED_IMAGE_PATH: {
+        const { selectedContentPath, mediaType } = action.payload;
+        return { ...state, selectedContentPath, mediaType };
+      }
 
       case UPLOAD_PAGE_UPDATE_UPLOADING_STATUS: {
         const { status, isUploading, progress } = action.payload;

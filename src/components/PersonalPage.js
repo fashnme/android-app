@@ -35,7 +35,7 @@ class PersonalPage extends Component {
           <Header
             backgroundColor={'white'}
             placement={'center'}
-            centerComponent={{ text: this.props.fullName, style: { color: 'gray', fontWeight: 'bold', fontSize: 17 } }}
+            centerComponent={{ text: `@${this.props.userName}`, style: { color: '#808080', fontWeight: 'bold', fontSize: 19 } }}
             rightComponent={{ icon: 'settings', color: '#ee5f73', size: 28, onPress: () => { Actions.settings(); } }}
             containerStyle={{ paddingTop: 0, height: 50 }}
           />
@@ -54,8 +54,8 @@ class PersonalPage extends Component {
 
 const mapStateToProps = ({ personalPageState }) => {
   const { personalUserId, userToken, personalUserDetails } = personalPageState;
-  const { fullName } = personalUserDetails;
-  return { personalUserId, userToken, fullName };
+  const { userName } = personalUserDetails;
+  return { personalUserId, userToken, userName };
 };
 
 export default connect(mapStateToProps, {

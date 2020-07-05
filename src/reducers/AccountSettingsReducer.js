@@ -19,7 +19,7 @@ const INITIAL_STATE = {
   // Profile Details
   bio: '',
   dateOfBirth: '',
-  socialMediaLinks: { instagram: '', youtube: '', tiktok: '', facebook: '' },
+  socialMediaLinks: { instagram: '', youtube: '', twitter: '', facebook: '' },
   profilePic: '',
   deliveryDetailsArray: [],
   selectedAddress: {},
