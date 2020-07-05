@@ -1,14 +1,17 @@
-import React from 'react';
-import { StyleSheet, View, Text, Image, StatusBar, Dimensions, ScrollView } from 'react-native';
-import { Header, Input, Button, Overlay } from 'react-native-elements';
+import React, { useState } from 'react';
+import { StyleSheet, View, Text, StatusBar, Dimensions, ScrollView } from 'react-native';
+import { Header, Input, Button, Overlay, Card } from 'react-native-elements';
 import ProgressBar from 'react-native-progress/Bar';
 import { Actions } from 'react-native-router-flux';
+import LinearGradient from 'react-native-linear-gradient';
 import { connect } from 'react-redux';
 import {
   uploadPageUpdateCaption as _uploadPageUpdateCaption,
   uploadPageToggleIsSelected as _uploadPageToggleIsSelected,
   uploadPageUploadContent as _uploadPageUploadContent
 } from '../../actions';
+
+import RenderContentThumbnail from './RenderContentThumbnail';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -29,46 +32,67 @@ const renderUpdatingOverlay = ({ uploadingStatus }) => {
   );
 };
 
-const PostScreen = ({ selectedImagePath, caption, userToken, personalUserId, uploadingStatus, uploadPageUpdateCaption, uploadPageToggleIsSelected, uploadPageUploadContent }) => {
+const PostScreen = ({ selectedContentPath, caption, userToken, userName, personalUserId, uploadingStatus,
+  uploadPageUpdateCaption, uploadPageToggleIsSelected, uploadPageUploadContent }) => {
+  const [hashtag, setHashtag] = useState('');
+  const [lenError, setlenError] = useState('');
         return (
           <View>
             <Header
               backgroundColor="white"
-              leftComponent={{ icon: 'arrow-left', type: 'font-awesome', color: 'black', onPress: () => { uploadPageToggleIsSelected(false); Actions.uploadPage(); } }}
-              centerComponent={{ text: 'Post', style: { color: 'black', fontSize: 20 } }}
-              rightComponent={{ icon: 'delete', color: 'black', onPress: () => { uploadPageToggleIsSelected(false); Actions.uploadPage(); } }}
-              containerStyle={{ paddingTop: 0, height: 56 }}
+              leftComponent={{ icon: 'arrow-left', type: 'font-awesome', color: '#505050', onPress: () => { uploadPageToggleIsSelected(false); Actions.uploadPage(); } }}
+              centerComponent={{ text: { userName }, style: { color: 'black', fontSize: 20 } }}
+              rightComponent={{ icon: 'delete', type: 'antdesign', color: 'red', onPress: () => { uploadPageToggleIsSelected(false); Actions.uploadPage(); } }}
+              containerStyle={{ paddingTop: 0, height: 50 }}
             />
             <ScrollView>
                 <View style={{ flex: 1 }}>
                     <StatusBar barStyle="dark-content" />
-                    <View style={{ justifyContent: 'center', alignItems: 'center', padding: 5, }}>
-                        <Image style={{ height: 250, width: screenWidth - 20, borderRadius: 5, }} resizeMode="center" source={{ uri: selectedImagePath }} />
-                    </View>
-                    <View style={{ margin: 4 }}>
-                    <Input
-                        placeholder="Add a caption"
-                        multiline
+                    <RenderContentThumbnail />
+                    <Card containerStyle={{ margin: 0, padding: 0, borderRadius: 10, marginTop: 10 }}>
+                      <Text style={styles.headingStyle}> Caption </Text>
+                      <Input
+                        placeholder="Write a caption"
                         value={caption}
-                        onChangeText={(text) => uploadPageUpdateCaption(text)}
-                        numberOfLines={4}
-                        inputStyle={{ height: 100 }}
+                        onChangeText={(text) => { uploadPageUpdateCaption(text); setlenError(''); }}
+                        inputStyle={styles.commentInputStyle}
                         maxLength={280}
-                        containerStyle={styles.containerStyle}
+                        multiline
                         inputContainerStyle={styles.inputContainerStyle}
+                        errorMessage={lenError}
+                      />
+                      <Text style={styles.headingStyle}> #hashtags (Optional) </Text>
+                      <Input
+                        placeholder="Add #hashtags"
+                        value={hashtag}
+                        onChangeText={(text) => setHashtag(text)}
+                        inputStyle={styles.commentInputStyle}
+                        maxLength={280}
+                        multiline
+                        inputContainerStyle={styles.inputContainerStyle}
+                      />
+
+                    </Card>
+                    <Button
+                      containerStyle={{ margin: 100, marginTop: 15, marginBottom: 100 }}
+                      loading={uploadingStatus.isUploading}
+                      raised
+                      title="POST"
+                      titleStyle={{ fontWeight: 'bold' }}
+                      ViewComponent={LinearGradient}
+                      linearGradientProps={{
+                        colors: ['#00E8D3', '#00AEE9'],
+                        start: { x: 1.0, y: 0.5 },
+                        end: { x: 0.0, y: 0.5 },
+                      }}
+                      onPress={() => {
+                        if (caption.trim().length === 0) {
+                          setlenError('Please Enter a Small Caption');
+                        } else {
+                          uploadPageUploadContent({ caption: `${caption} ${hashtag}`, selectedContentPath, userToken, personalUserId });
+                        }
+                      }}
                     />
-                    <View style={{ margin: 20, alignItems: 'center' }}>
-                        <View style={{ width: 200 }}>
-                            <Button
-                              loading={uploadingStatus.isUploading}
-                              raised
-                              title="POST"
-                              titleStyle={{ fontWeight: 'bold' }}
-                              onPress={() => uploadPageUploadContent({ caption, selectedImagePath, userToken, personalUserId })}
-                            />
-                        </View>
-                    </View>
-                </View>
                 </View>
                 { renderUpdatingOverlay({ uploadingStatus }) }
             </ScrollView>
@@ -77,29 +101,33 @@ const PostScreen = ({ selectedImagePath, caption, userToken, personalUserId, upl
 };
 
 const styles = StyleSheet.create({
-    containerStyle: {
-        backgroundColor: '#fff',
-        height: 100,
-        borderRadius: 10,
-        justifyContent: 'center',
-        paddingLeft: 0,
-        paddingRight: 0
-      },
       inputContainerStyle: {
         backgroundColor: '#fff',
-        height: 100,
+        // height: 200,
         borderRadius: 10,
-        elevation: 10,
-        justifyContent: 'center',
-        flexDirection: 'row',
-        padding: 10,
+        elevation: 2,
+        marginTop: 6,
+        marginBottom: 20,
+        borderColor: 'transparent',
+      },
+      commentInputStyle: {
+        fontSize: 17,
+        textAlignVertical: 'top',
+        maxHeight: 200,
+      },
+      headingStyle: {
+        fontWeight: 'bold',
+        color: '#606060',
+        marginLeft: 15,
+        marginTop: 10
       }
 });
 
 const mapStateToProps = ({ uploadPageState, personalPageState }) => {
-  const { selectedImagePath, caption, uploadingStatus } = uploadPageState;
-  const { userToken, personalUserId } = personalPageState;
-  return { selectedImagePath, caption, userToken, personalUserId, uploadingStatus };
+  const { selectedContentPath, caption, uploadingStatus } = uploadPageState;
+  const { userToken, personalUserId, personalUserDetails } = personalPageState;
+  const { userName } = personalUserDetails;
+  return { selectedContentPath, caption, userToken, personalUserId, uploadingStatus, userName };
 };
 
 export default connect(mapStateToProps, {

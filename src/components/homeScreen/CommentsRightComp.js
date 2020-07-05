@@ -16,15 +16,6 @@ const convertIntToString = (num) => {
   const order = Math.max(0, Math.min(unrangifiedOrder, abbrev.length - 1));
   const suffix = abbrev[order];
   return (num / Math.pow(10, order * 3)).toFixed(precision) + suffix;
-  // if (num === 0) {
-  //   return '';
-  // }
-  // if (String(num).length >= 7) {
-  //   return `${String(num / 1000000)}M`;
-  // } else if (String(num).length >= 4) {
-  //   return `${String(num / 1000)}K`;
-  // }
-  // return num;
 };
 
 const CommentsRightComp = ({ commentId, totalLikes, commenterId, likedComments, userToken, postId, personalUserId,

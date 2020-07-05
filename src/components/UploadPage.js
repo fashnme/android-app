@@ -1,15 +1,17 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, Dimensions, TouchableNativeFeedback, Modal, Alert } from 'react-native';
+import { View, StyleSheet, SafeAreaView, Dimensions, TouchableNativeFeedback, Modal, Alert } from 'react-native';
 import { RNCamera } from 'react-native-camera';
-import { Icon } from 'react-native-elements';
+import { Icon, Button } from 'react-native-elements';
+import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux';
 import { ProcessingManager } from 'react-native-video-processing';
+import LinearGradient from 'react-native-linear-gradient';
 import ImagePicker from 'react-native-image-picker';
 import PostScreen from './uploadScreen/PostScreen';
 import { CamNotAuthView } from './basic';
 import {
   uploadPageToggleIsSelected,
-  uploadPageUpdateSelectedImagePath
+  uploadPageUpdateselectedContentPath
 } from '../actions';
 
 const screenWidth = Dimensions.get('window').width;
@@ -21,6 +23,7 @@ class UploadPage extends Component {
       frontCamera: false,
       isModalVisible: false,
       isRecording: false,
+      mediaType: null
     };
   }
   setModalVisible(visible) {
@@ -34,45 +37,55 @@ class UploadPage extends Component {
           visible={this.state.isModalVisible}
           transparent
           onRequestClose={() => {
-            Alert.alert('Modal has been closed.');
           }}
     >
       <View style={styles.modal} >
           <View style={styles.modalContainer}>
-            <View>
               <View>
-                <TouchableNativeFeedback
-                  onPress={() => {
-                    this.pickImage('image');
+                <Button
+                  raised
+                  iconRight
+                  containerStyle={{ marginTop: 10 }}
+                  title={'Upload Image'}
+                  titleStyle={{ margin: 5, fontWeight: 'bold', fontSize: 16 }}
+                  icon={{ name: 'camera', size: 20, color: 'white', type: 'font-awesome' }}
+                  ViewComponent={LinearGradient}
+                  buttonStyle={{ borderRadius: 15, margin: 0 }}
+                  linearGradientProps={{
+                    colors: ['#0072ff', '#00c6ff'],
+                    start: { x: 0.0, y: 0.5 },
+                    end: { x: 1.0, y: 0.5 },
                   }}
-                >
-                  <View style={styles.item}>
-                    <Text style={{ fontSize: 18 }}>Upload Photo</Text>
-                  </View>
-                </TouchableNativeFeedback>
-                <TouchableNativeFeedback
-                  onPress={() => {
-                    this.pickImage('video');
+                  onPress={() => { this.setState({ mediaType: 'image' }); this.pickImage('image'); }}
+                />
+
+                <Button
+                  raised
+                  iconRight
+                  containerStyle={{ marginTop: 50 }}
+                  title={'Upload Video'}
+                  titleStyle={{ margin: 5, fontWeight: 'bold', fontSize: 16 }}
+                  icon={{ name: 'video-camera', size: 20, color: 'white', type: 'font-awesome' }}
+                  ViewComponent={LinearGradient}
+                  buttonStyle={{ borderRadius: 15, margin: 0 }}
+                  linearGradientProps={{
+                    colors: ['#FF9800', '#F44336'],
+                    start: { x: 1.0, y: 0.5 },
+                    end: { x: 0.0, y: 0.5 },
                   }}
-                  style={styles.item}
-                >
-                <View style={styles.item}>
-                    <Text style={{ fontSize: 18 }}>Upload Video</Text>
-                </View>
-                </TouchableNativeFeedback>
+                  onPress={() => { this.setState({ mediaType: 'video' }); this.pickImage('video'); }}
+                />
               </View>
 
-              <TouchableNativeFeedback
-                onPress={() => {
-                  this.setModalVisible(!this.state.isModalVisible);
-                }}
-              >
-                <View style={{ alignSelf: 'center' }}>
-                  <Text style={{ color: '#0A79DF', fontSize: 20 }}>Cancel</Text>
-                </View>
-              </TouchableNativeFeedback>
+              <Button
+                containerStyle={{ marginTop: 80, padding: 0 }}
+                title={'Cancel'}
+                type={'outline'}
+                titleStyle={{ margin: 1, color: 'red' }}
+                buttonStyle={{ borderRadius: 15, borderColor: 'red', paddingHorizontal: 10 }}
+                onPress={() => { this.setModalVisible(!this.state.isModalVisible); }}
+              />
             </View>
-          </View>
           </View>
         </Modal>
 
@@ -99,7 +112,7 @@ class UploadPage extends Component {
       } else {
         const { path } = response;
         if (mediaType === 'image') {
-          this.props.uploadPageUpdateSelectedImagePath(`${response.uri}`);
+          this.props.uploadPageUpdateselectedContentPath({ selectedContentPath: `${response.uri}`, mediaType: this.state.mediaType });
           this.props.uploadPageToggleIsSelected(true);
           return;
         }
@@ -131,7 +144,7 @@ class UploadPage extends Component {
                 return;
               }
           });
-          this.props.uploadPageUpdateSelectedImagePath(`${response.path}`);
+          this.props.uploadPageUpdateselectedContentPath({ selectedContentPath: `${response.path}`, mediaType: this.state.mediaType });
           this.props.uploadPageToggleIsSelected(true);
         }
       }
@@ -155,7 +168,7 @@ class UploadPage extends Component {
       if (this.camera) {
         const options = { quality: 1, orientation: 'portrait' };
         const data = await this.camera.takePictureAsync(options);
-        this.props.uploadPageUpdateSelectedImagePath(data.uri);
+        this.props.uploadPageUpdateselectedContentPath({ selectedContentPath: data.uri, mediaType: 'image' });
         this.props.uploadPageToggleIsSelected(true);
       }
     };
@@ -170,13 +183,13 @@ class UploadPage extends Component {
           isRecording: true,
         });
         const data = await this.camera.recordAsync(options);
-          this.props.uploadPageUpdateSelectedImagePath(data.uri);
+          this.props.uploadPageUpdateselectedContentPath({ selectedContentPath: data.uri, mediaType: 'video' });
           this.props.uploadPageToggleIsSelected(true);
       }
     };
 
     const CustomIcon = ({ name, type, onPress }) => (
-        <Icon onPress={onPress} iconStyle={styles.icon} containerStyle={{ margin: 40 }} color="white" size={30} name={name} type={type} />
+        <Icon onPress={onPress} reverse iconStyle={styles.icon} containerStyle={{ margin: 40 }} color="grey" size={25} name={name} type={type} />
     );
 
     if (!isSelected) {
@@ -210,11 +223,7 @@ class UploadPage extends Component {
         >
           <SafeAreaView style={styles.cameraContainer}>
             <View style={styles.header}>
-              <TouchableNativeFeedback onPress={() => console.log('Exit Button Pressed')}>
-                <View>
-                  <Icon size={30} color="white" name="cross" type="entypo" iconStyle={styles.icon} />
-                </View>
-              </TouchableNativeFeedback>
+                <Icon size={22} color="black" name="cross" type="entypo" iconStyle={styles.icon} reverse onPress={() => Actions.home()} />
             </View>
             <View style={styles.cameraActions}>
               <CustomIcon name="camera-switch" type="material-community" onPress={() => this.setState({ frontCamera: !this.state.frontCamera })} />
@@ -239,7 +248,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   modalContainer: {
     backgroundColor: 'white',
@@ -249,7 +258,7 @@ const styles = StyleSheet.create({
     shadowRadius: 2,
     elevation: 2,
     paddingHorizontal: 60,
-    paddingVertical: 30,
+    paddingVertical: 50,
     borderRadius: 10,
   },
   item: {
@@ -322,5 +331,5 @@ const mapStateToProps = ({ uploadPageState }) => {
 
 export default connect(mapStateToProps, {
   uploadPageToggleIsSelected,
-  uploadPageUpdateSelectedImagePath
+  uploadPageUpdateselectedContentPath
 })(UploadPage);

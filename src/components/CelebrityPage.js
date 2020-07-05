@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { View, FlatList } from 'react-native';
+import { Header } from 'react-native-elements';
 import { connect } from 'react-redux';
 import UserDetailsComp from './celebScreen/UserDetailsComp';
 import UserPostsComp from './celebScreen/UserPostsComp';
@@ -19,14 +20,22 @@ class CelebrityPage extends Component {
   }
   onFocusFunction() {
      const { userId, userToken } = this.props;
-     // Setting the First Request Data for Celeb's Liked and posted posts 
+     // Setting the First Request Data for Celeb's Liked and posted posts
      this.props.celebrityPageGetUserPosts({ userId, userToken, selfPostPageNum: 1 });
      this.props.celebrityPageGetUserLikedPosts({ userId, userToken, postLikedPageNum: 1 });
   }
 
   render() {
+    const { userDetails } = this.props;
+
     return (
       <View style={{ flex: 1 }}>
+        <Header
+          backgroundColor={'white'}
+          placement={'center'}
+          centerComponent={{ text: `@${userDetails.userName}`, style: { color: '#808080', fontWeight: 'bold', fontSize: 19 } }}
+          containerStyle={{ paddingTop: 0, height: 50 }}
+        />
         <FlatList
           listKey={'mainList'}
           ListHeaderComponent={<UserDetailsComp />}
@@ -41,9 +50,9 @@ class CelebrityPage extends Component {
 }
 
 const mapStateToProps = ({ celebPageState, homePageState }) => {
-    const { userId } = celebPageState;
+    const { userId, userDetails } = celebPageState;
     const { userToken } = homePageState;
-    return { userId, userToken };
+    return { userId, userToken, userDetails };
 };
 
 export default connect(mapStateToProps, {

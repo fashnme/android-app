@@ -33,23 +33,23 @@ export const uploadPageUpdateCaption = (caption) => {
   };
 };
 
-export const uploadPageUpdateSelectedImagePath = (imgPath) => {
+export const uploadPageUpdateselectedContentPath = ({ selectedContentPath, mediaType }) => {
   return {
     type: UPLOAD_PAGE_UPDATE_SELECTED_IMAGE_PATH,
-    payload: imgPath
+    payload: { selectedContentPath, mediaType }
   };
 };
 
-export const uploadPageUploadContent = ({ caption, selectedImagePath, userToken, personalUserId }) => {
-  // console.log('Path', selectedImagePath);
+export const uploadPageUploadContent = ({ caption, selectedContentPath, userToken, personalUserId }) => {
+  // console.log('Path', selectedContentPath);
   return (dispatch) => {
     dispatch({ type: UPLOAD_PAGE_UPDATE_UPLOADING_STATUS, payload: { status: 'Preparing...', isUploading: true, progress: 0 } });
-    fileType(selectedImagePath).then(({ mime }) => {
+    fileType(selectedContentPath).then(({ mime }) => {
       // console.log('File Type', mime);
       if (mime.includes('image')) {
-        resizeAndUploadImage(selectedImagePath, userToken, personalUserId, caption, dispatch);
+        resizeAndUploadImage(selectedContentPath, userToken, personalUserId, caption, dispatch);
       } else if (mime.includes('video')) {
-        resizeAndUploadVideo(selectedImagePath, userToken, personalUserId, caption, dispatch);
+        resizeAndUploadVideo(selectedContentPath, userToken, personalUserId, caption, dispatch);
       }
     })
     .catch((err) => {
@@ -77,9 +77,9 @@ const resizeAndUploadVideo = (selectedVideoPath, userToken, personalUserId, capt
   });
 };
 
-const resizeAndUploadImage = (selectedImagePath, userToken, personalUserId, caption, dispatch) => {
-  Image.getSize(selectedImagePath, (w, h) => {
-    ImageResizer.createResizedImage(selectedImagePath, w, h, 'WEBP', 50).then((response) => {
+const resizeAndUploadImage = (selectedContentPath, userToken, personalUserId, caption, dispatch) => {
+  Image.getSize(selectedContentPath, (w, h) => {
+    ImageResizer.createResizedImage(selectedContentPath, w, h, 'WEBP', 50).then((response) => {
       uploadContent(response.uri, 'image/webp', personalUserId, userToken, caption, dispatch);
     }).catch((err) => {
       console.log('Error in Image Compression', err);

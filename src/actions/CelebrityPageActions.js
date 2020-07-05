@@ -1,5 +1,7 @@
 import axios from 'axios';
 import { Actions } from 'react-native-router-flux';
+import { Linking } from 'react-native';
+
 import {
   USER_FOLLOWED_HIM,
   USER_UNFOLLOWED_HIM,
@@ -150,5 +152,12 @@ export const celebrityPageUnfollow = ({ userToken, userId }) => {
 // Method to go to the Respective Social Media
 export const celebrityPageSocialIconClicked = ({ name, profile }) => {
   console.log('celebrityPageSocialIconClicked', name, profile);
+  switch (name) {
+    case 'instagram': { const url = `https://www.instagram.com/${profile}`; Linking.openURL(url); } break;
+    case 'facebook': { const url = `https://www.facebook.com/${profile}`; Linking.openURL(url); } break;
+    case 'twitter': { const url = `https://www.twitter.com/${profile}`; Linking.openURL(url); } break;
+    case 'youtube': { const url = `https://www.youtube.com/${profile}`; Linking.openURL(url); } break;
+    default:
+  }
   return { type: 'celebrityPageSocialIconClicked' };
 };

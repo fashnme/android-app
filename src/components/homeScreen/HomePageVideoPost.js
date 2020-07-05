@@ -116,7 +116,7 @@ class HomePageVideoPost extends Component {
     const { currentIndex, currentVisibleIndex, data } = this.props;
     const { uploadUrl } = data;
     const absDifference = Math.abs(currentIndex - currentVisibleIndex);
-    if (absDifference > 2) {
+    if (absDifference > 3) {
       return <View />;
     }
     return (
@@ -124,10 +124,6 @@ class HomePageVideoPost extends Component {
         <TouchableWithoutFeedback style={styles.containerStyle} onPress={() => {}}>
           <Video
            source={{ uri: uploadUrl }} // Can be a URL or a local file.
-           // ref={(ref) => {
-           //   console.log('Ref', ref);
-           //   // this.setState({ player: ref });
-           // }} // Store reference
            onBuffer={() => console.log('buffering')} // Callback when remote video is buffering
            onError={() => console.log('Video Error')} // Callback when video cannot be loaded
            style={styles.backgroundVideo}

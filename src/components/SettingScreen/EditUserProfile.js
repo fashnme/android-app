@@ -139,7 +139,7 @@ class EditUserProfile extends Component {
       gender: genders[genderIndex].name,
       oldUserName
     };
-    const { youtube, tiktok, instagram, facebook } = socialMediaLinks;
+    const { youtube, twitter, instagram, facebook } = socialMediaLinks;
     return (
       <View style={styles.container}>
         <Header
@@ -189,7 +189,7 @@ class EditUserProfile extends Component {
                 placeholder="Instagram Handle"
                 inputContainerStyle={{ borderBottomWidth: 0 }}
                 containerStyle={styles.textInputStyle}
-                leftIcon={<Image style={{ height: 25, width: 25 }} source={{ uri: 'https://image.flaticon.com/icons/png/128/1384/1384063.png' }} />}
+                leftIcon={<Image style={{ height: 25, width: 25 }} source={require('../../resources/icons/instagram.png')} />}
                 leftIconContainerStyle={{ marginHorizontal: 20 }}
                 value={instagram}
                 onChangeText={(txt) => {
@@ -201,7 +201,7 @@ class EditUserProfile extends Component {
                 placeholder="Facebook Id"
                 inputContainerStyle={{ borderBottomWidth: 0 }}
                 containerStyle={styles.textInputStyle}
-                leftIcon={<Image style={{ height: 25, width: 25 }} source={{ uri: 'https://image.flaticon.com/icons/png/128/1384/1384053.png' }} />}
+                leftIcon={<Image style={{ height: 25, width: 25 }} source={require('../../resources/icons/facebook.png')} />}
                 leftIconContainerStyle={{ marginHorizontal: 20 }}
                 value={facebook}
                 onChangeText={(txt) => {
@@ -210,22 +210,22 @@ class EditUserProfile extends Component {
                 }}
             />
             <Input
-                placeholder="Tiktok Handle"
+                placeholder="Twitter Handle"
                 inputContainerStyle={{ borderBottomWidth: 0 }}
                 containerStyle={styles.textInputStyle}
-                leftIcon={<Image style={{ height: 25, width: 25 }} source={{ uri: 'https://image.flaticon.com/icons/png/128/2504/2504942.png' }} />}
+                leftIcon={<Image style={{ height: 25, width: 25 }} source={require('../../resources/icons/twitter.png')} />}
                 leftIconContainerStyle={{ marginHorizontal: 20 }}
-                value={tiktok}
+                value={twitter}
                 onChangeText={(txt) => {
-                  const newSocialObject = { name: 'tiktok', profile: txt };
+                  const newSocialObject = { name: 'twitter', profile: txt };
                   this.props.accountSettingsUpdateSocialMediaLinks({ socialMediaLinks, newSocialObject });
                 }}
             />
             <Input
-                placeholder="Youtube Handle"
+                placeholder="YT Channel Name"
                 inputContainerStyle={{ borderBottomWidth: 0 }}
                 containerStyle={styles.textInputStyle}
-                leftIcon={<Image style={{ height: 25, width: 25 }} source={{ uri: 'https://image.flaticon.com/icons/png/128/1384/1384060.png' }} />}
+                leftIcon={<Image style={{ height: 25, width: 25 }} source={require('../../resources/icons/youtube.png')} />}
                 leftIconContainerStyle={{ marginHorizontal: 20 }}
                 value={youtube}
                 onChangeText={(txt) => {
