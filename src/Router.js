@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { View, Dimensions, Image } from 'react-native';
 import { Scene, Router } from 'react-native-router-flux';
-// import { Icon } from 'react-native-elements';
 import SplashScreen from './components/signupScreen/SplashScreen';
 import HomePage from './components/HomePage';
 import CelebrityPage from './components/CelebrityPage';
@@ -24,6 +23,7 @@ import WishlistPage from './components/SettingScreen/WishlistPage';
 import PersonalStorePage from './components/SettingScreen/PersonalStorePage';
 import RewardsPage from './components/SettingScreen/RewardsPage';
 import ReferAndEarnPage from './components/SettingScreen/ReferAndEarnPage';
+import NotificationPage from './components/SettingScreen/NotificationPage';
 
 // Using ICONS
 // class TabIcon extends Component {
@@ -118,6 +118,7 @@ const RouterComponent = () => {
                   <Scene hideTabBar key='bidCreatePage' component={BidCreatePage} />
                   <Scene hideTabBar key='bidEditPage' component={BidEditPage} />
                   <Scene hideTabBar key='addUserAddress' component={AddUserAddress} />
+                  <Scene hideTabBar key='notificationPage' component={NotificationPage} />
                 </Scene>
             </Scene>
         </Scene>

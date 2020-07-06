@@ -56,7 +56,7 @@ const UserPosts = ({ postsData, getMethod, selfPostPageNum, userId, userToken })
 };
 
 const LikedPosts = ({ postsData, getMethod, postLikedPageNum, userId, userToken }) => {
-  console.log('UserPostsComp LikedPosts', postsData);
+  // console.log('UserPostsComp LikedPosts', postsData);
   return (
     <FlatList
       data={postsData}

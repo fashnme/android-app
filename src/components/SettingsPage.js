@@ -107,7 +107,7 @@ const styles = {
       fontWeight: 'bold'
   },
   containerStyle: {
-    height: 60
+    height: 60,
   }
 };
 

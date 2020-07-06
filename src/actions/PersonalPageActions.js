@@ -1,4 +1,5 @@
 import axios from 'axios';
+import messaging, { firebase } from '@react-native-firebase/messaging';
 
 import {
   CELEBRITY_PAGE_SET_CELEB_DATA,
@@ -14,27 +15,28 @@ import {
 } from '../types';
 
 import {
-  CelebrityPageGetUserDetailsURL
+  CelebrityPageGetUserDetailsURL,
+  HomePageUpdateRegistrationTokenURL
 } from '../URLS';
 
-export const personalPageVisitAndSetData = ({ userId, userToken }) => {
+export const personalPageVisitAndSetData = ({ userToken }) => {
   const headers = {
     'Content-Type': 'application/json',
-    Authorization: userToken
+     Authorization: userToken
   };
   return (dispatch) => {
     axios({
         method: 'post',
         url: CelebrityPageGetUserDetailsURL,
         headers,
-        data: { userId }
+        // data: { userId } // Not required for fetching personal details
         })
         .then((response) => {
               // console.log('personalPageVisitAndSetData response', response.data);
               // Setting Data for Personal Page Tab
-              dispatch({ type: CELEBRITY_PAGE_SET_CELEB_DATA, payload: { userDetails: response.data.userDetails, userId } });
+              dispatch({ type: CELEBRITY_PAGE_SET_CELEB_DATA, payload: { userDetails: response.data.userDetails } });
               // Setting Data for Setting's Page Update User Profile Page
-              const { fullName, gender, profilePic, userName, dob, socialMediaLinks, bio } = response.data.userDetails;
+              const { fullName, gender, profilePic, userName, dob, registrationToken, socialMediaLinks, bio } = response.data.userDetails;
               // console.log('personalPageVisitAndSetData', { fullName, gender, profilePic, userName, dob, socialMediaLinks, bio });
               // Set the personal Details & Personal User Id in the Personal Page State
               dispatch({ type: PERSONAL_PAGE_SET_PERSONAL_DETAILS_AND_USERID, payload: response.data.userDetails });
@@ -50,7 +52,12 @@ export const personalPageVisitAndSetData = ({ userId, userToken }) => {
                 const deliveryDetailsArray = Object.values(response.data.userDetails.deliveryDetails);
                 dispatch({ type: SETTING_PAGE_USER_ADD_ADDRESS, payload: deliveryDetailsArray });
               } catch (err) {
-                console.log('personalPageVisitAndSetData deliveryDetailsArray Error', err, userId);
+                console.log('personalPageVisitAndSetData deliveryDetailsArray Error', err);
+              }
+              if (registrationToken === undefined || registrationToken.length === 0) {
+                fetchNewRegistrationToken({ userToken });
+              } else {
+                console.log('registrationToken already exists or is undefined');
               }
         })
         .catch((error) => {
@@ -58,4 +65,35 @@ export const personalPageVisitAndSetData = ({ userId, userToken }) => {
             console.log('personalPageVisitAndSetData Actions Error ', error);
       });
   };
+};
+
+const fetchNewRegistrationToken = async ({ userToken }) => {
+    const headers = {
+      'Content-Type': 'application/json',
+      Authorization: userToken
+    };
+    // Get FCM TOKEN
+    const authStatus = await messaging().requestPermission();
+    const enabled =
+      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+      authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+    if (enabled) {
+      const fcmToken = await messaging().getToken();
+      if (fcmToken) {
+          axios({
+              method: 'post',
+              url: HomePageUpdateRegistrationTokenURL,
+              headers,
+              data: { registrationToken: fcmToken }
+              })
+              .then((response) => {
+                  console.log('fetchNewRegistrationToken new token successfully set', response.data, fcmToken);
+              })
+              .catch((error) => {
+                  console.log('fetchNewRegistrationToken Actions Error ', error, fcmToken);
+            });
+      } else {
+        console.log('Failed, No token received');
+      }
+    }
 };

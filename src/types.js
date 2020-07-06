@@ -97,6 +97,9 @@ export const COMMENTS_PAGE_ADD_MORE_COMMENTS = 'comments_page_add_more_comments'
 export const COMMENTS_PAGE_ADD_USER_COMMENT = 'comments_page_add_user_comment';
 export const COMMENTS_PAGE_DELETE_USER_COMMENT = 'comments_page_delete_user_comment';
 
+// Notification Page
+export const NOTIFICATION_PAGE_UPDATE_NOTIFICATIONS = 'notification_page_update_notifications';
+
 // Wishlist Page
 // export const WISHLIST_ADD_OPERATION = 'add';
 // export const WISHLIST_REMOVE_OPERATION = 'remove';

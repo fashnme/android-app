@@ -34,7 +34,7 @@ export const celebrityPageVisitAndSetData = ({ userId, userToken }) => {
         data: { userId }
         })
         .then((response) => {
-            dispatch({ type: CELEBRITY_PAGE_SET_CELEB_DATA, payload: { userDetails: response.data.userDetails, userId } });
+            dispatch({ type: CELEBRITY_PAGE_SET_CELEB_DATA, payload: { userDetails: response.data.userDetails } });
         })
         .catch((error) => {
             //handle error
