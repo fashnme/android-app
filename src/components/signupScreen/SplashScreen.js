@@ -43,7 +43,7 @@ class SplashScreen extends Component {
       <View style={{ backgroundColor: '#fff', resizeMode: 'cover', flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <FadeInView>
           <Image
-              source={require('./fashn_square.png')}
+              source={require('./patang_square.png')}
               style={styles.image}
           />
         </FadeInView>
