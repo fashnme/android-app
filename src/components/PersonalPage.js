@@ -21,8 +21,8 @@ class PersonalPage extends Component {
     this.focusListener.remove();
   }
   onFocusFunction() {
-     const { personalUserId, userToken } = this.props;
-     this.props.personalPageVisitAndSetData({ userToken, userId: personalUserId });
+     const { userToken, personalUserId } = this.props;
+     this.props.personalPageVisitAndSetData({ userToken });
      // Setting the First Request Data for User's own Liked and posted posts
      this.props.celebrityPageGetUserPosts({ userId: personalUserId, userToken, selfPostPageNum: 1 });
      this.props.celebrityPageGetUserLikedPosts({ userId: personalUserId, userToken, postLikedPageNum: 1 });

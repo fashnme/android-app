@@ -9,3 +9,4 @@ export * from './BidsRelatedActions';
 export * from './PersonalPageActions';
 export * from './ManageCartActions';
 export * from './CommentsActions';
+export * from './NotificationActions';

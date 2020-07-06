@@ -6,6 +6,7 @@ export const HomePageLikePostURL = 'https://fashn-backend.herokuapp.com/user/lik
 export const HomePageUnlikePostURL = 'https://fashn-backend.herokuapp.com/user/unlike-post';
 export const HomePageDislikePostURL = 'https://fashn-backend.herokuapp.com/user/unlike-post'; // TODO
 export const HomePageFetchUserColdStartDetailsURL = 'https://fashn-backend.herokuapp.com/user/fetch-user-coldstart';
+export const HomePageUpdateRegistrationTokenURL = 'https://fashn-backend.herokuapp.com/user/update-fcm-registration-token';
 
 // CelebrityPage Urls
 export const CelebrityPageFollowURL = 'https://fashn-backend.herokuapp.com/user/follow-user';
@@ -60,3 +61,6 @@ export const CommentsPageUnlikeCommentURL = 'https://fashn-backend.herokuapp.com
 export const CommentsPageDeleteCommentURL = 'https://fashn-backend.herokuapp.com/user/delete-comment-post';
 export const CommentsPageFetchMoreCommentsURL = 'https://fashn-backend.herokuapp.com/user/get-comments';
 export const CommentsPageWriteCommentURL = 'https://fashn-backend.herokuapp.com/user/comment-post';
+
+// Notification Page
+export const NotificationPageGetNotificationURL = 'https://fashn-backend.herokuapp.com/notification/get-user-notifications';

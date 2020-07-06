@@ -23,9 +23,11 @@ const INITIAL_STATE = {
 
 export default (state = INITIAL_STATE, action) => {
     switch (action.type) {
-      case CELEBRITY_PAGE_SET_CELEB_DATA:
-         return { ...INITIAL_STATE, userDetails: action.payload.userDetails, userId: action.payload.userId };
-
+      case CELEBRITY_PAGE_SET_CELEB_DATA: {
+        const { userDetails } = action.payload;
+        const { userId } = userDetails;
+        return { ...INITIAL_STATE, userDetails, userId };
+      }
       case CELEBRITY_PAGE_GET_CELEB_POSTS: {
         const newArray = [...state.selfPostArray, ...action.payload];
         return { ...state, selfPostArray: newArray, selfPostPageNum: state.selfPostPageNum + 1 };
