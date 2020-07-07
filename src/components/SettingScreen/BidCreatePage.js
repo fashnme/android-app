@@ -58,7 +58,7 @@ const renderDatePicker = (setState, showCalender, setPropError) => {
 const checkPropsAndCreateBid = ({ amount, message, selectedAddress, startDate, endDate, postId, posterId,
       productData, setPropError, userToken, bidsPageCreateBid }) => {
   if (amount.length === 0) {
-    setPropError('Please Enter the Amount for Renting');
+    setPropError('Amount you can pay for Renting');
     return;
   }
   if (startDate.length === 0) {
