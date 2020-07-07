@@ -55,8 +55,8 @@ class SplashScreen extends Component {
 
 const styles = {
   image: {
-        width: 192,
-        height: 192,
+        width: 300,
+        height: 300,
         backgroundColor: '#fff'
   }
 };
