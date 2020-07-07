@@ -115,6 +115,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = ({ personalPageState, celebPageState, homePageState }) => {
     const { selfPostArray, postLikedArray, selfPostPageNum, postLikedPageNum } = celebPageState;
+    // console.log('Length of selfPostArray', selfPostArray.length);
     const { userToken } = homePageState;
     const { personalUserId } = personalPageState;
     return { selfPostArray, postLikedArray, selfPostPageNum, postLikedPageNum, userId: personalUserId, userToken };

@@ -134,7 +134,7 @@ class EditUserProfile extends Component {
       fullName,
       bio,
       socialMediaLinks,
-      profilePic: '',
+      profilePic,
       userToken,
       gender: genders[genderIndex].name,
       oldUserName

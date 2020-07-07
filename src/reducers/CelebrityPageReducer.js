@@ -26,7 +26,7 @@ export default (state = INITIAL_STATE, action) => {
       case CELEBRITY_PAGE_SET_CELEB_DATA: {
         const { userDetails } = action.payload;
         const { userId } = userDetails;
-        return { ...INITIAL_STATE, userDetails, userId };
+        return { ...state, userDetails, userId };
       }
       case CELEBRITY_PAGE_GET_CELEB_POSTS: {
         const newArray = [...state.selfPostArray, ...action.payload];
