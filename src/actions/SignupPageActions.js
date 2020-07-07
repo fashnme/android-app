@@ -71,8 +71,8 @@ export const signupPageSendOTP = (phone, callingCode) => {
           data: { phoneNo: `${callingCode}${phone}` },
           headers: { 'Content-Type': 'application/json' }
           })
-          .then((response) => {
-              console.log('signupPageSendOTP OTP Sent', response);
+          .then(() => {
+              // console.log('signupPageSendOTP OTP Sent', response);
           })
           .catch((error) => {
               console.log('signupPageSendOTP Error', error);

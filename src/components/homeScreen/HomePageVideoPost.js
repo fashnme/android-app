@@ -128,6 +128,8 @@ class HomePageVideoPost extends Component {
            onError={() => console.log('Video Error')} // Callback when video cannot be loaded
            style={styles.backgroundVideo}
            resizeMode={'cover'}
+           playInBackground={false}
+           playWhenInactive={false}
            paused={absDifference !== 0}
            fullscreen
            poster={thumbnailUrl}
