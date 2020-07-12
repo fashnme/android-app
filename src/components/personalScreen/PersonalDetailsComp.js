@@ -15,17 +15,6 @@ const socialFlatlistData = [
   { name: 'youtube', logoResource: require('../../resources/icons/youtube.png') },
 ];
 
-// Social Icon Component
-// const SocialIconButton = ({ name, clicked, profile }) => {
-//   return (
-//       <SocialIcon
-//         iconSize={15}
-//         style={{ height: 25, width: 25 }}
-//         onPress={() => clicked({ name, profile })}
-//         type={name}
-//       />
-//   );
-// };
 
 // Convert Integer to String
 const convertIntToString = (num) => {
@@ -119,7 +108,9 @@ const styles = StyleSheet.create({
   userData: {
     alignItems: 'center',
     flexDirection: 'row',
+    justifyContent: 'center',
     margin: 15,
+    width: '100%'
   },
   userDataBlock: {
     alignItems: 'center',

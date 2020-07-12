@@ -184,14 +184,14 @@ const updateDatabase = ({ caption, mediaType, uploadUrl, userToken, dispatch, th
     Authorization: userToken
   };
   const data = { caption, mediaType: mediaType.split('/')[0], uploadUrl };
-  if (mediaType.includes('video')) {
+  if (thumbnailUrl !== undefined) {
     data.thumbnailUrl = thumbnailUrl;
   }
   axios({
       method: 'post',
       url: UploadPageUploadContentURL,
       headers,
-      data: { caption, mediaType: mediaType.split('/')[0], uploadUrl }
+      data
       })
       .then((response) => {
           console.log('Content Uploaded updateDatabase', response.data);

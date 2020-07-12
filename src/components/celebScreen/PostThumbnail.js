@@ -6,9 +6,9 @@ const WINDOW_WIDTH = Dimensions.get('window').width;
 const ASSPECT_RATIO = 3 / 4;
 const THUMBNAIL_WIDTH = WINDOW_WIDTH / 3;
 
-const PostThumbnail = ({ imageUri, likes, onThumbnailPress }) => {
+const PostThumbnail = ({ imageUri, likes, onPress }) => {
   return (
-    <TouchableOpacity onPress={() => onThumbnailPress}>
+    <TouchableOpacity onPress={onPress}>
       <View style={styles.postThumbnail}>
         <Image style={styles.postThumbnailImage} source={{ uri: imageUri }} />
         <View style={styles.postDetails}>
