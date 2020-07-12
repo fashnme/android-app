@@ -11,7 +11,7 @@ const rowWidth = screenWidth - 10;
 const aspectRatio = 248 / 400; // Image's Height / Width
 
 const shareApp = ({ userId }) => {
-  const message = `Fashn.me\u000AUse my referal code & get Rs. 15 \u000A \u000A Dowload the App NOW \u000AAndroid:${ANDROID_APP_SHARING_URL} \u000A \u000A Referal Code: "${userId}"`;
+  const message = `Patang App: Indian Video Sharing & Shopping App ❤\u000A \u000AUse my referal code & get Rs. 15\u000A \u000ADowload the App Now:\u000A${ANDROID_APP_SHARING_URL} \u000A \u000A Referal Code: "${userId}" `;
   Share.share({
       message,
       title: 'Fashn.me: A Fashion Search & Recommendation Engine',

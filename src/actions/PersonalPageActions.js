@@ -1,5 +1,5 @@
 import axios from 'axios';
-import messaging, { firebase } from '@react-native-firebase/messaging';
+import messaging from '@react-native-firebase/messaging';
 
 import {
   CELEBRITY_PAGE_SET_CELEB_DATA,

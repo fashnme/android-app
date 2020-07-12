@@ -14,7 +14,8 @@ import {
   USER_UNLIKED_POST,
   HOME_PAGE_TOGGLE_SHARE_MODAL,
   USER_SET_ACTION_DATA,
-  PERSONAL_PAGE_SET_PERSONAL_DETAILS_AND_USERID
+  PERSONAL_PAGE_SET_PERSONAL_DETAILS_AND_USERID,
+  ANDROID_APP_SHARING_URL
 } from '../types';
 
 import {
@@ -249,7 +250,7 @@ export const homePageSharePost = ({ postData }) => {
            RNFS.readFile(outputPath, 'base64')
            .then((d) => {
              const content = `data:${b64PreExt};base64,${d}`;
-             const message = `Check out ${postData.userName}'s Post \u000A ${postData.caption.trim()} \u000A Download the App`;
+             const message = `Patang App\u000ACheck out ${postData.userName}'s Post \u000A${postData.caption.trim()} \u000ADownload the App Now:\u000A${ANDROID_APP_SHARING_URL} \u000A \u000APatang App: Indian Video Sharing & Shopping App ❤`;
              const options = { message, url: content, title: 'Share Now' };
              Share.open(options)
               .then((res) => { console.log('homePageSharePost Post Shared', res); })

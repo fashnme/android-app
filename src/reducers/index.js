@@ -10,6 +10,7 @@ import SettingsPageReducer from './SettingsPageReducer';
 import AccountSettingsReducer from './AccountSettingsReducer';
 import CommentsPageReducer from './CommentsPageReducer';
 import NotificationReducer from './NotificationReducer';
+import CustomPostListViewReducer from './CustomPostListViewReducer';
 
 export default combineReducers({
     homePageState: HomePageReducer,
@@ -22,5 +23,6 @@ export default combineReducers({
     settingsPageState: SettingsPageReducer,
     accountSettingState: AccountSettingsReducer,
     postCommentState: CommentsPageReducer,
-    notificationState: NotificationReducer
+    notificationState: NotificationReducer,
+    customPostListViewState: CustomPostListViewReducer
 });

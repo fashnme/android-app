@@ -1,4 +1,4 @@
-export const ANDROID_APP_SHARING_URL = 'https://fashn.me'; //Shortlink for 'https://play.google.com/store/apps/details?id=com.fashn&source=invite-friends'
+export const ANDROID_APP_SHARING_URL = 'https://bit.ly/patang_android';
 
 // export const PRODUCT_SHARING_URL_INITIAL = 'https://fashn.me/p/';
 // export const ECOM_SHARING_URL_INITIAL = 'https://fashn.me/cashback-intermediate-page';
@@ -99,6 +99,9 @@ export const COMMENTS_PAGE_DELETE_USER_COMMENT = 'comments_page_delete_user_comm
 
 // Notification Page
 export const NOTIFICATION_PAGE_UPDATE_NOTIFICATIONS = 'notification_page_update_notifications';
+
+// CustomPostListView
+export const CUSTOM_POST_LIST_VIEW_PAGE_SET_DATA = 'custom_post_list_view_page_set_data';
 
 // Wishlist Page
 // export const WISHLIST_ADD_OPERATION = 'add';

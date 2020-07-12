@@ -8,7 +8,8 @@ import { EmptyPage } from '../basic';
 
 import {
   celebrityPageGetUserPosts as _celebrityPageGetUserPosts,
-  celebrityPageGetUserLikedPosts as _celebrityPageGetUserLikedPosts
+  celebrityPageGetUserLikedPosts as _celebrityPageGetUserLikedPosts,
+  customPostListViewPageVisitAndSetData as _customPostListViewPageVisitAndSetData
 } from '../../actions';
 
 const WINDOW_WIDTH = Dimensions.get('window').width;
@@ -31,19 +32,20 @@ const renderTabBar = props => {
   );
 };
 
-const UserPosts = ({ postsData, getMethod, selfPostPageNum, userId, userToken }) => {
+const UserPosts = ({ postsData, selfPostPageNum, userId, userToken,
+      getMethod, customPostListViewPageVisitAndSetData }) => {
   // console.log('UserPostsComp UserPosts', postsData);
   return (
     <FlatList
       data={postsData}
       listKey={'postList'}
       numColumns={3}
-      renderItem={({ item }) => {
+      renderItem={({ item, index }) => {
           return (
             <PostThumbnail
-              imageUri={item.uploadUrl}
+              imageUri={item.mediaType === 'image' ? item.uploadUrl : item.thumbnailUrl}
               likes={item.totalLikes}
-              onPress={() => console.log('UserPosts Thumbnail Pressed')}
+              onPress={() => customPostListViewPageVisitAndSetData({ customFeedData: postsData, postIndex: index })}
             />
           );
         }}
@@ -55,18 +57,19 @@ const UserPosts = ({ postsData, getMethod, selfPostPageNum, userId, userToken })
   );
 };
 
-const LikedPosts = ({ postsData, getMethod, postLikedPageNum, userId, userToken }) => {
+const LikedPosts = ({ postsData, postLikedPageNum, userId, userToken,
+      getMethod, customPostListViewPageVisitAndSetData }) => {
   // console.log('UserPostsComp LikedPosts', postsData);
   return (
     <FlatList
       data={postsData}
       listKey={'likedPostList'}
       numColumns={3}
-      renderItem={({ item }) => (
+      renderItem={({ item, index }) => (
         <PostThumbnail
-          imageUri={item.uploadUrl}
+          imageUri={item.mediaType === 'image' ? item.uploadUrl : item.thumbnailUrl}
           likes={item.totalLikes}
-          onPress={() => console.log('LikedPosts Thumbnail Pressed')}
+          onPress={() => customPostListViewPageVisitAndSetData({ customFeedData: postsData, postIndex: index })}
         />
       )}
       ListEmptyComponent={<EmptyPage title={''} subtitle={'No Posts Found!'} />}
@@ -79,17 +82,33 @@ const LikedPosts = ({ postsData, getMethod, postLikedPageNum, userId, userToken 
 
 const PersonalPostsComp = ({
   selfPostArray, postLikedArray, selfPostPageNum, postLikedPageNum, userId,
-    userToken, celebrityPageGetUserPosts, celebrityPageGetUserLikedPosts }) => {
+    userToken, celebrityPageGetUserPosts, celebrityPageGetUserLikedPosts, customPostListViewPageVisitAndSetData }) => {
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([{ key: 'posts' }, { key: 'likedposts' }]);
   const renderScene = ({ route }) => {
     switch (route.key) {
       case 'posts':
-        return <UserPosts postsData={selfPostArray} getMethod={celebrityPageGetUserPosts} selfPostPageNum={selfPostPageNum} userId={userId} userToken={userToken} />;
-
+        return (
+          <UserPosts
+              postsData={selfPostArray}
+              getMethod={celebrityPageGetUserPosts}
+              selfPostPageNum={selfPostPageNum}
+              userId={userId}
+              userToken={userToken}
+              customPostListViewPageVisitAndSetData={customPostListViewPageVisitAndSetData}
+          />
+        );
       case 'likedposts':
-        return <LikedPosts postsData={postLikedArray} getMethod={celebrityPageGetUserLikedPosts} postLikedPageNum={postLikedPageNum} userId={userId} userToken={userToken} />;
-
+        return (
+          <LikedPosts
+            postsData={postLikedArray}
+            getMethod={celebrityPageGetUserLikedPosts}
+            postLikedPageNum={postLikedPageNum}
+            userId={userId}
+            userToken={userToken}
+            customPostListViewPageVisitAndSetData={customPostListViewPageVisitAndSetData}
+          />
+        );
       default:
         return <View />;
     }
@@ -110,6 +129,7 @@ const styles = StyleSheet.create({
   postFeeds: {
     width: WINDOW_WIDTH,
     padding: 0,
+    backgroundColor: 'white'
   }
 });
 
@@ -123,5 +143,6 @@ const mapStateToProps = ({ personalPageState, celebPageState, homePageState }) =
 
 export default connect(mapStateToProps, {
   celebrityPageGetUserPosts: _celebrityPageGetUserPosts,
-  celebrityPageGetUserLikedPosts: _celebrityPageGetUserLikedPosts
+  celebrityPageGetUserLikedPosts: _celebrityPageGetUserLikedPosts,
+  customPostListViewPageVisitAndSetData: _customPostListViewPageVisitAndSetData
 })(PersonalPostsComp);

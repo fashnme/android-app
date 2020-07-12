@@ -26,16 +26,33 @@ export default (state = INITIAL_STATE, action) => {
       case CELEBRITY_PAGE_SET_CELEB_DATA: {
         const { userDetails } = action.payload;
         const { userId } = userDetails;
-        return { ...state, userDetails, userId };
+        return { ...state, userDetails, userId, selfPostPageNum: 1, postLikedPageNum: 1 };
       }
       case CELEBRITY_PAGE_GET_CELEB_POSTS: {
+        if (state.selfPostPageNum === 1) {
+          return { ...state, selfPostArray: action.payload, selfPostPageNum: state.selfPostPageNum + 1 };
+        }
         const newArray = [...state.selfPostArray, ...action.payload];
-        return { ...state, selfPostArray: newArray, selfPostPageNum: state.selfPostPageNum + 1 };
+        const result = Array.from(new Set(newArray.map(s => s.postId)))
+                          .map(postId => {
+                                return newArray.find(s => s.postId === postId);
+                            }
+                          );
+        // console.log('CELEBRITY_PAGE_GET_CELEB_POSTS', newArray, result);
+        return { ...state, selfPostArray: result, selfPostPageNum: state.selfPostPageNum + 1 };
       }
 
       case CELEBRITY_PAGE_GET_CELEB_LIKED_POSTS: {
+        if (state.postLikedPageNum === 1) {
+          return { ...state, postLikedArray: action.payload, postLikedPageNum: state.postLikedPageNum + 1 };
+        }
         const newArray = [...state.postLikedArray, ...action.payload];
-        return { ...state, postLikedArray: newArray, postLikedPageNum: state.postLikedPageNum + 1 };
+        const result = Array.from(new Set(newArray.map(s => s.postId)))
+                          .map(postId => {
+                                return newArray.find(s => s.postId === postId);
+                            }
+                          );
+        return { ...state, postLikedArray: result, postLikedPageNum: state.postLikedPageNum + 1 };
       }
 
       default:
