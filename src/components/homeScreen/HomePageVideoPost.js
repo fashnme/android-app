@@ -134,7 +134,7 @@ class HomePageVideoPost extends Component {
            fullscreen
            poster={thumbnailUrl}
            posterResizeMode={'cover'}
-           // repeat
+           repeat
           />
         </TouchableWithoutFeedback>
         {this.renderScreenButtons()}

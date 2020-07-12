@@ -19,6 +19,19 @@ const ProductThumbnail = ({ index, item, productPageSelectedProductUpdate }) => 
   );
 };
 
+const NoProductTagged = () => {
+  return (
+    <View style={{ justifyContent: 'center', flexDirection: 'column', alignItems: 'center', marginTop: '15%' }}>
+      <Image
+        source={require('../../resources/icons/empty_bag.png')}
+        style={{ height: 200, width: 200 }}
+      />
+      <Text style={{ marginTop: 10, fontWeight: 'bold', fontSize: 18 }}> No Products Tagged </Text>
+      <Text style={{ marginTop: 10, fontSize: 18, opacity: 0.6 }}> We will tag the products soon! </Text>
+    </View>
+  );
+};
+
 const ProductModal = ({ productsData, productsModalVisible, postId, posterId,
   productPageOpenProductModal, productPageSelectedProductUpdate }) => {
     return (
@@ -46,7 +59,9 @@ const ProductModal = ({ productsData, productsModalVisible, postId, posterId,
                   keyExtractor={(item, index) => index.toString()}
                   renderItem={({ item, index }) => <ProductThumbnail item={item} index={index} productPageSelectedProductUpdate={productPageSelectedProductUpdate} />}
               />
+
             </View>
+            { productsData !== undefined && productsData.length === 0 && <NoProductTagged /> }
             <ProductPriceSizeView />
             <ProductExtraInfo />
           </View>
@@ -81,7 +96,7 @@ const styles = StyleSheet.create({
       },
       productsList: {
         marginTop: 10,
-        borderBottomWidth: 0.6,
+        borderBottomWidth: 0.2,
       },
       thumbnailWrapper: {
         padding: 10,

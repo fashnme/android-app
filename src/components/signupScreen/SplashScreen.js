@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { View, Image } from 'react-native';
+import { Image } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import { Actions } from 'react-native-router-flux';
+import LinearGradient from 'react-native-linear-gradient';
 import { connect } from 'react-redux';
 import { ASYNCSTORAGE_USER_TOKEN_NAME, ASYNCSTORAGE_USER_USER_NAME } from '../../types';
 import {
@@ -24,12 +25,12 @@ class SplashScreen extends Component {
                   }
               }
             );
-          }, 1000);
+          }, 2000);
           this.props.signupPageUserTokenUpdate(userToken);
         } else {
           setTimeout(() => {
             Actions.signupPage();
-          }, 1000);
+          }, 2000);
         }
       }
     ).catch((error) => {
@@ -40,14 +41,19 @@ class SplashScreen extends Component {
   render() {
     // console.log('Splash Screen Started Mishra Changed This FIle');
     return (
-      <View style={{ backgroundColor: '#fff', resizeMode: 'cover', flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <LinearGradient
+        colors={['#D5252D', '#FE19AA']}
+        style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 0 }}
+      >
         <FadeInView>
           <Image
-              source={require('./patang_square.png')}
+              source={require('./patang_white.png')}
               style={styles.image}
           />
         </FadeInView>
-      </View>
+      </LinearGradient>
     );
   }
 }
@@ -55,9 +61,8 @@ class SplashScreen extends Component {
 
 const styles = {
   image: {
-        width: 300,
-        height: 300,
-        backgroundColor: '#fff'
+        width: 123.3,
+        height: 143.7,
   }
 };
 
