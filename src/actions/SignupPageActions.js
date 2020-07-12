@@ -96,7 +96,7 @@ export const signupPageVerifyOTP = (phone, otp, callingCode) => {
           headers: { 'Content-Type': 'application/json' }
           })
           .then((response) => {
-            console.log('signupPageVerifyOTP response', response);
+            // console.log('signupPageVerifyOTP response', response);
             const userToken = `Bearer ${response.data.jwt}`;
             dispatch({ type: PERSONAL_PAGE_SET_USERTOKEN, payload: userToken });
             setUserToken(userToken);

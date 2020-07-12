@@ -3,13 +3,15 @@ import { View, Text, TouchableNativeFeedback, Image } from 'react-native';
 // import { Icon } from 'react-native-elements';
 import { connect } from 'react-redux';
 
+
+// Convert Integer to String
 const convertIntToString = (num) => {
-  if (String(num).length >= 7) {
-    return `${String(num / 1000000)}M`;
-  } else if (String(num).length >= 4) {
-    return `${String(num / 1000)}K`;
-  }
-  return num;
+  const precision = 0;
+  const abbrev = ['', 'K', 'M', 'B'];
+  const unrangifiedOrder = Math.floor(Math.log10(Math.abs(num)) / 3);
+  const order = Math.max(0, Math.min(unrangifiedOrder, abbrev.length - 1));
+  const suffix = abbrev[order];
+  return (num / Math.pow(10, order * 3)).toFixed(precision) + suffix;
 };
 
 const HeartComp = ({ postId, likes, onLikePress, onUnlikePress, likedPosts }) => {
@@ -77,6 +79,7 @@ const styles = {
   actionCaption: {
     color: 'white',
     textAlign: 'center',
+    fontWeight: 'bold'
   }
 };
 

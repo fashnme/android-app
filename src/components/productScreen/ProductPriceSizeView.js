@@ -49,7 +49,7 @@ const renderSizeBlock = ({ sizesAvailable, sizeSelected, setSizeSelected }) => {
     );
   }
   if (sizesAvailable.length === 0) {
-    return <Text> Out of Stock </Text>;
+    return <Text style={{ color: 'red' }}> Out of Stock </Text>;
   }
   return (
     <Card containerStyle={{ marginBottom: 6, paddingBottom: 4, borderRadius: 8 }}>
@@ -112,6 +112,7 @@ const checkAndCompleteRequest = ({ productId, sizeSelected, postId, userToken, s
 const ProductPriceSizeView = ({ productData, postId, posterId, askForSize, userToken,
   productPageOpenProductModal, productPageUpdatePriceAndSize, manageCartAddProductToCart }) => {
   const [sizeSelected, setSizeSelected] = useState(null);
+  console.log('ProductPriceSizeView productData', productData);
   const [error, setError] = useState('');
   if (productData === undefined) {
     return <View />;
@@ -211,6 +212,9 @@ const mapStateToProps = ({ productPageState, personalPageState }) => {
     }
     const { userToken } = personalPageState;
     const oldData = productsData[selectedItem];
+    if (oldData === undefined) {
+      return { productData: undefined };
+    }
     const { productId } = oldData;
     let productData = {};
     let askForSize = true;

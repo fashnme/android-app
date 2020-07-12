@@ -45,12 +45,12 @@ export const productPageUpdatePriceAndSize = ({ productId }) => {
                 crossedPrice: 1199,
                 discount: 52,
                 offers: [],
-                sizesAvailable: [
-                    {
-                        size: 'Onesize',
-                        sizeStandard: ''
-                    }
-                ],
+                sizesAvailable: [],
+                //     {
+                //         size: 'Onesize',
+                //         sizeStandard: ''
+                //     }
+                // ],
                 stockAvailability: true
             };
             const payload = {};
