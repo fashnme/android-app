@@ -72,6 +72,10 @@ export const SIGNUP_PAGE_GENDER_UPDATE = 'signup_page_gender_update';
 // Personal Page
 export const PERSONAL_PAGE_SET_USERTOKEN = 'personal_page_set_usertoken';
 export const PERSONAL_PAGE_SET_PERSONAL_DETAILS_AND_USERID = 'personal_page_set_personal_details_and_userid';
+export const PERSONAL_PAGE_SET_OWN_POSTS = 'personal_page_set_own_posts';
+export const PERSONAL_PAGE_SET_OWN_LIKED_POSTS = 'personal_page_set_own_liked_posts';
+export const PERSONAL_PAGE_DELETE_POST = 'personal_page_delete_post';
+
 // Settings
 export const SETTING_PAGE_SET_USER_ORDERS = 'setting_page_set_user_orders';
 export const SETTING_PAGE_SET_RENT_BID_BY_ME = 'setting_page_set_rent_bid_by_me';

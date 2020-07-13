@@ -29,6 +29,9 @@ export default (state = INITIAL_STATE, action) => {
         return { ...state, userDetails, userId, selfPostPageNum: 1, postLikedPageNum: 1 };
       }
       case CELEBRITY_PAGE_GET_CELEB_POSTS: {
+        // if (action.payload.length === 0) {
+        //   return state;
+        // }
         if (state.selfPostPageNum === 1) {
           return { ...state, selfPostArray: action.payload, selfPostPageNum: state.selfPostPageNum + 1 };
         }

@@ -21,8 +21,8 @@ class CelebrityPage extends Component {
   onFocusFunction() {
      const { userId, userToken } = this.props;
      // Setting the First Request Data for Celeb's Liked and posted posts
-     this.props.celebrityPageGetUserPosts({ userId, userToken, selfPostPageNum: 1 });
-     this.props.celebrityPageGetUserLikedPosts({ userId, userToken, postLikedPageNum: 1 });
+     this.props.celebrityPageGetUserPosts({ userId, userToken, selfPostPageNum: 1, isPersonalData: false });
+     this.props.celebrityPageGetUserLikedPosts({ userId, userToken, postLikedPageNum: 1, isPersonalData: false });
   }
 
   render() {

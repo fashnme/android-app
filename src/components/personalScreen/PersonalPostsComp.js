@@ -9,7 +9,8 @@ import { EmptyPage } from '../basic';
 import {
   celebrityPageGetUserPosts as _celebrityPageGetUserPosts,
   celebrityPageGetUserLikedPosts as _celebrityPageGetUserLikedPosts,
-  customPostListViewPageVisitAndSetData as _customPostListViewPageVisitAndSetData
+  customPostListViewPageVisitAndSetData as _customPostListViewPageVisitAndSetData,
+  personalPageDeletePost as _personalPageDeletePost
 } from '../../actions';
 
 const WINDOW_WIDTH = Dimensions.get('window').width;
@@ -33,7 +34,7 @@ const renderTabBar = props => {
 };
 
 const UserPosts = ({ postsData, selfPostPageNum, userId, userToken,
-      getMethod, customPostListViewPageVisitAndSetData }) => {
+      getMethod, customPostListViewPageVisitAndSetData, personalPageDeletePost }) => {
   // console.log('UserPostsComp UserPosts', postsData);
   return (
     <FlatList
@@ -46,6 +47,8 @@ const UserPosts = ({ postsData, selfPostPageNum, userId, userToken,
               imageUri={item.mediaType === 'image' ? item.uploadUrl : item.thumbnailUrl}
               likes={item.totalLikes}
               onPress={() => customPostListViewPageVisitAndSetData({ customFeedData: postsData, postIndex: index })}
+              showDeleteIcon
+              onDeletePress={() => personalPageDeletePost({ postId: item.postId })}
             />
           );
         }}
@@ -81,8 +84,8 @@ const LikedPosts = ({ postsData, postLikedPageNum, userId, userToken,
 };
 
 const PersonalPostsComp = ({
-  selfPostArray, postLikedArray, selfPostPageNum, postLikedPageNum, userId,
-    userToken, celebrityPageGetUserPosts, celebrityPageGetUserLikedPosts, customPostListViewPageVisitAndSetData }) => {
+  selfPostArray, postLikedArray, selfPostPageNum, postLikedPageNum, userId, userToken,
+  personalPageDeletePost, celebrityPageGetUserPosts, celebrityPageGetUserLikedPosts, customPostListViewPageVisitAndSetData }) => {
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([{ key: 'posts' }, { key: 'likedposts' }]);
   const renderScene = ({ route }) => {
@@ -96,6 +99,7 @@ const PersonalPostsComp = ({
               userId={userId}
               userToken={userToken}
               customPostListViewPageVisitAndSetData={customPostListViewPageVisitAndSetData}
+              personalPageDeletePost={personalPageDeletePost}
           />
         );
       case 'likedposts':
@@ -129,20 +133,29 @@ const styles = StyleSheet.create({
   postFeeds: {
     width: WINDOW_WIDTH,
     padding: 0,
-    backgroundColor: 'white'
+    backgroundColor: 'white',
+    // height: '50%'
   }
 });
 
-const mapStateToProps = ({ personalPageState, celebPageState, homePageState }) => {
-    const { selfPostArray, postLikedArray, selfPostPageNum, postLikedPageNum } = celebPageState;
+const mapStateToProps = ({ personalPageState, homePageState }) => {
     // console.log('Length of selfPostArray', selfPostArray.length);
     const { userToken } = homePageState;
-    const { personalUserId } = personalPageState;
-    return { selfPostArray, postLikedArray, selfPostPageNum, postLikedPageNum, userId: personalUserId, userToken };
+    const { personalUserId, ownPostsArray, selfLikedPostArray, ownPostPageNum, postLikedPageNum } = personalPageState;
+    // Use the data from personalPageState & transform it, so that the component remains same as Celebrity component
+    return {
+      selfPostArray: ownPostsArray,
+      postLikedArray: selfLikedPostArray,
+      selfPostPageNum: ownPostPageNum,
+      postLikedPageNum,
+      userId: personalUserId,
+      userToken
+    };
 };
 
 export default connect(mapStateToProps, {
   celebrityPageGetUserPosts: _celebrityPageGetUserPosts,
   celebrityPageGetUserLikedPosts: _celebrityPageGetUserLikedPosts,
-  customPostListViewPageVisitAndSetData: _customPostListViewPageVisitAndSetData
+  customPostListViewPageVisitAndSetData: _customPostListViewPageVisitAndSetData,
+  personalPageDeletePost: _personalPageDeletePost
 })(PersonalPostsComp);

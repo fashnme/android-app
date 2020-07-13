@@ -30,7 +30,7 @@ class CustomPostListView extends Component {
     this.focusListener = this.props.navigation.addListener('didFocus', () => {
       if (this.flatListRef !== null) {
         const { postIndex } = this.props;
-        console.log('componentDidMount', postIndex);
+        // console.log('componentDidMount', postIndex);
         this.flatListRef.snapToItem(postIndex, false);
       }
     });

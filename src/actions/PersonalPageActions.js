@@ -11,12 +11,14 @@ import {
   SIGNUP_PAGE_FULLNAME_UPDATE,
   SIGNUP_PAGE_GENDER_UPDATE,
   SETTING_PAGE_USER_ADD_ADDRESS,
-  PERSONAL_PAGE_SET_PERSONAL_DETAILS_AND_USERID
+  PERSONAL_PAGE_SET_PERSONAL_DETAILS_AND_USERID,
+  PERSONAL_PAGE_DELETE_POST
 } from '../types';
 
 import {
   CelebrityPageGetUserDetailsURL,
-  HomePageUpdateRegistrationTokenURL
+  HomePageUpdateRegistrationTokenURL,
+  PersonalPageDeletePost
 } from '../URLS';
 
 export const personalPageVisitAndSetData = ({ userToken }) => {
@@ -96,4 +98,28 @@ const fetchNewRegistrationToken = async ({ userToken }) => {
         console.log('Failed, No token received');
       }
     }
+};
+
+export const personalPageDeletePost = ({ postId, userToken }) => {
+  // console.log('personalPageDeletePost', postId);
+  const headers = {
+    'Content-Type': 'application/json',
+    Authorization: userToken
+  };
+  return (dispatch) => {
+    dispatch({ type: PERSONAL_PAGE_DELETE_POST, payload: { postId } });
+    axios({
+        method: 'post',
+        url: PersonalPageDeletePost,
+        headers,
+        data: { postId }
+        })
+        .then((response) => {
+            console.log('personalPageDeletePost', response.data);
+        })
+        .catch((error) => {
+            //handle error
+            console.log('personalPageDeletePost Actions Error ', error);
+      });
+  };
 };
