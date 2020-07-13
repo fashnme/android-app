@@ -7,7 +7,7 @@ import {
 // Method to Get the Extra Personal Feed Data
 export const customPostListViewPageVisitAndSetData = ({ customFeedData, postIndex }) => {
   Actions.customPostListView();
-  // console.log('customPostListViewPageVisitAndSetData', postIndex);
+  console.log('customPostListViewPageVisitAndSetData', postIndex);
   return {
     type: CUSTOM_POST_LIST_VIEW_PAGE_SET_DATA,
     payload: { customFeedData, postIndex }

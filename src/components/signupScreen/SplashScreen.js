@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Image } from 'react-native';
+import { Image, StatusBar } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import { Actions } from 'react-native-router-flux';
 import LinearGradient from 'react-native-linear-gradient';
@@ -47,6 +47,7 @@ class SplashScreen extends Component {
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 0 }}
       >
+        <StatusBar hidden />
         <FadeInView>
           <Image
               source={require('./patang_white.png')}

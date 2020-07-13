@@ -36,7 +36,7 @@ class HomePage extends Component {
     const { userToken } = this.props;
     this.props.homePageGetInitialFeedData({ userToken });
     this.props.homePageGetInitialPublicFeedData({ userToken });
-    this.props.homePageFetchUserColdStartDetails({ userToken }); // TODO Update this to store info in local storage 
+    this.props.homePageFetchUserColdStartDetails({ userToken }); // TODO Update this to store info in local storage
     this.props.personalPageVisitAndSetData({ userToken });
     BackHandler.addEventListener('hardwareBackPress', this.handleBackButton.bind(this));
   }

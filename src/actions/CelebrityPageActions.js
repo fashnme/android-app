@@ -8,6 +8,8 @@ import {
   CELEBRITY_PAGE_SET_CELEB_DATA,
   CELEBRITY_PAGE_GET_CELEB_POSTS,
   CELEBRITY_PAGE_GET_CELEB_LIKED_POSTS,
+  PERSONAL_PAGE_SET_OWN_POSTS,
+  PERSONAL_PAGE_SET_OWN_LIKED_POSTS,
 } from '../types';
 
 import {
@@ -21,6 +23,7 @@ import {
 
 // Method to Visit & Set the Celebrity Page
 export const celebrityPageVisitAndSetData = ({ userId, userToken }) => {
+  // console.log('celebrityPageVisitAndSetData', userId);
   const headers = {
     'Content-Type': 'application/json',
     Authorization: userToken
@@ -45,8 +48,8 @@ export const celebrityPageVisitAndSetData = ({ userId, userToken }) => {
 
 
 // Method to Get the Celeb Posts
-export const celebrityPageGetUserPosts = ({ userId, userToken, selfPostPageNum }) => {
-  // console.log('celebrityPageGetUserPosts data', userId, selfPostPageNum);
+export const celebrityPageGetUserPosts = ({ userId, userToken, selfPostPageNum, isPersonalData }) => {
+  // console.log('celebrityPageGetUserPosts data', userId, selfPostPageNum, isPersonalData);
   if (userId.length === 0) {
     return { type: 'CELEBRITY_PAGE_GET_CELEB_POSTS_UNHANDLED' };
   }
@@ -63,7 +66,11 @@ export const celebrityPageGetUserPosts = ({ userId, userToken, selfPostPageNum }
         })
         .then((response) => {
             // console.log('celebrityPageGetUserPosts', selfPostPageNum, response.data.posts);
-            dispatch({ type: CELEBRITY_PAGE_GET_CELEB_POSTS, payload: response.data.posts });
+            if (isPersonalData === true) {
+              dispatch({ type: PERSONAL_PAGE_SET_OWN_POSTS, payload: response.data.posts });
+            } else {
+              dispatch({ type: CELEBRITY_PAGE_GET_CELEB_POSTS, payload: response.data.posts });
+            }
         })
         .catch((error) => {
             //handle error
@@ -73,7 +80,9 @@ export const celebrityPageGetUserPosts = ({ userId, userToken, selfPostPageNum }
 };
 
 // Method to Get the Posts Liked by Celeb
-export const celebrityPageGetUserLikedPosts = ({ userId, userToken, postLikedPageNum }) => {
+export const celebrityPageGetUserLikedPosts = ({ userId, userToken, postLikedPageNum, isPersonalData }) => {
+  // console.log('celebrityPageGetUserLikedPosts data', userId, postLikedPageNum, isPersonalData);
+
   if (userId.length === 0) {
     return { type: 'CELEBRITY_PAGE_GET_CELEB_POSTS_UNHANDLED' };
   }
@@ -89,8 +98,12 @@ export const celebrityPageGetUserLikedPosts = ({ userId, userToken, postLikedPag
         data: { userId, page: postLikedPageNum }
         })
         .then((response) => {
-            // console.log('celebrityPageGetUserLikedPosts', postLikedPageNum, response.data.posts);
+          // console.log('celebrityPageGetUserLikedPosts', postLikedPageNum, response.data.posts);
+          if (isPersonalData === true) {
+            dispatch({ type: PERSONAL_PAGE_SET_OWN_LIKED_POSTS, payload: response.data.posts });
+          } else {
             dispatch({ type: CELEBRITY_PAGE_GET_CELEB_LIKED_POSTS, payload: response.data.posts });
+          }
         })
         .catch((error) => {
             //handle error

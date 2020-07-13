@@ -24,9 +24,20 @@ class HomePageVideoPost extends Component {
     this.state = {
       showFullCaption: false,
       player: null,
-      paused: false
+      showVideo: false
     };
   }
+
+  // componentDidMount() {
+  //   this.focusListener = this.props.navigation.addListener('didFocus', () => {
+  //     this.setState({ showVideo: true });
+  //   });
+  // }
+  // componentWillUnmount() {
+  //   this.setState({ showVideo: false });
+  //   this.focusListener.remove();
+  // }
+
   renderIconWithText({ source, text, onPress }) {
       return (
         <TouchableNativeFeedback onPress={onPress}>
@@ -131,7 +142,7 @@ class HomePageVideoPost extends Component {
            playInBackground={false}
            playWhenInactive={false}
            paused={absDifference !== 0}
-           fullscreen
+           // fullscreen
            poster={thumbnailUrl}
            posterResizeMode={'cover'}
            repeat
