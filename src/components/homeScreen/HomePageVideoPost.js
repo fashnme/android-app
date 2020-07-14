@@ -5,6 +5,8 @@ import { showMessage } from 'react-native-flash-message';
 import { connect } from 'react-redux';
 import AvatarComp from './AvatarComp';
 import HeartComp from './HeartComp';
+import BlinkingVideoIcon from './BlinkingVideoIcon';
+// import TestBlinking from './TestBlinking';
 
 import {
   homePageLikePost,
@@ -119,6 +121,7 @@ class HomePageVideoPost extends Component {
                   onProfileClick={() => this.props.celebrityPageVisitAndSetData({ userToken, userId })}
                />
             </View>
+            <BlinkingVideoIcon />
         </View>
     );
   }
@@ -135,8 +138,9 @@ class HomePageVideoPost extends Component {
         <TouchableWithoutFeedback style={styles.containerStyle} onPress={() => {}}>
           <Video
            source={{ uri: uploadUrl }} // Can be a URL or a local file.
+           // source={{ uri: 'https://fashn-social.s3.ap-south-1.amazonaws.com/testing/aHR0cDovL3RlY2hzbGlkZXMuY29tL2RlbW9zL3NhbXBsZS12aWRlb3Mvc21hbGwubXA0.m3u8' }} // Can be a URL or a local file.
            onBuffer={() => console.log('buffering')} // Callback when remote video is buffering
-           onError={() => console.log('Video Error')} // Callback when video cannot be loaded
+           onError={(e) => console.log('Video Error', e)} // Callback when video cannot be loaded
            style={styles.backgroundVideo}
            resizeMode={'cover'}
            playInBackground={false}
