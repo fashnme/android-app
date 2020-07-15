@@ -6,7 +6,11 @@ import LinearGradient from 'react-native-linear-gradient';
 import { connect } from 'react-redux';
 import { ASYNCSTORAGE_USER_TOKEN_NAME, ASYNCSTORAGE_USER_USER_NAME } from '../../types';
 import {
-  signupPageUserTokenUpdate
+  signupPageUserTokenUpdate,
+  homePageGetInitialFeedData,
+  homePageFetchUserColdStartDetails,
+  personalPageVisitAndSetData,
+  homePageGetInitialPublicFeedData,
 } from '../../actions';
 import { FadeInView } from '../basic';
 
@@ -16,6 +20,11 @@ class SplashScreen extends Component {
       (userToken) => {
         if (userToken) {
           setTimeout(() => {
+            // Transfered these methods here from Home Page
+            this.props.homePageGetInitialFeedData({ userToken });
+            this.props.homePageGetInitialPublicFeedData({ userToken });
+            this.props.homePageFetchUserColdStartDetails({ userToken }); // TODO Update this to store info in local storage
+            this.props.personalPageVisitAndSetData({ userToken });
             AsyncStorage.getItem(ASYNCSTORAGE_USER_USER_NAME).then(
               (userName) => {
                   if (userName !== null && userName.length !== 0) {
@@ -25,7 +34,7 @@ class SplashScreen extends Component {
                   }
               }
             );
-          }, 2000);
+          }, 3000);
           this.props.signupPageUserTokenUpdate(userToken);
         } else {
           setTimeout(() => {
@@ -68,5 +77,9 @@ const styles = {
 };
 
 export default connect(null, {
-  signupPageUserTokenUpdate
+  signupPageUserTokenUpdate,
+  homePageGetInitialFeedData,
+  homePageFetchUserColdStartDetails,
+  personalPageVisitAndSetData,
+  homePageGetInitialPublicFeedData,
 })(SplashScreen);

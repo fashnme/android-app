@@ -5,13 +5,9 @@ import { Actions } from 'react-native-router-flux';
 import Carousel from 'react-native-snap-carousel';
 import FlashMessage from 'react-native-flash-message';
 import {
-  homePageGetInitialFeedData,
   homePageUpdateActiveTab,
-  homePageGetInitialPublicFeedData,
   homePageSetPublicVerticalCarouselRef,
-  homePageSetPersonalVerticalCarouselRef,
-  homePageFetchUserColdStartDetails,
-  personalPageVisitAndSetData
+  homePageSetPersonalVerticalCarouselRef
 } from '../actions';
 import HomePageImagePost from './homeScreen/HomePageImagePost';
 import HomePageVideoPost from './homeScreen/HomePageVideoPost';
@@ -33,11 +29,11 @@ class HomePage extends Component {
   }
   componentDidMount() {
     // Getting the Initial Feed Data, when App in opened
-    const { userToken } = this.props;
-    this.props.homePageGetInitialFeedData({ userToken });
-    this.props.homePageGetInitialPublicFeedData({ userToken });
-    this.props.homePageFetchUserColdStartDetails({ userToken }); // TODO Update this to store info in local storage
-    this.props.personalPageVisitAndSetData({ userToken });
+    // const { userToken } = this.props;      // Transfered this Method calling to Splash Screen
+    // this.props.homePageGetInitialFeedData({ userToken });
+    // this.props.homePageGetInitialPublicFeedData({ userToken });
+    // this.props.homePageFetchUserColdStartDetails({ userToken }); // TODO Update this to store info in local storage
+    // this.props.personalPageVisitAndSetData({ userToken });
     BackHandler.addEventListener('hardwareBackPress', this.handleBackButton.bind(this));
   }
   componentWillUnmount() {
@@ -134,11 +130,7 @@ const mapStateToProps = ({ homePageState, personalPageState }) => {
 
 
 export default connect(mapStateToProps, {
-  homePageGetInitialFeedData,
   homePageUpdateActiveTab,
-  homePageGetInitialPublicFeedData,
   homePageSetPublicVerticalCarouselRef,
-  homePageSetPersonalVerticalCarouselRef,
-  homePageFetchUserColdStartDetails,
-  personalPageVisitAndSetData
+  homePageSetPersonalVerticalCarouselRef
 })(HomePage);
