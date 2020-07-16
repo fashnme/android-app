@@ -6,9 +6,10 @@ import { Actions } from 'react-native-router-flux';
 import PersonalDetailsComp from './personalScreen/PersonalDetailsComp';
 import PersonalPostsComp from './personalScreen/PersonalPostsComp';
 import {
-  personalPageVisitAndSetData,
+  personalPageSetData,
   celebrityPageGetUserPosts,
-  celebrityPageGetUserLikedPosts
+  celebrityPageGetUserLikedPosts,
+  videoPagePlayStatusUpdate
  } from '../actions';
 
 class PersonalPage extends Component {
@@ -22,7 +23,8 @@ class PersonalPage extends Component {
   }
   onFocusFunction() {
      const { userToken, personalUserId } = this.props;
-     this.props.personalPageVisitAndSetData({ userToken });
+     this.props.videoPagePlayStatusUpdate({ homePageVideoPlay: false, celebPageVideoPlay: false });
+     this.props.personalPageSetData({ userToken });
      // Setting the First Request Data for User's own Liked and posted posts
      this.props.celebrityPageGetUserPosts({ userId: personalUserId, userToken, selfPostPageNum: 1, isPersonalData: true });
      this.props.celebrityPageGetUserLikedPosts({ userId: personalUserId, userToken, postLikedPageNum: 1, isPersonalData: true });
@@ -59,7 +61,8 @@ const mapStateToProps = ({ personalPageState }) => {
 };
 
 export default connect(mapStateToProps, {
-  personalPageVisitAndSetData,
+  personalPageSetData,
   celebrityPageGetUserPosts,
-  celebrityPageGetUserLikedPosts
+  celebrityPageGetUserLikedPosts,
+  videoPagePlayStatusUpdate
 })(PersonalPage);

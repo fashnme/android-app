@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, FlatList } from 'react-native';
 import { Card, ListItem } from 'react-native-elements';
 import { connect } from 'react-redux';
-import testData from './testData';
+// import testData from './testData';
 
 const renderHeader = (title) => {
   return (
@@ -13,6 +13,9 @@ const renderHeader = (title) => {
 };
 
 const renderFeatures = ({ features }) => {
+  if (features === undefined || features.length === 0) {
+    return <View />;
+  }
   return (
     <View>
       {renderHeader('Product Features')}
@@ -36,6 +39,9 @@ const renderFeatures = ({ features }) => {
 };
 
 const renderDescription = ({ description }) => {
+  if (description === undefined || description.length === 0) {
+    return <View />;
+  }
   return (
     <View>
       {renderHeader('Other Details')}
@@ -45,11 +51,12 @@ const renderDescription = ({ description }) => {
 };
 
 const ProductExtraInfo = ({ selectedItem, productsCompleteData, allFine }) => {
-  // const { features, description } = productsCompleteData[selectedItem];
-  const { features, description } = testData;
+  console.log('ProductExtraInfo', selectedItem, productsCompleteData, allFine);
   if (!allFine) {
     return <View />;
   }
+  const { features, description } = productsCompleteData[selectedItem];
+  // const { features, description } = testData;
   return (
     <Card containerStyle={{ marginBottom: 6, paddingBottom: 4, borderRadius: 8 }}>
       {renderFeatures({ features })}
@@ -83,7 +90,7 @@ const mapStateToProps = ({ productPageState }) => {
   if (productsData.length === productsCompleteData.length
     && selectedItem < productsData.length
     && productsData[selectedItem].productId === productsCompleteData[selectedItem].productId) {
-    allFine = true; console.log('Everything is Fine');
+    allFine = true; //console.log('Everything is Fine');
   }
   return { selectedItem, productsCompleteData, allFine };
 };

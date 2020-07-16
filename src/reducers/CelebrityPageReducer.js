@@ -32,6 +32,8 @@ export default (state = INITIAL_STATE, action) => {
         // if (action.payload.length === 0) {
         //   return state;
         // }
+        // console.log('CELEBRITY_PAGE_GET_CELEB_POSTS', action.payload);
+
         if (state.selfPostPageNum === 1) {
           return { ...state, selfPostArray: action.payload, selfPostPageNum: state.selfPostPageNum + 1 };
         }
@@ -41,7 +43,6 @@ export default (state = INITIAL_STATE, action) => {
                                 return newArray.find(s => s.postId === postId);
                             }
                           );
-        // console.log('CELEBRITY_PAGE_GET_CELEB_POSTS', newArray, result);
         return { ...state, selfPostArray: result, selfPostPageNum: state.selfPostPageNum + 1 };
       }
 

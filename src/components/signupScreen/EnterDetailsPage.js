@@ -56,7 +56,7 @@ const genders = [
   }
 ];
 
-const UserInputBox = ({ placeholder, iconName, iconType, errorMessage, name, valueName, changeAction }) => {
+const UserInputBox = ({ placeholder, iconName, iconType, errorMessage, name, valueName, changeAction, inputStyle }) => {
   return (
     <Input
       value={valueName}
@@ -64,6 +64,7 @@ const UserInputBox = ({ placeholder, iconName, iconType, errorMessage, name, val
       placeholder={placeholder}
       inputContainerStyle={{ borderBottomWidth: 0 }}
       containerStyle={styles.textInputStyle}
+      inputStyle={inputStyle}
       leftIcon={<Icon name={iconName} type={iconType} />}
       leftIconContainerStyle={{ marginHorizontal: 20 }}
       errorMessage={name === 'username' ? errorMessage : ''}
@@ -95,6 +96,7 @@ const EnterDetailsPage = ({
               errorMessage={error}
               placeholder="Username"
               iconName="at"
+              inputStyle={{ fontWeight: 'bold', opacity: 0.6 }}
               iconType="font-awesome"
               valueName={userName}
               changeAction={(txt) => signupPageUpdateUsername(txt)}
@@ -104,6 +106,7 @@ const EnterDetailsPage = ({
               placeholder="Full Name"
               iconName="user"
               iconType="font-awesome"
+              inputStyle={{}}
               valueName={fullName}
               changeAction={(txt) => signupPageUpdateFullname(txt)}
             />
@@ -121,9 +124,10 @@ const EnterDetailsPage = ({
 
             <UserInputBox
               name="fullname"
-              placeholder="Referral Code"
+              placeholder="Referral Code (optional)"
               iconName="user-plus"
               iconType="font-awesome"
+              inputStyle={{ fontWeight: 'bold', color: '#006400' }}
               valueName={referralCode}
               changeAction={(txt) => setReferralCode(txt)}
             />

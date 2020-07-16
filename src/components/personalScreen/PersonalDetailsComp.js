@@ -156,10 +156,9 @@ const styles = StyleSheet.create({
   }
 });
 
-const mapStateToProps = ({ celebPageState, homePageState }) => {
-    const { userDetails } = celebPageState;
-    const { userToken } = homePageState;
-    return { userDetails, userToken };
+const mapStateToProps = ({ personalPageState }) => {
+    const { userToken, personalUserDetails } = personalPageState;
+    return { userDetails: personalUserDetails, userToken };
 };
 
 export default connect(mapStateToProps, {

@@ -138,10 +138,9 @@ const styles = StyleSheet.create({
   }
 });
 
-const mapStateToProps = ({ personalPageState, homePageState }) => {
+const mapStateToProps = ({ personalPageState }) => {
     // console.log('Length of selfPostArray', selfPostArray.length);
-    const { userToken } = homePageState;
-    const { personalUserId, ownPostsArray, selfLikedPostArray, ownPostPageNum, postLikedPageNum } = personalPageState;
+    const { personalUserId, ownPostsArray, userToken, selfLikedPostArray, ownPostPageNum, postLikedPageNum } = personalPageState;
     // Use the data from personalPageState & transform it, so that the component remains same as Celebrity component
     return {
       selfPostArray: ownPostsArray,

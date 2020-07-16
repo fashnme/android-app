@@ -5,9 +5,10 @@ import { connect } from 'react-redux';
 import Carousel from 'react-native-snap-carousel';
 import FlashMessage from 'react-native-flash-message';
 import {
+  videoPagePlayStatusUpdate
 } from '../actions';
 import HomePageImagePost from './homeScreen/HomePageImagePost';
-import HomePageVideoPost from './homeScreen/HomePageVideoPost';
+import HomePageVideoPostForCeleb from './homeScreen/HomePageVideoPostForCeleb';
 import ProductModal from './productScreen/ProductModal';
 import CommentsModal from './homeScreen/CommentsModal';
 
@@ -30,7 +31,8 @@ class CustomPostListView extends Component {
     this.focusListener = this.props.navigation.addListener('didFocus', () => {
       if (this.flatListRef !== null) {
         const { postIndex } = this.props;
-        // console.log('componentDidMount', postIndex);
+        console.log('CustomPostListView componentDidMount', postIndex);
+        this.props.videoPagePlayStatusUpdate({ homePageVideoPlay: false, celebPageVideoPlay: true });
         this.flatListRef.snapToItem(postIndex, false);
       }
     });
@@ -48,7 +50,7 @@ class CustomPostListView extends Component {
   render() {
     // const { customFeedData, postIndex } = this.props;
     const { customFeedData } = this.props;
-    // console.log('CustomPostListView', customFeedData, postIndex);
+    // console.log('CustomPostListView', customFeedData);
       return (
         <View onLayout={() => {}}>
           <StatusBar hidden />
@@ -70,7 +72,7 @@ class CustomPostListView extends Component {
               if (mediaType === 'image') {
                 return <HomePageImagePost data={item} currentIndex={index} currentVisibleIndex={this.state.currentVisibleIndex} />;
               }
-              return <HomePageVideoPost data={item} currentIndex={index} currentVisibleIndex={this.state.currentVisibleIndex} />;
+              return <HomePageVideoPostForCeleb data={item} currentIndex={index} currentVisibleIndex={this.state.currentVisibleIndex} />;
             }}
             onViewableItemsChanged={this.handleViewableItemsChanged}
             viewabilityConfig={this.viewabilityConfig}
@@ -90,4 +92,5 @@ const mapStateToProps = ({ customPostListViewState }) => {
 
 
 export default connect(mapStateToProps, {
+  videoPagePlayStatusUpdate
 })(CustomPostListView);

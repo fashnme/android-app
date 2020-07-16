@@ -7,7 +7,12 @@ import FlashMessage from 'react-native-flash-message';
 import {
   homePageUpdateActiveTab,
   homePageSetPublicVerticalCarouselRef,
-  homePageSetPersonalVerticalCarouselRef
+  homePageSetPersonalVerticalCarouselRef,
+  homePageGetInitialFeedData,
+  homePageFetchUserColdStartDetails,
+  personalPageSetData,
+  homePageGetInitialPublicFeedData,
+  videoPagePlayStatusUpdate
 } from '../actions';
 import HomePageImagePost from './homeScreen/HomePageImagePost';
 import HomePageVideoPost from './homeScreen/HomePageVideoPost';
@@ -29,15 +34,25 @@ class HomePage extends Component {
   }
   componentDidMount() {
     // Getting the Initial Feed Data, when App in opened
-    // const { userToken } = this.props;      // Transfered this Method calling to Splash Screen
-    // this.props.homePageGetInitialFeedData({ userToken });
-    // this.props.homePageGetInitialPublicFeedData({ userToken });
-    // this.props.homePageFetchUserColdStartDetails({ userToken }); // TODO Update this to store info in local storage
-    // this.props.personalPageVisitAndSetData({ userToken });
+    const { userToken, feedData } = this.props; // Transfered this Method calling to Splash Screen
+    if (feedData.length === 0) {
+      console.log('Called Again HomePage');
+      this.props.homePageGetInitialFeedData({ userToken });
+      this.props.homePageGetInitialPublicFeedData({ userToken });
+      this.props.homePageFetchUserColdStartDetails({ userToken }); // TODO Update this to store info in local storage
+      this.props.personalPageSetData({ userToken });
+    }
     BackHandler.addEventListener('hardwareBackPress', this.handleBackButton.bind(this));
+
+    // To play home video
+    this.focusListener = this.props.navigation.addListener('didFocus', () => {
+      this.props.videoPagePlayStatusUpdate({ homePageVideoPlay: true, celebPageVideoPlay: false });
+    });
   }
+
   componentWillUnmount() {
     BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
+    this.focusListener.remove();
   }
 
   onViewableItemsChanged({ viewableItems }) {
@@ -132,5 +147,10 @@ const mapStateToProps = ({ homePageState, personalPageState }) => {
 export default connect(mapStateToProps, {
   homePageUpdateActiveTab,
   homePageSetPublicVerticalCarouselRef,
-  homePageSetPersonalVerticalCarouselRef
+  homePageSetPersonalVerticalCarouselRef,
+  homePageGetInitialFeedData,
+  homePageFetchUserColdStartDetails,
+  personalPageSetData,
+  homePageGetInitialPublicFeedData,
+  videoPagePlayStatusUpdate
 })(HomePage);

@@ -20,6 +20,8 @@ class CelebrityPage extends Component {
   }
   onFocusFunction() {
      const { userId, userToken } = this.props;
+     // console.log({userId});
+     // userId is coming from Actions.celebrityPage() calling in actions
      // Setting the First Request Data for Celeb's Liked and posted posts
      this.props.celebrityPageGetUserPosts({ userId, userToken, selfPostPageNum: 1, isPersonalData: false });
      this.props.celebrityPageGetUserLikedPosts({ userId, userToken, postLikedPageNum: 1, isPersonalData: false });
@@ -27,7 +29,6 @@ class CelebrityPage extends Component {
 
   render() {
     const { userDetails } = this.props;
-
     return (
       <View style={{ flex: 1 }}>
         <Header
@@ -49,10 +50,10 @@ class CelebrityPage extends Component {
   }
 }
 
-const mapStateToProps = ({ celebPageState, homePageState }) => {
-    const { userId, userDetails } = celebPageState;
-    const { userToken } = homePageState;
-    return { userId, userToken, userDetails };
+const mapStateToProps = ({ celebPageState, personalPageState }) => {
+    const { userDetails } = celebPageState;
+    const { userToken } = personalPageState;
+    return { userToken, userDetails };
 };
 
 export default connect(mapStateToProps, {

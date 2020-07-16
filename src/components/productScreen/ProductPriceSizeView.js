@@ -49,7 +49,12 @@ const renderSizeBlock = ({ sizesAvailable, sizeSelected, setSizeSelected }) => {
     );
   }
   if (sizesAvailable.length === 0) {
-    return <Text style={{ color: 'red' }}> Out of Stock </Text>;
+    return (
+      <View style={styles.codeView}>
+        <Text style={styles.codeText}> Out of Stock </Text>
+      </View>
+    );
+    // return <Text style={{ color: 'red', textAlign: 'center', fontSize: 16, fontWeight: 'bold', marginTop: 10 }}> Out of Stock </Text>;
   }
   return (
     <Card containerStyle={{ marginBottom: 6, paddingBottom: 4, borderRadius: 8 }}>
@@ -75,7 +80,7 @@ const renderSizeBlock = ({ sizesAvailable, sizeSelected, setSizeSelected }) => {
   );
 };
 
-const renderPriceBlock = ({ crossedPrice, price }) => {
+const renderCrossedPriceBlock = ({ crossedPrice, price }) => {
   const discount = Math.floor(((crossedPrice - price) * 100) / crossedPrice);
   if (discount === 0) {
     return <View />;
@@ -134,7 +139,7 @@ const ProductPriceSizeView = ({ productData, postId, posterId, askForSize, userT
           <Text style={{ fontSize: 16 }}>{title}</Text>
           <Text style={styles.productBrand}>{brandName}</Text>
           <Text style={styles.productPrice}>{`\u20B9${price}`}</Text>
-          { renderPriceBlock({ crossedPrice, price }) }
+          { renderCrossedPriceBlock({ crossedPrice, price }) }
           <AddToCartAndWishlistIcon productRelatedData={productRelatedData} />
           <BuyNowButton
             title="BUY NOW" onPress={() => {
@@ -143,8 +148,8 @@ const ProductPriceSizeView = ({ productData, postId, posterId, askForSize, userT
           />
           <BidForRentButton
             title="ASK FOR RENT" onPress={() => {
-            Actions.bidCreatePage({ postId, posterId, productData });
-            productPageOpenProductModal({ isVisible: false, productsData: [], postDetails: { postId, posterId } });
+              Actions.bidCreatePage({ postId, posterId, productData });
+              productPageOpenProductModal({ isVisible: false, productsData: [], postDetails: { postId, userId: posterId } });
             }}
           />
         </View>
@@ -202,7 +207,21 @@ const styles = {
     fontWeight: 'bold',
     margin: 2,
     color: 'grey'
-  }
+  },
+  codeText: { fontWeight: 'bold', fontSize: 18, color: 'red', alitextAlign: 'center' },
+  codeView: {
+    borderWidth: 1,
+    margin: 15,
+    marginBottom: 20,
+    borderStyle: 'dashed',
+    alignItems: 'center',
+    borderRadius: 1,
+    borderColor: 'grey',
+    backgroundColor: 'rgba(255, 65, 108,0.1)',
+    padding: 10,
+    width: '50%',
+    alignSelf: 'center'
+  },
 };
 
 const mapStateToProps = ({ productPageState, personalPageState }) => {
