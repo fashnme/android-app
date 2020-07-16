@@ -21,7 +21,7 @@ import {
   PersonalPageDeletePost
 } from '../URLS';
 
-export const personalPageVisitAndSetData = ({ userToken }) => {
+export const personalPageSetData = ({ userToken }) => {
   const headers = {
     'Content-Type': 'application/json',
      Authorization: userToken
@@ -34,12 +34,12 @@ export const personalPageVisitAndSetData = ({ userToken }) => {
         // data: { userId } // Not required for fetching personal details
         })
         .then((response) => {
-              // console.log('personalPageVisitAndSetData response', response.data);
+              // console.log('personalPageSetData response', response.data);
               // Setting Data for Personal Page Tab
               dispatch({ type: CELEBRITY_PAGE_SET_CELEB_DATA, payload: { userDetails: response.data.userDetails } });
               // Setting Data for Setting's Page Update User Profile Page
               const { fullName, gender, profilePic, userName, dob, registrationToken, socialMediaLinks, bio } = response.data.userDetails;
-              // console.log('personalPageVisitAndSetData', { fullName, gender, profilePic, userName, dob, socialMediaLinks, bio });
+              // console.log('personalPageSetData', { fullName, gender, profilePic, userName, dob, socialMediaLinks, bio });
               // Set the personal Details & Personal User Id in the Personal Page State
               dispatch({ type: PERSONAL_PAGE_SET_PERSONAL_DETAILS_AND_USERID, payload: response.data.userDetails });
               // Set these details for the Account Settings Screen
@@ -54,7 +54,7 @@ export const personalPageVisitAndSetData = ({ userToken }) => {
                 const deliveryDetailsArray = Object.values(response.data.userDetails.deliveryDetails);
                 dispatch({ type: SETTING_PAGE_USER_ADD_ADDRESS, payload: deliveryDetailsArray });
               } catch (err) {
-                console.log('personalPageVisitAndSetData deliveryDetailsArray Error', err);
+                console.log('personalPageSetData deliveryDetailsArray Error', err);
               }
               if (registrationToken === undefined || registrationToken.length === 0) {
                 fetchNewRegistrationToken({ userToken });
@@ -64,7 +64,7 @@ export const personalPageVisitAndSetData = ({ userToken }) => {
         })
         .catch((error) => {
             //handle error
-            console.log('personalPageVisitAndSetData Actions Error ', error);
+            console.log('personalPageSetData Actions Error ', error);
       });
   };
 };

@@ -86,7 +86,7 @@ export const signupPageSendOTP = (phone, callingCode) => {
 
 // Action to Verify OTP sent on Phone
 export const signupPageVerifyOTP = (phone, otp, callingCode) => {
-  console.log('signupPageVerifyOTP', phone, otp, callingCode);
+  // console.log('signupPageVerifyOTP', phone, otp, callingCode);
   return (dispatch) => {
     dispatch({ type: SIGNUP_PAGE_TOGGLE_LOADING, payload: true });
     axios({
@@ -132,7 +132,7 @@ const setUserToken = (jwt) => {
 
 // Action to set Users Details on First Time Signup
 export const signupPageSubmitUserDetails = ({ userName, fullName, gender, userToken, referralCode }) => {
-  console.log('signupPageSubmitUserDetails', { userName, fullName, gender, userToken, referralCode });
+  // console.log('signupPageSubmitUserDetails', { userName, fullName, gender, userToken, referralCode });
   return (dispatch) => {
     dispatch({ type: SIGNUP_PAGE_TOGGLE_LOADING, payload: true });
     axios({
@@ -142,7 +142,7 @@ export const signupPageSubmitUserDetails = ({ userName, fullName, gender, userTo
         headers: { 'Content-Type': 'application/json', Authorization: userToken }
         })
         .then((response) => {
-            console.log('signupPageSubmitUserDetails', response);
+            // console.log('signupPageSubmitUserDetails', response);
             if (response.status === 200) {
               const jwt = `Bearer ${response.data.jwt}`;
               dispatch({ type: PERSONAL_PAGE_SET_USERTOKEN, payload: jwt });

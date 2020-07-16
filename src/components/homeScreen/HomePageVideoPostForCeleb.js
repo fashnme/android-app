@@ -21,7 +21,7 @@ import {
   videoPagePlayStatusUpdate
 } from '../../actions';
 
-class HomePageVideoPost extends Component {
+class HomePageVideoPostForCeleb extends Component {
   constructor() {
     super();
     this.state = {
@@ -131,13 +131,13 @@ class HomePageVideoPost extends Component {
   }
 
   render() {
-    const { currentIndex, currentVisibleIndex, data, homePageVideoPlay } = this.props;
+    const { currentIndex, currentVisibleIndex, data, celebPageVideoPlay } = this.props;
     const { uploadUrl, thumbnailUrl } = data;
     const absDifference = Math.abs(currentIndex - currentVisibleIndex);
-    if (absDifference > 1) {
+    if (absDifference > 3) {
       return <View />;
     }
-    // console.log('HomePageVideoPost', absDifference, homePageVideoPlay, !(homePageVideoPlay && absDifference === 0));
+    // console.log('HomePageVideoPostForCeleb', absDifference, celebPageVideoPlay, celebPageVideoPlay && (absDifference !== 0));
     return (
       <View style={{ flex: 1 }}>
         <TouchableWithoutFeedback style={styles.containerStyle} onPress={() => {}}>
@@ -150,7 +150,7 @@ class HomePageVideoPost extends Component {
            resizeMode={'cover'}
            playInBackground={false}
            playWhenInactive={false}
-           paused={!(homePageVideoPlay && absDifference === 0)}
+           paused={!(celebPageVideoPlay && absDifference === 0)}
            // fullscreen
            poster={thumbnailUrl}
            posterResizeMode={'cover'}
@@ -235,8 +235,8 @@ const styles = {
 const mapStateToProps = ({ userActionData, personalPageState, videoPlayStatusState }) => {
     const { likedPosts, followingDataMap } = userActionData;
     const { userToken } = personalPageState;
-    const { homePageVideoPlay } = videoPlayStatusState;
-    return { userToken, likedPosts, followingDataMap, homePageVideoPlay };
+    const { celebPageVideoPlay } = videoPlayStatusState;
+    return { userToken, likedPosts, followingDataMap, celebPageVideoPlay };
 };
 
   export default connect(mapStateToProps, {
@@ -250,4 +250,4 @@ const mapStateToProps = ({ userActionData, personalPageState, videoPlayStatusSta
     homePageSharePost,
     productPageOpenProductModal,
     videoPagePlayStatusUpdate
-  })(HomePageVideoPost);
+  })(HomePageVideoPostForCeleb);

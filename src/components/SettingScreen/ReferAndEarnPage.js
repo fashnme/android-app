@@ -14,7 +14,7 @@ const shareApp = ({ userId }) => {
   const message = `Patang App: Indian Video Sharing & Shopping App ❤\u000A \u000AUse my referal code & get Rs. 15\u000A \u000ADowload the App Now:\u000A${ANDROID_APP_SHARING_URL} \u000A \u000A Referal Code: "${userId}" `;
   Share.share({
       message,
-      title: 'Fashn.me: A Fashion Search & Recommendation Engine',
+      title: 'Patang App: Indian Video Sharing & Shopping App',
     }, {
       dialogTitle: 'Share With'
     })
@@ -90,7 +90,7 @@ const styles = {
     borderRadius: 1,
     borderColor: 'grey',
     backgroundColor: 'rgba(255, 65, 108,0.1)',
-    padding: 10
+    padding: 10,
   },
   cardContainer: {
     borderRadius: 10,

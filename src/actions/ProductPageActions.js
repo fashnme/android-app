@@ -41,17 +41,17 @@ export const productPageUpdatePriceAndSize = ({ productId }) => {
             console.log('productPageUpdatePriceAndSize Actions Error ', error, productId);
             // TODO Remove this dummy data
             const dumdata = {
-                price: 575,
-                crossedPrice: 1199,
-                discount: 52,
-                offers: [],
+                // price: 575,
+                // crossedPrice: 1199,
+                // discount: 52,
+                // offers: [],
                 sizesAvailable: [],
                 //     {
                 //         size: 'Onesize',
                 //         sizeStandard: ''
                 //     }
                 // ],
-                stockAvailability: true
+                stockAvailability: false
             };
             const payload = {};
             payload[productId] = dumdata;

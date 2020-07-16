@@ -31,8 +31,8 @@ export const ProductPageFetchProductsInfoURL = 'https://fashn-backend.herokuapp.
 export const ProductPageGetUpdatePriceAndSizeURL = 'https://fashn-backend.herokuapp.com/product/get-updated-price-and-size';
 
 // SettingsPage Urls
-export const SettingsPageAboutUsURL = 'https://fashn.me/about-us';
-export const SettingsPagePrivacyPolicyURL = 'https://fashn.me/about-us';
+export const SettingsPageAboutUsURL = 'https://play.google.com/store/apps/details?id=com.patang';
+export const SettingsPagePrivacyPolicyURL = 'https://sites.google.com/view/patang-app/privacy-policy';
 
 // User Details
 export const SettingsPageGetUserOrdersURL = 'https://fashn-backend.herokuapp.com/user/get-orders';

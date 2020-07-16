@@ -107,6 +107,9 @@ export const NOTIFICATION_PAGE_UPDATE_NOTIFICATIONS = 'notification_page_update_
 // CustomPostListView
 export const CUSTOM_POST_LIST_VIEW_PAGE_SET_DATA = 'custom_post_list_view_page_set_data';
 
+// VideoPageStatus
+export const VIDEO_PAGE_PLAY_STATUS_UPDATE = 'video_page_play_status_update';
+
 // Wishlist Page
 // export const WISHLIST_ADD_OPERATION = 'add';
 // export const WISHLIST_REMOVE_OPERATION = 'remove';

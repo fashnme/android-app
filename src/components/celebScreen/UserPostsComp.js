@@ -134,9 +134,9 @@ const styles = StyleSheet.create({
   }
 });
 
-const mapStateToProps = ({ celebPageState, homePageState }) => {
+const mapStateToProps = ({ celebPageState, personalPageState }) => {
     const { selfPostArray, postLikedArray, selfPostPageNum, postLikedPageNum, userId } = celebPageState;
-    const { userToken } = homePageState;
+    const { userToken } = personalPageState;
     return { selfPostArray, postLikedArray, selfPostPageNum, postLikedPageNum, userId, userToken };
 };
 

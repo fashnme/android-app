@@ -186,7 +186,7 @@ const styles = StyleSheet.create({
     margin: 0,
     padding: 0,
     borderRadius: 12,
-    marginBottom: 10,
+    marginBottom: 5,
     marginTop: 5
   },
   socialIconImage: {
@@ -197,10 +197,10 @@ const styles = StyleSheet.create({
   }
 });
 
-const mapStateToProps = ({ userActionData, celebPageState, homePageState }) => {
+const mapStateToProps = ({ userActionData, celebPageState, personalPageState }) => {
     const { followingDataMap } = userActionData;
     const { userDetails, userId } = celebPageState;
-    const { userToken } = homePageState;
+    const { userToken } = personalPageState;
     let isFollowing = false;
     if (userId in followingDataMap) {
       isFollowing = true;

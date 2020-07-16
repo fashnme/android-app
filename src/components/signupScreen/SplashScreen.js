@@ -9,7 +9,7 @@ import {
   signupPageUserTokenUpdate,
   homePageGetInitialFeedData,
   homePageFetchUserColdStartDetails,
-  personalPageVisitAndSetData,
+  personalPageSetData,
   homePageGetInitialPublicFeedData,
 } from '../../actions';
 import { FadeInView } from '../basic';
@@ -24,7 +24,7 @@ class SplashScreen extends Component {
             this.props.homePageGetInitialFeedData({ userToken });
             this.props.homePageGetInitialPublicFeedData({ userToken });
             this.props.homePageFetchUserColdStartDetails({ userToken }); // TODO Update this to store info in local storage
-            this.props.personalPageVisitAndSetData({ userToken });
+            this.props.personalPageSetData({ userToken });
             AsyncStorage.getItem(ASYNCSTORAGE_USER_USER_NAME).then(
               (userName) => {
                   if (userName !== null && userName.length !== 0) {
@@ -80,6 +80,6 @@ export default connect(null, {
   signupPageUserTokenUpdate,
   homePageGetInitialFeedData,
   homePageFetchUserColdStartDetails,
-  personalPageVisitAndSetData,
+  personalPageSetData,
   homePageGetInitialPublicFeedData,
 })(SplashScreen);

@@ -48,7 +48,7 @@ const ProductModal = ({ productsData, productsModalVisible, postId, posterId,
           <View style={styles.commentsModalHeader}>
             <Text style={styles.commentsModalHeaderTitle}>Products</Text>
               <View style={styles.commentsModalHeaderExitButton}>
-                <Icon name='cross' type='entypo' size={18} raised containerStyle={styles.crossStyle} onPress={() => productPageOpenProductModal({ isVisible: false, productsData: [], postDetails: { postId, posterId } })} />
+                <Icon name='cross' type='entypo' size={18} raised containerStyle={styles.crossStyle} onPress={() => productPageOpenProductModal({ isVisible: false, productsData: [], postDetails: { postId, userId: posterId } })} />
               </View>
           </View>
           <View style={{ flex: 1 }}>

@@ -29,7 +29,7 @@ export const celebrityPageVisitAndSetData = ({ userId, userToken }) => {
     Authorization: userToken
   };
   return (dispatch) => {
-    Actions.celebrityPage();
+    Actions.celebrityPage({ userId });
     axios({
         method: 'post',
         url: CelebrityPageGetUserDetailsURL,

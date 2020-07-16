@@ -14,7 +14,6 @@ const INITIAL_STATE = {
   feedData: [], // Stores the Feed as a Array
   feedPageNum: 1, // Stores the Current Page for Feed
   activeTab: null, // Active Tab, 1: Public , 2: Following, Initially null to show the spinner
-  userToken: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiUERvNWdtOEJNZ0tZWjFQNFlobFoiLCJpYXQiOjE1Nzg0ODgzODF9.f_0FHHWMZ1Javvvmtl72yO5m_1pICYjggYZA0-ccFQM',
   publicFeedData: [],
   publicFeedPageNum: 1,
   shareModalVisible: false,
