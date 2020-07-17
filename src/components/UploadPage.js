@@ -50,7 +50,7 @@ class UploadPage extends Component {
                   titleStyle={{ margin: 5, fontWeight: 'bold', fontSize: 16 }}
                   icon={{ name: 'camera', size: 20, color: 'white', type: 'font-awesome' }}
                   ViewComponent={LinearGradient}
-                  buttonStyle={{ borderRadius: 15, margin: 0 }}
+                  buttonStyle={{ borderRadius: 8, margin: 0 }}
                   linearGradientProps={{
                     colors: ['#0072ff', '#00c6ff'],
                     start: { x: 0.0, y: 0.5 },
@@ -67,7 +67,7 @@ class UploadPage extends Component {
                   titleStyle={{ margin: 5, fontWeight: 'bold', fontSize: 16 }}
                   icon={{ name: 'video-camera', size: 20, color: 'white', type: 'font-awesome' }}
                   ViewComponent={LinearGradient}
-                  buttonStyle={{ borderRadius: 15, margin: 0 }}
+                  buttonStyle={{ borderRadius: 8, margin: 0 }}
                   linearGradientProps={{
                     colors: ['#FF9800', '#F44336'],
                     start: { x: 1.0, y: 0.5 },

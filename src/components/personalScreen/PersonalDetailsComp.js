@@ -145,8 +145,8 @@ const styles = StyleSheet.create({
     margin: 0,
     padding: 0,
     borderRadius: 12,
-    marginBottom: 10,
-    marginTop: 5
+    marginBottom: 5,
+    marginTop: 2
   },
   socialIconImage: {
     width: 30,

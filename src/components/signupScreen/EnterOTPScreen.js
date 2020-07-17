@@ -74,10 +74,11 @@ class EnterOTPScreen extends Component {
                   type={'outline'}
                   title="VERIFY"
                   titleStyle={{ color: '#fafafa', fontSize: 20, fontWeight: 'bold' }}
-                  buttonStyle={{ backgroundColor: 'transparent', borderRadius: 20, borderColor: 'white', borderWidth: 1 }}
+                  buttonStyle={{ backgroundColor: 'transparent', borderRadius: 10, borderColor: 'white', borderWidth: 1 }}
                   onPress={() => {
                     this.props.signupPageVerifyOTP(phoneNumber, otp, callingCode);
                   }}
+                  loadingProps={{ color: '#fafafa' }}
                 />
               </ScrollView>
             </LinearGradient>

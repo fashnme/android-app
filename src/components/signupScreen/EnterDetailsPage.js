@@ -35,7 +35,7 @@ const FemaleIcon = () => {
 const OthersIcon = () => {
   return (
     <View style={styles.iconContainer}>
-      <Image style={styles.genderIcon} source={{ uri: 'https://image.flaticon.com/icons/png/128/1177/1177568.png' }} />
+      <Image style={styles.genderIcon} source={{ uri: 'https://image.flaticon.com/icons/png/128/3101/3101021.png' }} />
       <Text style={styles.iconCaption}>Rather Not Say</Text>
     </View>
   );
@@ -82,14 +82,14 @@ const EnterDetailsPage = ({
   // console.log('props', { userName, fullName, genderIndex, loading, userToken, error });
   // console.log('actions', signupPageUpdateUsername, signupPageUpdateFullname, signupPageUpdateGender, signupPageSubmitUserDetails);
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, backgroundColor: '#FF416C' }}>
         <Header
-          backgroundColor={'white'}
+          backgroundColor={'#FF4B2B'}
           placement={'center'}
-          centerComponent={{ text: 'Join Now', style: { fontSize: 24, color: '#FF4B2B', fontWeight: 'bold' } }}
-          containerStyle={{ paddingTop: 0, height: 50, elevation: 5 }}
+          centerComponent={{ text: 'Join Now', style: { fontSize: 24, color: 'white', fontWeight: 'bold' } }}
+          containerStyle={{ paddingTop: 0, height: 46, margin: 0, borderWidth: 0 }}
         />
-        <ScrollView>
+        <ScrollView style={{ backgroundColor: '#FF416C' }}>
         <LinearGradient colors={['#FF4B2B', '#FF416C']} style={styles.body}>
             <UserInputBox
               name="username"
@@ -154,7 +154,7 @@ const styles = StyleSheet.create({
   },
   body: {
     flex: 1,
-    alignItems: 'center',
+    alignItems: 'center'
   },
   textInputStyle: {
     backgroundColor: 'white',
@@ -186,6 +186,7 @@ const styles = StyleSheet.create({
     padding: 10,
     fontWeight: 'bold',
     fontSize: 15,
+    textAlign: 'center'
   },
 });
 
