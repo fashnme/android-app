@@ -4,6 +4,8 @@ import AsyncStorage from '@react-native-community/async-storage';
 import { Actions } from 'react-native-router-flux';
 import LinearGradient from 'react-native-linear-gradient';
 import { connect } from 'react-redux';
+import BackgroundStateHandler from '../homeScreen/BackgroundStateHandler';
+
 import { ASYNCSTORAGE_USER_TOKEN_NAME, ASYNCSTORAGE_USER_USER_NAME } from '../../types';
 import {
   signupPageUserTokenUpdate,
@@ -63,6 +65,7 @@ class SplashScreen extends Component {
               style={styles.image}
           />
         </FadeInView>
+        <BackgroundStateHandler />
       </LinearGradient>
     );
   }

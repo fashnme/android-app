@@ -64,7 +64,7 @@ const HeartComp = ({ postId, likes, onLikePress, onUnlikePress, likedPosts }) =>
             style={[{ width: 46, height: 46, justifyContent: 'center', alignSelf: 'center' }]}
             source={require('../../resources/icons/not_liked_icon.png')}
           />
-          <Text style={styles.actionCaption}>{convertIntToString(likes + 1)}</Text>
+          <Text style={styles.actionCaption}>{convertIntToString(likes)}</Text>
         </View>
       </TouchableNativeFeedback>
   );
