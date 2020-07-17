@@ -55,8 +55,8 @@ class SplashScreen extends Component {
       <LinearGradient
         colors={['#D5252D', '#FE19AA']}
         style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 0 }}
+        start={{ x: 0.1, y: 0.1 }}
+        end={{ y: 1.0, x: 1.0 }}
       >
         <StatusBar hidden />
         <FadeInView>

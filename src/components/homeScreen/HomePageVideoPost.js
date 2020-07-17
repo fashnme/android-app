@@ -133,8 +133,8 @@ class HomePageVideoPost extends Component {
   render() {
     const { currentIndex, currentVisibleIndex, data, homePageVideoPlay } = this.props;
     const { uploadUrl, thumbnailUrl } = data;
-    const absDifference = Math.abs(currentIndex - currentVisibleIndex);
-    if (absDifference > 1) {
+    const absDifference = currentIndex - currentVisibleIndex;
+    if (absDifference > 1 || absDifference < 0) {
       return <View />;
     }
     // console.log('HomePageVideoPost', absDifference, homePageVideoPlay, !(homePageVideoPlay && absDifference === 0));
@@ -155,6 +155,10 @@ class HomePageVideoPost extends Component {
            poster={thumbnailUrl}
            posterResizeMode={'cover'}
            repeat
+
+           // Testing
+           // onLoadStart={(d) => console.log('On Load Start', absDifference, d)}
+           // onLoad={(d) => console.log('On Loaded', absDifference, d)}
           />
         </TouchableWithoutFeedback>
         {this.renderScreenButtons()}

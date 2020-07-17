@@ -19,7 +19,7 @@ const EmptyPage = ({ title, subtitle }) => {
           resizeMode="cover"
         >
           <View style={{ justifyContent: 'flex-start', flex: 1, marginTop: 20, alignItems: 'center' }}>
-            <Text style={{ fontWeight: 'bold', fontSize: 30, color: 'grey', textTransform: 'uppercase' }}>{title}</Text>
+            <Text style={{ fontWeight: 'bold', fontSize: 24, color: '#606060', textTransform: 'uppercase' }}>{title}</Text>
             <Text style={{ marginTop: 5, color: '#535665', textAlign: 'center' }}>{subtitle}</Text>
           </View>
         </ImageBackground>

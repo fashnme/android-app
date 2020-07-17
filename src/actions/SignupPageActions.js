@@ -154,7 +154,7 @@ export const signupPageSubmitUserDetails = ({ userName, fullName, gender, userTo
         .catch((error) => {
             console.log('signupPageSubmitUserDetails Error', error);
             const errorMessage = error.response.data;
-            if (errorMessage.length <= 30) {
+            if (errorMessage.length <= 40) {
               dispatch({ type: SIGNUP_PAGE_ERROR_UPDATE, payload: errorMessage });
             } else {
               dispatch({ type: SIGNUP_PAGE_ERROR_UPDATE, payload: 'Problem in Creating User, Please try after some time' });

@@ -133,8 +133,8 @@ class HomePageVideoPostForCeleb extends Component {
   render() {
     const { currentIndex, currentVisibleIndex, data, celebPageVideoPlay } = this.props;
     const { uploadUrl, thumbnailUrl } = data;
-    const absDifference = Math.abs(currentIndex - currentVisibleIndex);
-    if (absDifference > 3) {
+    const absDifference = currentIndex - currentVisibleIndex;
+    if (absDifference > 1 || absDifference < 0) {
       return <View />;
     }
     // console.log('HomePageVideoPostForCeleb', absDifference, celebPageVideoPlay, celebPageVideoPlay && (absDifference !== 0));
