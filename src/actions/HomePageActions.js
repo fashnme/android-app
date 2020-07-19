@@ -222,7 +222,14 @@ export const homePageToggleShareModal = (isVisible) => {
 
 export const homePageSharePost = ({ postData }) => {
   return (dispatch) => {
-    const url = postData.uploadUrl;
+    dispatch({ type: HOME_PAGE_TOGGLE_SHARE_MODAL, payload: true });
+    let url = '';
+    if (postData.mediaType === 'video') {
+      url = postData.bucketUrl;
+    } else {
+      url = postData.uploadUrl;
+    }
+
     const type = postData.mediaType;
     const FILE = Platform.OS === 'ios' ? '' : 'file://';
     const cacheDir = `${RNFS.DocumentDirectoryPath}/Cache`;
@@ -255,14 +262,15 @@ export const homePageSharePost = ({ postData }) => {
              Share.open(options)
               .then((res) => { console.log('homePageSharePost Post Shared', res); })
               .catch((err) => { console.log('homePageSharePost Post Sharing Error', err); });
+           })
+           .finally(() => {
+             dispatch({ type: HOME_PAGE_TOGGLE_SHARE_MODAL, payload: false });
            });
-
            return { path: outputPath }; // Downloaded Successfully
          })
          .catch((error) => {
            console.log('Error while Downloading Share Image', url, error);
          });
        });
-    dispatch({ type: 'homePageSharePost' });
   };
 };

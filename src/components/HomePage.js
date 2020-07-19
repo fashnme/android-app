@@ -18,6 +18,7 @@ import HomePageImagePost from './homeScreen/HomePageImagePost';
 import HomePageVideoPost from './homeScreen/HomePageVideoPost';
 import ProductModal from './productScreen/ProductModal';
 import CommentsModal from './homeScreen/CommentsModal';
+import ShareModal from './homeScreen/ShareModal';
 
 // Store height(Window + StatusBar) in variable
 const WINDOW_HEIGHT = Dimensions.get('window').height + StatusBar.currentHeight;
@@ -126,6 +127,7 @@ class HomePage extends Component {
           />
           <ProductModal />
           <CommentsModal />
+          <ShareModal />
           <FlashMessage position="top" duration={1000} ref="homePage" />
         </View>
       );

@@ -21,7 +21,7 @@ class BackgroundStateHandler extends Component {
 
   handleAppStateChange(nextAppState) {
     const { previousState } = this.props;
-    console.log(nextAppState, previousState);
+    // console.log(nextAppState, previousState);
     if (nextAppState === 'background') {
       this.props.videoPagePlayStatusUpdate({ homePageVideoPlay: false, celebPageVideoPlay: false });
     }

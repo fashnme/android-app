@@ -21,12 +21,12 @@ class SplashScreen extends Component {
     AsyncStorage.getItem(ASYNCSTORAGE_USER_TOKEN_NAME).then(
       (userToken) => {
         if (userToken) {
+          // Transfered these methods here from Home Page
+          this.props.homePageGetInitialFeedData({ userToken });
+          this.props.homePageGetInitialPublicFeedData({ userToken });
+          this.props.homePageFetchUserColdStartDetails({ userToken }); // TODO Update this to store info in local storage
+          this.props.personalPageSetData({ userToken });
           setTimeout(() => {
-            // Transfered these methods here from Home Page
-            this.props.homePageGetInitialFeedData({ userToken });
-            this.props.homePageGetInitialPublicFeedData({ userToken });
-            this.props.homePageFetchUserColdStartDetails({ userToken }); // TODO Update this to store info in local storage
-            this.props.personalPageSetData({ userToken });
             AsyncStorage.getItem(ASYNCSTORAGE_USER_USER_NAME).then(
               (userName) => {
                   if (userName !== null && userName.length !== 0) {
@@ -36,12 +36,12 @@ class SplashScreen extends Component {
                   }
               }
             );
-          }, 3000);
+          }, 4500);
           this.props.signupPageUserTokenUpdate(userToken);
         } else {
           setTimeout(() => {
             Actions.signupPage();
-          }, 2000);
+          }, 3000);
         }
       }
     ).catch((error) => {
