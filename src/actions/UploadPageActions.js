@@ -94,7 +94,7 @@ const resizeAndUploadVideo = ({ selectedVideoPath, userToken, personalUserId, ca
 // Method to resize & compress Image
 const resizeAndUploadImage = ({ selectedImagePath, userToken, personalUserId, caption, dispatch }) => {
   Image.getSize(selectedImagePath, (w, h) => {
-    ImageResizer.createResizedImage(selectedImagePath, w, h, 'WEBP', 50).then((response) => {
+    ImageResizer.createResizedImage(selectedImagePath, w, h, 'WEBP', 60).then((response) => {
       uploadContent({ uri: response.uri, type: 'image/webp', personalUserId, userToken, caption, dispatch });
     }).catch((err) => {
       console.log('Error in Image Compression', err);
@@ -117,7 +117,7 @@ const uploadContent = ({ uri, type, personalUserId, userToken, caption, dispatch
     name = `${personalUserId}-t-${time}.mp4`;
     keyPrefix = 'videos/';
     thumbName = `${personalUserId}-t-${time}-preview.jpg`;
-    thumbkeyPrefix = 'images/';
+    thumbkeyPrefix = 'thumbnails/';
   }
   AWS_OPTIONS.keyPrefix = keyPrefix;
   const file = { uri, name, type };
