@@ -151,7 +151,7 @@ class HomePageVideoPost extends Component {
            playInBackground={false}
            playWhenInactive={false}
            paused={!(homePageVideoPlay && absDifference === 0)}
-           // fullscreen
+           fullscreen
            poster={thumbnailUrl}
            posterResizeMode={'cover'}
            repeat
