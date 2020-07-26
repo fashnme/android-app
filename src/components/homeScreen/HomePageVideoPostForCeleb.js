@@ -134,9 +134,12 @@ class HomePageVideoPostForCeleb extends Component {
     const { currentIndex, currentVisibleIndex, data, celebPageVideoPlay } = this.props;
     const { uploadUrl, thumbnailUrl } = data;
     const absDifference = currentIndex - currentVisibleIndex;
-    if (absDifference > 1 || absDifference < 0) {
+    if (absDifference !== 0) {
       return <View />;
     }
+    // if (absDifference > 1 || absDifference < 0) {
+    //   return <View />;
+    // }
     // console.log('HomePageVideoPostForCeleb', absDifference, celebPageVideoPlay, celebPageVideoPlay && (absDifference !== 0));
     return (
       <View style={{ flex: 1 }}>

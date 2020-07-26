@@ -9,7 +9,11 @@ import {
 const INITIAL_STATE = {
   userToken: '',
   personalUserId: '', // Set this to empty in production
-  personalUserDetails: {},
+  personalUserDetails: {
+    followingCount: 0,
+    followersCount: 0,
+    totalLikes: 0
+  },
   ownPostsArray: [], // Array to store the self posts
   selfLikedPostArray: [], // Array to store the posts Liked
   ownPostPageNum: 1, // Page Number
