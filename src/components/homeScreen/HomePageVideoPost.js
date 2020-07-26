@@ -134,9 +134,12 @@ class HomePageVideoPost extends Component {
     const { currentIndex, currentVisibleIndex, data, homePageVideoPlay } = this.props;
     const { uploadUrl, thumbnailUrl } = data;
     const absDifference = currentIndex - currentVisibleIndex;
-    if (absDifference > 1 || absDifference < 0) {
+    if (absDifference !== 0) {
       return <View />;
     }
+    // if (absDifference > 1 || absDifference < 0) {
+    //   return <View />;
+    // }
     // console.log('HomePageVideoPost', absDifference, homePageVideoPlay, !(homePageVideoPlay && absDifference === 0));
     return (
       <View style={{ flex: 1 }}>
@@ -155,7 +158,7 @@ class HomePageVideoPost extends Component {
            poster={thumbnailUrl}
            posterResizeMode={'cover'}
            repeat
-
+           // maxBitRate={200000}
            // Testing
            // onLoadStart={(d) => console.log('On Load Start', absDifference, d)}
            // onLoad={(d) => console.log('On Loaded', absDifference, d)}
