@@ -18,12 +18,36 @@ import {
 } from '../URLS';
 
 // Method to Toggle Comments Modal And Set First Set of comments present with post
-export const commentsPageOpenCommentsModal = ({ isVisible, commentsData, totalComments, postId }) => {
-  return {
-    type: COMMENTS_PAGE_TOGGLE_COMMENTS_MODAL,
-    payload: { isVisible, commentsData, totalComments, postId }
+export const commentsPageOpenCommentsModal = ({ isVisible, userToken, commentsData, totalComments, postId }) => {
+  // return {
+  //   type: COMMENTS_PAGE_TOGGLE_COMMENTS_MODAL,
+  //   payload: { isVisible, commentsData, totalComments, postId }
+  // };
+  const headers = {
+    'Content-Type': 'application/json',
+     Authorization: userToken
+  };
+  return (dispatch) => {
+    dispatch({ type: COMMENTS_PAGE_TOGGLE_COMMENTS_MODAL, payload: { isVisible, commentsData, totalComments, postId } });
+    if (isVisible) {
+      axios({
+          method: 'get',
+          url: CommentsPageFetchMoreCommentsURL,
+          headers,
+          params: { offset: 0, size: 20, postId }
+          })
+          .then((response) => {
+              // console.log('commentsPageOpenCommentsModal resp', response.data);
+              const { comments } = response.data;
+              dispatch({ type: COMMENTS_PAGE_ADD_MORE_COMMENTS, payload: comments });
+          })
+          .catch((error) => {
+              console.log('commentsPageOpenCommentsModal Actions Error ', error);
+        });
+    }
   };
 };
+
 
 // Method to Fetch more Comments on Scrolling
 export const commentsPageFetchMoreComments = ({ commentsPageNum, postId, userToken }) => {
@@ -51,6 +75,7 @@ export const commentsPageFetchMoreComments = ({ commentsPageNum, postId, userTok
   };
 };
 
+
 // User Liked Comment
 export const commentsPageLikeComment = ({ commentId, userId, commenterId, userToken }) => {
   const headers = {
@@ -75,6 +100,7 @@ export const commentsPageLikeComment = ({ commentId, userId, commenterId, userTo
   };
 };
 
+
 // User Unliked Comment
 export const commentsPageUnlikeComment = ({ commentId, userId, commenterId, userToken }) => {
   const headers = {
@@ -98,6 +124,7 @@ export const commentsPageUnlikeComment = ({ commentId, userId, commenterId, user
       });
   };
 };
+
 
 // User Delete Comment
 export const commentsPageDeleteComment = ({ commentId, postId, userToken }) => {
