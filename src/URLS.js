@@ -62,7 +62,7 @@ export const ManageCartPlaceOrderURL = 'https://fashn-backend.herokuapp.com/paym
 export const CommentsPageLikeCommentURL = 'https://fashn-backend.herokuapp.com/user/like-comment';
 export const CommentsPageUnlikeCommentURL = 'https://fashn-backend.herokuapp.com/user/unlike-comment';
 export const CommentsPageDeleteCommentURL = 'https://fashn-backend.herokuapp.com/user/delete-comment-post';
-export const CommentsPageFetchMoreCommentsURL = 'https://fashn-backend.herokuapp.com/user/get-comments';
+export const CommentsPageFetchMoreCommentsURL = 'https://fashn-backend.herokuapp.com/user/get-user-comments';
 export const CommentsPageWriteCommentURL = 'https://fashn-backend.herokuapp.com/user/comment-post';
 
 // Notification Page

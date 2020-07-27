@@ -98,7 +98,7 @@ const CommentsModal = ({ commentsArray, commentsModalVisible, totalComments, pos
                     raised
                     containerStyle={styles.crossStyle}
                     onPress={() => {
-                      commentsPageOpenCommentsModal({ isVisible: false, commentsData: [], totalComments: 0 });
+                      commentsPageOpenCommentsModal({ isVisible: false, userToken, commentsData: [], totalComments: 0 });
                       setNewComment('');
                     }}
                   />

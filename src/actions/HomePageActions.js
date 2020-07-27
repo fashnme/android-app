@@ -257,7 +257,7 @@ export const homePageSharePost = ({ postData }) => {
            RNFS.readFile(outputPath, 'base64')
            .then((d) => {
              const content = `data:${b64PreExt};base64,${d}`;
-             const message = `Patang App\u000ACheck out ${postData.userName}'s Post \u000A${postData.caption.trim()} \u000ADownload the App Now:\u000A${ANDROID_APP_SHARING_URL} \u000A \u000APatang App: Indian Video Sharing & Shopping App ❤`;
+             const message = `Patang App\u000ACheck out ${postData.userName}'s Post \u000A${postData.caption.trim()} \u000A \u000ADownload the App Now:\u000A${ANDROID_APP_SHARING_URL} \u000A \u000APatang App: Indian Video Shopping & Sharing App ❤`;
              const options = { message, url: content, title: 'Share Now' };
              Share.open(options)
               .then((res) => { console.log('homePageSharePost Post Shared', res); })

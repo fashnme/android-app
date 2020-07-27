@@ -21,6 +21,9 @@ export default (state = INITIAL_STATE, action) => {
       }
 
       case COMMENTS_PAGE_ADD_MORE_COMMENTS: {
+        if (state.commentsPageNum === 1) {
+          return { ...state, commentsArray: action.payload, commentsPageNum: state.commentsPageNum + 1 };
+        }
         return { ...state, commentsArray: [...state.commentsArray, ...action.payload], commentsPageNum: state.commentsPageNum + 1 };
       }
 
