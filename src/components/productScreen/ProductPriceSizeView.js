@@ -32,8 +32,9 @@ const BidForRentButton = ({ onPress, title }) => {
 };
 
 const renderError = ({ error }) => {
+  const marginTop = error.length === 0 ? 0 : 10;
   return (
-    <View style={{ flex: 1, margin: 10 }}>
+    <View style={{ flex: 1, margin: marginTop }}>
       <Text style={{ color: 'red', textAlign: 'center' }}> { error } </Text>
     </View>
   );
@@ -117,7 +118,7 @@ const checkAndCompleteRequest = ({ productId, sizeSelected, postId, userToken, s
 const ProductPriceSizeView = ({ productData, postId, posterId, askForSize, userToken,
   productPageOpenProductModal, productPageUpdatePriceAndSize, manageCartAddProductToCart }) => {
   const [sizeSelected, setSizeSelected] = useState(null);
-  console.log('ProductPriceSizeView productData', productData);
+  // console.log('ProductPriceSizeView productData', productData);
   const [error, setError] = useState('');
   if (productData === undefined) {
     return <View />;
@@ -135,9 +136,9 @@ const ProductPriceSizeView = ({ productData, postId, posterId, askForSize, userT
         <View style={styles.productImage}>
           <Image source={{ uri: image }} style={{ flex: 1, resizeMode: 'contain' }} />
         </View>
-        <View style={{ flex: 3, padding: 10 }}>
-          <Text style={{ fontSize: 16 }}>{title}</Text>
-          <Text style={styles.productBrand}>{brandName}</Text>
+        <View style={{ flex: 3, padding: 5 }}>
+          <Text style={{ fontSize: 16, marginTop: 2 }}>{title}</Text>
+          <Text style={styles.productBrand}>{brandName.trim().toUpperCase()}</Text>
           <Text style={styles.productPrice}>{`\u20B9${price}`}</Text>
           { renderCrossedPriceBlock({ crossedPrice, price }) }
           <AddToCartAndWishlistIcon productRelatedData={productRelatedData} />
@@ -167,21 +168,25 @@ const styles = {
   },
   productImage: {
     flex: 3,
-    padding: 10,
+    padding: 2,
+    paddingTop: 0,
     justifyContent: 'center',
     alignContent: 'center',
   },
   productBrand: {
     fontSize: 15,
     color: 'orange',
+    marginTop: 4,
     fontWeight: 'bold',
   },
   productPrice: {
     fontSize: 20,
+    marginTop: 4,
     fontWeight: 'bold'
   },
   productCost: {
     fontSize: 18,
+    marginTop: 4,
     textDecorationLine: 'line-through',
   },
   productDiscount: {

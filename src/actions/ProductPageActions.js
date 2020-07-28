@@ -20,7 +20,6 @@ export const productPageSelectedProductUpdate = (index) => {
 
 export const productPageUpdatePriceAndSize = ({ productId }) => {
   console.log('productPageUpdatePriceAndSize', productId);
-  // TODO TEST
   const headers = {
     'Content-Type': 'application/json'
   };
