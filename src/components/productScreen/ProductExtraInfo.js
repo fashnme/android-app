@@ -51,7 +51,7 @@ const renderDescription = ({ description }) => {
 };
 
 const ProductExtraInfo = ({ selectedItem, productsCompleteData, allFine }) => {
-  console.log('ProductExtraInfo', selectedItem, productsCompleteData, allFine);
+  // console.log('ProductExtraInfo', selectedItem, productsCompleteData, allFine);
   if (!allFine) {
     return <View />;
   }
