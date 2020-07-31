@@ -6,7 +6,8 @@ import ProductExtraInfo from './ProductExtraInfo';
 import ProductPriceSizeView from './ProductPriceSizeView';
 import {
   productPageOpenProductModal as _productPageOpenProductModal,
-  productPageSelectedProductUpdate as _productPageSelectedProductUpdate
+  productPageSelectedProductUpdate as _productPageSelectedProductUpdate,
+  videoPagePlayStatusUpdate as _videoPagePlayStatusUpdate
 } from '../../actions';
 
 const ProductThumbnail = ({ index, item, productPageSelectedProductUpdate }) => {
@@ -32,8 +33,9 @@ const NoProductTagged = () => {
   );
 };
 
-const ProductModal = ({ productsData, productsModalVisible, postId, posterId,
-  productPageOpenProductModal, productPageSelectedProductUpdate }) => {
+const ProductModal = ({ productsData, productsModalVisible, postId, posterId, previousState,
+  productPageOpenProductModal, productPageSelectedProductUpdate, videoPagePlayStatusUpdate }) => {
+    const { homePageVideoPlay, celebPageVideoPlay } = previousState;
     return (
         <Overlay
           isVisible={productsModalVisible}
@@ -48,7 +50,17 @@ const ProductModal = ({ productsData, productsModalVisible, postId, posterId,
           <View style={styles.commentsModalHeader}>
             <Text style={styles.commentsModalHeaderTitle}>Products</Text>
               <View style={styles.commentsModalHeaderExitButton}>
-                <Icon name='cross' type='entypo' size={18} raised containerStyle={styles.crossStyle} onPress={() => productPageOpenProductModal({ isVisible: false, productsData: [], postDetails: { postId, userId: posterId } })} />
+                <Icon
+                  name='cross'
+                  type='entypo'
+                  size={18}
+                  raised
+                  containerStyle={styles.crossStyle}
+                  onPress={() => {
+                    productPageOpenProductModal({ isVisible: false, productsData: [], postDetails: { postId, userId: posterId } });
+                    videoPagePlayStatusUpdate({ homePageVideoPlay, celebPageVideoPlay });
+                  }}
+                />
               </View>
           </View>
           <View style={{ flex: 1 }}>
@@ -112,11 +124,13 @@ const styles = StyleSheet.create({
         padding: 0
       }
 });
-const mapStateToProps = ({ productPageState }) => {
+const mapStateToProps = ({ productPageState, videoPlayStatusState }) => {
     const { productsData, productsModalVisible, postId, posterId } = productPageState;
-    return { productsData, productsModalVisible, postId, posterId };
+    const { previousState } = videoPlayStatusState;
+    return { productsData, productsModalVisible, postId, posterId, previousState };
 };
 export default connect(mapStateToProps, {
   productPageOpenProductModal: _productPageOpenProductModal,
-  productPageSelectedProductUpdate: _productPageSelectedProductUpdate
+  productPageSelectedProductUpdate: _productPageSelectedProductUpdate,
+  videoPagePlayStatusUpdate: _videoPagePlayStatusUpdate
 })(ProductModal);

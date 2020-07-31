@@ -64,9 +64,9 @@ render() {
     const iconName = this.props.iconName;
     if (this.props.focused) {
       return (
-        <View style={{ boderRadius: 5, backgroundColor: 'transparent' }}>
+        <View style={{ boderRadius: 50, backgroundColor: 'transparent' }}>
           <Image
-            style={{ width: 40, height: 40 }}
+            style={{ width: 30, height: 30 }}
             source={this.iconsMap[iconName].enabled_icon}
           />
         </View>
@@ -75,7 +75,7 @@ render() {
     return (
       <View style={{ boderRadius: 5, backgroundColor: 'transparent' }}>
         <Image
-          style={{ width: 28, height: 28 }}
+          style={{ width: 30, height: 30 }}
           source={this.iconsMap[iconName].disabled_icon}
         />
       </View>
@@ -134,7 +134,7 @@ const tabWidth = windowWidth / 3;
 const styles = {
   tabBarStyle: {
     flexDirection: 'row',
-    height: 52,
+    height: 45,
     alignItems: 'center',
   },
   tabStyle: {
@@ -142,15 +142,7 @@ const styles = {
     height: '100%',
     justifyContent: 'center',
     alignItems: 'center',
-  },
-
-  navigationBarStyle: {
-    width: '100%',
-    height: 30,
-  },
-  smallNavigationBar: {
-    width: '100%',
-    height: 20,
+    backgroundColor: 'transparent'
   },
   indicatorStyle: {
     activeBackgroundColor: 'transparent',
