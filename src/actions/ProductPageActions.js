@@ -6,6 +6,7 @@ import {
   PRODUCT_PAGE_SET_POSTID_AND_POSTERID,
   PRODUCT_PAGE_SET_COMPLETE_PRODUCTS_DATA,
   PRODUCT_PAGE_PRICE_AND_SIZE_UPDATE,
+  VIDEO_PAGE_PLAY_STATUS_UPDATE
 } from '../types';
 
 import {
@@ -64,6 +65,8 @@ export const productPageUpdatePriceAndSize = ({ productId }) => {
 export const productPageOpenProductModal = ({ isVisible, productsData, postDetails }) => {
   return (dispatch) => {
     if (isVisible) {
+      // Pause the video when product modal opens 
+      dispatch({ type: VIDEO_PAGE_PLAY_STATUS_UPDATE, payload: { homePageVideoPlay: false, celebPageVideoPlay: false } });
       fetchExtraProductsData(productsData, dispatch);
     }
     dispatch({ type: PRODUCT_PAGE_SET_TOGGLE_PRODUCTS_DATA, payload: { isVisible, productsData } });

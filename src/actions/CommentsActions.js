@@ -6,7 +6,8 @@ import {
   USER_LIKED_COMMENT,
   USER_UNLIKED_COMMENT,
   COMMENTS_PAGE_ADD_USER_COMMENT,
-  COMMENTS_PAGE_DELETE_USER_COMMENT
+  COMMENTS_PAGE_DELETE_USER_COMMENT,
+  VIDEO_PAGE_PLAY_STATUS_UPDATE
 } from '../types';
 
 import {
@@ -30,6 +31,8 @@ export const commentsPageOpenCommentsModal = ({ isVisible, userToken, commentsDa
   return (dispatch) => {
     dispatch({ type: COMMENTS_PAGE_TOGGLE_COMMENTS_MODAL, payload: { isVisible, commentsData, totalComments, postId } });
     if (isVisible) {
+      // Pause the video when product modal opens
+      dispatch({ type: VIDEO_PAGE_PLAY_STATUS_UPDATE, payload: { homePageVideoPlay: false, celebPageVideoPlay: false } });
       axios({
           method: 'get',
           url: CommentsPageFetchMoreCommentsURL,

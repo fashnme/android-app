@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import {
   commentsPageOpenCommentsModal as _commentsPageOpenCommentsModal,
   commentsPageWriteComment as _commentsPageWriteComment,
+  videoPagePlayStatusUpdate as _videoPagePlayStatusUpdate
 } from '../../actions';
 // import { dummyComments as data } from './dummyComments';
 import CommentsRightComp from './CommentsRightComp';
@@ -72,11 +73,11 @@ const renderSendButton = ({ newComment, postId, userId, userToken, setNewComment
   );
 };
 
-const CommentsModal = ({ commentsArray, commentsModalVisible, totalComments, postId, userToken, personalUserId,
-  commentsPageOpenCommentsModal, commentsPageWriteComment }) => {
+const CommentsModal = ({ commentsArray, commentsModalVisible, totalComments, postId, userToken, personalUserId, previousState,
+  commentsPageOpenCommentsModal, commentsPageWriteComment, videoPagePlayStatusUpdate }) => {
   // console.log('CommentsModal Up', commentsArray, commentsModalVisible);
-
   const [newComment, setNewComment] = useState('');
+  const { homePageVideoPlay, celebPageVideoPlay } = previousState;
     return (
         <Overlay
           isVisible={commentsModalVisible}
@@ -99,6 +100,7 @@ const CommentsModal = ({ commentsArray, commentsModalVisible, totalComments, pos
                     containerStyle={styles.crossStyle}
                     onPress={() => {
                       commentsPageOpenCommentsModal({ isVisible: false, userToken, commentsData: [], totalComments: 0 });
+                      videoPagePlayStatusUpdate({ homePageVideoPlay, celebPageVideoPlay });
                       setNewComment('');
                     }}
                   />
@@ -186,13 +188,15 @@ const styles = StyleSheet.create({
       }
 });
 
-const mapStateToProps = ({ postCommentState, personalPageState }) => {
+const mapStateToProps = ({ postCommentState, personalPageState, videoPlayStatusState }) => {
     const { commentsModalVisible, commentsArray, totalComments, postId } = postCommentState;
     const { userToken, personalUserId } = personalPageState;
-    return { commentsModalVisible, commentsArray, totalComments, userToken, personalUserId, postId };
+    const { previousState } = videoPlayStatusState;
+    return { commentsModalVisible, commentsArray, totalComments, userToken, personalUserId, postId, previousState };
 };
 
 export default connect(mapStateToProps, {
   commentsPageOpenCommentsModal: _commentsPageOpenCommentsModal,
-  commentsPageWriteComment: _commentsPageWriteComment
+  commentsPageWriteComment: _commentsPageWriteComment,
+  videoPagePlayStatusUpdate: _videoPagePlayStatusUpdate
 })(CommentsModal);
