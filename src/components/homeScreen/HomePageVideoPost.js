@@ -133,6 +133,7 @@ class HomePageVideoPost extends Component {
   render() {
     const { currentIndex, currentVisibleIndex, data, homePageVideoPlay } = this.props;
     const { uploadUrl, thumbnailUrl } = data;
+    // console.log('HomePageVideoPost', uploadUrl, thumbnailUrl);
     const absDifference = currentIndex - currentVisibleIndex;
     if (absDifference !== 0) {
       return <View />;

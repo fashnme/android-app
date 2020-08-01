@@ -6,7 +6,8 @@ import {
   PRODUCT_PAGE_SET_POSTID_AND_POSTERID,
   PRODUCT_PAGE_SET_COMPLETE_PRODUCTS_DATA,
   PRODUCT_PAGE_PRICE_AND_SIZE_UPDATE,
-  VIDEO_PAGE_PLAY_STATUS_UPDATE
+  VIDEO_PAGE_PLAY_STATUS_UPDATE,
+  PRODUCT_PAGE_TOGGLE_FULL_IMAGE_VIEWER
 } from '../types';
 
 import {
@@ -17,6 +18,11 @@ import {
 
 export const productPageSelectedProductUpdate = (index) => {
   return { type: PRODUCT_PAGE_SELECTED_PRODUCT_UPDATE, payload: index };
+};
+
+// Toggle Full Image Viewer Modal
+export const productPageToggleFullImageViewer = ({ visible }) => {
+  return { type: PRODUCT_PAGE_TOGGLE_FULL_IMAGE_VIEWER, payload: visible };
 };
 
 export const productPageUpdatePriceAndSize = ({ productId }) => {
@@ -65,7 +71,7 @@ export const productPageUpdatePriceAndSize = ({ productId }) => {
 export const productPageOpenProductModal = ({ isVisible, productsData, postDetails }) => {
   return (dispatch) => {
     if (isVisible) {
-      // Pause the video when product modal opens 
+      // Pause the video when product modal opens
       dispatch({ type: VIDEO_PAGE_PLAY_STATUS_UPDATE, payload: { homePageVideoPlay: false, celebPageVideoPlay: false } });
       fetchExtraProductsData(productsData, dispatch);
     }

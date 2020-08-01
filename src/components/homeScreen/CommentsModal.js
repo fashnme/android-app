@@ -6,7 +6,8 @@ import { connect } from 'react-redux';
 import {
   commentsPageOpenCommentsModal as _commentsPageOpenCommentsModal,
   commentsPageWriteComment as _commentsPageWriteComment,
-  videoPagePlayStatusUpdate as _videoPagePlayStatusUpdate
+  videoPagePlayStatusUpdate as _videoPagePlayStatusUpdate,
+  celebrityPageVisitAndSetData as _celebrityPageVisitAndSetData
 } from '../../actions';
 // import { dummyComments as data } from './dummyComments';
 import CommentsRightComp from './CommentsRightComp';
@@ -28,7 +29,8 @@ const timeDifference = (timestamp) => {
   return `${Math.round(elapsed / msPerYear)}y`;
 };
 
-const renderListItem = ({ item }) => {
+const renderListItem = ({ item, userToken, personalUserId,
+  celebrityPageVisitAndSetData, videoPagePlayStatusUpdate, commentsPageOpenCommentsModal }) => {
   const { commentId, profilePic, userName, commentText, timeStamp, totalLikes, userId } = item;
   return (
       <ListItem
@@ -36,6 +38,15 @@ const renderListItem = ({ item }) => {
         leftAvatar={{ source: { uri: profilePic } }}
         title={userName}
         titleStyle={styles.commentUserName}
+        titleProps={{
+          onPress: () => {
+            if (userId !== personalUserId) {
+              celebrityPageVisitAndSetData({ userToken, userId });
+              videoPagePlayStatusUpdate({ homePageVideoPlay: false, celebPageVideoPlay: false });
+              commentsPageOpenCommentsModal({ isVisible: false, userToken, commentsData: [], totalComments: 0 });
+            }
+          }
+        }}
         subtitle={
           <View>
             <Text style={styles.commentContent}>
@@ -74,7 +85,7 @@ const renderSendButton = ({ newComment, postId, userId, userToken, setNewComment
 };
 
 const CommentsModal = ({ commentsArray, commentsModalVisible, totalComments, postId, userToken, personalUserId, previousState,
-  commentsPageOpenCommentsModal, commentsPageWriteComment, videoPagePlayStatusUpdate }) => {
+  commentsPageOpenCommentsModal, commentsPageWriteComment, videoPagePlayStatusUpdate, celebrityPageVisitAndSetData }) => {
   // console.log('CommentsModal Up', commentsArray, commentsModalVisible);
   const [newComment, setNewComment] = useState('');
   const { homePageVideoPlay, celebPageVideoPlay } = previousState;
@@ -112,7 +123,7 @@ const CommentsModal = ({ commentsArray, commentsModalVisible, totalComments, pos
                     data={commentsArray}
                     scrollEnabled
                     keyExtractor={(item) => item.commentId}
-                    renderItem={renderListItem}
+                    renderItem={({ item }) => renderListItem({ item, userToken, personalUserId, celebrityPageVisitAndSetData, videoPagePlayStatusUpdate, commentsPageOpenCommentsModal })}
                 />
               </View>
 
@@ -198,5 +209,6 @@ const mapStateToProps = ({ postCommentState, personalPageState, videoPlayStatusS
 export default connect(mapStateToProps, {
   commentsPageOpenCommentsModal: _commentsPageOpenCommentsModal,
   commentsPageWriteComment: _commentsPageWriteComment,
-  videoPagePlayStatusUpdate: _videoPagePlayStatusUpdate
+  videoPagePlayStatusUpdate: _videoPagePlayStatusUpdate,
+  celebrityPageVisitAndSetData: _celebrityPageVisitAndSetData
 })(CommentsModal);
