@@ -19,12 +19,12 @@ class CelebrityPage extends Component {
     this.focusListener.remove();
   }
   onFocusFunction() {
-     const { userId, userToken } = this.props;
+     // const { userId, userToken } = this.props;
      // console.log({userId});
      // userId is coming from Actions.celebrityPage() calling in actions
      // Setting the First Request Data for Celeb's Liked and posted posts
-     this.props.celebrityPageGetUserPosts({ userId, userToken, selfPostPageNum: 1, isPersonalData: false });
-     this.props.celebrityPageGetUserLikedPosts({ userId, userToken, postLikedPageNum: 1, isPersonalData: false });
+     // this.props.celebrityPageGetUserPosts({ userId, userToken, selfPostPageNum: 1, isPersonalData: false });
+     // this.props.celebrityPageGetUserLikedPosts({ userId, userToken, postLikedPageNum: 1, isPersonalData: false });
   }
 
   render() {

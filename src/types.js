@@ -4,10 +4,10 @@ export const ANDROID_APP_SHARING_URL = 'https://bit.ly/patang_android';
 // export const ECOM_SHARING_URL_INITIAL = 'https://fashn.me/cashback-intermediate-page';
 
 export const AWS_OPTIONS = {
-    keyPrefix: 'uploads/', // Change this Folder Name
-    bucket: 'fashn-social',
-    accessKey: 'AKIAISBMFGYLRSA53ROQ',
-    secretKey: '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',
+    keyPrefix: '', // Change this Folder Name
+    bucket: 'patang-source',
+    accessKey: 'AKIAVL3V3EGR6PYGXK6Z',
+    secretKey: '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',
     region: 'ap-south-1',
     successActionStatus: 201
 };
@@ -56,6 +56,7 @@ export const PRODUCT_PAGE_SET_POSTID_AND_POSTERID = 'product_page_set_postid_and
 export const PRODUCT_PAGE_SET_TOGGLE_PRODUCTS_DATA = 'product_page_set_toggle_products_data';
 export const PRODUCT_PAGE_SET_COMPLETE_PRODUCTS_DATA = 'product_page_set_complete_products_data';
 export const PRODUCT_PAGE_PRICE_AND_SIZE_UPDATE = 'product_page_price_and_size_update';
+export const PRODUCT_PAGE_TOGGLE_FULL_IMAGE_VIEWER = 'product_page_toggle_full_image_viewer';
 
 // Signup page
 export const SIGNUP_PAGE_PHONE_UPDATE = 'signup_page_phone_update';

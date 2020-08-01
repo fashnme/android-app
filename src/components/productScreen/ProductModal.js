@@ -64,7 +64,7 @@ const ProductModal = ({ productsData, productsModalVisible, postId, posterId, pr
               </View>
           </View>
           <View style={{ flex: 1 }}>
-            <View style={styles.productsList}>
+            <View style={{ marginTop: 8, borderBottomWidth: productsData !== undefined && productsData.length === 0 ? 0 : 0.2 }}>
               <FlatList
                   horizontal
                   data={productsData}
@@ -107,8 +107,8 @@ const styles = StyleSheet.create({
         opacity: 0.6,
       },
       productsList: {
-        marginTop: 10,
-        borderBottomWidth: 0.2,
+        // marginTop: 8,
+        // borderBottomWidth: 0.2,
       },
       thumbnailWrapper: {
         padding: 10,

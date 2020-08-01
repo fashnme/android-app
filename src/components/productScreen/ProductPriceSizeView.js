@@ -1,15 +1,18 @@
 import React, { useState } from 'react';
-import { View, Text, Image, TouchableNativeFeedback, FlatList } from 'react-native';
+import { View, Text, Image, TouchableNativeFeedback, FlatList, TouchableOpacity } from 'react-native';
 import { Card, Badge } from 'react-native-elements';
 import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux';
 import { globalStyles } from '../../Styles';
 import AddToCartAndWishlistIcon from './AddToCartAndWishlistIcon';
+import FullProductImageViewer from './FullProductImageViewer';
 import {
   productPageOpenProductModal as _productPageOpenProductModal,
   productPageUpdatePriceAndSize as _productPageUpdatePriceAndSize,
-  manageCartAddProductToCart as _manageCartAddProductToCart
+  manageCartAddProductToCart as _manageCartAddProductToCart,
+  productPageToggleFullImageViewer as _productPageToggleFullImageViewer
 } from '../../actions';
+
 
 const BuyNowButton = ({ onPress, title }) => {
   return (
@@ -116,7 +119,7 @@ const checkAndCompleteRequest = ({ productId, sizeSelected, postId, userToken, s
 };
 
 const ProductPriceSizeView = ({ productData, postId, posterId, askForSize, userToken,
-  productPageOpenProductModal, productPageUpdatePriceAndSize, manageCartAddProductToCart }) => {
+  productPageOpenProductModal, productPageUpdatePriceAndSize, manageCartAddProductToCart, productPageToggleFullImageViewer }) => {
   const [sizeSelected, setSizeSelected] = useState(null);
   // console.log('ProductPriceSizeView productData', productData);
   const [error, setError] = useState('');
@@ -133,9 +136,9 @@ const ProductPriceSizeView = ({ productData, postId, posterId, askForSize, userT
     <View>
       {renderError({ error })}
       <View style={styles.productView}>
-        <View style={styles.productImage}>
-          <Image source={{ uri: image }} style={{ flex: 1, resizeMode: 'contain' }} />
-        </View>
+        <TouchableOpacity style={styles.productImage} onPress={() => { productPageToggleFullImageViewer({ visible: true }); }}>
+          <Image source={{ uri: image }} style={{ flex: 1, resizeMode: 'contain', marginTop: 0, borderRadius: 5 }} />
+        </TouchableOpacity>
         <View style={{ flex: 3, padding: 5 }}>
           <Text style={{ fontSize: 16, marginTop: 2 }}>{title}</Text>
           <Text style={styles.productBrand}>{brandName.trim().toUpperCase()}</Text>
@@ -156,6 +159,7 @@ const ProductPriceSizeView = ({ productData, postId, posterId, askForSize, userT
         </View>
       </View>
       {renderSizeBlock({ sizesAvailable, sizeSelected, setSizeSelected })}
+      <FullProductImageViewer />
     </View>
   );
 };
@@ -255,5 +259,6 @@ const mapStateToProps = ({ productPageState, personalPageState }) => {
 export default connect(mapStateToProps, {
   productPageOpenProductModal: _productPageOpenProductModal,
   productPageUpdatePriceAndSize: _productPageUpdatePriceAndSize,
-  manageCartAddProductToCart: _manageCartAddProductToCart
+  manageCartAddProductToCart: _manageCartAddProductToCart,
+  productPageToggleFullImageViewer: _productPageToggleFullImageViewer
 })(ProductPriceSizeView);
