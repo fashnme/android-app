@@ -2,12 +2,11 @@ import React, { Component } from 'react';
 import { View, FlatList, Image } from 'react-native';
 import { Header, ListItem, Card } from 'react-native-elements';
 import { connect } from 'react-redux';
-import { Actions } from 'react-native-router-flux';
-import { EmptyPage } from '../basic';
+import { EmptyPage } from './basic';
 
 import {
   notificationPageGetNotifcations
-} from '../../actions';
+} from '../actions';
 
 class NotificationPage extends Component {
   componentDidMount() {
@@ -59,7 +58,7 @@ class NotificationPage extends Component {
           subtitle={this.timeDifference(timeStamp)}
           subtitleStyle={{ marginTop: 10, padding: 0 }}
           containerStyle={styles.containerStyle}
-          rightElement={this.rightImage(require('../../resources/icons/like.png'))}
+          rightElement={this.rightImage(require('../resources/icons/like.png'))}
           // onPress={() => {}}
           // bottomDivider
         />
@@ -77,7 +76,7 @@ class NotificationPage extends Component {
           subtitle={this.timeDifference(timeStamp)}
           subtitleStyle={{ marginTop: 10, padding: 0 }}
           containerStyle={styles.containerStyle}
-          rightElement={this.rightImage(require('../../resources/icons/follow.png'))}
+          rightElement={this.rightImage(require('../resources/icons/follow.png'))}
           contentContainerStyle={{ margin: 0, padding: 0 }}
           // onPress={() => {}}
           // bottomDivider
@@ -104,7 +103,6 @@ class NotificationPage extends Component {
         <Header
           backgroundColor={'white'}
           placement={'center'}
-          leftComponent={{ icon: 'arrow-back', color: 'grey', onPress: () => { Actions.pop(); } }}
           centerComponent={{ text: 'Activities', style: { color: '#808080', fontWeight: 'bold', fontSize: 19 } }}
           containerStyle={{ paddingTop: 0, height: 46 }}
         />

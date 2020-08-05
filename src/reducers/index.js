@@ -12,6 +12,7 @@ import CommentsPageReducer from './CommentsPageReducer';
 import NotificationReducer from './NotificationReducer';
 import CustomPostListViewReducer from './CustomPostListViewReducer';
 import VideoPlayStatusReducer from './VideoPlayStatusReducer';
+import ExplorePageReducer from './ExplorePageReducer';
 
 export default combineReducers({
     homePageState: HomePageReducer,
@@ -26,5 +27,6 @@ export default combineReducers({
     postCommentState: CommentsPageReducer,
     notificationState: NotificationReducer,
     customPostListViewState: CustomPostListViewReducer,
-    videoPlayStatusState: VideoPlayStatusReducer
+    videoPlayStatusState: VideoPlayStatusReducer,
+    explorePageState: ExplorePageReducer
 });

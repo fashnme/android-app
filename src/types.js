@@ -77,6 +77,11 @@ export const PERSONAL_PAGE_SET_OWN_POSTS = 'personal_page_set_own_posts';
 export const PERSONAL_PAGE_SET_OWN_LIKED_POSTS = 'personal_page_set_own_liked_posts';
 export const PERSONAL_PAGE_DELETE_POST = 'personal_page_delete_post';
 
+// Explore Page
+export const EXPLORE_PAGE_SET_USER_SEARCH_DATA = 'explore_page_set_user_search_data';
+export const EXPLORE_PAGE_SET_TRENDING_USERS = 'explore_page_set_trending_users';
+export const EXPLORE_PAGE_SET_TRENDING_POSTS = 'explore_page_set_trending_posts';
+
 // Settings
 export const SETTING_PAGE_SET_USER_ORDERS = 'setting_page_set_user_orders';
 export const SETTING_PAGE_SET_RENT_BID_BY_ME = 'setting_page_set_rent_bid_by_me';

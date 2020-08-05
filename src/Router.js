@@ -6,6 +6,7 @@ import HomePage from './components/HomePage';
 import CelebrityPage from './components/CelebrityPage';
 import UploadPage from './components/UploadPage';
 import PersonalPage from './components/PersonalPage';
+import ExplorePage from './components/ExplorePage';
 import SignupPage from './components/SignupPage';
 import EnterDetailsPage from './components/signupScreen/EnterDetailsPage';
 import SettingsPage from './components/SettingsPage';
@@ -23,7 +24,7 @@ import WishlistPage from './components/SettingScreen/WishlistPage';
 import PersonalStorePage from './components/SettingScreen/PersonalStorePage';
 import RewardsPage from './components/SettingScreen/RewardsPage';
 import ReferAndEarnPage from './components/SettingScreen/ReferAndEarnPage';
-import NotificationPage from './components/SettingScreen/NotificationPage';
+import NotificationPage from './components/NotificationPage';
 import CustomPostListView from './components/CustomPostListView';
 
 // Using ICONS
@@ -55,7 +56,9 @@ class TabIcon extends Component {
     super(props);
     this.iconsMap = {
       home: { disabled_icon: require('./resources/icons/home_disabled.png'), enabled_icon: require('./resources/icons/home_enabled.png'), displayName: 'Home' },
+      explore: { disabled_icon: require('./resources/icons/explore_disabled.png'), enabled_icon: require('./resources/icons/explore_enabled.png'), displayName: 'Explore' },
       upload: { disabled_icon: require('./resources/icons/plus_disabled.png'), enabled_icon: require('./resources/icons/plus_enabled.png'), displayName: 'Upload' },
+      notify: { disabled_icon: require('./resources/icons/notify_disabled.png'), enabled_icon: require('./resources/icons/notify_enabled.png'), displayName: 'Notify' },
       user: { disabled_icon: require('./resources/icons/user_disabled.png'), enabled_icon: require('./resources/icons/user_enabled.png'), displayName: 'Me' },
     };
   }
@@ -101,7 +104,12 @@ const RouterComponent = () => {
                     <Scene hideTabBar key='customPostListView' title='' component={CustomPostListView} />
                 </Scene>
 
+                <Scene hideNavBar icon={TabIcon} iconName={'explore'} key='explorePage' title='Explore' component={ExplorePage} tabStyle={styles.tabStyle} />
+
                 <Scene hideNavBar icon={TabIcon} iconName={'upload'} key='uploadPage' title='Upload' component={UploadPage} tabStyle={styles.tabStyle} />
+
+                <Scene hideNavBar icon={TabIcon} iconName={'notify'} key='notificationPage' component={NotificationPage} tabStyle={styles.tabStyle} />
+
 
                 <Scene hideNavBar icon={TabIcon} iconName={'user'} tabStyle={styles.tabStyle}>
                   <Scene initial key='personalPage' title='Personal' component={PersonalPage} />
@@ -120,7 +128,6 @@ const RouterComponent = () => {
                   <Scene hideTabBar key='bidCreatePage' component={BidCreatePage} />
                   <Scene hideTabBar key='bidEditPage' component={BidEditPage} />
                   <Scene hideTabBar key='addUserAddress' component={AddUserAddress} />
-                  <Scene hideTabBar key='notificationPage' component={NotificationPage} />
                 </Scene>
             </Scene>
         </Scene>

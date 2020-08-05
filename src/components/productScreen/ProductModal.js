@@ -59,6 +59,7 @@ const ProductModal = ({ productsData, productsModalVisible, postId, posterId, pr
                   onPress={() => {
                     productPageOpenProductModal({ isVisible: false, productsData: [], postDetails: { postId, userId: posterId } });
                     videoPagePlayStatusUpdate({ homePageVideoPlay, celebPageVideoPlay });
+                    productPageSelectedProductUpdate(0); // Set the Selected Product to 0 on closing the products Modal
                   }}
                 />
               </View>

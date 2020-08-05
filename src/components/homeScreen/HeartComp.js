@@ -17,20 +17,6 @@ const convertIntToString = (num) => {
 const HeartComp = ({ postId, likes, onLikePress, onUnlikePress, likedPosts }) => {
   // console.log('HeartComp', postId, likedPosts, postId in likedPosts);
   if (postId in likedPosts) {
-    // return (
-    //   <TouchableNativeFeedback onPress={onUnlikePress}>
-    //     <View>
-    //       <Icon
-    //         name='heart'
-    //         type='font-awesome'
-    //         color='#f00'
-    //         size={32}
-    //         iconStyle={styles.icons}
-    //       />
-    //       <Text style={styles.actionCaption}>{convertIntToString(likes + 1)}</Text>
-    //     </View>
-    //   </TouchableNativeFeedback>
-    // );
     return (
       <View style={styles.icons}>
         <TouchableNativeFeedback onPress={onUnlikePress}>
@@ -45,18 +31,6 @@ const HeartComp = ({ postId, likes, onLikePress, onUnlikePress, likedPosts }) =>
       </View>
     );
   }
-  // return (
-  //   <View>
-  //     <Icon
-  //       name='heart'
-  //       type='font-awesome'
-  //       color='#fafafa'
-  //       size={32}
-  //       onPress={onLikePress}
-  //       iconStyle={styles.icons}
-  //     />
-  //     <Text style={styles.actionCaption}>{convertIntToString(likes)}</Text>
-  //   </View>
   return (
       <TouchableNativeFeedback onPress={onLikePress}>
         <View style={styles.icons}>
@@ -75,6 +49,7 @@ const styles = {
     marginTop: 30,
     textShadowColor: 'black',
     textShadowRadius: 10,
+    elevation: 10
   },
   actionCaption: {
     color: 'white',
