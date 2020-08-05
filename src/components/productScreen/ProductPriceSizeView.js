@@ -217,7 +217,7 @@ const styles = {
     margin: 2,
     color: 'grey'
   },
-  codeText: { fontWeight: 'bold', fontSize: 18, color: 'red', alitextAlign: 'center' },
+  codeText: { fontWeight: 'bold', fontSize: 18, color: 'red', textAlign: 'center' },
   codeView: {
     borderWidth: 1,
     margin: 15,

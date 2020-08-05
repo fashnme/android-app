@@ -65,6 +65,7 @@ const UserSearchBar = ({ userToken, userSearchResults,
       <SearchBar
         placeholder="Search"
         platform={'android'}
+        searchIcon={{ color: '#DB7093' }}
         onChangeText={(txt) => {
           setQuery(txt);
           if (txt.length % 2 !== 0) {
@@ -77,6 +78,7 @@ const UserSearchBar = ({ userToken, userSearchResults,
         round
         showLoading={loading}
         containerStyle={styles.searchContainer}
+        loadingProps={{ color: '#DB7093' }}
         inputStyle={{ margin: 0, padding: 0, fontSize: 16 }}
       />
       <FlatList

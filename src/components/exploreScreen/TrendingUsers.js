@@ -30,6 +30,9 @@ const renderItem = ({ item, userToken, celebrityPageVisitAndSetData }) => {
 // }
 const TrendingUsers = ({ userToken, trendingUsers,
   celebrityPageVisitAndSetData }) => {
+  if (trendingUsers.length === 0) {
+    return <View />;
+  }
   return (
     <View style={styles.searchContainerView}>
       <Text style={styles.title}> Top Users </Text>

@@ -56,7 +56,9 @@ class TabIcon extends Component {
     super(props);
     this.iconsMap = {
       home: { disabled_icon: require('./resources/icons/home_disabled.png'), enabled_icon: require('./resources/icons/home_enabled.png'), displayName: 'Home' },
+      explore: { disabled_icon: require('./resources/icons/explore_disabled.png'), enabled_icon: require('./resources/icons/explore_enabled.png'), displayName: 'Explore' },
       upload: { disabled_icon: require('./resources/icons/plus_disabled.png'), enabled_icon: require('./resources/icons/plus_enabled.png'), displayName: 'Upload' },
+      notify: { disabled_icon: require('./resources/icons/notify_disabled.png'), enabled_icon: require('./resources/icons/notify_enabled.png'), displayName: 'Notify' },
       user: { disabled_icon: require('./resources/icons/user_disabled.png'), enabled_icon: require('./resources/icons/user_enabled.png'), displayName: 'Me' },
     };
   }
@@ -102,11 +104,11 @@ const RouterComponent = () => {
                     <Scene hideTabBar key='customPostListView' title='' component={CustomPostListView} />
                 </Scene>
 
-                <Scene hideNavBar icon={TabIcon} iconName={'upload'} key='explorePage' title='Explore' component={ExplorePage} tabStyle={styles.tabStyle} />
+                <Scene hideNavBar icon={TabIcon} iconName={'explore'} key='explorePage' title='Explore' component={ExplorePage} tabStyle={styles.tabStyle} />
 
                 <Scene hideNavBar icon={TabIcon} iconName={'upload'} key='uploadPage' title='Upload' component={UploadPage} tabStyle={styles.tabStyle} />
 
-                <Scene hideNavBar icon={TabIcon} iconName={'upload'} key='notificationPage' component={NotificationPage} tabStyle={styles.tabStyle} />
+                <Scene hideNavBar icon={TabIcon} iconName={'notify'} key='notificationPage' component={NotificationPage} tabStyle={styles.tabStyle} />
 
 
                 <Scene hideNavBar icon={TabIcon} iconName={'user'} tabStyle={styles.tabStyle}>
