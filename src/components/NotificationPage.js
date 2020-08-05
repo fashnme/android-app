@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { View, FlatList, Image } from 'react-native';
 import { Header, ListItem, Card } from 'react-native-elements';
 import { connect } from 'react-redux';
-import { Actions } from 'react-native-router-flux';
 import { EmptyPage } from '../basic';
 
 import {
@@ -104,7 +103,6 @@ class NotificationPage extends Component {
         <Header
           backgroundColor={'white'}
           placement={'center'}
-          leftComponent={{ icon: 'arrow-back', color: 'grey', onPress: () => { Actions.pop(); } }}
           centerComponent={{ text: 'Activities', style: { color: '#808080', fontWeight: 'bold', fontSize: 19 } }}
           containerStyle={{ paddingTop: 0, height: 46 }}
         />
