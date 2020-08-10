@@ -6,7 +6,8 @@ import UserDetailsComp from './celebScreen/UserDetailsComp';
 import UserPostsComp from './celebScreen/UserPostsComp';
 import {
   celebrityPageGetUserPosts,
-  celebrityPageGetUserLikedPosts
+  celebrityPageGetUserLikedPosts,
+  videoPagePlayStatusUpdate
 } from '../actions';
 
 class CelebrityPage extends Component {
@@ -25,6 +26,7 @@ class CelebrityPage extends Component {
      // Setting the First Request Data for Celeb's Liked and posted posts
      // this.props.celebrityPageGetUserPosts({ userId, userToken, selfPostPageNum: 1, isPersonalData: false });
      // this.props.celebrityPageGetUserLikedPosts({ userId, userToken, postLikedPageNum: 1, isPersonalData: false });
+     this.props.videoPagePlayStatusUpdate({ homePageVideoPlay: false, celebPageVideoPlay: false });
   }
 
   render() {
@@ -58,5 +60,6 @@ const mapStateToProps = ({ celebPageState, personalPageState }) => {
 
 export default connect(mapStateToProps, {
   celebrityPageGetUserPosts,
-  celebrityPageGetUserLikedPosts
+  celebrityPageGetUserLikedPosts,
+  videoPagePlayStatusUpdate
 })(CelebrityPage);

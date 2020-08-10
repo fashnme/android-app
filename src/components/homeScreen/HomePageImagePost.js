@@ -142,7 +142,7 @@ class HomePageImagePost extends Component {
                      type: 'font-awesome',
                      source: require('../../resources/icons/whatsapp.png'),
                      text: 'Share',
-                     onPress: () => { this.props.homePageSharePost({ postData: this.props.data }); }
+                     onPress: () => { this.props.homePageSharePost({ postData: this.props.data, referrerId: this.props.personalUserId }); }
                 })}
 
                 {this.renderIconWithText({
@@ -281,11 +281,10 @@ const styles = StyleSheet.create({
  actionButton: {}
 });
 
-const mapStateToProps = ({ homePageState, userActionData, personalPageState }) => {
-    const { likedPosts, followingDataMap } = userActionData;
+const mapStateToProps = ({ homePageState, personalPageState }) => {
     const { activeTab, verticalPublicCarouselRef, verticalPersonalCarouselRef } = homePageState;
-    const { userToken } = personalPageState;
-    return { activeTab, verticalPublicCarouselRef, verticalPersonalCarouselRef, userToken, likedPosts, followingDataMap };
+    const { userToken, personalUserId } = personalPageState;
+    return { activeTab, verticalPublicCarouselRef, verticalPersonalCarouselRef, userToken, personalUserId };
 };
 
   export default connect(mapStateToProps, {

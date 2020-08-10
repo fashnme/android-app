@@ -48,7 +48,7 @@ const UserPosts = ({ postsData, selfPostPageNum, userId, userToken,
               likes={item.totalLikes}
               onPress={() => customPostListViewPageVisitAndSetData({ customFeedData: postsData, postIndex: index })}
               showDeleteIcon
-              onDeletePress={() => personalPageDeletePost({ postId: item.postId })}
+              onDeletePress={() => personalPageDeletePost({ postId: item.postId, userToken })}
             />
           );
         }}

@@ -1,8 +1,11 @@
 import axios from 'axios';
 import messaging from '@react-native-firebase/messaging';
+import { Share } from 'react-native';
+import dynamicLinks from '@react-native-firebase/dynamic-links';
+
 
 import {
-  CELEBRITY_PAGE_SET_CELEB_DATA,
+  // CELEBRITY_PAGE_SET_CELEB_DATA,
   SETTING_PAGE_USER_CAPTION_UPDATE,
   SETTING_PAGE_USER_DOB_UPDATE,
   SETTING_PAGE_USER_SOCIAL_LINK_UPDATE,
@@ -12,7 +15,9 @@ import {
   SIGNUP_PAGE_GENDER_UPDATE,
   SETTING_PAGE_USER_ADD_ADDRESS,
   PERSONAL_PAGE_SET_PERSONAL_DETAILS_AND_USERID,
-  PERSONAL_PAGE_DELETE_POST
+  PERSONAL_PAGE_DELETE_POST,
+  PLAY_STORE_LINK,
+  FIREBASE_DOMAIN_URI_PREFIX
 } from '../types';
 
 import {
@@ -36,7 +41,7 @@ export const personalPageSetData = ({ userToken }) => {
         .then((response) => {
               // console.log('personalPageSetData response', response.data);
               // Setting Data for Personal Page Tab
-              dispatch({ type: CELEBRITY_PAGE_SET_CELEB_DATA, payload: { userDetails: response.data.userDetails } });
+              // dispatch({ type: CELEBRITY_PAGE_SET_CELEB_DATA, payload: { userDetails: response.data.userDetails } });
               // Setting Data for Setting's Page Update User Profile Page
               const { fullName, gender, profilePic, userName, dob, registrationToken, socialMediaLinks, bio } = response.data.userDetails;
               // console.log('personalPageSetData', { fullName, gender, profilePic, userName, dob, socialMediaLinks, bio });
@@ -101,7 +106,7 @@ const fetchNewRegistrationToken = async ({ userToken }) => {
 };
 
 export const personalPageDeletePost = ({ postId, userToken }) => {
-  // console.log('personalPageDeletePost', postId);
+  // console.log('personalPageDeletePost', postId, userToken);
   const headers = {
     'Content-Type': 'application/json',
     Authorization: userToken
@@ -121,5 +126,41 @@ export const personalPageDeletePost = ({ postId, userToken }) => {
             //handle error
             console.log('personalPageDeletePost Actions Error ', error);
       });
+  };
+};
+
+export const personalPageShareProfile = ({ personalUserId }) => {
+  const dynamicLinkOptions = {
+    link: `${PLAY_STORE_LINK}&referrerId=${personalUserId}&type=profileShare`,
+    domainUriPrefix: FIREBASE_DOMAIN_URI_PREFIX,
+    android: { packageName: 'com.patang' },
+    analytics: { campaign: 'profileShare', source: personalUserId },
+    social: {
+     title: 'Patang Video Shopping App',
+     descriptionText: 'Patang App: Indian Video Shopping & Sharing App',
+     imageUrl: 'https://res.cloudinary.com/dkrxvr5vl/image/upload/v1597074416/marketResearch/patang.webp'
+    }
+  };
+  return (dispatch) => {
+    dynamicLinks().buildShortLink(dynamicLinkOptions)
+      .then((link) => {
+        const message = `Patang App: Indian Video Shopping & Sharing App ❤\u000A \u000AFollow Me on Patang\u000A \u000ADowload the App Now:\u000A${link} \u000A \u000A Referal Code: "${personalUserId}" `;
+        Share.share({
+            message,
+            title: 'Patang App: Indian Video Shopping & Sharing App',
+          }, {
+            dialogTitle: 'Share With'
+          })
+          .then(result => {
+            console.log('personalPageShareProfile Shared', result);
+          })
+          .catch(err => {
+            console.log('personalPageShareProfile Sharing Error', err);
+          });
+      })
+      .catch((e) => {
+        console.log('personalPageShareProfile Error in Creating dynamic link', e);
+      });
+   dispatch({ type: 'personalPageShareProfile' });
   };
 };

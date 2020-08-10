@@ -1,7 +1,8 @@
 import axios from 'axios';
 
 import {
-  NOTIFICATION_PAGE_UPDATE_NOTIFICATIONS
+  NOTIFICATION_PAGE_UPDATE_NOTIFICATIONS,
+  NOTIFICATION_PAGE_TOGGLE_NOTIFICATION_LOADING
 } from '../types';
 
 import {
@@ -9,11 +10,13 @@ import {
 } from '../URLS';
 
 export const notificationPageGetNotifcations = ({ userToken, notificationPage }) => {
+  // console.log('notificationPageGetNotifcations page called', notificationPage);
   const headers = {
     'Content-Type': 'application/json',
      Authorization: userToken
   };
   return (dispatch) => {
+    dispatch({ type: NOTIFICATION_PAGE_TOGGLE_NOTIFICATION_LOADING, payload: true });
     axios({
         method: 'get',
         url: NotificationPageGetNotificationURL,
@@ -27,6 +30,9 @@ export const notificationPageGetNotifcations = ({ userToken, notificationPage })
         })
         .catch((error) => {
             console.log('notificationPageGetNotifcations Actions Error ', error);
-      });
+        })
+        .finally(() => {
+          dispatch({ type: NOTIFICATION_PAGE_TOGGLE_NOTIFICATION_LOADING, payload: false });
+        });
   };
 };

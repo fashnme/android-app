@@ -18,7 +18,8 @@ import {
   commentsPageOpenCommentsModal,
   homePageSharePost,
   productPageOpenProductModal,
-  videoPagePlayStatusUpdate
+  videoPagePlayStatusUpdate,
+  homePageMarkUserViewedPost
 } from '../../actions';
 
 class HomePageVideoPostForCeleb extends Component {
@@ -97,7 +98,7 @@ class HomePageVideoPostForCeleb extends Component {
                    type: 'font-awesome',
                    source: require('../../resources/icons/whatsapp.png'),
                    text: 'Share',
-                   onPress: () => { this.props.homePageSharePost({ postData: this.props.data }); }
+                   onPress: () => { this.props.homePageSharePost({ postData: this.props.data, referrerId: this.props.personalUserId }); }
               })}
 
               {this.renderIconWithText({
@@ -131,8 +132,8 @@ class HomePageVideoPostForCeleb extends Component {
   }
 
   render() {
-    const { currentIndex, currentVisibleIndex, data, celebPageVideoPlay } = this.props;
-    const { uploadUrl, thumbnailUrl } = data;
+    const { currentIndex, currentVisibleIndex, data, celebPageVideoPlay, referrerId, userToken } = this.props;
+    const { uploadUrl, thumbnailUrl, userId, postId } = data;
     const absDifference = currentIndex - currentVisibleIndex;
     if (absDifference !== 0) {
       return <View />;
@@ -158,6 +159,7 @@ class HomePageVideoPostForCeleb extends Component {
            poster={thumbnailUrl}
            posterResizeMode={'cover'}
            repeat
+           onEnd={() => this.props.homePageMarkUserViewedPost({ posterId: userId, postId, referrerId, userToken })}
           />
         </TouchableWithoutFeedback>
         {this.renderScreenButtons()}
@@ -235,11 +237,11 @@ const styles = {
 };
 
 
-const mapStateToProps = ({ userActionData, personalPageState, videoPlayStatusState }) => {
-    const { likedPosts, followingDataMap } = userActionData;
-    const { userToken } = personalPageState;
+const mapStateToProps = ({ personalPageState, videoPlayStatusState, referralState }) => {
+    const { userToken, personalUserId } = personalPageState;
     const { celebPageVideoPlay } = videoPlayStatusState;
-    return { userToken, likedPosts, followingDataMap, celebPageVideoPlay };
+    const { referrerId } = referralState;
+    return { userToken, celebPageVideoPlay, personalUserId, referrerId };
 };
 
   export default connect(mapStateToProps, {
@@ -252,5 +254,6 @@ const mapStateToProps = ({ userActionData, personalPageState, videoPlayStatusSta
     commentsPageOpenCommentsModal,
     homePageSharePost,
     productPageOpenProductModal,
-    videoPagePlayStatusUpdate
+    videoPagePlayStatusUpdate,
+    homePageMarkUserViewedPost
   })(HomePageVideoPostForCeleb);

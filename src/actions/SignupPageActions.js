@@ -14,6 +14,7 @@ import {
   SIGNUP_PAGE_FULLNAME_UPDATE,
   SIGNUP_PAGE_GENDER_UPDATE,
   PERSONAL_PAGE_SET_USERTOKEN,
+  REFERRAL_PAGE_REFERRER_DATA_UPDATE,
   ASYNCSTORAGE_USER_TOKEN_NAME,
   ASYNCSTORAGE_USER_USER_NAME
 } from '../types';
@@ -30,6 +31,10 @@ export const signupPagePhoneUpdate = (phone) => {
 
 export const signupPageOTPUpdate = (otp) => {
   return { type: SIGNUP_PAGE_OTP_UPDATE, payload: otp };
+};
+
+export const signupPageSetReferrerData = ({ referrerId }) => {
+  return { type: REFERRAL_PAGE_REFERRER_DATA_UPDATE, payload: { referrerId } };
 };
 
 export const signupPageReferrerUpdate = (referrerId) => {
@@ -106,7 +111,7 @@ export const signupPageVerifyOTP = (phone, otp, callingCode) => {
             } else {
               Actions.tabBar();
               setUserName('Already a User');
-              console.log('signupPageVerifyOTP Set all the User details', response);
+              // console.log('signupPageVerifyOTP Set all the User details', response);
             }
           })
           .catch((error) => {

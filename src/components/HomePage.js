@@ -37,7 +37,7 @@ class HomePage extends Component {
     // Getting the Initial Feed Data, when App in opened
     const { userToken, feedData } = this.props; // Transfered this Method calling to Splash Screen
     if (feedData.length === 0) {
-      console.log('Called Again HomePage');
+      // console.log('Called Again HomePage');
       this.props.homePageGetInitialFeedData({ userToken });
       this.props.homePageGetInitialPublicFeedData({ userToken });
       this.props.homePageFetchUserColdStartDetails({ userToken }); // TODO Update this to store info in local storage

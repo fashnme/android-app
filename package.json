@@ -13,6 +13,7 @@
     "@react-native-community/async-storage": "^1.7.1",
     "@react-native-community/datetimepicker": "^2.2.2",
     "@react-native-firebase/app": "^8.0.0",
+    "@react-native-firebase/dynamic-links": "^7.4.1",
     "@react-native-firebase/messaging": "^7.2.1",
     "@twotalltotems/react-native-otp-input": "^1.2.0",
     "axios": "^0.19.1",
