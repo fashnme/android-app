@@ -2,6 +2,8 @@ import axios from 'axios';
 import Share from 'react-native-share';
 import { Platform } from 'react-native';
 import RNFS from 'react-native-fs';
+import dynamicLinks from '@react-native-firebase/dynamic-links';
+
 import {
   HOME_PAGE_FEED_INITIAL_DATA_UPDATE,
   HOME_PAGE_FEED_EXTRA_DATA_UPDATE,
@@ -15,7 +17,8 @@ import {
   HOME_PAGE_TOGGLE_SHARE_MODAL,
   USER_SET_ACTION_DATA,
   PERSONAL_PAGE_SET_PERSONAL_DETAILS_AND_USERID,
-  ANDROID_APP_SHARING_URL
+  PLAY_STORE_LINK,
+  FIREBASE_DOMAIN_URI_PREFIX
 } from '../types';
 
 import {
@@ -24,7 +27,8 @@ import {
   HomePageLikePostURL,
   HomePageUnlikePostURL,
   HomePageDislikePostURL,
-  HomePageFetchUserColdStartDetailsURL
+  HomePageFetchUserColdStartDetailsURL,
+  HomePageMarkUserViewedPostURL
 } from '../URLS';
 
 
@@ -220,16 +224,45 @@ export const homePageToggleShareModal = (isVisible) => {
   };
 };
 
-export const homePageSharePost = ({ postData }) => {
+// Method to mark that video is viewed by user
+export const homePageMarkUserViewedPost = ({ posterId, postId, referrerId, userToken }) => {
+  console.log('homePageMarkUserViewedPost', { posterId, postId, referrerId, userToken });
+  const headers = {
+    'Content-Type': 'application/json',
+    Authorization: userToken
+  };
+  return (dispatch) => {
+    dispatch({ type: 'homePageMarkUserViewedPost' });
+    axios({
+        method: 'post',
+        url: HomePageMarkUserViewedPostURL,
+        headers,
+        data: { viewedPostArray: [{ postId, posterId, referrerId, timeStamp: new Date() }] }
+        })
+        .then((response) => {
+            console.log('homePageMarkUserViewedPost', response.data);
+        })
+        .catch((error) => {
+            //handle error
+            console.log('homePageMarkUserViewedPost Actions Error ', error);
+      });
+  };
+};
+
+export const homePageSharePost = ({ postData, referrerId }) => {
   return (dispatch) => {
     dispatch({ type: HOME_PAGE_TOGGLE_SHARE_MODAL, payload: true });
     let url = '';
+    let thumbnailUrl = '';
     if (postData.mediaType === 'video') {
       url = postData.bucketUrl;
+      thumbnailUrl = postData.thumbnailUrl;
     } else {
       url = postData.uploadUrl;
+      thumbnailUrl = postData.uploadUrl;
     }
 
+    // Options for downloading file
     const type = postData.mediaType;
     const FILE = Platform.OS === 'ios' ? '' : 'file://';
     const cacheDir = `${RNFS.DocumentDirectoryPath}/Cache`;
@@ -242,6 +275,7 @@ export const homePageSharePost = ({ postData }) => {
       outputPath = `${FILE}${cacheDir}/image.jpg`;
       b64PreExt = 'image/jpeg';
     }
+    // Downloading File
     RNFS.exists(cacheDir)
       .then(response => {
          if (response !== true) {
@@ -256,17 +290,35 @@ export const homePageSharePost = ({ postData }) => {
          .promise.then(() => {
            RNFS.readFile(outputPath, 'base64')
            .then((d) => {
-             const content = `data:${b64PreExt};base64,${d}`;
-             const message = `Patang App\u000ACheck out ${postData.userName}'s Post \u000A${postData.caption.trim()} \u000A \u000ADownload the App Now:\u000A${ANDROID_APP_SHARING_URL} \u000A \u000APatang App: Indian Video Shopping & Sharing App ❤`;
-             const options = { message, url: content, title: 'Share Now' };
-             Share.open(options)
-              .then((res) => { console.log('homePageSharePost Post Shared', res); })
-              .catch((err) => { console.log('homePageSharePost Post Sharing Error', err); });
+             // Creating Dynamic Link
+             const dynamicLinkOptions = {
+               link: `${PLAY_STORE_LINK}&referrerId=${referrerId}&postId=${postData.postId}&type=postShare`,
+               domainUriPrefix: FIREBASE_DOMAIN_URI_PREFIX,
+               android: { packageName: 'com.patang' },
+               analytics: { campaign: 'postShare', source: referrerId, content: postData.postId },
+               social: {
+                title: 'Patang App: Indian Video Shopping & Sharing App',
+                descriptionText: `Check out ${postData.userName}'s Post \u000A${postData.caption.trim()}`,
+                imageUrl: thumbnailUrl
+               }
+             };
+             dynamicLinks().buildShortLink(dynamicLinkOptions)
+             .then((link) => {
+                 const content = `data:${b64PreExt};base64,${d}`;
+                 const message = `Patang App\u000A \u000ACheck out ${postData.userName}'s Post \u000A${postData.caption.trim()} \u000A \u000AWatch Now:\u000A${link} \u000A \u000APatang App: Indian Video Shopping & Sharing App ❤`;
+                 const options = { message, url: content, title: 'Share Now' };
+                 Share.open(options)
+                  .then((res) => { console.log('homePageSharePost Post Shared', res); })
+                  .catch((err) => { console.log('homePageSharePost Post Sharing Error', err); });
+             })
+             .catch((ed) => {
+               console.log('homePageSharePost Error in Creating dynamic link', ed);
+             });
            })
            .finally(() => {
              dispatch({ type: HOME_PAGE_TOGGLE_SHARE_MODAL, payload: false });
            });
-           return { path: outputPath }; // Downloaded Successfully
+           // return { path: outputPath }; // Downloaded Successfully
          })
          .catch((error) => {
            console.log('Error while Downloading Share Image', url, error);

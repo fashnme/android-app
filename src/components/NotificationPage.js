@@ -1,15 +1,18 @@
 import React, { Component } from 'react';
-import { View, FlatList, Image } from 'react-native';
+import { View, FlatList, Image, LayoutAnimation, RefreshControl } from 'react-native';
 import { Header, ListItem, Card } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { EmptyPage } from './basic';
 
 import {
-  notificationPageGetNotifcations
+  notificationPageGetNotifcations,
+  celebrityPageVisitAndSetData,
+  customSinglePostViewPageVisitAndSetData
 } from '../actions';
 
 class NotificationPage extends Component {
   componentDidMount() {
+    LayoutAnimation.spring();
     this.focusListener = this.props.navigation.addListener('didFocus', () => {
       this.onFocusFunction();
     });
@@ -78,7 +81,7 @@ class NotificationPage extends Component {
           containerStyle={styles.containerStyle}
           rightElement={this.rightImage(require('../resources/icons/follow.png'))}
           contentContainerStyle={{ margin: 0, padding: 0 }}
-          // onPress={() => {}}
+          // onPress={() => this.props.celebrityPageVisitAndSetData({ userId: referrerId, userToken })}
           // bottomDivider
         />
       </Card>
@@ -88,16 +91,17 @@ class NotificationPage extends Component {
     const { notificationAction, image, body, timeStamp } = item;
     switch (notificationAction) {
       case 'like_post':
-        return this.likeNotifcation({ image, body, timeStamp });
+        return this.likeNotifcation({ image, body, timeStamp, item });
       case 'follow_user':
-        return this.followNotifcation({ image, body, timeStamp });
+        return this.followNotifcation({ image, body, timeStamp, item });
       default:
         return <View />;
     }
   }
 
   render() {
-    const { notificationArray } = this.props;
+    const { notificationArray, userToken, notificationLoading } = this.props;
+    // console.log('NotificationPage', notificationLoading);
     return (
       <View style={{ flex: 1 }}>
         <Header
@@ -111,6 +115,14 @@ class NotificationPage extends Component {
           data={notificationArray}
           renderItem={this.renderItem.bind(this)}
           ListEmptyComponent={<EmptyPage title={'No New Notification!'} subtitle={''} />}
+          refreshControl={
+            <RefreshControl
+              onRefresh={() => this.props.notificationPageGetNotifcations({ userToken, notificationPage: 1 })}
+              refreshing={notificationLoading}
+              colors={['#D5252D', '#FE19AA']}
+            />
+          }
+          refreshing={notificationLoading}
         />
       </View>
     );
@@ -142,10 +154,12 @@ const styles = {
 
 const mapStateToProps = ({ notificationState, personalPageState }) => {
   const { userToken } = personalPageState;
-  const { notificationArray } = notificationState;
-  return { userToken, notificationArray };
+  const { notificationArray, notificationLoading } = notificationState;
+  return { userToken, notificationArray, notificationLoading };
 };
 
 export default connect(mapStateToProps, {
-  notificationPageGetNotifcations
+  notificationPageGetNotifcations,
+  celebrityPageVisitAndSetData,
+  customSinglePostViewPageVisitAndSetData
 })(NotificationPage);

@@ -31,6 +31,7 @@ export const celebrityPageVisitAndSetData = ({ userId, userToken }) => {
   return (dispatch) => {
     // Visit the Celebrity Page
     Actions.celebrityPage();
+    // console.log('celebrityPageVisitAndSetData', userId);
     // Setting the General Details
     axios({
         method: 'post',

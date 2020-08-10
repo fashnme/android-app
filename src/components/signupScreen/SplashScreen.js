@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { Image, StatusBar } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
-import { Actions } from 'react-native-router-flux';
+import { Actions, ActionConst } from 'react-native-router-flux';
 import LinearGradient from 'react-native-linear-gradient';
 import { connect } from 'react-redux';
+import dynamicLinks from '@react-native-firebase/dynamic-links';
+
 import BackgroundStateHandler from '../homeScreen/BackgroundStateHandler';
 
 import { ASYNCSTORAGE_USER_TOKEN_NAME, ASYNCSTORAGE_USER_USER_NAME } from '../../types';
@@ -13,6 +15,9 @@ import {
   homePageFetchUserColdStartDetails,
   personalPageSetData,
   homePageGetInitialPublicFeedData,
+  signupPageSetReferrerData,
+  celebrityPageVisitAndSetData,
+  customSinglePostViewPageVisitAndSetData
 } from '../../actions';
 import { FadeInView } from '../basic';
 
@@ -22,23 +27,65 @@ class SplashScreen extends Component {
       (userToken) => {
         if (userToken) {
           // Transfered these methods here from Home Page
+          this.props.signupPageUserTokenUpdate(userToken);
           this.props.homePageGetInitialFeedData({ userToken });
           this.props.homePageGetInitialPublicFeedData({ userToken });
           this.props.homePageFetchUserColdStartDetails({ userToken }); // TODO Update this to store info in local storage
           this.props.personalPageSetData({ userToken });
+          let params = {};
+          dynamicLinks()
+            .getInitialLink()
+            .then(link => {
+              // console.log('link', link);
+              if (link !== null) {
+                params = this.parseUrl({ url: link.url });
+              }
+              // console.log('params', params);
+              if (params.referrerId !== undefined) {
+                this.props.signupPageSetReferrerData({ referrerId: params.referrerId });
+              }
+            });
           setTimeout(() => {
             AsyncStorage.getItem(ASYNCSTORAGE_USER_USER_NAME).then(
               (userName) => {
+                  const { referrerId, postId, type } = params;
                   if (userName !== null && userName.length !== 0) {
-                    Actions.tabBar();
+                      switch (type) {
+                        case 'postShare':
+                          console.log('postShare', params);
+                          Actions.tabBar({ type: ActionConst.RESET });
+                          this.props.customSinglePostViewPageVisitAndSetData({ postId });
+                          break;
+                        case 'profileShare': {
+                          console.log('profileShare', params);
+                          Actions.tabBar({ type: ActionConst.RESET });
+                          this.props.celebrityPageVisitAndSetData({ userId: referrerId, userToken });
+                          break;
+                        }
+                        // Not handling 'referAndEarn' here as it gets handled down
+                        default:
+                          console.log('default', params);
+                          Actions.tabBar();
+                          break;
+                      }
                   } else {
-                    Actions.enterDetailsPage();
+                      // ReferredId already Set above
+                      Actions.enterDetailsPage();
                   }
               }
             );
           }, 4500);
-          this.props.signupPageUserTokenUpdate(userToken);
         } else {
+          dynamicLinks()
+            .getInitialLink()
+            .then(link => {
+              if (link !== null) {
+                const { referrerId } = this.parseUrl({ url: link.url });
+                if (referrerId !== undefined) {
+                  this.props.signupPageSetReferrerData({ referrerId });
+                }
+              }
+            });
           setTimeout(() => {
             Actions.signupPage();
           }, 3000);
@@ -47,6 +94,16 @@ class SplashScreen extends Component {
     ).catch((error) => {
         console.log('User Token Fetching Error', error);
     });
+  }
+
+  parseUrl({ url }) {
+    const regex = /[?&]([^=#]+)=([^&#]*)/g;
+    const params = {};
+    let match;
+    while ((match = regex.exec(url))) {
+      params[match[1]] = match[2];
+    }
+    return params;
   }
 
   render() {
@@ -85,4 +142,7 @@ export default connect(null, {
   homePageFetchUserColdStartDetails,
   personalPageSetData,
   homePageGetInitialPublicFeedData,
+  signupPageSetReferrerData,
+  celebrityPageVisitAndSetData,
+  customSinglePostViewPageVisitAndSetData
 })(SplashScreen);

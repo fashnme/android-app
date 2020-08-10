@@ -4,29 +4,48 @@ import { connect } from 'react-redux';
 import { Header, Card, Button } from 'react-native-elements';
 import LinearGradient from 'react-native-linear-gradient';
 import { Actions } from 'react-native-router-flux';
-import { ANDROID_APP_SHARING_URL } from '../../types';
+import dynamicLinks from '@react-native-firebase/dynamic-links';
+
+import {
+  PLAY_STORE_LINK,
+  FIREBASE_DOMAIN_URI_PREFIX
+} from '../../types';
 
 const screenWidth = Dimensions.get('window').width;
 const rowWidth = screenWidth - 10;
 const aspectRatio = 248 / 400; // Image's Height / Width
 
-const shareApp = ({ userId }) => {
-  const message = `Patang App: Indian Video Shopping & Sharing App ❤\u000A \u000AUse my referal code & get Rs. 15\u000A \u000ADowload the App Now:\u000A${ANDROID_APP_SHARING_URL} \u000A \u000A Referal Code: "${userId}" `;
-  Share.share({
-      message,
-      title: 'Patang App: Indian Video Shopping & Sharing App',
-    }, {
-      dialogTitle: 'Share With'
-    })
-    .then(result => {
-      console.log('App Shared', result);
-    })
-    .catch(err => {
-      console.log('App Sharing Error', err);
+const shareApp = ({ personalUserId }) => {
+  const dynamicLinkOptions = {
+    link: `${PLAY_STORE_LINK}&referrerId=${personalUserId}&type=referAndEarn`,
+    domainUriPrefix: FIREBASE_DOMAIN_URI_PREFIX,
+    android: { packageName: 'com.patang' },
+    analytics: { campaign: 'referAndEarn', source: personalUserId },
+    social: {
+     title: 'Patang Video Shopping App',
+     descriptionText: 'Patang App: Indian Video Shopping & Sharing App',
+     imageUrl: 'https://res.cloudinary.com/dkrxvr5vl/image/upload/v1597074416/marketResearch/patang.webp'
+    }
+  };
+  dynamicLinks().buildShortLink(dynamicLinkOptions)
+    .then((link) => {
+      const message = `Patang App: Indian Video Shopping & Sharing App ❤\u000A \u000AUse my referal code & get Rs. 15\u000A \u000ADowload the App Now:\u000A${link} \u000A \u000A Referal Code: "${personalUserId}" `;
+      Share.share({
+          message,
+          title: 'Patang App: Indian Video Shopping & Sharing App',
+        }, {
+          dialogTitle: 'Share With'
+        })
+        .then(result => {
+          console.log('App Shared', result);
+        })
+        .catch(err => {
+          console.log('App Sharing Error', err);
+        });
     });
 };
 
-const ReferAndEarnPage = ({ userId }) => {
+const ReferAndEarnPage = ({ personalUserId }) => {
   return (
     <View style={{ flex: 1 }}>
       <Header
@@ -56,11 +75,11 @@ const ReferAndEarnPage = ({ userId }) => {
           <Card containerStyle={styles.cardContainer}>
               <Text style={{ fontSize: 16, color: '#878b94', fontWeight: 'bold' }}> YOUR REFERRAL CODE </Text>
               <View style={styles.codeView}>
-                <Text style={styles.codeText}>{` ${userId} `}</Text>
+                <Text style={styles.codeText}>{` ${personalUserId} `}</Text>
               </View>
               <Button
                 raised
-                onPress={() => shareApp({ userId })}
+                onPress={() => shareApp({ personalUserId })}
                 ViewComponent={LinearGradient}
                 title='REFER NOW'
                 buttonStyle={{ borderRadius: 15, alignItems: 'center' }}
@@ -105,8 +124,7 @@ const styles = {
   }
 };
 const mapStateToProps = ({ personalPageState }) => {
-  const { personalUserDetails } = personalPageState;
-  const { userId } = personalUserDetails;
-  return { userId };
+  const { personalUserId } = personalPageState;
+  return { personalUserId };
 };
 export default connect(mapStateToProps)(ReferAndEarnPage);

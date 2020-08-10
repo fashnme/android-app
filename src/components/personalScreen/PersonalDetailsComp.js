@@ -1,10 +1,11 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableNativeFeedback, Image } from 'react-native';
-import { Avatar, Card } from 'react-native-elements';
+import { Avatar, Card, Icon } from 'react-native-elements';
 import { FlatList } from 'react-native-gesture-handler';
 import { connect } from 'react-redux';
 import {
-  celebrityPageSocialIconClicked as _celebrityPageSocialIconClicked
+  celebrityPageSocialIconClicked as _celebrityPageSocialIconClicked,
+  personalPageShareProfile as _personalPageShareProfile
 } from '../../actions';
 
 
@@ -62,17 +63,24 @@ const renderSocialIcon = ({ item, socialMediaLinks, celebrityPageSocialIconClick
   );
 };
 
-const PersonalDetailsComp = ({ userDetails, celebrityPageSocialIconClicked }) => {
+const PersonalDetailsComp = ({ userDetails, personalUserId, celebrityPageSocialIconClicked, personalPageShareProfile }) => {
   const { profilePic, fullName, followingCount, followersCount, totalLikes, bio, socialMediaLinks } = userDetails;
   // console.log('PersonalDetailsComp userDetails', userDetails);
   return (
     <Card containerStyle={styles.cardContainer}>
         <View style={styles.profile}>
           {renderAvatar({ profilePic })}
-          <Text style={styles.userName}>{fullName}</Text>
-          <Text numberOfLines={4} style={styles.userBio}>
-            {bio}
-          </Text>
+          <View style={{ flexDirection: 'row', marginTop: 20 }}>
+            <Text style={styles.userName}>{fullName}</Text>
+            <Icon
+              name='share-outline'
+              color='#00aced'
+              type='material-community'
+              onPress={() => personalPageShareProfile({ personalUserId })}
+              size={30}
+            />
+          </View>
+          <Text numberOfLines={4} style={styles.userBio}>{bio}</Text>
           <View style={styles.userData}>
             {userDetailBlock(followingCount, 'Following', false)}
             {userDetailBlock(followersCount, 'Followers', true)}
@@ -101,7 +109,7 @@ const styles = StyleSheet.create({
   },
   userName: {
     fontSize: 20,
-    marginTop: 20,
+    // marginTop: 20,
     fontWeight: 'bold',
     color: '#606060'
   },
@@ -157,10 +165,11 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = ({ personalPageState }) => {
-    const { userToken, personalUserDetails } = personalPageState;
-    return { userDetails: personalUserDetails, userToken };
+    const { userToken, personalUserDetails, personalUserId } = personalPageState;
+    return { userDetails: personalUserDetails, userToken, personalUserId };
 };
 
 export default connect(mapStateToProps, {
-  celebrityPageSocialIconClicked: _celebrityPageSocialIconClicked
+  celebrityPageSocialIconClicked: _celebrityPageSocialIconClicked,
+  personalPageShareProfile: _personalPageShareProfile
 })(PersonalDetailsComp);

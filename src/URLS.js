@@ -7,6 +7,8 @@ export const HomePageUnlikePostURL = 'https://fashn-backend.herokuapp.com/user/u
 export const HomePageDislikePostURL = 'https://fashn-backend.herokuapp.com/user/unlike-post'; // TODO
 export const HomePageFetchUserColdStartDetailsURL = 'https://fashn-backend.herokuapp.com/user/fetch-user-coldstart';
 export const HomePageUpdateRegistrationTokenURL = 'https://fashn-backend.herokuapp.com/user/update-fcm-registration-token';
+export const HomePageGetPostDetailsURL = 'https://fashn-backend.herokuapp.com/post/fetch-post';
+export const HomePageMarkUserViewedPostURL = 'https://fashn-backend.herokuapp.com/user/viewed-posts';
 
 // CelebrityPage Urls
 export const CelebrityPageFollowURL = 'https://fashn-backend.herokuapp.com/user/follow-user';
@@ -17,6 +19,7 @@ export const CelebrityPageGetUserLikedPostsURL = 'https://fashn-backend.herokuap
 
 // Personal Page
 export const PersonalPageDeletePost = 'https://fashn-backend.herokuapp.com/user/delete-post';
+
 
 // UploadPage Urls
 export const UploadPageUploadContentURL = 'https://fashn-backend.herokuapp.com/user/create-post';

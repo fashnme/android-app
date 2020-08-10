@@ -75,10 +75,10 @@ const UserInputBox = ({ placeholder, iconName, iconType, errorMessage, name, val
 
 
 const EnterDetailsPage = ({
-  userName, fullName, genderIndex, loading, error, userToken,
+  userName, fullName, genderIndex, loading, error, userToken, referrerId,
   signupPageUpdateUsername, signupPageUpdateFullname, signupPageUpdateGender, signupPageSubmitUserDetails
   }) => {
-  const [referralCode, setReferralCode] = useState('');
+  const [referralCode, setReferralCode] = useState(referrerId);
   // console.log('props', { userName, fullName, genderIndex, loading, userToken, error });
   // console.log('actions', signupPageUpdateUsername, signupPageUpdateFullname, signupPageUpdateGender, signupPageSubmitUserDetails);
   return (
@@ -190,8 +190,9 @@ const styles = StyleSheet.create({
   },
 });
 
-const mapStateToProps = ({ signupPageState, personalPageState }) => {
+const mapStateToProps = ({ signupPageState, personalPageState, referralState }) => {
   const { userName, fullName, gender, loading, error } = signupPageState;
+  const { referrerId } = referralState;
   const { userToken } = personalPageState;
   let genderIndex = 0;
   if (gender === 'male') {
@@ -201,7 +202,7 @@ const mapStateToProps = ({ signupPageState, personalPageState }) => {
   } else {
       genderIndex = 2;
   }
-  return { userName, fullName, genderIndex, loading, error, userToken };
+  return { userName, fullName, genderIndex, loading, error, userToken, referrerId };
 };
 
 export default connect(mapStateToProps, {

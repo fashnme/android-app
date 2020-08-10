@@ -13,6 +13,7 @@ import NotificationReducer from './NotificationReducer';
 import CustomPostListViewReducer from './CustomPostListViewReducer';
 import VideoPlayStatusReducer from './VideoPlayStatusReducer';
 import ExplorePageReducer from './ExplorePageReducer';
+import ReferralState from './ReferralState';
 
 export default combineReducers({
     homePageState: HomePageReducer,
@@ -28,5 +29,6 @@ export default combineReducers({
     notificationState: NotificationReducer,
     customPostListViewState: CustomPostListViewReducer,
     videoPlayStatusState: VideoPlayStatusReducer,
-    explorePageState: ExplorePageReducer
+    explorePageState: ExplorePageReducer,
+    referralState: ReferralState
 });
