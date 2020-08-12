@@ -69,7 +69,7 @@ const ReferAndEarnPage = ({ personalUserId }) => {
           <Card containerStyle={styles.cardContainer}>
             <Image
               style={styles.imageStyle}
-              source={require('../../resources/background/refer-and-earn-screen.png')}
+              source={require('../../resources/background/refer-and-earn-screen.jpg')}
             />
           </Card>
           <Card containerStyle={styles.cardContainer}>
