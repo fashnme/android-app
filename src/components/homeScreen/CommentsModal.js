@@ -67,7 +67,7 @@ const renderListItem = ({ item, userToken, personalUserId,
   );
 };
 
-const renderSendButton = ({ newComment, postId, userId, userToken, setNewComment, commentsPageWriteComment }) => {
+const renderSendButton = ({ newComment, postId, userId, posterId, userToken, setNewComment, commentsPageWriteComment }) => {
   return (
     <Button
       title={'Post'}
@@ -75,7 +75,7 @@ const renderSendButton = ({ newComment, postId, userId, userToken, setNewComment
       disabled={newComment.length === 0}
       color={'#2089dc'}
       onPress={() => {
-        commentsPageWriteComment({ postId, userId, commentText: newComment, userToken });
+        commentsPageWriteComment({ postId, userId, posterId, commentText: newComment, userToken });
         Keyboard.dismiss();
         showMessage({ message: 'Comment Posted!', type: 'success', floating: true, icon: 'success', duration: 1000 });
         setNewComment('');
@@ -84,7 +84,7 @@ const renderSendButton = ({ newComment, postId, userId, userToken, setNewComment
   );
 };
 
-const CommentsModal = ({ commentsArray, commentsModalVisible, totalComments, postId, userToken, personalUserId, previousState,
+const CommentsModal = ({ commentsArray, commentsModalVisible, totalComments, postId, posterId, userToken, personalUserId, previousState,
   commentsPageOpenCommentsModal, commentsPageWriteComment, videoPagePlayStatusUpdate, celebrityPageVisitAndSetData }) => {
   // console.log('CommentsModal Up', commentsArray, commentsModalVisible);
   const [newComment, setNewComment] = useState('');
@@ -110,7 +110,7 @@ const CommentsModal = ({ commentsArray, commentsModalVisible, totalComments, pos
                     raised
                     containerStyle={styles.crossStyle}
                     onPress={() => {
-                      commentsPageOpenCommentsModal({ isVisible: false, userToken, commentsData: [], totalComments: 0 });
+                      commentsPageOpenCommentsModal({ isVisible: false, userToken, commentsData: [], totalComments: 0, postId: '', posterId: '' });
                       videoPagePlayStatusUpdate({ homePageVideoPlay, celebPageVideoPlay });
                       setNewComment('');
                     }}
@@ -135,7 +135,7 @@ const CommentsModal = ({ commentsArray, commentsModalVisible, totalComments, pos
                 inputStyle={styles.commentInputStyle}
                 maxLength={280}
                 multiline
-                rightIcon={renderSendButton({ newComment: newComment.trim(), postId, userId: personalUserId, userToken, setNewComment, commentsPageWriteComment })}
+                rightIcon={renderSendButton({ newComment: newComment.trim(), postId, posterId, userId: personalUserId, userToken, setNewComment, commentsPageWriteComment })}
               />
             </Card>
           </View>
@@ -200,10 +200,10 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = ({ postCommentState, personalPageState, videoPlayStatusState }) => {
-    const { commentsModalVisible, commentsArray, totalComments, postId } = postCommentState;
+    const { commentsModalVisible, commentsArray, totalComments, postId, posterId } = postCommentState;
     const { userToken, personalUserId } = personalPageState;
     const { previousState } = videoPlayStatusState;
-    return { commentsModalVisible, commentsArray, totalComments, userToken, personalUserId, postId, previousState };
+    return { commentsModalVisible, commentsArray, totalComments, userToken, personalUserId, postId, posterId, previousState };
 };
 
 export default connect(mapStateToProps, {

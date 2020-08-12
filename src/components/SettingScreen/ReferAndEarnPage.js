@@ -29,7 +29,7 @@ const shareApp = ({ personalUserId }) => {
   };
   dynamicLinks().buildShortLink(dynamicLinkOptions)
     .then((link) => {
-      const message = `Patang App: Indian Video Shopping & Sharing App ❤\u000A \u000AUse my referal code & get Rs. 15\u000A \u000ADowload the App Now:\u000A${link} \u000A \u000A Referal Code: "${personalUserId}" `;
+      const message = `Patang App: Indian Video Shopping & Sharing App ❤\u000A \u000AUse my referal code & get 50 Coins\u000A \u000ADowload the App Now:\u000A${link} \u000A \u000A Referal Code: "${personalUserId}" `;
       Share.share({
           message,
           title: 'Patang App: Indian Video Shopping & Sharing App',

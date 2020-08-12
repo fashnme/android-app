@@ -19,7 +19,7 @@ import {
 } from '../URLS';
 
 // Method to Toggle Comments Modal And Set First Set of comments present with post
-export const commentsPageOpenCommentsModal = ({ isVisible, userToken, commentsData, totalComments, postId }) => {
+export const commentsPageOpenCommentsModal = ({ isVisible, userToken, commentsData, totalComments, postId, posterId }) => {
   // return {
   //   type: COMMENTS_PAGE_TOGGLE_COMMENTS_MODAL,
   //   payload: { isVisible, commentsData, totalComments, postId }
@@ -29,7 +29,7 @@ export const commentsPageOpenCommentsModal = ({ isVisible, userToken, commentsDa
      Authorization: userToken
   };
   return (dispatch) => {
-    dispatch({ type: COMMENTS_PAGE_TOGGLE_COMMENTS_MODAL, payload: { isVisible, commentsData, totalComments, postId } });
+    dispatch({ type: COMMENTS_PAGE_TOGGLE_COMMENTS_MODAL, payload: { isVisible, commentsData, totalComments, postId, posterId } });
     if (isVisible) {
       // Pause the video when product modal opens
       dispatch({ type: VIDEO_PAGE_PLAY_STATUS_UPDATE, payload: { homePageVideoPlay: false, celebPageVideoPlay: false } });
@@ -156,7 +156,7 @@ export const commentsPageDeleteComment = ({ commentId, postId, userToken }) => {
 
 
 // User Write Comment
-export const commentsPageWriteComment = ({ postId, userId, commentText, userToken }) => {
+export const commentsPageWriteComment = ({ postId, userId, commentText, posterId, userToken }) => {
   const headers = {
     'Content-Type': 'application/json',
     Authorization: userToken
@@ -167,10 +167,10 @@ export const commentsPageWriteComment = ({ postId, userId, commentText, userToke
         method: 'post',
         url: CommentsPageWriteCommentURL,
         headers,
-        data: { postId, userId, commentText }
+        data: { postId, userId, commentText, posterId }
         })
         .then((response) => {
-            console.log('commentsPageWriteComment', response.data);
+            console.log('commentsPageWriteComment response', response.data);
             const { comment } = response.data;
             dispatch({ type: COMMENTS_PAGE_ADD_USER_COMMENT, payload: { comment } });
         })

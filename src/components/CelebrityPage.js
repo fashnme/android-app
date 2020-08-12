@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, FlatList } from 'react-native';
+import { View, FlatList, RefreshControl } from 'react-native';
 import { Header } from 'react-native-elements';
 import { connect } from 'react-redux';
 import UserDetailsComp from './celebScreen/UserDetailsComp';
@@ -7,7 +7,8 @@ import UserPostsComp from './celebScreen/UserPostsComp';
 import {
   celebrityPageGetUserPosts,
   celebrityPageGetUserLikedPosts,
-  videoPagePlayStatusUpdate
+  videoPagePlayStatusUpdate,
+  celebrityPageGetCelebData
 } from '../actions';
 
 class CelebrityPage extends Component {
@@ -30,22 +31,30 @@ class CelebrityPage extends Component {
   }
 
   render() {
-    const { userDetails } = this.props;
+    const { userToken, userName, celebPageLoading, userId } = this.props;
     return (
       <View style={{ flex: 1 }}>
         <Header
           backgroundColor={'white'}
           placement={'center'}
-          centerComponent={{ text: `@${userDetails.userName}`, style: { color: '#808080', fontWeight: 'bold', fontSize: 19 } }}
+          centerComponent={{ text: `@${userName}`, style: { color: '#808080', fontWeight: 'bold', fontSize: 19 } }}
           containerStyle={{ paddingTop: 0, height: 50 }}
         />
         <FlatList
           listKey={'mainList'}
           ListHeaderComponent={<UserDetailsComp />}
           ListFooterComponent={<UserPostsComp />}
-          data={['']}
+          data={[]}
           keyExtractor={(item, index) => index.toString()}
           renderItem={() => {}}
+          refreshControl={
+            <RefreshControl
+              onRefresh={() => this.props.celebrityPageGetCelebData({ userId, userToken })}
+              refreshing={celebPageLoading}
+              colors={['#D5252D', '#FE19AA']}
+            />
+          }
+          refreshing={celebPageLoading}
         />
       </View>
     );
@@ -53,13 +62,15 @@ class CelebrityPage extends Component {
 }
 
 const mapStateToProps = ({ celebPageState, personalPageState }) => {
-    const { userDetails } = celebPageState;
+    const { userDetails, celebPageLoading, userId } = celebPageState;
+    const { userName } = userDetails;
     const { userToken } = personalPageState;
-    return { userToken, userDetails };
+    return { userToken, userName, celebPageLoading, userId };
 };
 
 export default connect(mapStateToProps, {
   celebrityPageGetUserPosts,
   celebrityPageGetUserLikedPosts,
-  videoPagePlayStatusUpdate
+  videoPagePlayStatusUpdate,
+  celebrityPageGetCelebData
 })(CelebrityPage);

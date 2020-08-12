@@ -16,6 +16,7 @@ import {
   SETTING_PAGE_USER_ADD_ADDRESS,
   PERSONAL_PAGE_SET_PERSONAL_DETAILS_AND_USERID,
   PERSONAL_PAGE_DELETE_POST,
+  PERSONAL_PAGE_TOGGLE_LOADING,
   PLAY_STORE_LINK,
   FIREBASE_DOMAIN_URI_PREFIX
 } from '../types';
@@ -32,6 +33,7 @@ export const personalPageSetData = ({ userToken }) => {
      Authorization: userToken
   };
   return (dispatch) => {
+    dispatch({ type: PERSONAL_PAGE_TOGGLE_LOADING, payload: true });
     axios({
         method: 'post',
         url: CelebrityPageGetUserDetailsURL,
@@ -70,7 +72,10 @@ export const personalPageSetData = ({ userToken }) => {
         .catch((error) => {
             //handle error
             console.log('personalPageSetData Actions Error ', error);
-      });
+        })
+        .finally(() => {
+          dispatch({ type: PERSONAL_PAGE_TOGGLE_LOADING, payload: false });
+        });
   };
 };
 

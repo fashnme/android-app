@@ -3,7 +3,8 @@ import axios from 'axios';
 import {
   EXPLORE_PAGE_SET_USER_SEARCH_DATA,
   EXPLORE_PAGE_SET_TRENDING_USERS,
-  EXPLORE_PAGE_SET_TRENDING_POSTS
+  EXPLORE_PAGE_SET_TRENDING_POSTS,
+  EXPLORE_PAGE_TOGGLE_LOADING
 } from '../types';
 
 import {
@@ -69,6 +70,7 @@ export const explorePageGetTrendingPosts = ({ userToken }) => {
      Authorization: userToken
   };
   return (dispatch) => {
+    dispatch({ type: EXPLORE_PAGE_TOGGLE_LOADING, payload: true });
     axios({
         method: 'get',
         url: ExplorePageGetTrendingPostsURL,
@@ -81,6 +83,9 @@ export const explorePageGetTrendingPosts = ({ userToken }) => {
         })
         .catch((error) => {
           console.log('explorePageGetTrendingPosts Actions Error ', error);
-      });
+        })
+        .finally(() => {
+          dispatch({ type: EXPLORE_PAGE_TOGGLE_LOADING, payload: false });
+        });
   };
 };

@@ -67,6 +67,16 @@ class RewardsPage extends Component {
             source={require('../../resources/background/rewards-background.png')}
             resizeMode="cover"
           >
+          <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 20, flexDirection: 'row' }}>
+            <Text style={{ color: '#fafafa', fontWeight: 'bold', fontSize: 18 }}> 10 </Text>
+            <View style={{ marginTop: 0, marginRight: 0, padding: 0 }}>
+              <Image
+                source={{ uri: 'https://image.flaticon.com/icons/png/128/2413/2413078.png' }}
+                style={{ width: 20, height: 20 }}
+              />
+            </View>
+            <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 22 }}> = 1 {'\u20B9'}</Text>
+          </View>
           <View style={{ justifyContent: 'flex-end', flex: 1 }}>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
               <View style={{ marginLeft: 20, marginBottom: 10 }}>

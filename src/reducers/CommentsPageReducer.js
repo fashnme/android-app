@@ -10,14 +10,15 @@ const INITIAL_STATE = {
   commentsArray: [],
   totalComments: 0,
   postId: '', // id of the post
+  posterId: '', // Owner of the post
   commentsPageNum: 1 // To fetch more comments using pagination
 };
 
 export default (state = INITIAL_STATE, action) => {
     switch (action.type) {
       case COMMENTS_PAGE_TOGGLE_COMMENTS_MODAL: {
-        const { isVisible, commentsData, totalComments, postId } = action.payload;
-        return { ...state, commentsModalVisible: isVisible, commentsArray: commentsData, commentsPageNum: 1, totalComments, postId };
+        const { isVisible, commentsData, totalComments, postId, posterId } = action.payload;
+        return { ...state, commentsModalVisible: isVisible, commentsArray: commentsData, commentsPageNum: 1, totalComments, postId, posterId };
       }
 
       case COMMENTS_PAGE_ADD_MORE_COMMENTS: {

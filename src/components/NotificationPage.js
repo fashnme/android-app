@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import { View, FlatList, Image, LayoutAnimation, RefreshControl } from 'react-native';
 import { Header, ListItem, Card } from 'react-native-elements';
 import { connect } from 'react-redux';
+import { Actions } from 'react-native-router-flux';
 import { EmptyPage } from './basic';
-
+import dummy_notification from './dummy_notification';
 import {
   notificationPageGetNotifcations,
   celebrityPageVisitAndSetData,
@@ -51,17 +52,20 @@ class NotificationPage extends Component {
     return `${Math.round(elapsed / msPerYear)}y ago`;
   }
 
-  likeNotifcation({ image, body, timeStamp }) {
+  likeNotifcation({ item }) {
+    const { image1, image2, body, timeStamp, likerId, postId } = item;
+    const { userToken } = this.props;
     return (
       <Card containerStyle={styles.cardContainer}>
         <ListItem
-          leftAvatar={{ source: { uri: image }, size: 55, containerStyle: { padding: 0, marginTop: 5 } }}
+          leftAvatar={{ source: { uri: image1 }, size: 55, containerStyle: { padding: 0, marginTop: 5 }, onPress: () => this.props.celebrityPageVisitAndSetData({ userId: likerId, userToken }) }}
           title={body}
           titleStyle={styles.title}
           subtitle={this.timeDifference(timeStamp)}
           subtitleStyle={{ marginTop: 10, padding: 0 }}
           containerStyle={styles.containerStyle}
-          rightElement={this.rightImage(require('../resources/icons/like.png'))}
+          rightAvatar={{ source: { uri: image2 }, size: 55, rounded: false, containerStyle: { padding: 0, marginTop: 0 }, onPress: () => this.props.customSinglePostViewPageVisitAndSetData({ postId }) }}
+          // rightElement={this.rightImage({ uri: image2 })}
           // onPress={() => {}}
           // bottomDivider
         />
@@ -69,11 +73,13 @@ class NotificationPage extends Component {
     );
   }
 
-  followNotifcation({ image, body, timeStamp }) {
+  followNotifcation({ item }) {
+    const { image1, body, timeStamp, followerId } = item;
+    const { userToken } = this.props;
     return (
       <Card containerStyle={styles.cardContainer}>
         <ListItem
-          leftAvatar={{ source: { uri: image }, size: 55, containerStyle: { padding: 0, marginTop: 5 } }}
+          leftAvatar={{ source: { uri: image1 }, size: 55, containerStyle: { padding: 0, marginTop: 5 }, onPress: () => this.props.celebrityPageVisitAndSetData({ userId: followerId, userToken }) }}
           title={body}
           titleStyle={styles.title}
           subtitle={this.timeDifference(timeStamp)}
@@ -87,13 +93,154 @@ class NotificationPage extends Component {
       </Card>
     );
   }
+
+  commentNotification({ item }) {
+    const { image1, image2, body, timeStamp, commenterId, postId } = item;
+    const { userToken } = this.props;
+    return (
+      <Card containerStyle={styles.cardContainer}>
+        <ListItem
+          leftAvatar={{ source: { uri: image1 }, size: 55, containerStyle: { padding: 0, marginTop: 5 }, onPress: () => this.props.celebrityPageVisitAndSetData({ userId: commenterId, userToken }) }}
+          title={body}
+          titleStyle={styles.title}
+          subtitle={this.timeDifference(timeStamp)}
+          subtitleStyle={{ marginTop: 10, padding: 0 }}
+          containerStyle={styles.containerStyle}
+          // rightAvatar={{ source: { uri: image2 }, size: 55, containerStyle: { padding: 0, marginTop: 5 } }}
+          rightAvatar={{ source: { uri: image2 }, size: 55, rounded: false, containerStyle: { padding: 0, marginTop: 0 }, onPress: () => this.props.customSinglePostViewPageVisitAndSetData({ postId }) }}
+          // rightElement={this.rightImage(require('../resources/icons/like.png'))}
+          // onPress={() => {}}
+          // bottomDivider
+        />
+      </Card>
+    );
+  }
+
+  referredNotification({ item }) {
+    const { image1, body, timeStamp, referredUserId } = item;
+    const { userToken } = this.props;
+    // const image2 = 'https://image.flaticon.com/icons/png/128/1057/1057240.png';
+    return (
+      <Card containerStyle={styles.cardContainer}>
+        <ListItem
+          leftAvatar={{ source: { uri: image1 }, size: 55, containerStyle: { padding: 0, marginTop: 5 }, onPress: () => this.props.celebrityPageVisitAndSetData({ userId: referredUserId, userToken }) }}
+          title={body}
+          titleStyle={styles.title}
+          subtitle={this.timeDifference(timeStamp)}
+          subtitleStyle={{ marginTop: 10, padding: 0 }}
+          containerStyle={styles.containerStyle}
+          // rightElement={this.rightImage(require('../resources/icons/referredIcon.png'))}
+          // rightElement={this.rightImage({ uri: 'https://image.flaticon.com/icons/png/128/2413/2413078.png' })}
+          rightAvatar={{ source: require('../resources/icons/referred_icon.png'), containerStyle: { padding: 0, marginTop: 0 }, onPress: () => Actions.rewardsPage() }}
+          contentContainerStyle={{ margin: 0, padding: 0 }}
+          // onPress={() => this.props.celebrityPageVisitAndSetData({ userId: referrerId, userToken })}
+          // bottomDivider
+        />
+      </Card>
+    );
+  }
+
+  purchasedNotification({ item }) {
+    const { image1, image2, body, timeStamp, postId } = item;
+    return (
+      <Card containerStyle={styles.cardContainer}>
+        <ListItem
+          leftAvatar={{ source: { uri: image1 }, size: 55, containerStyle: { padding: 0, marginTop: 5 }, onPress: () => this.props.customSinglePostViewPageVisitAndSetData({ postId }) }}
+          title={body}
+          titleStyle={styles.title}
+          subtitle={this.timeDifference(timeStamp)}
+          subtitleStyle={{ marginTop: 10, padding: 0 }}
+          containerStyle={styles.containerStyle}
+          rightAvatar={{ source: { uri: image2 }, size: 55, containerStyle: { padding: 0, marginTop: 5 } }}
+          // rightElement={this.rightImage(require('../resources/icons/like.png'))}
+          // onPress={() => {}}
+          // bottomDivider
+        />
+      </Card>
+    );
+  }
+
+  patangMessageNotification({ item }) {
+    const { image1, body, timeStamp } = item;
+    return (
+      <Card containerStyle={styles.cardContainer}>
+        <ListItem
+          leftAvatar={{ source: { uri: image1 }, size: 55, rounded: false, containerStyle: { padding: 0, marginTop: 5 } }}
+          title={body}
+          titleStyle={styles.title}
+          subtitle={this.timeDifference(timeStamp)}
+          subtitleStyle={{ marginTop: 10, padding: 0 }}
+          containerStyle={styles.containerStyle}
+          rightElement={this.rightImage(require('../resources/icons/liked_icon.png'))}
+          contentContainerStyle={{ margin: 0, padding: 0 }}
+          // onPress={() => this.props.celebrityPageVisitAndSetData({ userId: referrerId, userToken })}
+          // bottomDivider
+        />
+      </Card>
+    );
+  }
+
+  openPostNotification({ item }) {
+    const { image1, body, timeStamp, postId } = item;
+    // post Image should be square
+    return (
+      <Card containerStyle={styles.cardContainer}>
+        <ListItem
+          leftAvatar={{ source: { uri: image1 }, size: 55, containerStyle: { padding: 0, marginTop: 5 }, onPress: () => this.props.customSinglePostViewPageVisitAndSetData({ postId }) }}
+          title={body}
+          titleStyle={styles.title}
+          subtitle={this.timeDifference(timeStamp)}
+          subtitleStyle={{ marginTop: 10, padding: 0 }}
+          containerStyle={styles.containerStyle}
+          // rightElement={this.rightImage(require('../resources/icons/liked_icon.png'))}
+          contentContainerStyle={{ margin: 0, padding: 0 }}
+          // onPress={() => this.props.celebrityPageVisitAndSetData({ userId: referrerId, userToken })}
+          // bottomDivider
+        />
+      </Card>
+    );
+  }
+
+  openProfileNotification({ item }) {
+    const { image1, body, timeStamp, profileId } = item;
+    const { userToken } = this.props;
+    return (
+      <Card containerStyle={styles.cardContainer}>
+        <ListItem
+          leftAvatar={{ source: { uri: image1 }, size: 55, containerStyle: { padding: 0, marginTop: 5 }, onPress: () => this.props.celebrityPageVisitAndSetData({ userId: profileId, userToken }) }}
+          title={body}
+          titleStyle={styles.title}
+          subtitle={this.timeDifference(timeStamp)}
+          subtitleStyle={{ marginTop: 10, padding: 0 }}
+          containerStyle={styles.containerStyle}
+          // rightElement={this.rightImage(require('../resources/icons/liked_icon.png'))}
+          contentContainerStyle={{ margin: 0, padding: 0 }}
+          // onPress={() => this.props.celebrityPageVisitAndSetData({ userId: referrerId, userToken })}
+          // bottomDivider
+        />
+      </Card>
+    );
+  }
+
   renderItem({ item }) {
-    const { notificationAction, image, body, timeStamp } = item;
+    const { notificationAction } = item;
     switch (notificationAction) {
       case 'like_post':
-        return this.likeNotifcation({ image, body, timeStamp, item });
+        return this.likeNotifcation({ item });
       case 'follow_user':
-        return this.followNotifcation({ image, body, timeStamp, item });
+        return this.followNotifcation({ item });
+      case 'comment_post':
+        return this.commentNotification({ item });
+      case 'referred_user':
+        return this.referredNotification({ item });
+      case 'purchased':
+        return this.purchasedNotification({ item });
+      case 'patang_message':
+        return this.patangMessageNotification({ item });
+      case 'open_post':
+        return this.openPostNotification({ item });
+      case 'open_profile':
+        return this.openProfileNotification({ item });
       default:
         return <View />;
     }
@@ -112,7 +259,7 @@ class NotificationPage extends Component {
         />
         <FlatList
           keyExtractor={(item, index) => index.toString()}
-          data={notificationArray}
+          data={dummy_notification}
           renderItem={this.renderItem.bind(this)}
           ListEmptyComponent={<EmptyPage title={'No New Notification!'} subtitle={''} />}
           refreshControl={
@@ -149,7 +296,7 @@ const styles = {
     borderRadius: 10,
     padding: 0
   },
-  rightImage: { height: 32, width: 32, marginTop: 5, marginRight: 5 }
+  rightImage: { height: 40, width: 40, marginTop: 5, marginRight: 5 }
 };
 
 const mapStateToProps = ({ notificationState, personalPageState }) => {
