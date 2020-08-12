@@ -1,12 +1,14 @@
 import {
   CELEBRITY_PAGE_SET_CELEB_DATA,
   CELEBRITY_PAGE_GET_CELEB_POSTS,
-  CELEBRITY_PAGE_GET_CELEB_LIKED_POSTS
+  CELEBRITY_PAGE_GET_CELEB_LIKED_POSTS,
+  CELEBRITY_PAGE_TOGGLE_LOADING
 } from '../types';
 
 
 const INITIAL_STATE = {
   userId: '',
+  celebPageLoading: false,
   userDetails: {
       profilePic: '',
       userName: '',
@@ -26,8 +28,13 @@ export default (state = INITIAL_STATE, action) => {
       case CELEBRITY_PAGE_SET_CELEB_DATA: {
         const { userDetails } = action.payload;
         const { userId } = userDetails;
-        return { ...state, userDetails, userId, selfPostPageNum: 1, postLikedPageNum: 1 };
+        return { ...state, userDetails, userId, selfPostPageNum: 1, postLikedPageNum: 1, celebPageLoading: false };
       }
+
+      case CELEBRITY_PAGE_TOGGLE_LOADING: {
+        return { ...state, celebPageLoading: action.payload };
+      }
+
       case CELEBRITY_PAGE_GET_CELEB_POSTS: {
         // console.log('CELEBRITY_PAGE_GET_CELEB_POSTS', action.payload);
         const { posts, selfPostPageNum } = action.payload;

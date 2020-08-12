@@ -8,6 +8,7 @@ import {
   CELEBRITY_PAGE_SET_CELEB_DATA,
   CELEBRITY_PAGE_GET_CELEB_POSTS,
   CELEBRITY_PAGE_GET_CELEB_LIKED_POSTS,
+  CELEBRITY_PAGE_TOGGLE_LOADING,
   PERSONAL_PAGE_SET_OWN_POSTS,
   PERSONAL_PAGE_SET_OWN_LIKED_POSTS,
 } from '../types';
@@ -29,6 +30,7 @@ export const celebrityPageVisitAndSetData = ({ userId, userToken }) => {
     Authorization: userToken
   };
   return (dispatch) => {
+    dispatch({ type: CELEBRITY_PAGE_TOGGLE_LOADING, payload: true });
     // Visit the Celebrity Page
     Actions.celebrityPage();
     // console.log('celebrityPageVisitAndSetData', userId);
@@ -45,7 +47,10 @@ export const celebrityPageVisitAndSetData = ({ userId, userToken }) => {
         .catch((error) => {
             //handle error
             console.log('celebrityPageVisitAndSetData Actions Error ', error);
-      });
+        })
+        .finally(() => {
+          dispatch({ type: CELEBRITY_PAGE_TOGGLE_LOADING, payload: false });
+        });
     // Setting the First page of user posts
     axios({
         method: 'post',
@@ -81,6 +86,32 @@ export const celebrityPageVisitAndSetData = ({ userId, userToken }) => {
   };
 };
 
+// Method to get Celeb Data, This method is to implement "Pull to Refresh" feature on Celeb Page
+export const celebrityPageGetCelebData = ({ userId, userToken }) => {
+  const headers = {
+    'Content-Type': 'application/json',
+    Authorization: userToken
+  };
+  return (dispatch) => {
+    dispatch({ type: CELEBRITY_PAGE_TOGGLE_LOADING, payload: true });
+    axios({
+        method: 'post',
+        url: CelebrityPageGetUserDetailsURL,
+        headers,
+        data: { userId }
+        })
+        .then((response) => {
+            dispatch({ type: CELEBRITY_PAGE_SET_CELEB_DATA, payload: { userDetails: response.data.userDetails } });
+        })
+        .catch((error) => {
+            //handle error
+            console.log('celebrityPageVisitAndSetData Actions Error ', error);
+        })
+        .finally(() => {
+          dispatch({ type: CELEBRITY_PAGE_TOGGLE_LOADING, payload: false });
+        });
+  };
+};
 
 // Method to Get the Celeb Posts
 export const celebrityPageGetUserPosts = ({ userId, userToken, selfPostPageNum, isPersonalData }) => {

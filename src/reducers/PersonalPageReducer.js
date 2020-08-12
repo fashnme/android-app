@@ -3,12 +3,14 @@ import {
   PERSONAL_PAGE_SET_PERSONAL_DETAILS_AND_USERID,
   PERSONAL_PAGE_SET_OWN_POSTS,
   PERSONAL_PAGE_SET_OWN_LIKED_POSTS,
-  PERSONAL_PAGE_DELETE_POST
+  PERSONAL_PAGE_DELETE_POST,
+  PERSONAL_PAGE_TOGGLE_LOADING
 } from '../types';
 
 const INITIAL_STATE = {
   userToken: '',
   personalUserId: '', // Set this to empty in production
+  personalPageLoading: false,
   personalUserDetails: {
     followingCount: 0,
     followersCount: 0,
@@ -27,7 +29,11 @@ export default (state = INITIAL_STATE, action) => {
 
       case PERSONAL_PAGE_SET_PERSONAL_DETAILS_AND_USERID: {
         const { userId } = action.payload;
-        return { ...state, personalUserDetails: action.payload, personalUserId: userId };
+        return { ...state, personalUserDetails: action.payload, personalUserId: userId, personalPageLoading: false };
+      }
+
+      case PERSONAL_PAGE_TOGGLE_LOADING: {
+        return { ...state, personalPageLoading: action.payload };
       }
 
       case PERSONAL_PAGE_SET_OWN_POSTS: {

@@ -15,7 +15,7 @@ const INITIAL_STATE = {
     { key: 'notify', type: 'badge', title: 'Notification', subtitle: 'Alerts', avatarUrl: 'https://image.flaticon.com/icons/png/128/1827/1827370.png' },
     { key: 'rewardsHead', type: 'heading', title: 'Rewards' },
     { key: 'rewards', type: 'chevron', title: 'Rewards', subtitle: "You've Earned", avatarUrl: 'https://image.flaticon.com/icons/png/512/321/321773.png' },
-    { key: 'refer', type: 'chevron', title: 'Refer & Earn', subtitle: 'Get Rs. 15 for every Refer', avatarUrl: 'https://image.flaticon.com/icons/png/128/458/458254.png' },
+    { key: 'refer', type: 'chevron', title: 'Refer & Earn', subtitle: 'Get 50 Coins for every Refer', avatarUrl: 'https://image.flaticon.com/icons/png/128/458/458254.png' },
     { key: 'aboutHead', type: 'heading', title: 'Others' },
     { key: 'about', type: 'chevron', title: 'About Us', subtitle: 'Know more About us', avatarUrl: 'https://image.flaticon.com/icons/png/128/2486/2486375.png' },
     { key: 'privacy', type: 'chevron', title: 'Privacy Policy', subtitle: "You're safe with us", avatarUrl: 'https://image.flaticon.com/icons/png/128/2550/2550400.png' },

@@ -46,6 +46,7 @@ export const USER_UNLIKED_COMMENT = 'user_unliked_comment';
 export const CELEBRITY_PAGE_SET_CELEB_DATA = 'celebrity_page_set_celeb_data';
 export const CELEBRITY_PAGE_GET_CELEB_POSTS = 'celebrity_page_get_celeb_posts';
 export const CELEBRITY_PAGE_GET_CELEB_LIKED_POSTS = 'celebrity_page_get_celeb_liked_posts';
+export const CELEBRITY_PAGE_TOGGLE_LOADING = 'celebrity_page_toggle_loading';
 
 // Upload Page
 export const UPLOAD_PAGE_TOGGLE_ISSELECTED = 'upload_page_toggle_isselected';
@@ -79,11 +80,13 @@ export const PERSONAL_PAGE_SET_PERSONAL_DETAILS_AND_USERID = 'personal_page_set_
 export const PERSONAL_PAGE_SET_OWN_POSTS = 'personal_page_set_own_posts';
 export const PERSONAL_PAGE_SET_OWN_LIKED_POSTS = 'personal_page_set_own_liked_posts';
 export const PERSONAL_PAGE_DELETE_POST = 'personal_page_delete_post';
+export const PERSONAL_PAGE_TOGGLE_LOADING = 'personal_page_toggle_loading';
 
 // Explore Page
 export const EXPLORE_PAGE_SET_USER_SEARCH_DATA = 'explore_page_set_user_search_data';
 export const EXPLORE_PAGE_SET_TRENDING_USERS = 'explore_page_set_trending_users';
 export const EXPLORE_PAGE_SET_TRENDING_POSTS = 'explore_page_set_trending_posts';
+export const EXPLORE_PAGE_TOGGLE_LOADING = 'explore_page_toggle_loading';
 
 // Settings
 export const SETTING_PAGE_SET_USER_ORDERS = 'setting_page_set_user_orders';

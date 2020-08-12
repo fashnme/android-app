@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StatusBar, FlatList } from 'react-native';
+import { View, StatusBar, FlatList, RefreshControl } from 'react-native';
 import { connect } from 'react-redux';
 import UserSearchBar from './exploreScreen/UserSearchBar';
 import TrendingUsers from './exploreScreen/TrendingUsers';
@@ -25,6 +25,7 @@ class ExplorePage extends Component {
   }
 
   render() {
+    const { userToken, explorePageLoading } = this.props;
     return (
       <View style={{ flex: 1, backgroundColor: '#fafafa' }}>
         <StatusBar hidden />
@@ -40,15 +41,24 @@ class ExplorePage extends Component {
             data={[]}
             keyExtractor={(item, index) => index.toString()}
             renderItem={() => {}}
+            refreshControl={
+              <RefreshControl
+                onRefresh={() => this.props.explorePageGetTrendingPosts({ userToken })}
+                refreshing={explorePageLoading}
+                colors={['#D5252D', '#FE19AA']}
+              />
+            }
+            refreshing={explorePageLoading}
           />
       </View>
     );
   }
 }
 
-const mapStateToProps = ({ personalPageState }) => {
+const mapStateToProps = ({ personalPageState, explorePageState }) => {
     const { userToken } = personalPageState;
-    return { userToken };
+    const { explorePageLoading } = explorePageState;
+    return { userToken, explorePageLoading };
 };
 
 export default connect(mapStateToProps, {

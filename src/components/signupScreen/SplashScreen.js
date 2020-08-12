@@ -5,6 +5,8 @@ import { Actions, ActionConst } from 'react-native-router-flux';
 import LinearGradient from 'react-native-linear-gradient';
 import { connect } from 'react-redux';
 import dynamicLinks from '@react-native-firebase/dynamic-links';
+import messaging from '@react-native-firebase/messaging';
+
 
 import BackgroundStateHandler from '../homeScreen/BackgroundStateHandler';
 
@@ -33,6 +35,7 @@ class SplashScreen extends Component {
           this.props.homePageFetchUserColdStartDetails({ userToken }); // TODO Update this to store info in local storage
           this.props.personalPageSetData({ userToken });
           let params = {};
+          let remoteMessage = null;
           dynamicLinks()
             .getInitialLink()
             .then(link => {
@@ -45,17 +48,26 @@ class SplashScreen extends Component {
                 this.props.signupPageSetReferrerData({ referrerId: params.referrerId });
               }
             });
+          // Get Notification
+          messaging()
+            .getInitialNotification()
+            .then(rM => {
+              if (rM) {
+                remoteMessage = rM;
+              }
+            });
           setTimeout(() => {
             AsyncStorage.getItem(ASYNCSTORAGE_USER_USER_NAME).then(
               (userName) => {
                   const { referrerId, postId, type } = params;
                   if (userName !== null && userName.length !== 0) {
                       switch (type) {
-                        case 'postShare':
+                        case 'postShare': {
                           console.log('postShare', params);
                           Actions.tabBar({ type: ActionConst.RESET });
                           this.props.customSinglePostViewPageVisitAndSetData({ postId });
                           break;
+                        }
                         case 'profileShare': {
                           console.log('profileShare', params);
                           Actions.tabBar({ type: ActionConst.RESET });
@@ -63,10 +75,20 @@ class SplashScreen extends Component {
                           break;
                         }
                         // Not handling 'referAndEarn' here as it gets handled down
-                        default:
+                        default: {
                           console.log('default', params);
-                          Actions.tabBar();
+                          if (remoteMessage !== null) {
+                            console.log('Notification caused app to open from quit state:', remoteMessage);
+                            Actions.tabBar({ type: ActionConst.RESET });
+                            Actions.notificationPage();
+                            // TODO Map each case in remoteMessage to specific page
+                            // Temperoralily now redirecting to notificationPage
+                          } else {
+                            // Visit HomePage
+                            Actions.tabBar();
+                          }
                           break;
+                        }
                       }
                   } else {
                       // ReferredId already Set above

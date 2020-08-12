@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, FlatList, StatusBar } from 'react-native';
+import { View, FlatList, StatusBar, RefreshControl } from 'react-native';
 import { connect } from 'react-redux';
 import { Header } from 'react-native-elements';
 import { Actions } from 'react-native-router-flux';
@@ -31,6 +31,7 @@ class PersonalPage extends Component {
   }
 
   render() {
+    const { userToken, personalPageLoading } = this.props;
     return (
       <View style={{ flex: 1 }}>
         <StatusBar hidden />
@@ -45,9 +46,17 @@ class PersonalPage extends Component {
             listKey={'mainPersonalList'}
             ListHeaderComponent={<PersonalDetailsComp />}
             ListFooterComponent={<PersonalPostsComp />}
-            data={['']}
+            data={[]}
             keyExtractor={(item, index) => index.toString()}
             renderItem={() => {}}
+            refreshControl={
+              <RefreshControl
+                onRefresh={() => this.props.personalPageSetData({ userToken })}
+                refreshing={personalPageLoading}
+                colors={['#D5252D', '#FE19AA']}
+              />
+            }
+            refreshing={personalPageLoading}
           />
       </View>
     );
@@ -55,9 +64,9 @@ class PersonalPage extends Component {
 }
 
 const mapStateToProps = ({ personalPageState }) => {
-  const { personalUserId, userToken, personalUserDetails } = personalPageState;
+  const { personalUserId, userToken, personalUserDetails, personalPageLoading } = personalPageState;
   const { userName } = personalUserDetails;
-  return { personalUserId, userToken, userName };
+  return { personalUserId, userToken, userName, personalPageLoading };
 };
 
 export default connect(mapStateToProps, {

@@ -151,7 +151,7 @@ class HomePageImagePost extends Component {
                       type: 'font-awesome',
                       source: require('../../resources/icons/comments.png'),
                       text: totalComments,
-                      onPress: () => { this.props.commentsPageOpenCommentsModal({ isVisible: true, userToken, commentsData: topComments, totalComments, postId }); }
+                      onPress: () => { this.props.commentsPageOpenCommentsModal({ isVisible: true, userToken, commentsData: topComments, totalComments, postId, posterId: userId }); }
                  })}
 
                  <HeartComp

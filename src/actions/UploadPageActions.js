@@ -73,7 +73,9 @@ const resizeAndUploadVideo = ({ selectedVideoPath, userToken, personalUserId, ca
     ProcessingManager.getPreviewForSecond(selectedVideoPath, 5, { height, width })
     .then((thumbnailData) => {
         // console.log('get getPreviewForSecond', typeof thumbnailData, thumbnailData);
-        const options = { width, height, bitrateMultiplier: 3, minimumBitrate: 300000 };
+        // const options = { width, height, bitrateMultiplier: 1.0, minimumBitrate: null };
+        const options = { width, height, bitrateMultiplier: 1.0 };
+        // https://github.com/shahen94/react-native-video-processing/issues/138 This issue helped: bitrateMultiplier times quality degrade
         ProcessingManager.compress(selectedVideoPath, options).then((d) => {
             // console.log('Compressed Video Info ', d);
             fileType(d.source).then(({ mime }) => {
