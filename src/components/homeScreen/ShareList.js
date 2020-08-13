@@ -11,7 +11,6 @@ const socialOptions = [
     { icon: 'pinterest', title: 'Email', options: { social: Share.Social.PINTEREST } },
     { icon: 'envelope', title: 'Email', options: { social: Share.Social.EMAIL } },
     { icon: 'more', title: 'More', options: {} },
-
 ];
 
 const getErrorString = (error, defaultValue) => {

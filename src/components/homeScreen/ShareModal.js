@@ -2,12 +2,13 @@ import React from 'react';
 import { View, Text, ActivityIndicator } from 'react-native';
 import { Overlay } from 'react-native-elements';
 import { connect } from 'react-redux';
+import ProgressBar from 'react-native-progress/Bar';
+
 // import ShareList from './ShareList';
 // import ReactionList from './ReactionList';
-import { homePageToggleShareModal as _homePageToggleShareModal } from '../../actions';
 
 
-const ShareModal = ({ shareModalVisible }) => {
+const ShareModal = ({ shareModalVisible, shareDownloadProgress }) => {
     // const reactionDetails = [
     //     {
     //         id: 1,
@@ -68,8 +69,25 @@ const ShareModal = ({ shareModalVisible }) => {
             </Text>
           </View>
           <View>
-            <ActivityIndicator size="large" />
+            <Text style={{ justifyContent: 'center', textAlign: 'center', fontWeight: 'bold', opacity: 0.3, fontSize: 17 }}>
+              {(shareDownloadProgress * 100).toString().slice(0, 2)}%
+            </Text>
           </View>
+          <View style={{ alignItems: 'center' }}>
+            {/*<ActivityIndicator size="large" /> */}
+            <ProgressBar
+              progress={shareDownloadProgress}
+              width={200}
+              color={'#a1c4fd'}
+              // color={'#861657'}
+              useNativeDriver
+              borderWidth={10}
+              borderColor={'#d5ecf7'}
+              // borderColor={'#f0f0f0'}
+            />
+          </View>
+          <View />
+          <View />
         </View>
       </Overlay>
     );
@@ -103,11 +121,10 @@ const ShareModal = ({ shareModalVisible }) => {
 //       }
 // });
 
-const mapStateToProps = ({ homePageState }) => {
-    const { shareModalVisible } = homePageState;
-    return { shareModalVisible };
+const mapStateToProps = ({ sharePageState }) => {
+    const { shareModalVisible, shareDownloadProgress } = sharePageState;
+    return { shareModalVisible, shareDownloadProgress };
 };
 
 export default connect(mapStateToProps, {
-  homePageToggleShareModal: _homePageToggleShareModal
 })(ShareModal);
