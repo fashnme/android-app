@@ -4,7 +4,7 @@ import { Header, ListItem, Card } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { Actions } from 'react-native-router-flux';
 import { EmptyPage } from './basic';
-import dummy_notification from './dummy_notification';
+// import dummy_notification from './dummy_notification';
 import {
   notificationPageGetNotifcations,
   celebrityPageVisitAndSetData,
@@ -259,7 +259,7 @@ class NotificationPage extends Component {
         />
         <FlatList
           keyExtractor={(item, index) => index.toString()}
-          data={dummy_notification}
+          data={notificationArray}
           renderItem={this.renderItem.bind(this)}
           ListEmptyComponent={<EmptyPage title={'No New Notification!'} subtitle={''} />}
           refreshControl={

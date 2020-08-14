@@ -14,11 +14,12 @@ import {
   HOME_PAGE_SET_PERSONAL_VERTICAL_CAROUSEL_REF,
   USER_LIKED_POST,
   USER_UNLIKED_POST,
-  HOME_PAGE_TOGGLE_SHARE_MODAL,
   USER_SET_ACTION_DATA,
   PERSONAL_PAGE_SET_PERSONAL_DETAILS_AND_USERID,
   PLAY_STORE_LINK,
-  FIREBASE_DOMAIN_URI_PREFIX
+  FIREBASE_DOMAIN_URI_PREFIX,
+  SHARE_PAGE_TOGGLE_SHARE_MODAL,
+  SHARE_PAGE_UPDATE_DOWNLOAD_PROGRESS
 } from '../types';
 
 import {
@@ -216,14 +217,6 @@ export const homePageDislikePost = ({ userToken, postId, userId }) => {
   };
 };
 
-// Method to Toggle Share Modal on HomePage
-export const homePageToggleShareModal = (isVisible) => {
-  return {
-    type: HOME_PAGE_TOGGLE_SHARE_MODAL,
-    payload: isVisible
-  };
-};
-
 // Method to mark that video is viewed by user
 export const homePageMarkUserViewedPost = ({ posterId, postId, referrerId, userToken }) => {
   console.log('homePageMarkUserViewedPost', { posterId, postId, referrerId, userToken });
@@ -251,7 +244,7 @@ export const homePageMarkUserViewedPost = ({ posterId, postId, referrerId, userT
 
 export const homePageSharePost = ({ postData, referrerId }) => {
   return (dispatch) => {
-    dispatch({ type: HOME_PAGE_TOGGLE_SHARE_MODAL, payload: true });
+    dispatch({ type: SHARE_PAGE_TOGGLE_SHARE_MODAL, payload: true });
     let url = '';
     let thumbnailUrl = '';
     if (postData.mediaType === 'video') {
@@ -285,7 +278,9 @@ export const homePageSharePost = ({ postData, referrerId }) => {
          }
          RNFS.downloadFile({
            fromUrl: url,
-           toFile: outputPath
+           toFile: outputPath,
+           progressDivider: 3,
+           progress: ({ contentLength, bytesWritten }) => dispatch({ type: SHARE_PAGE_UPDATE_DOWNLOAD_PROGRESS, payload: (bytesWritten / contentLength).toFixed(2) })
          })
          .promise.then(() => {
            RNFS.readFile(outputPath, 'base64')
@@ -305,7 +300,7 @@ export const homePageSharePost = ({ postData, referrerId }) => {
              dynamicLinks().buildShortLink(dynamicLinkOptions)
              .then((link) => {
                  const content = `data:${b64PreExt};base64,${d}`;
-                 const message = `Patang App\u000A \u000ACheck out ${postData.userName}'s Post \u000A${postData.caption.trim()} \u000A \u000AWatch Now:\u000A${link} \u000A \u000APatang App: Indian Video Shopping & Sharing App ❤`;
+                 const message = `Patang App\u000A \u000ACheck out ${postData.userName}'s Post \u000A \u000A${postData.caption.trim()} \u000A \u000AWatch Now:\u000A${link} \u000A \u000APatang App: Indian Video Shopping & Sharing App ❤`;
                  const options = { message, url: content, title: 'Share Now' };
                  Share.open(options)
                   .then((res) => { console.log('homePageSharePost Post Shared', res); })
@@ -316,7 +311,7 @@ export const homePageSharePost = ({ postData, referrerId }) => {
              });
            })
            .finally(() => {
-             dispatch({ type: HOME_PAGE_TOGGLE_SHARE_MODAL, payload: false });
+             dispatch({ type: SHARE_PAGE_TOGGLE_SHARE_MODAL, payload: false });
            });
            // return { path: outputPath }; // Downloaded Successfully
          })

@@ -27,7 +27,6 @@ export const HOME_PAGE_PUBLIC_FEED_EXTRA_DATA_UPDATE = 'home_page_public_feed_ex
 export const HOME_PAGE_SET_PUBLIC_VERTICAL_CAROUSEL_REF = 'home_page_set_public_vertical_carousel_ref';
 export const HOME_PAGE_SET_PERSONAL_VERTICAL_CAROUSEL_REF = 'home_page_set_personal_vertical_carousel_ref';
 export const HOME_PAGE_ACTIVE_TAB_UPDATE = 'home_page_active_tab_update';
-export const HOME_PAGE_TOGGLE_SHARE_MODAL = 'home_page_toggle_share_modal';
 
 // Keeping track of users Actions
 export const USER_SET_ACTION_DATA = 'user_set_action_data';
@@ -106,6 +105,10 @@ export const SETTING_PAGE_GENERAL_LOADING_TOGGLE = 'setting_page_general_loading
 
 // Cart Operation
 export const MANAGE_CART_PAGE_SET_CART_ARRAY = 'manage_cart_page_set_cart_array';
+
+// Share page
+export const SHARE_PAGE_TOGGLE_SHARE_MODAL = 'share_page_toggle_share_modal';
+export const SHARE_PAGE_UPDATE_DOWNLOAD_PROGRESS = 'share_page_update_download_progress';
 
 // Comments Page
 export const COMMENTS_PAGE_TOGGLE_COMMENTS_MODAL = 'comments_page_toggle_comments_modal';

@@ -14,6 +14,7 @@ import CustomPostListViewReducer from './CustomPostListViewReducer';
 import VideoPlayStatusReducer from './VideoPlayStatusReducer';
 import ExplorePageReducer from './ExplorePageReducer';
 import ReferralState from './ReferralState';
+import SharePageReducer from './SharePageReducer';
 
 export default combineReducers({
     homePageState: HomePageReducer,
@@ -30,5 +31,6 @@ export default combineReducers({
     customPostListViewState: CustomPostListViewReducer,
     videoPlayStatusState: VideoPlayStatusReducer,
     explorePageState: ExplorePageReducer,
-    referralState: ReferralState
+    referralState: ReferralState,
+    sharePageState: SharePageReducer
 });
