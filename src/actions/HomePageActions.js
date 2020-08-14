@@ -300,7 +300,7 @@ export const homePageSharePost = ({ postData, referrerId }) => {
              dynamicLinks().buildShortLink(dynamicLinkOptions)
              .then((link) => {
                  const content = `data:${b64PreExt};base64,${d}`;
-                 const message = `Patang App\u000A \u000ACheck out ${postData.userName}'s Post \u000A${postData.caption.trim()} \u000A \u000AWatch Now:\u000A${link} \u000A \u000APatang App: Indian Video Shopping & Sharing App ❤`;
+                 const message = `Patang App\u000A \u000ACheck out ${postData.userName}'s Post \u000A \u000A${postData.caption.trim()} \u000A \u000AWatch Now:\u000A${link} \u000A \u000APatang App: Indian Video Shopping & Sharing App ❤`;
                  const options = { message, url: content, title: 'Share Now' };
                  Share.open(options)
                   .then((res) => { console.log('homePageSharePost Post Shared', res); })
