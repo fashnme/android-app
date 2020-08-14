@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
-import { Dimensions, StatusBar, View, BackHandler, Alert } from 'react-native';
+import { Dimensions, StatusBar, View, BackHandler, Alert, Image } from 'react-native';
+import axios from 'axios';
 import { connect } from 'react-redux';
 import { Actions } from 'react-native-router-flux';
 import Carousel from 'react-native-snap-carousel';
-import FlashMessage from 'react-native-flash-message';
+import FlashMessage, { showMessage } from 'react-native-flash-message';
+
 import {
   homePageUpdateActiveTab,
   homePageSetPublicVerticalCarouselRef,
@@ -34,6 +36,17 @@ class HomePage extends Component {
     this.viewabilityConfig = { viewAreaCoveragePercentThreshold: 95 };
   }
   componentDidMount() {
+    // Check Internet Status
+    axios.get('https://clients3.google.com/generate_204')
+        .then((response) => {
+          if (response.status !== 204) {
+            showMessage({ message: 'No Internet', type: 'danger', duration: 20000, floating: true, icon: 'warning', description: 'Check You Internet Connection' });
+          }
+        })
+        .catch(() => {
+          showMessage({ message: 'No Internet', type: 'danger', duration: 20000, floating: true, icon: 'warning', description: 'Check You Internet Connection' });
+        });
+
     // Getting the Initial Feed Data, when App in opened
     const { userToken, feedData } = this.props; // Transfered this Method calling to Splash Screen
     if (feedData.length === 0) {
@@ -134,14 +147,20 @@ class HomePage extends Component {
     }
 
     // Return the Spinner
-    return <View />;
+    return (
+      <View style={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'column', flex: 1, backgroundColor: 'white' }}>
+        <Image source={require('../resources/background/loader-gif.gif')} style={{ height: 150, width: 150 }} />
+        <FlashMessage position="top" duration={1000} ref="homePage" />
+      </View>
+    );
   }
 }
-// <FlashMessage position="top" duration={500} />
+//../resources/background/loader-gif.gif
 
 const mapStateToProps = ({ homePageState, personalPageState }) => {
   const { feedData, feedPageNum, publicFeedData, activeTab } = homePageState;
   const { userToken } = personalPageState;
+  // console.log('HomePage mapStateToProps', feedData.length, feedPageNum);
   return { feedData, feedPageNum, publicFeedData, activeTab, userToken };
 };
 
