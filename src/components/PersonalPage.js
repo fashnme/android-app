@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, FlatList, StatusBar, RefreshControl } from 'react-native';
+import { View, Text, FlatList, StatusBar, RefreshControl, Image } from 'react-native';
 import { connect } from 'react-redux';
 import { Header } from 'react-native-elements';
 import { Actions } from 'react-native-router-flux';
@@ -31,14 +31,19 @@ class PersonalPage extends Component {
   }
 
   render() {
-    const { userToken, personalPageLoading } = this.props;
+    const { userToken, personalPageLoading, isVerified, userName } = this.props;
     return (
       <View style={{ flex: 1 }}>
         <StatusBar hidden />
           <Header
             backgroundColor={'white'}
             placement={'center'}
-            centerComponent={{ text: `@${this.props.userName}`, style: { color: '#808080', fontWeight: 'bold', fontSize: 19 } }}
+            centerComponent={
+              <View style={{ flexDirection: 'row' }}>
+                <Text style={{ color: '#808080', fontWeight: 'bold', fontSize: 19 }}>@{userName}</Text>
+                { isVerified ? <Image source={require('../resources/icons/verifiedUser.png')} style={{ height: 22, width: 22, margin: 0, marginLeft: 3 }} /> : <View /> }
+              </View>
+            }
             rightComponent={{ icon: 'settings', color: '#ee5f73', size: 28, onPress: () => { Actions.settings(); } }}
             containerStyle={{ paddingTop: 0, height: 50 }}
           />
@@ -65,8 +70,8 @@ class PersonalPage extends Component {
 
 const mapStateToProps = ({ personalPageState }) => {
   const { personalUserId, userToken, personalUserDetails, personalPageLoading } = personalPageState;
-  const { userName } = personalUserDetails;
-  return { personalUserId, userToken, userName, personalPageLoading };
+  const { userName, isVerified } = personalUserDetails;
+  return { personalUserId, userToken, userName, personalPageLoading, isVerified };
 };
 
 export default connect(mapStateToProps, {

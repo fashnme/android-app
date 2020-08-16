@@ -149,7 +149,7 @@ class HomePage extends Component {
     // Return the Spinner
     return (
       <View style={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'column', flex: 1, backgroundColor: 'white' }}>
-        <Image source={require('../resources/background/loader-gif.gif')} style={{ height: 150, width: 150 }} />
+        <Image source={require('../resources/background/loader-gif.gif')} style={{ height: 250, width: 250 }} />
         <FlashMessage position="top" duration={1000} ref="homePage" />
       </View>
     );

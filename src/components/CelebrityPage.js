@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, FlatList, RefreshControl } from 'react-native';
+import { View, FlatList, RefreshControl, Image, Text } from 'react-native';
 import { Header } from 'react-native-elements';
 import { connect } from 'react-redux';
 import UserDetailsComp from './celebScreen/UserDetailsComp';
@@ -31,13 +31,19 @@ class CelebrityPage extends Component {
   }
 
   render() {
-    const { userToken, userName, celebPageLoading, userId } = this.props;
+    const { userToken, userName, celebPageLoading, userId, isVerified } = this.props;
     return (
       <View style={{ flex: 1 }}>
         <Header
           backgroundColor={'white'}
           placement={'center'}
-          centerComponent={{ text: `@${userName}`, style: { color: '#808080', fontWeight: 'bold', fontSize: 19 } }}
+          // centerComponent={{ text: `@${userName}`, style: { color: '#808080', fontWeight: 'bold', fontSize: 19 } }}
+          centerComponent={
+            <View style={{ flexDirection: 'row' }}>
+              <Text style={{ color: '#808080', fontWeight: 'bold', fontSize: 19 }}>@{userName}</Text>
+              { isVerified ? <Image source={require('../resources/icons/verifiedUser.png')} style={{ height: 22, width: 22, margin: 0, marginLeft: 3 }} /> : <View /> }
+            </View>
+          }
           containerStyle={{ paddingTop: 0, height: 50 }}
         />
         <FlatList
@@ -63,9 +69,9 @@ class CelebrityPage extends Component {
 
 const mapStateToProps = ({ celebPageState, personalPageState }) => {
     const { userDetails, celebPageLoading, userId } = celebPageState;
-    const { userName } = userDetails;
+    const { userName, isVerified } = userDetails;
     const { userToken } = personalPageState;
-    return { userToken, userName, celebPageLoading, userId };
+    return { userToken, userName, celebPageLoading, userId, isVerified };
 };
 
 export default connect(mapStateToProps, {
