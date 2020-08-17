@@ -60,6 +60,7 @@ export const PRODUCT_PAGE_SET_TOGGLE_PRODUCTS_DATA = 'product_page_set_toggle_pr
 export const PRODUCT_PAGE_SET_COMPLETE_PRODUCTS_DATA = 'product_page_set_complete_products_data';
 export const PRODUCT_PAGE_PRICE_AND_SIZE_UPDATE = 'product_page_price_and_size_update';
 export const PRODUCT_PAGE_TOGGLE_FULL_IMAGE_VIEWER = 'product_page_toggle_full_image_viewer';
+export const PRODUCT_PAGE_ADD_PRODUCT_TO_REMINDER = 'product_page_add_product_to_reminder';
 
 // Signup page
 export const SIGNUP_PAGE_PHONE_UPDATE = 'signup_page_phone_update';

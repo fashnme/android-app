@@ -7,12 +7,14 @@ import {
   PRODUCT_PAGE_SET_COMPLETE_PRODUCTS_DATA,
   PRODUCT_PAGE_PRICE_AND_SIZE_UPDATE,
   VIDEO_PAGE_PLAY_STATUS_UPDATE,
-  PRODUCT_PAGE_TOGGLE_FULL_IMAGE_VIEWER
+  PRODUCT_PAGE_TOGGLE_FULL_IMAGE_VIEWER,
+  PRODUCT_PAGE_ADD_PRODUCT_TO_REMINDER
 } from '../types';
 
 import {
   ProductPageFetchProductsInfoURL,
-  ProductPageGetUpdatePriceAndSizeURL
+  ProductPageGetUpdatePriceAndSizeURL,
+  ProductPageAddProductToReminderURL
 } from '../URLS';
 
 
@@ -64,6 +66,27 @@ export const productPageUpdatePriceAndSize = ({ productId }) => {
             dispatch({ type: PRODUCT_PAGE_PRICE_AND_SIZE_UPDATE, payload });
         });
     };
+};
+
+// Method to Add product to Reminder
+export const productPageAddProductToReminder = ({ userToken, productData }) => {
+  const { productId, price } = productData;
+  return (dispatch) => {
+    dispatch({ type: PRODUCT_PAGE_ADD_PRODUCT_TO_REMINDER, payload: productId });
+    axios({
+        method: 'post',
+        url: ProductPageAddProductToReminderURL,
+        headers: { 'Content-Type': 'application/json', Authorization: userToken },
+        data: { productId, price }
+        })
+        .then((response) => {
+            console.log('productPageAddProductToReminder', response.data);
+        })
+        .catch((error) => {
+            //handle error
+            console.log('productPageAddProductToReminder Actions Error ', error);
+      });
+  };
 };
 
 

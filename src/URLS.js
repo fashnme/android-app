@@ -37,6 +37,7 @@ export const ExplorePageGetTrendingPostsURL = 'http://fashn-backend.herokuapp.co
 // ProductPage Urls
 export const ProductPageFetchProductsInfoURL = 'https://fashn-backend.herokuapp.com/product/fetch-products';
 export const ProductPageGetUpdatePriceAndSizeURL = 'https://fashn-backend.herokuapp.com/product/get-updated-price-and-size';
+export const ProductPageAddProductToReminderURL = 'https://fashn-backend.herokuapp.com/user/interested-in-product';
 
 // SettingsPage Urls
 export const SettingsPageAboutUsURL = 'https://play.google.com/store/apps/details?id=com.patang';

@@ -4,7 +4,8 @@ import {
   PRODUCT_PAGE_SELECTED_PRODUCT_UPDATE,
   PRODUCT_PAGE_SET_POSTID_AND_POSTERID,
   PRODUCT_PAGE_PRICE_AND_SIZE_UPDATE,
-  PRODUCT_PAGE_TOGGLE_FULL_IMAGE_VIEWER
+  PRODUCT_PAGE_TOGGLE_FULL_IMAGE_VIEWER,
+  PRODUCT_PAGE_ADD_PRODUCT_TO_REMINDER
 } from '../types';
 
 const INITIAL_STATE = {
@@ -14,6 +15,7 @@ const INITIAL_STATE = {
   productsCompleteData: [],
   selectedItem: 0,
   sizeAndPriceObject: {}, // { productId: {price, crossedPrice, size} }
+  productAddedForReminder: {}, // { productId: 1 } Tracks whether the product is requested for Reminder
   postId: '',
   posterId: ''
 };
@@ -22,7 +24,7 @@ export default (state = INITIAL_STATE, action) => {
     switch (action.type) {
       case PRODUCT_PAGE_SET_TOGGLE_PRODUCTS_DATA: {
         const { isVisible, productsData } = action.payload;
-        return { ...state, productsModalVisible: isVisible, productsData };
+        return { ...state, productsModalVisible: isVisible, productsData, selectedItem: 0 };
       }
 
       case PRODUCT_PAGE_SET_COMPLETE_PRODUCTS_DATA: {
@@ -34,6 +36,12 @@ export default (state = INITIAL_STATE, action) => {
         const newObj = { ...state.sizeAndPriceObject, ...action.payload };
         // console.log('CompleteProductData Reducer Price & Size', newObj);
         return { ...state, sizeAndPriceObject: newObj };
+      }
+
+      case PRODUCT_PAGE_ADD_PRODUCT_TO_REMINDER: {
+        const newReminder = { ...state.productAddedForReminder };
+        newReminder[action.payload] = 1;
+        return { ...state, productAddedForReminder: newReminder };
       }
 
       case PRODUCT_PAGE_SELECTED_PRODUCT_UPDATE:
