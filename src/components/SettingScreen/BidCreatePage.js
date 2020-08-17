@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, ScrollView, ActivityIndicator } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { Header, Card, Input, Button, Icon, Overlay } from 'react-native-elements';
+import { showMessage } from 'react-native-flash-message';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { connect } from 'react-redux';
 import LinearGradient from 'react-native-linear-gradient';
@@ -58,7 +59,8 @@ const renderDatePicker = (setState, showCalender, setPropError) => {
 const checkPropsAndCreateBid = ({ amount, message, selectedAddress, startDate, endDate, postId, posterId,
       productData, setPropError, userToken, bidsPageCreateBid }) => {
   if (amount.length === 0) {
-    setPropError('Amount you can pay for Renting');
+    setPropError('Enter Amount you want pay for Renting');
+    showMessage({ message: 'Reminder Added', type: 'success', duration: 5000, floating: true, icon: 'success', description: 'We will remind you when product is back in Stock' });
     return;
   }
   if (startDate.length === 0) {
@@ -129,7 +131,7 @@ const BidCreatePage = ({ postId, posterId, productData, userToken, selectedAddre
               start: { x: 1.0, y: 0.0 },
               end: { y: 1.0, x: 1.0 },
             }}
-            title={'CREATE'}
+            title={'REQUEST'}
             buttonStyle={{ paddingLeft: 30, paddingRight: 30 }}
             raised
             onPress={() => {
@@ -146,7 +148,7 @@ const BidCreatePage = ({ postId, posterId, productData, userToken, selectedAddre
 
           <Card containerStyle={{ borderRadius: 10, borderColor: '#e1fade', borderWidth: 2 }}>
             <Input
-              placeholder='Enter the of Bid Amount'
+              placeholder='Rent you want to Pay'
               label={'Amount (\u20B9)'}
               keyboardType={'number-pad'}
               value={amount}

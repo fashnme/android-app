@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { View, Text, Image, TouchableNativeFeedback, FlatList, TouchableOpacity } from 'react-native';
-import { Card, Badge } from 'react-native-elements';
+import { Card, Badge, Button } from 'react-native-elements';
 import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux';
+import { showMessage } from 'react-native-flash-message';
+import LinearGradient from 'react-native-linear-gradient';
 import { globalStyles } from '../../Styles';
 import AddToCartAndWishlistIcon from './AddToCartAndWishlistIcon';
 import FullProductImageViewer from './FullProductImageViewer';
@@ -10,7 +12,8 @@ import {
   productPageOpenProductModal as _productPageOpenProductModal,
   productPageUpdatePriceAndSize as _productPageUpdatePriceAndSize,
   manageCartAddProductToCart as _manageCartAddProductToCart,
-  productPageToggleFullImageViewer as _productPageToggleFullImageViewer
+  productPageToggleFullImageViewer as _productPageToggleFullImageViewer,
+  productPageAddProductToReminder as _productPageAddProductToReminder
 } from '../../actions';
 
 
@@ -40,6 +43,42 @@ const renderError = ({ error }) => {
     <View style={{ flex: 1, margin: marginTop }}>
       <Text style={{ color: 'red', textAlign: 'center' }}> { error } </Text>
     </View>
+  );
+};
+
+const renderInStockReminderButton = ({ sizesAvailable, userToken, productData, productAddedForReminder,
+  productPageAddProductToReminder }) => {
+  const { productId } = productData;
+  if (sizesAvailable === undefined || sizesAvailable.length !== 0) {
+    return <View />;
+  }
+  if (productId in productAddedForReminder) {
+    return (
+      <Button
+        title={'Reminder Added'}
+        disabled
+        buttonStyle={{ borderRadius: 12 }}
+        containerStyle={{ width: '60%', alignSelf: 'center', borderRadius: 12 }}
+      />
+    );
+  }
+  return (
+    <Button
+      title={'In-Stock Reminder'}
+      onPress={() => {
+        productPageAddProductToReminder({ userToken, productData });
+        showMessage({ message: 'Reminder Added', type: 'success', duration: 5000, floating: true, icon: 'success', description: 'We will remind you when product is back in Stock' });
+      }}
+      ViewComponent={LinearGradient}
+      linearGradientProps={{
+        colors: ['#00d8c0', '#00c0a8', '#00a890'],
+        start: { x: 1.0, y: 0.0 },
+        end: { y: 1.0, x: 1.0 },
+      }}
+      buttonStyle={{ borderRadius: 12 }}
+      containerStyle={{ width: '60%', alignSelf: 'center', borderRadius: 12 }}
+      raised
+    />
   );
 };
 
@@ -100,7 +139,8 @@ const renderCrossedPriceBlock = ({ crossedPrice, price }) => {
 const checkAndCompleteRequest = ({ productId, sizeSelected, postId, userToken, setError, posterId,
   visitCart, manageCartAddProductToCart, productPageOpenProductModal }) => {
   if (sizeSelected === null) {
-    setError('Please Scroll Down & Select Size');
+    // setError('Please Scroll Down & Select Size');
+    showMessage({ message: 'Please Scroll Down & Select Size', type: 'danger', duration: 5000, floating: true, icon: 'warning' });
     return;
   }
   manageCartAddProductToCart({
@@ -115,11 +155,13 @@ const checkAndCompleteRequest = ({ productId, sizeSelected, postId, userToken, s
     Actions.manageCart();
   }
   productPageOpenProductModal({ isVisible: false, productsData: [], postDetails: { postId, posterId } });
-  setError('Added to Bag!');
+  // setError('Added to Bag!');
+  showMessage({ message: 'Added to Bag!', type: 'success', floating: true, icon: 'success' });
 };
 
-const ProductPriceSizeView = ({ productData, postId, posterId, askForSize, userToken,
-  productPageOpenProductModal, productPageUpdatePriceAndSize, manageCartAddProductToCart, productPageToggleFullImageViewer }) => {
+const ProductPriceSizeView = ({ productData, postId, posterId, askForSize, userToken, productAddedForReminder,
+  productPageOpenProductModal, productPageUpdatePriceAndSize, manageCartAddProductToCart, productPageToggleFullImageViewer,
+  productPageAddProductToReminder }) => {
   const [sizeSelected, setSizeSelected] = useState(null);
   // console.log('ProductPriceSizeView productData', productData);
   const [error, setError] = useState('');
@@ -159,6 +201,7 @@ const ProductPriceSizeView = ({ productData, postId, posterId, askForSize, userT
         </View>
       </View>
       {renderSizeBlock({ sizesAvailable, sizeSelected, setSizeSelected })}
+      {renderInStockReminderButton({ sizesAvailable, userToken, productData, productAddedForReminder, productPageAddProductToReminder })}
       <FullProductImageViewer />
     </View>
   );
@@ -221,6 +264,7 @@ const styles = {
   codeView: {
     borderWidth: 1,
     margin: 15,
+    marginTop: 25,
     marginBottom: 20,
     borderStyle: 'dashed',
     alignItems: 'center',
@@ -234,7 +278,8 @@ const styles = {
 };
 
 const mapStateToProps = ({ productPageState, personalPageState }) => {
-    const { productsData, selectedItem, postId, posterId, productsModalVisible, sizeAndPriceObject } = productPageState;
+    const { productsData, selectedItem, postId, posterId, productsModalVisible,
+      productAddedForReminder, sizeAndPriceObject } = productPageState;
     if (!productsModalVisible) {
       return { productData: undefined };
     }
@@ -253,12 +298,13 @@ const mapStateToProps = ({ productPageState, personalPageState }) => {
       productData = oldData;
     }
 
-    return { productData, postId, posterId, askForSize, userToken };
+    return { productData, postId, posterId, askForSize, userToken, productAddedForReminder };
 };
 
 export default connect(mapStateToProps, {
   productPageOpenProductModal: _productPageOpenProductModal,
   productPageUpdatePriceAndSize: _productPageUpdatePriceAndSize,
   manageCartAddProductToCart: _manageCartAddProductToCart,
-  productPageToggleFullImageViewer: _productPageToggleFullImageViewer
+  productPageToggleFullImageViewer: _productPageToggleFullImageViewer,
+  productPageAddProductToReminder: _productPageAddProductToReminder
 })(ProductPriceSizeView);
