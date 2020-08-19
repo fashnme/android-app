@@ -88,37 +88,6 @@ export const accountSettingGetAndSetUserData = ({ userId, userToken }) => {
   };
 };
 
-
-// Update the user Profile Pic & Upload this Image to S3
-export const accountSettingsUpdateUserProfilePic = ({ profilePic, personalUserId }) => {
-  return (dispatch) => {
-    dispatch({ type: SETTING_PAGE_USER_PROFILE_PIC_UDPATE, payload: profilePic });
-    Image.getSize(profilePic, (w, h) => {
-      ImageResizer.createResizedImage(profilePic, w, h, 'WEBP', 40).then((response) => {
-        const { uri } = response;
-        const name = `${personalUserId}-t-${Math.round((new Date().getTime()) / 1000)}.webp`;
-        const keyPrefix = 'profilePictures/';
-        AWS_OPTIONS.keyPrefix = keyPrefix;
-        const file = { uri, name, type: 'image/webp' };
-        RNS3.put(file, AWS_OPTIONS).then(resp => {
-          if (resp.status === 201) {
-            dispatch({ type: SETTING_PAGE_USER_PROFILE_PIC_UDPATE, payload: resp.body.postResponse.location });
-            console.log('Content Uploaded', resp.body.postResponse.location);
-          } else {
-            console.log('accountSettingsUpdateUserProfilePic Error in Uploading profilePic', resp, uri, name);
-          }
-        })
-        .catch((err) => {
-          console.log('accountSettingsUpdateUserProfilePic Error Uploading Image', err);
-        });
-      }).catch((err) => {
-        console.log('Error in Image Compression', err);
-      });
-    });
-  };
-};
-
-
 // Get City & State from Pincode
 export const accountSettingsGetCityAndStateFromPin = ({ pincode, updateState, updateCity }) => {
   const headers = {
@@ -191,39 +160,102 @@ export const accountSettingsUpdateSocialMediaLinks = ({ socialMediaLinks, newSoc
 };
 
 
+// Update the user Profile Pic & Upload this Image to S3
+export const accountSettingsUpdateUserProfilePic = ({ profilePic }) => {
+  return {
+    type: SETTING_PAGE_USER_PROFILE_PIC_UDPATE,
+    payload: profilePic
+  };
+  // return (dispatch) => {
+  //   dispatch({ type: SETTING_PAGE_USER_PROFILE_PIC_UDPATE, payload: profilePic });
+  //   Image.getSize(profilePic, (w, h) => {
+  //     ImageResizer.createResizedImage(profilePic, w, h, 'WEBP', 40).then((response) => {
+  //       const { uri } = response;
+  //       const name = `${personalUserId}-t-${Math.round((new Date().getTime()) / 1000)}.webp`;
+  //       const keyPrefix = 'profilePictures/';
+  //       AWS_OPTIONS.keyPrefix = keyPrefix;
+  //       const file = { uri, name, type: 'image/webp' };
+  //       RNS3.put(file, AWS_OPTIONS).then(resp => {
+  //         if (resp.status === 201) {
+  //           dispatch({ type: SETTING_PAGE_USER_PROFILE_PIC_UDPATE, payload: resp.body.postResponse.location });
+  //           console.log('Content Uploaded', resp.body.postResponse.location);
+  //         } else {
+  //           console.log('accountSettingsUpdateUserProfilePic Error in Uploading profilePic', resp, uri, name);
+  //         }
+  //       })
+  //       .catch((err) => {
+  //         console.log('accountSettingsUpdateUserProfilePic Error Uploading Image', err);
+  //       });
+  //     }).catch((err) => {
+  //       console.log('Error in Image Compression', err);
+  //     });
+  //   });
+  // };
+};
+
 // Save the User Profile Changes in DB
-export const accountSettingsSaveProfileChanges = ({ profileDetailsChanges }) => {
+export const accountSettingsSaveProfileChanges = ({ profileDetailsChanges, personalUserId }) => {
     const { dateOfBirth, userName, fullName, bio,
       socialMediaLinks, profilePic, userToken, gender, oldUserName } = profileDetailsChanges;
     const userNameChanged = userName !== oldUserName;
-    const headers = {
-      'Content-Type': 'application/json',
-      Authorization: userToken
-    };
-    // console.log(' accountSettingsSaveProfileChanges, data', { newProfile: { dob: dateOfBirth, oldUserName, userName, fullName, gender, bio, socialMediaLinks, profilePic }, userNameChanged });
     return (dispatch) => {
       dispatch({ type: SETTING_PAGE_GENERAL_LOADING_TOGGLE, payload: true });
-      axios({
-          method: 'post',
-          url: SettingsPageSaveProfileChangesURL,
-          headers,
-          data: { newProfile: { dob: dateOfBirth, userName, fullName, gender, bio, socialMediaLinks, profilePic }, userNameChanged }
-          })
-          .then((response) => {
-              console.log('accountSettingsSaveProfileChanges', response.data, response.status);
-          })
-          .catch((error) => {
-              console.log('accountSettingsSaveProfileChanges Actions Error ', error);
-              const errorMessage = error.response.data;
-              if (errorMessage.length > 25) {
-                dispatch({ type: SIGNUP_PAGE_ERROR_UPDATE, payload: 'Server Error, Please try in some time' });
+      if (profilePic.includes('https:') || profilePic.includes('http:')) {
+        // profilePic not changed
+        updateProfileChanges({ dateOfBirth, userName, profilePic, fullName, gender, bio, socialMediaLinks, userToken, userNameChanged, dispatch });
+      } else {
+        // Upload Profile Pic
+        Image.getSize(profilePic, (w, h) => {
+          ImageResizer.createResizedImage(profilePic, w, h, 'WEBP', 40).then((response) => {
+            const { uri } = response;
+            const name = `${personalUserId}-t-${Math.round((new Date().getTime()) / 1000)}.webp`;
+            const keyPrefix = 'profilePictures/';
+            AWS_OPTIONS.keyPrefix = keyPrefix;
+            const file = { uri, name, type: 'image/webp' };
+            RNS3.put(file, AWS_OPTIONS).then(resp => {
+              if (resp.status === 201) {
+                updateProfileChanges({ dateOfBirth, userName, profilePic: resp.body.postResponse.location, fullName, gender, bio, socialMediaLinks, userToken, userNameChanged, dispatch });
+                dispatch({ type: SETTING_PAGE_USER_PROFILE_PIC_UDPATE, payload: resp.body.postResponse.location }); // So, that if user press the Save Button Again, the image is not uploaded again, instead falls in above if case
+                console.log('Profile Photo Uploaded', resp.body.postResponse.location);
+              } else {
+                dispatch({ type: SIGNUP_PAGE_ERROR_UPDATE, payload: 'Error in Uploading Image:' });
+                console.log('accountSettingsSaveProfileChanges Error in Uploading profilePic', resp, uri, name);
               }
-              dispatch({ type: SIGNUP_PAGE_ERROR_UPDATE, payload: errorMessage });
-          })
-          .finally(() => {
-              dispatch({ type: SETTING_PAGE_GENERAL_LOADING_TOGGLE, payload: false });
+            })
+            .catch((err) => {
+              dispatch({ type: SIGNUP_PAGE_ERROR_UPDATE, payload: 'Error in Uploading Image' });
+              console.log('accountSettingsSaveProfileChanges Error Uploading Image', err);
+            });
+          }).catch((err) => {
+            console.log('Error in Image Compression', err);
           });
+        });
+      }
     };
+};
+
+const updateProfileChanges = ({ dateOfBirth, userName, fullName, gender, bio, socialMediaLinks, profilePic,
+  userToken, userNameChanged, dispatch }) => {
+  axios({
+      method: 'post',
+      url: SettingsPageSaveProfileChangesURL,
+      headers: { 'Content-Type': 'application/json', Authorization: userToken },
+      data: { newProfile: { dob: dateOfBirth, userName, fullName, gender, bio, socialMediaLinks, profilePic }, userNameChanged }
+      })
+      .then((response) => {
+          console.log('accountSettingsSaveProfileChanges', response.data, response.status);
+      })
+      .catch((error) => {
+          console.log('accountSettingsSaveProfileChanges Actions Error ', error);
+          const errorMessage = error.response.data;
+          if (errorMessage.length > 25) {
+            dispatch({ type: SIGNUP_PAGE_ERROR_UPDATE, payload: 'Server Error, Please try in some time' });
+          }
+          dispatch({ type: SIGNUP_PAGE_ERROR_UPDATE, payload: errorMessage });
+      })
+      .finally(() => {
+          dispatch({ type: SETTING_PAGE_GENERAL_LOADING_TOGGLE, payload: false });
+      });
 };
 
 // Get all the Orders Done by the User

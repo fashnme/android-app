@@ -108,12 +108,13 @@ class RewardsPage extends Component {
            <View style={{ flexDirection: 'row' }}>
             <Text style={{ fontWeight: 'bold', fontSize: 20, color: 'grey' }}>Earned</Text>
             <Text style={{ fontWeight: 'bold', color: 'green', fontSize: 20 }}>{` +${referralAmount}`}</Text>
+            <Text style={{ fontWeight: 'bold', fontSize: 20, color: 'grey' }}> Coins</Text>
            </View>
          }
          subtitle={
            <View>
             <Text style={{ fontWeight: 'bold', color: 'grey' }}>{message}</Text>
-            <Text style={{ textTransform: 'capitalize', color: 'grey' }}>{`Status:  ${status === undefined ? 'recieved' : status}`}</Text>
+            <Text style={{ textTransform: 'capitalize', color: 'grey' }}>{`Status:  ${status === undefined ? 'pending' : status}`}</Text>
            </View>
          }
          leftAvatar={{ source: { uri: image } }}

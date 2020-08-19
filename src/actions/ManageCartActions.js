@@ -36,9 +36,8 @@ export const manageCartGetUserCartDetails = ({ userToken }) => {
         })
         .then((response) => {
             const { products } = response.data;
-            console.log('manageCartGetUserCartDetails', response.data);
+            // console.log('manageCartGetUserCartDetails', response.data);
             dispatch({ type: MANAGE_CART_PAGE_SET_CART_ARRAY, payload: products });
-            // TODO TEST
         })
         .catch((error) => {
             console.log('manageCartGetUserCartDetails Actions Error ', error);
@@ -49,17 +48,14 @@ export const manageCartGetUserCartDetails = ({ userToken }) => {
 // Add Product To Cart
 export const manageCartAddProductToCart = (item) => {
   // console.log('Product Added to Cart', item);
-  const { productId, quantity, sizeSelected, postId, posterId, userToken } = item;
-  const headers = {
-    'Content-Type': 'application/json',
-    Authorization: userToken
-  };
+  const { productId, quantity, sizeSelected, postId, referrerId, posterId, userToken } = item;
+  const headers = { 'Content-Type': 'application/json', Authorization: userToken };
   return (dispatch) => {
     axios({
         method: 'post',
         url: ManageCartAddProductToCartURL,
         headers,
-        data: { productId, quantity, size: sizeSelected, referrerPost: postId, referrerId: posterId }
+        data: { productId, quantity, size: sizeSelected, referrerPost: postId, referrerId, posterId }
         })
         .then((response) => {
             console.log('manageCartAddProductToCart Actions', response.data);
@@ -74,7 +70,7 @@ export const manageCartAddProductToCart = (item) => {
 // Remove Product From Cart
 export const manageCartRemoveProductFromCart = (item) => {
   // console.log('manageCartRemoveFromCart', item);
-  const { userToken, productId, addToWishlist } = item;
+  const { userToken, productId, addToWishlist, referrerPost, referrerId, posterId } = item;
   const headers = {
     'Content-Type': 'application/json',
     Authorization: userToken
@@ -88,7 +84,21 @@ export const manageCartRemoveProductFromCart = (item) => {
         })
         .then((response) => {
             console.log('manageCartRemoveProductFromCart Actions', response.data);
-            manageCartGetUserCartDetails({ userToken }); // Again Fetch the Cart Details
+            // manageCartGetUserCartDetails({ userToken }); // Again Fetch the Cart Details
+            // This Method is similar to manageCartGetUserCartDetails()
+            axios({
+                method: 'get',
+                url: ManageCartGetUserCartURL,
+                headers,
+                })
+                .then((resp) => {
+                    const { products } = resp.data;
+                    console.log('manageCartGetUserCartDetails', resp.data);
+                    dispatch({ type: MANAGE_CART_PAGE_SET_CART_ARRAY, payload: products });
+                })
+                .catch((err) => {
+                    console.log('manageCartGetUserCartDetails Actions Error ', err);
+              });
             dispatch({ type: USER_REMOVED_PRODUCT_FROM_CART, payload: productId });
         })
         .catch((error) => {
@@ -97,19 +107,33 @@ export const manageCartRemoveProductFromCart = (item) => {
 
    if (addToWishlist) {
      // Moved the Product from Cart To Wishlist
-     manageCartAddProductToWishlist({ productId, userToken });
+     // manageCartAddProductToWishlist({ productId, userToken, postId: referrerPost, referrerId, posterId });
+     // This method is similar to manageCartAddProductToWishlist()
+     dispatch({ type: USER_ADDED_PRODUCT_TO_WISHLIST, payload: productId });
+     axios({
+         method: 'post',
+         url: ManageCartAddProductToWishlistURL,
+         headers,
+         data: { productId, referrerPost, referrerId, posterId }
+         })
+         .then((response) => {
+             console.log('manageCartAddProductToWishlist resp', response.data);
+         })
+         .catch((error) => {
+             console.log('manageCartAddProductToWishlist Actions Error ', error);
+         });
    }
   };
 };
 
 
 // Add Product to Wishlist
-export const manageCartAddProductToWishlist = ({ productId, userToken, posterId, postId }) => {
+export const manageCartAddProductToWishlist = ({ productId, userToken, posterId, postId, referrerId }) => {
   let data = {};
   if (typeof posterId === 'undefined') {
     data = { productId };
   } else {
-    data = { productId, referrerPost: postId, referrerId: posterId };
+    data = { productId, referrerPost: postId, referrerId, posterId };
   }
   const headers = {
     'Content-Type': 'application/json',

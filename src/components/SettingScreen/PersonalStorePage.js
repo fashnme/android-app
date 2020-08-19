@@ -43,7 +43,7 @@ class PersonalStorePage extends Component {
   }
 
   moveToBagPressed({ item }) {
-    const { productId, referrerId, referrerPost } = item;
+    const { productId, referrerId, referrerPost, posterId } = item;
     const { userToken } = this.props;
     const { sizeSelected } = this.state;
     // console.log('moveToBagPressed', { productId, referrerId, referrerPost, sizeSelected });
@@ -52,11 +52,13 @@ class PersonalStorePage extends Component {
       // console.log('sizeSelected is Null');
       return;
     }
-    this.props.manageCartAddProductToCart({ productId,
+    this.props.manageCartAddProductToCart({
+      productId,
       quantity: 1,
       sizeSelected,
       postId: referrerPost,
-      posterId: referrerId,
+      referrerId,
+      posterId,
       userToken });
 
     this.refs.storePage.showMessage({

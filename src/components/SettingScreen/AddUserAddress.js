@@ -36,10 +36,10 @@ const checkAndAddAddress = ({ userAddress, addressId, userToken, accountSettting
     showAlert('Please Enter Valid Indian Mobile Number'); return;
   }
   if (pinCode.length !== 6) {
-    showAlert('Please Enter a Valid 6 Digit Pincode'); return;
+    showAlert('Please Enter a 6 Digit Pincode'); return;
   }
   if (state.length === 0 || city.length === 0) {
-    showAlert('Please Enter a Valid 6 Digit Pincode'); return;
+    showAlert('Please enter a valid pincode And Select a city'); return;
   }
   if (address.trim().length < 5) {
     showAlert('Please Enter Complete Address'); return;

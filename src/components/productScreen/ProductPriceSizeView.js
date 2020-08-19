@@ -136,7 +136,7 @@ const renderCrossedPriceBlock = ({ crossedPrice, price }) => {
   );
 };
 
-const checkAndCompleteRequest = ({ productId, sizeSelected, postId, userToken, setError, posterId,
+const checkAndCompleteRequest = ({ productId, sizeSelected, postId, userToken, posterId, referrerId,
   visitCart, manageCartAddProductToCart, productPageOpenProductModal }) => {
   if (sizeSelected === null) {
     // setError('Please Scroll Down & Select Size');
@@ -149,6 +149,7 @@ const checkAndCompleteRequest = ({ productId, sizeSelected, postId, userToken, s
     sizeSelected,
     postId,
     posterId,
+    referrerId,
     userToken
   });
   if (visitCart) {
@@ -159,7 +160,7 @@ const checkAndCompleteRequest = ({ productId, sizeSelected, postId, userToken, s
   showMessage({ message: 'Added to Bag!', type: 'success', floating: true, icon: 'success' });
 };
 
-const ProductPriceSizeView = ({ productData, postId, posterId, askForSize, userToken, productAddedForReminder,
+const ProductPriceSizeView = ({ productData, postId, posterId, askForSize, userToken, referrerId, productAddedForReminder,
   productPageOpenProductModal, productPageUpdatePriceAndSize, manageCartAddProductToCart, productPageToggleFullImageViewer,
   productPageAddProductToReminder }) => {
   const [sizeSelected, setSizeSelected] = useState(null);
@@ -189,7 +190,7 @@ const ProductPriceSizeView = ({ productData, postId, posterId, askForSize, userT
           <AddToCartAndWishlistIcon productRelatedData={productRelatedData} />
           <BuyNowButton
             title="BUY NOW" onPress={() => {
-              checkAndCompleteRequest({ productId, sizeSelected, postId, posterId, userToken, setError, visitCart: true, manageCartAddProductToCart, productPageOpenProductModal });
+              checkAndCompleteRequest({ productId, sizeSelected, postId, posterId, referrerId, userToken, setError, visitCart: true, manageCartAddProductToCart, productPageOpenProductModal });
             }}
           />
           <BidForRentButton
@@ -277,7 +278,7 @@ const styles = {
   },
 };
 
-const mapStateToProps = ({ productPageState, personalPageState }) => {
+const mapStateToProps = ({ productPageState, personalPageState, referralState }) => {
     const { productsData, selectedItem, postId, posterId, productsModalVisible,
       productAddedForReminder, sizeAndPriceObject } = productPageState;
     if (!productsModalVisible) {
@@ -297,8 +298,8 @@ const mapStateToProps = ({ productPageState, personalPageState }) => {
     } else {
       productData = oldData;
     }
-
-    return { productData, postId, posterId, askForSize, userToken, productAddedForReminder };
+    const { referrerId } = referralState;
+    return { productData, postId, posterId, askForSize, referrerId, userToken, productAddedForReminder };
 };
 
 export default connect(mapStateToProps, {

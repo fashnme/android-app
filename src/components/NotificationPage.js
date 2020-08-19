@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, FlatList, Image, LayoutAnimation, RefreshControl } from 'react-native';
+import { View, FlatList, Image, LayoutAnimation, RefreshControl, Linking } from 'react-native';
 import { Header, ListItem, Card } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { Actions } from 'react-native-router-flux';
@@ -66,7 +66,7 @@ class NotificationPage extends Component {
           containerStyle={styles.containerStyle}
           rightAvatar={{ source: { uri: image2 }, size: 55, rounded: false, containerStyle: { padding: 0, marginTop: 0 }, onPress: () => this.props.customSinglePostViewPageVisitAndSetData({ postId }) }}
           // rightElement={this.rightImage({ uri: image2 })}
-          // onPress={() => {}}
+          onPress={() => this.props.customSinglePostViewPageVisitAndSetData({ postId })}
           // bottomDivider
         />
       </Card>
@@ -87,7 +87,7 @@ class NotificationPage extends Component {
           containerStyle={styles.containerStyle}
           rightElement={this.rightImage(require('../resources/icons/follow.png'))}
           contentContainerStyle={{ margin: 0, padding: 0 }}
-          // onPress={() => this.props.celebrityPageVisitAndSetData({ userId: referrerId, userToken })}
+          onPress={() => this.props.celebrityPageVisitAndSetData({ userId: followerId, userToken })}
           // bottomDivider
         />
       </Card>
@@ -109,7 +109,7 @@ class NotificationPage extends Component {
           // rightAvatar={{ source: { uri: image2 }, size: 55, containerStyle: { padding: 0, marginTop: 5 } }}
           rightAvatar={{ source: { uri: image2 }, size: 55, rounded: false, containerStyle: { padding: 0, marginTop: 0 }, onPress: () => this.props.customSinglePostViewPageVisitAndSetData({ postId }) }}
           // rightElement={this.rightImage(require('../resources/icons/like.png'))}
-          // onPress={() => {}}
+          onPress={() => this.props.customSinglePostViewPageVisitAndSetData({ postId })}
           // bottomDivider
         />
       </Card>
@@ -133,7 +133,7 @@ class NotificationPage extends Component {
           // rightElement={this.rightImage({ uri: 'https://image.flaticon.com/icons/png/128/2413/2413078.png' })}
           rightAvatar={{ source: require('../resources/icons/referred_icon.png'), containerStyle: { padding: 0, marginTop: 0 }, onPress: () => Actions.rewardsPage() }}
           contentContainerStyle={{ margin: 0, padding: 0 }}
-          // onPress={() => this.props.celebrityPageVisitAndSetData({ userId: referrerId, userToken })}
+          onPress={() => this.props.celebrityPageVisitAndSetData({ userId: referredUserId, userToken })}
           // bottomDivider
         />
       </Card>
@@ -153,7 +153,7 @@ class NotificationPage extends Component {
           containerStyle={styles.containerStyle}
           rightAvatar={{ source: { uri: image2 }, size: 55, containerStyle: { padding: 0, marginTop: 5 } }}
           // rightElement={this.rightImage(require('../resources/icons/like.png'))}
-          // onPress={() => {}}
+          onPress={() => this.props.customSinglePostViewPageVisitAndSetData({ postId })}
           // bottomDivider
         />
       </Card>
@@ -194,7 +194,7 @@ class NotificationPage extends Component {
           containerStyle={styles.containerStyle}
           // rightElement={this.rightImage(require('../resources/icons/liked_icon.png'))}
           contentContainerStyle={{ margin: 0, padding: 0 }}
-          // onPress={() => this.props.celebrityPageVisitAndSetData({ userId: referrerId, userToken })}
+          onPress={() => this.props.customSinglePostViewPageVisitAndSetData({ postId })}
           // bottomDivider
         />
       </Card>
@@ -215,8 +215,26 @@ class NotificationPage extends Component {
           containerStyle={styles.containerStyle}
           // rightElement={this.rightImage(require('../resources/icons/liked_icon.png'))}
           contentContainerStyle={{ margin: 0, padding: 0 }}
-          // onPress={() => this.props.celebrityPageVisitAndSetData({ userId: referrerId, userToken })}
+          onPress={() => this.props.celebrityPageVisitAndSetData({ userId: profileId, userToken })}
           // bottomDivider
+        />
+      </Card>
+    );
+  }
+
+  openLinkNotification({ item }) {
+    const { image1, body, timeStamp, link } = item;
+    return (
+      <Card containerStyle={styles.cardContainer}>
+        <ListItem
+          leftAvatar={{ source: { uri: image1 }, size: 55, rounded: false, containerStyle: { padding: 0, marginTop: 5 } }}
+          title={body}
+          titleStyle={styles.title}
+          subtitle={this.timeDifference(timeStamp)}
+          subtitleStyle={{ marginTop: 10, padding: 0 }}
+          containerStyle={styles.containerStyle}
+          contentContainerStyle={{ margin: 0, padding: 0 }}
+          onPress={() => Linking.openURL(link).catch(err => console.error("NotificationPage open_link Coudn't Open the link", link, err))}
         />
       </Card>
     );
@@ -241,6 +259,8 @@ class NotificationPage extends Component {
         return this.openPostNotification({ item });
       case 'open_profile':
         return this.openProfileNotification({ item });
+      case 'open_link':
+        return this.openLinkNotification({ item });
       default:
         return <View />;
     }

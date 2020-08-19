@@ -9,7 +9,7 @@ const INITIAL_STATE = {
     { key: 'profile', type: 'edit', title: 'Hello User', subtitle: 'Edit Profile', avatarUrl: 'https://image.flaticon.com/icons/png/128/660/660610.png' },
     { key: 'orders', type: 'chevron', title: 'Orders', subtitle: 'Check your Order Details', avatarUrl: 'https://image.flaticon.com/icons/png/128/2580/2580666.png' },
     { key: 'bag', type: 'chevron', title: 'Shopping Bag', subtitle: 'Check your Bag', avatarUrl: 'https://image.flaticon.com/icons/png/128/743/743007.png' },
-    { key: 'requests', type: 'badge', title: 'Requests', subtitle: 'People loves your style', avatarUrl: 'https://image.flaticon.com/icons/png/128/1060/1060700.png' },
+    { key: 'requests', type: 'badge', title: 'Requests', subtitle: 'Users loved your style', avatarUrl: 'https://image.flaticon.com/icons/png/128/1060/1060700.png' },
     { key: 'personalStore', type: 'chevron', title: 'Store', subtitle: 'Your Personal Store', avatarUrl: 'https://image0.flaticon.com/icons/png/128/582/582876.png' },
     { key: 'wishlist', type: 'chevron', title: 'Wishlist', subtitle: 'Your Wishlist Store', avatarUrl: 'https://image0.flaticon.com/icons/png/128/582/582876.png' },
     { key: 'notify', type: 'badge', title: 'Notification', subtitle: 'Alerts', avatarUrl: 'https://image.flaticon.com/icons/png/128/1827/1827370.png' },
