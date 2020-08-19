@@ -96,7 +96,7 @@ const resizeAndUploadVideo = ({ selectedVideoPath, userToken, personalUserId, ca
 // Method to resize & compress Image
 const resizeAndUploadImage = ({ selectedImagePath, userToken, personalUserId, caption, dispatch }) => {
   Image.getSize(selectedImagePath, (w, h) => {
-    ImageResizer.createResizedImage(selectedImagePath, w, h, 'WEBP', 60).then((response) => {
+    ImageResizer.createResizedImage(selectedImagePath, w, h, 'WEBP', 80).then((response) => {
       uploadContent({ uri: response.uri, type: 'image/webp', personalUserId, userToken, caption, dispatch });
     }).catch((err) => {
       console.log('Error in Image Compression', err);
@@ -118,14 +118,14 @@ const uploadContent = ({ uri, type, personalUserId, userToken, caption, dispatch
     const time = Math.round((new Date().getTime()) / 1000);
     name = `${personalUserId}-t-${time}.mp4`;
     keyPrefix = 'videos/';
-    thumbName = `${personalUserId}-t-${time}-preview.jpg`;
+    thumbName = `${personalUserId}-t-${time}-preview.webp`;
     thumbkeyPrefix = 'thumbnails/';
   }
   AWS_OPTIONS.keyPrefix = keyPrefix;
   const file = { uri, name, type };
   RNS3.put(file, AWS_OPTIONS)
   .progress(({ percent }) => {
-    dispatch({ type: UPLOAD_PAGE_UPDATE_UPLOADING_STATUS, payload: { status: 'Uploading...', isUploading: true, progress: percent - 0.02 } });
+    dispatch({ type: UPLOAD_PAGE_UPDATE_UPLOADING_STATUS, payload: { status: 'Uploading...', isUploading: true, progress: percent - 0.04 } });
   })
   .then(response => {
     if (response.status === 201) {
@@ -159,16 +159,26 @@ const uploadThumbnailMethod = ({ thumbnailData, thumbkeyPrefix, thumbName, media
          RNFS.writeFile(outputPath, thumbnailData, 'base64')
           .then(() => {
             // console.log('writeFile', res);
-            AWS_OPTIONS.keyPrefix = thumbkeyPrefix;
-            const file = { uri: outputPath, name: thumbName, type: 'image/jpeg' };
-            RNS3.put(file, AWS_OPTIONS)
-            .then(awsresponse => {
-              const thumbnailUrl = awsresponse.body.postResponse.location;
-              updateDatabase({ caption, mediaType, uploadUrl, userToken, dispatch, thumbnailUrl });
-            }).catch((err) => {
-              console.log('Error in Uploading Thumbnail', err);
+
+            // Compress the Thumbnail
+            Image.getSize(outputPath, (w, h) => {
+              ImageResizer.createResizedImage(outputPath, w, h, 'WEBP', 50).then((resp) => {
+                  AWS_OPTIONS.keyPrefix = thumbkeyPrefix;
+                  const file = { uri: resp.uri, name: thumbName, type: 'image/webp' };
+                  RNS3.put(file, AWS_OPTIONS)
+                  .then(awsresponse => {
+                    const thumbnailUrl = awsresponse.body.postResponse.location;
+                    updateDatabase({ caption, mediaType, uploadUrl, userToken, dispatch, thumbnailUrl });
+                  }).catch((err) => {
+                    console.log('Error in Uploading Thumbnail', err);
+                  });
+                // uploadContent({ uri: resp.uri, type: 'image/webp', personalUserId, userToken, caption, dispatch });
+              }).catch((err) => {
+                console.log('Error in Thumbnail Image Compression', err);
+              });
             });
           }).catch((error) => {
+            console.log('uploadThumbnailMethod RNFS.writeFile error', error);
             Alert(JSON.stringify(error));
           });
      })

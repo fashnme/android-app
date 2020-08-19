@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { View, Text, ScrollView, ActivityIndicator } from 'react-native';
+import { View, Text, ScrollView, ActivityIndicator, Alert } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { Header, Card, Input, Button, Icon, Overlay } from 'react-native-elements';
-import { showMessage } from 'react-native-flash-message';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { connect } from 'react-redux';
 import LinearGradient from 'react-native-linear-gradient';
@@ -59,28 +58,33 @@ const renderDatePicker = (setState, showCalender, setPropError) => {
 const checkPropsAndCreateBid = ({ amount, message, selectedAddress, startDate, endDate, postId, posterId,
       productData, setPropError, userToken, bidsPageCreateBid }) => {
   if (amount.length === 0) {
-    setPropError('Enter Amount you want pay for Renting');
-    showMessage({ message: 'Reminder Added', type: 'success', duration: 5000, floating: true, icon: 'success', description: 'We will remind you when product is back in Stock' });
+    // setPropError('Enter Amount you want pay for Renting');
+    Alert.alert('Enter Amount', 'Enter Amount you want pay for Renting', [{ style: 'cancel' }, { text: 'Ok' }], { cancelable: true });
     return;
   }
   if (startDate.length === 0) {
-    setPropError('Select a Start Date for Renting');
+    // setPropError('Select a Start Date for Renting');
+    Alert.alert('Start Date', 'Select a Start Date for Renting', [{ style: 'cancel' }, { text: 'Ok' }], { cancelable: true });
     return;
   }
   if (new Date(startDate) <= new Date()) {
-    setPropError('We can not Ship That Day :>)');
+    // setPropError('We can not Ship That Day :>)');
+    Alert.alert('', 'We can not Ship That Day :>)', [{ style: 'cancel' }, { text: 'Ok' }], { cancelable: true });
     return;
   }
   if (endDate.length === 0) {
-    setPropError('Select a End Date for Renting');
+    // setPropError('Select a End Date for Renting');
+    Alert.alert('End Date', 'Select a End Date for Renting', [{ style: 'cancel' }, { text: 'Ok' }], { cancelable: true });
     return;
   }
   if (new Date(endDate) < new Date(startDate)) {
-    setPropError(`Select a End Date after ${getFormattedDate(startDate)}`);
+    // setPropError(`Select a End Date after ${getFormattedDate(startDate)}`);
+    Alert.alert('Date', `Select a End Date after ${getFormattedDate(startDate)}`, [{ style: 'cancel' }, { text: 'Ok' }], { cancelable: true });
     return;
   }
   if (Object.values(selectedAddress).length === 0) {
-    setPropError('Scroll Down And Select a Address Below');
+    // setPropError('Scroll Down And Select a Address Below');
+    Alert.alert('Select Address', 'Scroll Down And Select a Delivery Address Below', [{ style: 'cancel' }, { text: 'Ok' }], { cancelable: true });
     return;
   }
 

@@ -84,7 +84,6 @@ class EditUserProfile extends Component {
   }
 
   pickImage() {
-    const { personalUserId } = this.props;
     const options = {
       title: 'Select Image/Video',
       mediaType: 'image',
@@ -102,7 +101,7 @@ class EditUserProfile extends Component {
         console.log('ImagePicker Error: ', response.error);
         this.props.selectImageFromLibraryVS(false);
       } else {
-        this.props.accountSettingsUpdateUserProfilePic({ profilePic: response.uri, personalUserId });
+        this.props.accountSettingsUpdateUserProfilePic({ profilePic: response.uri });
         // TODO Call other user data fetchings required for Settings Screen
         // Eg. Fetch all the orders & Bids
       }
@@ -113,12 +112,12 @@ class EditUserProfile extends Component {
     return (
       <Overlay
         isVisible={accountSettingLoader}
-        windowBackgroundColor="rgba(255, 255, 255, .5)"
         overlayBackgroundColor="#fafafa"
+        overlayStyle={{ height: '40%', width: '80%', elevation: 0, borderRadius: 10 }}
       >
         <View style={{ justifyContent: 'center', flexDirection: 'column', flex: 1 }}>
-          <ActivityIndicator size="large" />
-          <Text style={{ alignSelf: 'center' }}>Updating Profile!</Text>
+          <ActivityIndicator size="large" color='#DB7093' />
+          <Text style={{ alignSelf: 'center', marginTop: 20, fontWeight: 'bold', fontSize: 18, opacity: 0.6 }}>Updating Profile!</Text>
         </View>
       </Overlay>
     );
@@ -126,7 +125,7 @@ class EditUserProfile extends Component {
 
   render() {
     const { userName, fullName, genderIndex, error, userToken, bio,
-      dateOfBirth, socialMediaLinks, profilePic, oldUserName, accountSettingLoader } = this.props;
+      dateOfBirth, socialMediaLinks, profilePic, oldUserName, accountSettingLoader, personalUserId } = this.props;
     // console.log({ userName, fullName, genderIndex, loading, error, userToken, bio, dateOfBirth, socialMediaLinks, personalUserId });
     const profileDetailsChanges = {
       dateOfBirth,
@@ -149,7 +148,7 @@ class EditUserProfile extends Component {
           rightComponent={{
             text: 'Save',
             style: { color: '#007AFF', fontSize: 18 },
-            onPress: () => this.props.accountSettingsSaveProfileChanges({ profileDetailsChanges })
+            onPress: () => this.props.accountSettingsSaveProfileChanges({ profileDetailsChanges, personalUserId })
           }}
           containerStyle={{ paddingTop: 0, height: 56 }}
         />

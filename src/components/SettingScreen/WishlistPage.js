@@ -41,7 +41,7 @@ class WishlistPage extends Component {
   }
 
   moveToBagPressed({ item }) {
-    const { productId, referrerId, referrerPost } = item;
+    const { productId, referrerId, referrerPost, posterId } = item;
     const { userToken } = this.props;
     const { sizeSelected } = this.state;
     // console.log('moveToBagPressed', { productId, referrerId, referrerPost, sizeSelected });
@@ -50,19 +50,16 @@ class WishlistPage extends Component {
       // console.log('sizeSelected is Null');
       return;
     }
-    this.props.manageCartAddProductToCart({ productId,
+    this.props.manageCartAddProductToCart({
+      productId,
       quantity: 1,
       sizeSelected,
       postId: referrerPost,
-      posterId: referrerId,
+      referrerId,
+      posterId,
       userToken });
 
-    this.refs.wishlistPage.showMessage({
-      message: 'Product Added to Bag',
-      type: 'success',
-      floating: true,
-      icon: 'success',
-    });
+    this.refs.wishlistPage.showMessage({ message: 'Product Added to Bag', type: 'success', floating: true, icon: 'success' });
     this.setState({ openSizeModal: false, item: null, sizeSelected: null }); // Close Size Modal
   }
 
@@ -79,25 +76,39 @@ class WishlistPage extends Component {
     const updatedData = sizeAndPriceObject[productId];
 
     if (updatedData === undefined) {
+      // return (
+      //   <Card>
+      //     <Text style={{ justifyContent: 'center' }}> Updating Sizes...... </Text>
+      //   </Card>
+      // );
       return (
-        <Card>
-          <Text style={{ justifyContent: 'center' }}> Updating Sizes...... </Text>
-        </Card>
-      );
+        <Overlay
+          isVisible={openSizeModal}
+          overlayStyle={{ borderTopLeftRadius: 15, borderTopRightRadius: 15, borderWidth: 1, borderColor: '#FE19AA', bottom: 0, position: 'absolute' }}
+          width={'100%'}
+          height={'30%'}
+          animationType={'slide'}
+          windowBackgroundColor={'transparent'}
+          onBackdropPress={() => this.setState({ openSizeModal: false, item: null, sizeSelected: null })}
+        >
+          <Text style={styles.headingStyle}> Select Size </Text>
+          <Text style={[styles.headingStyle, { fontWeight: '200', marginTop: 50 }]}> Updating Sizes...... </Text>
+      </Overlay>
+    );
     }
     const { sizesAvailable } = updatedData;
     return (
         <Overlay
           isVisible={openSizeModal}
-          overlayStyle={{ borderTopLeftRadius: 15, borderTopRightRadius: 15, padding: 2, bottom: 0, position: 'absolute' }}
+          overlayStyle={{ borderTopLeftRadius: 15, borderTopRightRadius: 15, borderWidth: 1, borderColor: '#FE19AA', bottom: 0, position: 'absolute' }}
           width={'100%'}
           height={'30%'}
-          windowBackgroundColor={'transparent'}
           animationType={'slide'}
+          windowBackgroundColor={'transparent'}
+          onBackdropPress={() => this.setState({ openSizeModal: false, item: null, sizeSelected: null })}
         >
           <View style={{ flex: 1 }}>
             <ScrollView>
-              <Card containerStyle={{ margin: 0 }}>
                 <Text style={styles.headingStyle}> Select Size </Text>
                 <View>
                   <FlatList
@@ -116,8 +127,8 @@ class WishlistPage extends Component {
                       );
                     }}
                     ListEmptyComponent={
-                        <Card>
-                          <Text style={{ justifyContent: 'center', color: 'red', alignItems: 'center' }}> Product Out Of Stock </Text>
+                        <Card containerStyle={{ flex: 1, width: '80%', alignSelf: 'center', justifyContent: 'center', flexDirection: 'column' }}>
+                          <Text style={{ color: 'red', alignSelf: 'center', fontWeight: 'bold' }}> Product Out Of Stock </Text>
                         </Card>
                     }
                   />
@@ -125,11 +136,11 @@ class WishlistPage extends Component {
                 <Button
                   title="Done"
                   type="outline"
-                  buttonStyle={{ marginTop: 20, marginBottom: 2, borderColor: '#d00' }}
+                  disabled={sizesAvailable === undefined || sizesAvailable.length === 0}
+                  buttonStyle={{ marginTop: 20, marginBottom: 2, borderColor: '#d00', width: '50%', alignSelf: 'center' }}
                   titleStyle={{ color: '#ff859a', fontWeight: '600' }}
                   onPress={() => { this.moveToBagPressed({ item }); }}
                 />
-              </Card>
             </ScrollView>
           </View>
         </Overlay>
@@ -162,7 +173,7 @@ class WishlistPage extends Component {
                 size={26}
                 iconStyle={{ color: 'grey' }}
                 containerStyle={styles.crossStyle}
-                onPress={() => { this.props.manageCartRemoveProductFromWishlist({ productId, userToken, updateWishlistArray: true }); this.refs.wishlistPage.showMessage({ message: 'Removed from Bag!', type: 'danger', floating: true, icon: 'danger' }); }}
+                onPress={() => { this.props.manageCartRemoveProductFromWishlist({ productId, userToken, updateWishlistArray: true }); this.refs.wishlistPage.showMessage({ message: 'Removed from Wishlist!', type: 'danger', floating: true, icon: 'danger' }); }}
               />
             </ImageBackground>
             <Text numberOfLines={1} ellipsizeMode='tail' style={styles.brand}>{ brandName }</Text>
@@ -273,7 +284,8 @@ const styles = {
     headingStyle: {
       fontWeight: 'bold',
       marginBottom: 5,
-      marginTop: 5
+      marginTop: 5,
+      alignSelf: 'center'
     },
     sizeContainerStyle: {
       margin: 6,

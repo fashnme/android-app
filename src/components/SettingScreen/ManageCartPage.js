@@ -4,6 +4,7 @@ import { Header, ListItem, Card, Button, Overlay } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { Actions } from 'react-native-router-flux';
 import LinearGradient from 'react-native-linear-gradient';
+import FlashMessage from 'react-native-flash-message';
 import RenderAddressComponent from './RenderAddressComponent';
 import { EmptyPage } from '../basic';
 
@@ -105,7 +106,7 @@ class ManageCartPage extends Component {
     );
   }
 
-  renderButtons({ productId }) {
+  renderButtons({ productId, referrerPost, referrerId, posterId }) {
     const { userToken } = this.props;
     return (
       <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
@@ -115,7 +116,10 @@ class ManageCartPage extends Component {
           type={'clear'}
           icon={{ name: 'delete', type: 'antdesign', size: 15, color: 'red' }}
           iconRight
-          onPress={() => this.props.manageCartRemoveProductFromCart({ userToken, productId })}
+          onPress={() => {
+            this.props.manageCartRemoveProductFromCart({ userToken, productId });
+            this.refs.manageCartPage.showMessage({ message: 'Product Removed from Bag', type: 'danger', floating: true, icon: 'danger' });
+        }}
         />
         <Button
           title={'MOVE TO WISHLIST'}
@@ -124,14 +128,18 @@ class ManageCartPage extends Component {
           // icon={{ name: 'bookmark-o', type: 'font-awesome', size: 15, color: '#f73b77' }}
           icon={{ name: 'bookmark', type: 'feather', size: 15, color: '#f73b77' }}
           iconRight
-          onPress={() => this.props.manageCartRemoveProductFromCart({ userToken, productId, addToWishlist: true })}
+          onPress={() => {
+            this.props.manageCartRemoveProductFromCart({ userToken, productId, referrerPost, referrerId, posterId, addToWishlist: true });
+            this.refs.manageCartPage.showMessage({ message: 'Product Moved to Wishlist', type: 'success', floating: true, icon: 'success' });
+          }}
         />
       </View>
     );
   }
 
   renderItem({ item }) {
-    const { productId, title, price, crossedPrice, brandName, image, quantity, size, ecommerce, deliveryCharges } = item;
+    const { productId, title, price, crossedPrice, brandName, image, quantity, size, ecommerce,
+       deliveryCharges, referrerPost, referrerId, posterId } = item;
     return (
       <Card containerStyle={{ margin: 6, padding: 2, borderRadius: 8 }}>
         <ListItem
@@ -141,7 +149,7 @@ class ManageCartPage extends Component {
           pad={10}
           bottomDivider
         />
-        { this.renderButtons({ productId }) }
+        { this.renderButtons({ productId, referrerPost, referrerId, posterId }) }
       </Card>
     );
   }
@@ -226,7 +234,7 @@ class ManageCartPage extends Component {
           </Card>
           {this.renderRequestingOverlay()}
         </View>
-
+        <FlashMessage position="top" ref="manageCartPage" />
       </View>
     );
   }
@@ -249,12 +257,13 @@ const mapStateToProps = ({ personalPageState, accountSettingState }) => {
   let totalDeliveryCharges = 0;
   userCartArray.forEach((item) => {
     totalCartValue += (item.price * item.quantity);
-    // totalDeliveryCharges += item.deliveryCharges; // TODO Uncomment it to add deliveryCharges
+    totalDeliveryCharges += item.deliveryCharges; // TODO Uncomment it to add deliveryCharges
   });
   // let isEmpty = true;
   // if (userCartArray.length !== 0) {
   //   isEmpty = false;
   // }
+  // console.log('userToken', userToken);
   return { userToken, userCartArray, selectedAddress, totalCartValue, totalDeliveryCharges, loading };
 };
 

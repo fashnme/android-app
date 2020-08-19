@@ -119,17 +119,23 @@ const EnterDetailsPage = ({
                 buttons={genders}
                 containerStyle={styles.genderRow}
                 buttonStyle={{ borderWidth: 0, }}
+                selectedButtonStyle={{ backgroundColor: '#006400' }}
               />
             </View>
 
-            <UserInputBox
-              name="fullname"
-              placeholder="Referral Code (optional)"
-              iconName="user-plus"
-              iconType="font-awesome"
-              inputStyle={{ fontWeight: 'bold', color: '#006400' }}
-              valueName={referralCode}
-              changeAction={(txt) => setReferralCode(txt)}
+            <Input
+              disabled={referrerId !== undefined && referrerId.length > 1}
+              value={referralCode}
+              onChangeText={(txt) => setReferralCode(txt)}
+              placeholder={'Referral Code (optional)'}
+              inputContainerStyle={{ borderBottomWidth: 0 }}
+              containerStyle={styles.textInputStyle}
+              inputStyle={{ fontWeight: 'bold', color: 'green' }}
+              // disabledInputStyle={{ fontWeight: 'bold', color: 'red' }}
+              errorStyle={{ color: '#006400', fontWeight: 'bold', alignSelf: 'center', flexDirection: 'row' }}
+              leftIcon={<Icon name={'user-plus'} type={'font-awesome'} />}
+              errorMessage={referrerId.length > 1 ? 'Automatic Tracked' : ''}
+              leftIconContainerStyle={{ marginHorizontal: 20 }}
             />
             <Button
               loading={loading}

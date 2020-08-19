@@ -96,7 +96,7 @@ class SplashScreen extends Component {
                   }
               }
             );
-          }, 4500);
+          }, 2000);
         } else {
           dynamicLinks()
             .getInitialLink()
@@ -110,7 +110,7 @@ class SplashScreen extends Component {
             });
           setTimeout(() => {
             Actions.signupPage();
-          }, 3000);
+          }, 3500);
         }
       }
     ).catch((error) => {
