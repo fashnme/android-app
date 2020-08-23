@@ -11,6 +11,7 @@ import {
   SETTING_PAGE_SET_SELECTED_ADDRESS,
   MANAGE_CART_PAGE_SET_CART_ARRAY,
   SETTING_PAGE_SET_USER_WISHLIST,
+  SETTING_PAGE_CART_AND_WISHLIST_LOADING_TOGGLE,
   SETTING_PAGE_SET_USER_REWARDS
 } from '../types';
 
@@ -33,7 +34,8 @@ const INITIAL_STATE = {
   notificationArray: [],
   userCartArray: [],
   // Loading
-  loading: false
+  loading: false,
+  cartAndWishlistLoading: false
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -78,6 +80,9 @@ export default (state = INITIAL_STATE, action) => {
 
       case MANAGE_CART_PAGE_SET_CART_ARRAY:
         return { ...state, userCartArray: action.payload };
+
+      case SETTING_PAGE_CART_AND_WISHLIST_LOADING_TOGGLE:
+        return { ...state, cartAndWishlistLoading: action.payload };
 
       default:
           return state;

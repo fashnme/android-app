@@ -107,6 +107,9 @@ export const accountSettingsGetCityAndStateFromPin = ({ pincode, updateState, up
             if (status === 'OK') {
               updateState(stateName);
               updateCity(city);
+            } else {
+              updateState('');
+              updateCity('');
             }
         })
         .catch((error) => {
@@ -123,8 +126,8 @@ export const accountSetttingsAddUserAddress = ({ userAddress, addressId, userTok
     Authorization: userToken
   };
   let newAddressId = '';
-  if (typeof addressId === 'undefined') {
-    newAddressId = new Date().getTime();
+  if (addressId !== undefined) {
+    newAddressId = addressId;
   }
   return (dispatch) => {
     dispatch({ type: SETTING_PAGE_GENERAL_LOADING_TOGGLE, payload: true });
@@ -265,6 +268,7 @@ export const accountSettingsGetUserOrders = ({ userToken }) => {
     Authorization: userToken
   };
   return (dispatch) => {
+    dispatch({ type: SETTING_PAGE_GENERAL_LOADING_TOGGLE, payload: true });
     axios({
         method: 'get',
         url: SettingsPageGetUserOrdersURL,
@@ -272,13 +276,15 @@ export const accountSettingsGetUserOrders = ({ userToken }) => {
         })
         .then((response) => {
             const { orderProducts } = response.data;
-            if (typeof orderProducts !== 'undefined') {
+            if (orderProducts !== undefined) {
               dispatch({ type: SETTING_PAGE_SET_USER_ORDERS, payload: orderProducts });
             }
             // console.log('accountSettingsGetUserOrders', response.data);
         })
         .catch((error) => {
             console.log('accountSettingsGetUserOrders Actions Error ', error);
+      }).finally(() => {
+        dispatch({ type: SETTING_PAGE_GENERAL_LOADING_TOGGLE, payload: false });
       });
   };
 };
@@ -341,17 +347,20 @@ export const accountSettingsGetUserRewards = ({ userToken }) => {
     Authorization: userToken
   };
   return (dispatch) => {
+    dispatch({ type: SETTING_PAGE_GENERAL_LOADING_TOGGLE, payload: true });
     axios({
         method: 'get',
         url: SettingsPageGetUserRewardsURL,
         headers,
         })
         .then((response) => {
+          // console.log('accountSettingsGetUserRewards', response.data);
           dispatch({ type: SETTING_PAGE_SET_USER_REWARDS, payload: response.data });
-          console.log('accountSettingsGetUserRewards', response.data);
         })
         .catch((error) => {
             console.log('accountSettingsGetUserRewards Actions Error ', error);
+      }).finally(() => {
+        dispatch({ type: SETTING_PAGE_GENERAL_LOADING_TOGGLE, payload: false });
       });
   };
 };

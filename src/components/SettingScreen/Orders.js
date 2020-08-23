@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, FlatList, Image } from 'react-native';
+import { View, Text, FlatList, Image, RefreshControl } from 'react-native';
 import { connect } from 'react-redux';
 import { ListItem, Header, Divider } from 'react-native-elements';
 import { Actions } from 'react-native-router-flux';
@@ -48,26 +48,26 @@ class Orders extends Component {
     );
   }
 
-  renderStatusComponent({ orderCreated, status }) {
+  renderStatusComponent({ timeStamp, status }) {
     let color = '';
     switch (status) {
       case 'placed':
-        color = '#00f';
-        break;
-      case 'confirmed':
         color = '#F08300';
         break;
+      case 'confirmed':
+        color = '#f75990';
+        break;
       case 'shipped':
-        color = '#00367C';
+        color = '#611978';
         break;
       case 'delivered':
-        color = '#0f0';
+        color = '#4ea668';
         break;
       default:
         color = '#4d4b4b';
         break;
     }
-    const date = new Date(orderCreated).toDateString().split(' ');
+    const date = new Date(timeStamp).toDateString().split(' ');
     return (
         <View style={{ flexDirection: 'row', marginTop: 8 }}>
           <Text style={[styles.statusStyle, { color }]}> {status} </Text>
@@ -86,23 +86,24 @@ class Orders extends Component {
   }
 
   renderOrderItem({ item }) {
-    const { brandName, imagesArray, price, title, size, orderId, status, crossedPrice, orderCreated } = item;
+    const { brandName, imagesArray, price, title, size, orderId, status, crossedPrice, timeStamp } = item;
     return (
       <View style={{ backgroundColor: 'white' }}>
         {this.renderOrderNumber({ orderId })}
         <ListItem
            title={this.renderTitleComponent({ title, brandName, price, crossedPrice, size })}
-           subtitle={this.renderStatusComponent({ orderCreated, status })}
+           subtitle={this.renderStatusComponent({ timeStamp, status })}
            leftAvatar={this.renderImage(imagesArray[0])}
            bottomDivider
-           chevron={{ color: '#5c5b5b', size: 20 }}
+           containerStyle={{ borderRadius: 50 }}
+           // chevron={{ color: '#5c5b5b', size: 20 }}
         />
       </View>
     );
   }
 
   render() {
-    const { ordersArray } = this.props;
+    const { ordersArray, userToken, loading } = this.props;
     return (
       <View>
         <Header
@@ -120,6 +121,14 @@ class Orders extends Component {
             renderItem={this.renderOrderItem.bind(this)}
             ListEmptyComponent={<EmptyPage title={'No Orders Found!'} subtitle={'Visit Cart & Add Products!'} />}
             contentContainerStyle={{ paddingBottom: 200 }}
+            refreshControl={
+              <RefreshControl
+                onRefresh={() => this.props.accountSettingsGetUserOrders({ userToken })}
+                refreshing={loading}
+                colors={['#D5252D', '#FE19AA']}
+              />
+            }
+            refreshing={loading}
           />
         </View>
       </View>
@@ -138,7 +147,8 @@ const styles = {
     fontSize: 15
   },
   brandStyle: {
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    textTransform: 'capitalize'
   },
   sizeStyle: {
     marginTop: 3
@@ -168,12 +178,12 @@ const styles = {
 
 const mapStateToProps = ({ personalPageState, accountSettingState }) => {
   const { userToken } = personalPageState;
-  const { ordersArray } = accountSettingState;
+  const { ordersArray, loading } = accountSettingState;
   // let isEmpty = true;
   // if (ordersArray.length !== 0) {
   //   isEmpty = false;
   // }
-  return { userToken, ordersArray };
+  return { userToken, ordersArray, loading };
 };
 
 export default connect(mapStateToProps, {

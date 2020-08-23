@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Image, Dimensions, ImageBackground, Text, FlatList } from 'react-native';
+import { View, Image, Dimensions, ImageBackground, Text, FlatList, RefreshControl } from 'react-native';
 import { connect } from 'react-redux';
 import { ListItem, Header, Card } from 'react-native-elements';
 import { Actions } from 'react-native-router-flux';
@@ -126,7 +126,7 @@ class RewardsPage extends Component {
   }
 
   render() {
-    const { rewardsArray } = this.props;
+    const { rewardsArray, userToken, loading } = this.props;
     return (
       <View style={{ backgroundColor: 'white', flex: 1 }}>
         <Header
@@ -148,6 +148,14 @@ class RewardsPage extends Component {
           data={rewardsArray}
           renderItem={this.renderRewardItem.bind(this)}
           contentContainerStyle={{ paddingBottom: 100 }}
+          refreshControl={
+            <RefreshControl
+              onRefresh={() => this.props.accountSettingsGetUserRewards({ userToken })}
+              refreshing={loading}
+              colors={['#D5252D', '#FE19AA']}
+            />
+          }
+          refreshing={loading}
         />
       </View>
     );
@@ -170,13 +178,9 @@ const styles = {
 
 const mapStateToProps = ({ personalPageState, accountSettingState }) => {
   const { userToken } = personalPageState;
-  const { rewardsObject } = accountSettingState;
+  const { rewardsObject, loading } = accountSettingState;
   const { rewards, referralRewardsArray } = rewardsObject;
-  let isEmpty = true;
-  if (referralRewardsArray !== undefined && referralRewardsArray.length !== 0) {
-    isEmpty = false;
-  }
-  return { userToken, rewardsArray: referralRewardsArray, rewards, isEmpty };
+  return { userToken, rewardsArray: referralRewardsArray, rewards, loading };
 };
 
 export default connect(mapStateToProps, {

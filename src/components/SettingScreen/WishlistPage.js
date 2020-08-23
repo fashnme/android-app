@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, FlatList, TouchableWithoutFeedback, Dimensions, ImageBackground, ScrollView } from 'react-native';
+import { View, Text, FlatList, TouchableWithoutFeedback, Dimensions, ImageBackground, ScrollView, RefreshControl } from 'react-native';
 import { Header, Button, Icon, Overlay, Card, Badge } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { Actions } from 'react-native-router-flux';
@@ -76,11 +76,6 @@ class WishlistPage extends Component {
     const updatedData = sizeAndPriceObject[productId];
 
     if (updatedData === undefined) {
-      // return (
-      //   <Card>
-      //     <Text style={{ justifyContent: 'center' }}> Updating Sizes...... </Text>
-      //   </Card>
-      // );
       return (
         <Overlay
           isVisible={openSizeModal}
@@ -92,7 +87,7 @@ class WishlistPage extends Component {
           onBackdropPress={() => this.setState({ openSizeModal: false, item: null, sizeSelected: null })}
         >
           <Text style={styles.headingStyle}> Select Size </Text>
-          <Text style={[styles.headingStyle, { fontWeight: '200', marginTop: 50 }]}> Updating Sizes...... </Text>
+          <Text style={[styles.headingStyle, { fontWeight: '200', marginTop: 50 }]}> Updating Available Sizes...... </Text>
       </Overlay>
     );
     }
@@ -193,7 +188,7 @@ class WishlistPage extends Component {
   }
 
   render() {
-    const { wishlistArray } = this.props;
+    const { wishlistArray, userToken, cartAndWishlistLoading } = this.props;
     return (
       <View style={{ flex: 1, backgroundColor: 'white' }}>
         <Header
@@ -221,6 +216,14 @@ class WishlistPage extends Component {
             renderItem={this.renderItem.bind(this)}
             contentContainerStyle={{ paddingBottom: 100 }}
             ListEmptyComponent={<EmptyPage title={'Empty Wishlist!'} subtitle={'Add Products to Wishlist'} />}
+            refreshControl={
+              <RefreshControl
+                onRefresh={() => this.props.manageCartGetUserWishlist({ userToken })}
+                refreshing={cartAndWishlistLoading}
+                colors={['#D5252D', '#FE19AA']}
+              />
+            }
+            refreshing={cartAndWishlistLoading}
           />
         </View>
         {this.renderSizeModal()}
@@ -304,13 +307,13 @@ const styles = {
 
 const mapStateToProps = ({ personalPageState, accountSettingState, productPageState }) => {
   const { userToken } = personalPageState;
-  const { wishlistArray } = accountSettingState;
+  const { wishlistArray, cartAndWishlistLoading } = accountSettingState;
   const { sizeAndPriceObject } = productPageState;
   let firstProduct = {}; // Using this to rerender Screen
   if (wishlistArray.length !== 0) {
     firstProduct = wishlistArray[0];
   }
-  return { userToken, wishlistArray, sizeAndPriceObject, firstProduct };
+  return { userToken, wishlistArray, sizeAndPriceObject, firstProduct, cartAndWishlistLoading };
 };
 
 export default connect(mapStateToProps, {

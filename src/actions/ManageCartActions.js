@@ -7,7 +7,8 @@ import {
   USER_ADDED_PRODUCT_TO_WISHLIST,
   USER_REMOVED_PRODUCT_FROM_WISHLIST,
   SETTING_PAGE_GENERAL_LOADING_TOGGLE,
-  SETTING_PAGE_SET_USER_WISHLIST
+  SETTING_PAGE_SET_USER_WISHLIST,
+  SETTING_PAGE_CART_AND_WISHLIST_LOADING_TOGGLE
 } from '../types';
 
 import {
@@ -29,19 +30,24 @@ export const manageCartGetUserCartDetails = ({ userToken }) => {
     Authorization: userToken
   };
   return (dispatch) => {
-    axios({
-        method: 'get',
-        url: ManageCartGetUserCartURL,
-        headers,
-        })
-        .then((response) => {
-            const { products } = response.data;
-            // console.log('manageCartGetUserCartDetails', response.data);
-            dispatch({ type: MANAGE_CART_PAGE_SET_CART_ARRAY, payload: products });
-        })
-        .catch((error) => {
-            console.log('manageCartGetUserCartDetails Actions Error ', error);
-      });
+    dispatch({ type: SETTING_PAGE_CART_AND_WISHLIST_LOADING_TOGGLE, payload: true });
+    setTimeout(() => {
+      axios({
+          method: 'get',
+          url: ManageCartGetUserCartURL,
+          headers,
+          })
+          .then((response) => {
+              const { products } = response.data;
+              // console.log('manageCartGetUserCartDetails', response.data);
+              dispatch({ type: MANAGE_CART_PAGE_SET_CART_ARRAY, payload: products });
+          })
+          .catch((error) => {
+              console.log('manageCartGetUserCartDetails Actions Error ', error);
+        }).finally(() => {
+          dispatch({ type: SETTING_PAGE_CART_AND_WISHLIST_LOADING_TOGGLE, payload: false });
+        });
+    }, 2000);
   };
 };
 
@@ -86,19 +92,24 @@ export const manageCartRemoveProductFromCart = (item) => {
             console.log('manageCartRemoveProductFromCart Actions', response.data);
             // manageCartGetUserCartDetails({ userToken }); // Again Fetch the Cart Details
             // This Method is similar to manageCartGetUserCartDetails()
-            axios({
-                method: 'get',
-                url: ManageCartGetUserCartURL,
-                headers,
-                })
-                .then((resp) => {
-                    const { products } = resp.data;
-                    console.log('manageCartGetUserCartDetails', resp.data);
-                    dispatch({ type: MANAGE_CART_PAGE_SET_CART_ARRAY, payload: products });
-                })
-                .catch((err) => {
-                    console.log('manageCartGetUserCartDetails Actions Error ', err);
-              });
+            dispatch({ type: SETTING_PAGE_CART_AND_WISHLIST_LOADING_TOGGLE, payload: true });
+            setTimeout(() => {
+              axios({
+                  method: 'get',
+                  url: ManageCartGetUserCartURL,
+                  headers,
+                  })
+                  .then((resp) => {
+                      const { products } = resp.data;
+                      console.log('manageCartGetUserCartDetails', resp.data);
+                      dispatch({ type: MANAGE_CART_PAGE_SET_CART_ARRAY, payload: products });
+                  })
+                  .catch((err) => {
+                      console.log('manageCartGetUserCartDetails Actions Error ', err);
+                }).finally(() => {
+                  dispatch({ type: SETTING_PAGE_CART_AND_WISHLIST_LOADING_TOGGLE, payload: false });
+                });
+            }, 1500);
             dispatch({ type: USER_REMOVED_PRODUCT_FROM_CART, payload: productId });
         })
         .catch((error) => {
@@ -164,6 +175,7 @@ export const manageCartGetUserWishlist = ({ userToken }) => {
     Authorization: userToken
   };
   return (dispatch) => {
+    dispatch({ type: SETTING_PAGE_CART_AND_WISHLIST_LOADING_TOGGLE, payload: true });
     axios({
         method: 'get',
         url: SettingsPageGetUserWishlistURL,
@@ -176,6 +188,9 @@ export const manageCartGetUserWishlist = ({ userToken }) => {
         })
         .catch((error) => {
             console.log('manageCartGetUserWishlist Actions Error ', error);
+        })
+        .finally(() => {
+          dispatch({ type: SETTING_PAGE_CART_AND_WISHLIST_LOADING_TOGGLE, payload: false });
         });
   };
 };
@@ -197,6 +212,7 @@ export const manageCartRemoveProductFromWishlist = ({ productId, userToken, upda
         .then((response) => {
             dispatch({ type: USER_REMOVED_PRODUCT_FROM_WISHLIST, payload: productId });
             if (updateWishlistArray) { // Whether Calling from Product Page or Wishlist Page
+              dispatch({ type: SETTING_PAGE_CART_AND_WISHLIST_LOADING_TOGGLE, payload: true });
               axios({
                   method: 'get',
                   url: SettingsPageGetUserWishlistURL,
@@ -209,6 +225,8 @@ export const manageCartRemoveProductFromWishlist = ({ productId, userToken, upda
                   })
                   .catch((error) => {
                       console.log('manageCartGetUserWishlist Actions Error ', error);
+                  }).finally(() => {
+                    dispatch({ type: SETTING_PAGE_CART_AND_WISHLIST_LOADING_TOGGLE, payload: false });
                   });
             }
             console.log('manageCartRemoveProductFromWishlist resp', response.data);
@@ -226,17 +244,21 @@ export const manageCartPlaceOrder = (item) => {
     'Content-Type': 'application/json',
     Authorization: userToken
   };
+  const data = { products: userCartArray,
+        orderAmount: totalCartValue,
+        deliveryAmount: totalDeliveryCharges,
+        deliveryDetails: selectedAddress,
+        paymentMode: 'cod'
+      };
+  // console.log('Token', userToken);
+  // console.log('manageCartPlaceOrder data', data);
   return (dispatch) => {
     dispatch({ type: SETTING_PAGE_GENERAL_LOADING_TOGGLE, payload: true });
     axios({
         method: 'post',
         url: ManageCartPlaceOrderURL,
         headers,
-        data: { products: userCartArray,
-              orderAmount: totalCartValue,
-              deliveryAmount: totalDeliveryCharges,
-              deliveryDetails: selectedAddress
-            }
+        data
         })
         .then((response) => {
             // TODO Fix the Checkout

@@ -103,6 +103,7 @@ export const SETTING_PAGE_SET_SELECTED_ADDRESS = 'setting_page_set_selected_addr
 export const SETTING_PAGE_SET_USER_WISHLIST = 'setting_page_set_user_wishlist';
 
 export const SETTING_PAGE_GENERAL_LOADING_TOGGLE = 'setting_page_general_loading_toggle';
+export const SETTING_PAGE_CART_AND_WISHLIST_LOADING_TOGGLE = 'setting_page_cart_and_wishlist_loading_toggle'; 
 
 // Cart Operation
 export const MANAGE_CART_PAGE_SET_CART_ARRAY = 'manage_cart_page_set_cart_array';
