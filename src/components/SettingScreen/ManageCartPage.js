@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, FlatList, Image, Alert, ActivityIndicator } from 'react-native';
+import { View, Text, FlatList, Image, Alert, ActivityIndicator, RefreshControl } from 'react-native';
 import { Header, ListItem, Card, Button, Overlay } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { Actions } from 'react-native-router-flux';
@@ -171,7 +171,7 @@ class ManageCartPage extends Component {
   }
 
   render() {
-    const { userCartArray, totalCartValue, totalDeliveryCharges } = this.props;
+    const { userCartArray, totalCartValue, totalDeliveryCharges, userToken, cartAndWishlistLoading } = this.props;
     // console.log({ userToken, userCartArray, totalCartValue, totalDeliveryCharges, isEmpty });
     return (
       <View style={{ flex: 1 }}>
@@ -208,6 +208,14 @@ class ManageCartPage extends Component {
             }
             ListEmptyComponent={<EmptyPage title={'Empty Bag!'} subtitle={'Add Products that you Love'} />}
             contentContainerStyle={{ paddingBottom: 150 }}
+            refreshControl={
+              <RefreshControl
+                onRefresh={() => this.props.manageCartGetUserCartDetails({ userToken })}
+                refreshing={cartAndWishlistLoading}
+                colors={['#D5252D', '#FE19AA']}
+              />
+            }
+            refreshing={cartAndWishlistLoading}
           />
         </View>
         <View style={styles.checkoutButton}>
@@ -252,7 +260,7 @@ const styles = {
 
 const mapStateToProps = ({ personalPageState, accountSettingState }) => {
   const { userToken } = personalPageState;
-  const { userCartArray, selectedAddress, loading } = accountSettingState;
+  const { userCartArray, selectedAddress, loading, cartAndWishlistLoading } = accountSettingState;
   let totalCartValue = 0;
   let totalDeliveryCharges = 0;
   userCartArray.forEach((item) => {
@@ -264,7 +272,7 @@ const mapStateToProps = ({ personalPageState, accountSettingState }) => {
   //   isEmpty = false;
   // }
   // console.log('userToken', userToken);
-  return { userToken, userCartArray, selectedAddress, totalCartValue, totalDeliveryCharges, loading };
+  return { userToken, userCartArray, selectedAddress, totalCartValue, totalDeliveryCharges, loading, cartAndWishlistLoading };
 };
 
 export default connect(mapStateToProps, {

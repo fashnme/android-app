@@ -71,20 +71,6 @@ const FullProductImageViewer = ({ imageViewerModalVisible, imagesArray,
   );
 };
 
-// const styles = {
-//   commentsModalHeaderExitButton: {
-//     position: 'absolute',
-//     right: 8,
-//     top: 8,
-//     // opacity: 0.6,
-//   },
-//   crossStyle: {
-//     marginRight: 0,
-//     marginTop: 0,
-//     padding: 0
-//   }
-// };
-
 const mapStateToProps = ({ productPageState }) => {
   const { productsData, selectedItem, productsCompleteData, imageViewerModalVisible } = productPageState;
   let imagesArray;

@@ -61,6 +61,7 @@ class NotificationPage extends Component {
           leftAvatar={{ source: { uri: image1 }, size: 55, containerStyle: { padding: 0, marginTop: 5 }, onPress: () => this.props.celebrityPageVisitAndSetData({ userId: likerId, userToken }) }}
           title={body}
           titleStyle={styles.title}
+          underlayColor={'transparent'}
           subtitle={this.timeDifference(timeStamp)}
           subtitleStyle={{ marginTop: 10, padding: 0 }}
           containerStyle={styles.containerStyle}
@@ -82,6 +83,7 @@ class NotificationPage extends Component {
           leftAvatar={{ source: { uri: image1 }, size: 55, containerStyle: { padding: 0, marginTop: 5 }, onPress: () => this.props.celebrityPageVisitAndSetData({ userId: followerId, userToken }) }}
           title={body}
           titleStyle={styles.title}
+          underlayColor={'transparent'}
           subtitle={this.timeDifference(timeStamp)}
           subtitleStyle={{ marginTop: 10, padding: 0 }}
           containerStyle={styles.containerStyle}
@@ -103,6 +105,7 @@ class NotificationPage extends Component {
           leftAvatar={{ source: { uri: image1 }, size: 55, containerStyle: { padding: 0, marginTop: 5 }, onPress: () => this.props.celebrityPageVisitAndSetData({ userId: commenterId, userToken }) }}
           title={body}
           titleStyle={styles.title}
+          underlayColor={'transparent'}
           subtitle={this.timeDifference(timeStamp)}
           subtitleStyle={{ marginTop: 10, padding: 0 }}
           containerStyle={styles.containerStyle}
@@ -126,6 +129,7 @@ class NotificationPage extends Component {
           leftAvatar={{ source: { uri: image1 }, size: 55, containerStyle: { padding: 0, marginTop: 5 }, onPress: () => this.props.celebrityPageVisitAndSetData({ userId: referredUserId, userToken }) }}
           title={body}
           titleStyle={styles.title}
+          underlayColor={'transparent'}
           subtitle={this.timeDifference(timeStamp)}
           subtitleStyle={{ marginTop: 10, padding: 0 }}
           containerStyle={styles.containerStyle}
@@ -148,6 +152,7 @@ class NotificationPage extends Component {
           leftAvatar={{ source: { uri: image1 }, size: 55, containerStyle: { padding: 0, marginTop: 5 }, onPress: () => this.props.customSinglePostViewPageVisitAndSetData({ postId }) }}
           title={body}
           titleStyle={styles.title}
+          underlayColor={'transparent'}
           subtitle={this.timeDifference(timeStamp)}
           subtitleStyle={{ marginTop: 10, padding: 0 }}
           containerStyle={styles.containerStyle}
@@ -168,6 +173,7 @@ class NotificationPage extends Component {
           leftAvatar={{ source: { uri: image1 }, size: 55, rounded: false, containerStyle: { padding: 0, marginTop: 5 } }}
           title={body}
           titleStyle={styles.title}
+          underlayColor={'transparent'}
           subtitle={this.timeDifference(timeStamp)}
           subtitleStyle={{ marginTop: 10, padding: 0 }}
           containerStyle={styles.containerStyle}
@@ -189,6 +195,7 @@ class NotificationPage extends Component {
           leftAvatar={{ source: { uri: image1 }, size: 55, containerStyle: { padding: 0, marginTop: 5 }, onPress: () => this.props.customSinglePostViewPageVisitAndSetData({ postId }) }}
           title={body}
           titleStyle={styles.title}
+          underlayColor={'transparent'}
           subtitle={this.timeDifference(timeStamp)}
           subtitleStyle={{ marginTop: 10, padding: 0 }}
           containerStyle={styles.containerStyle}
@@ -209,6 +216,7 @@ class NotificationPage extends Component {
         <ListItem
           leftAvatar={{ source: { uri: image1 }, size: 55, containerStyle: { padding: 0, marginTop: 5 }, onPress: () => this.props.celebrityPageVisitAndSetData({ userId: profileId, userToken }) }}
           title={body}
+          underlayColor={'transparent'}
           titleStyle={styles.title}
           subtitle={this.timeDifference(timeStamp)}
           subtitleStyle={{ marginTop: 10, padding: 0 }}
@@ -229,12 +237,19 @@ class NotificationPage extends Component {
         <ListItem
           leftAvatar={{ source: { uri: image1 }, size: 55, rounded: false, containerStyle: { padding: 0, marginTop: 5 } }}
           title={body}
+          underlayColor={'transparent'}
           titleStyle={styles.title}
           subtitle={this.timeDifference(timeStamp)}
           subtitleStyle={{ marginTop: 10, padding: 0 }}
           containerStyle={styles.containerStyle}
           contentContainerStyle={{ margin: 0, padding: 0 }}
-          onPress={() => Linking.openURL(link).catch(err => console.error("NotificationPage open_link Coudn't Open the link", link, err))}
+          onPress={() => {
+            if (!link.startsWith('http')) {
+              Linking.openURL(`http://${link}`).catch(err => console.error("NotificationPage open_link Coudn't Open the link", link, err));
+            } else {
+              Linking.openURL(link).catch(err => console.error("NotificationPage open_link Coudn't Open the link", link, err));
+            }
+          }}
         />
       </Card>
     );
