@@ -33,7 +33,7 @@ const BidCancelPage = ({ bidId, userToken, loading, bidsPageCancelBid }) => {
           label='Reason for Rejection'
           data={reasons}
           selectedItemColor='#1f7070'
-          itemCoun={10}
+          itemCount={10}
           fontSize={18}
           value={reasons[index].value}
           onChangeText={(value, i) => updateIndex(i)}

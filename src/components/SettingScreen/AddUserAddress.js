@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, ScrollView, StyleSheet, Alert, ActivityIndicator } from 'react-native';
 import { Header, Card, Input, CheckBox, Overlay } from 'react-native-elements';
 import { Actions } from 'react-native-router-flux';
+import { Dropdown } from 'react-native-material-dropdown';
 import { connect } from 'react-redux';
 import {
   accountSetttingsAddUserAddress as _accountSetttingsAddUserAddress,
@@ -28,7 +29,7 @@ const renderUpdatingOverlay = ({ loading }) => {
 };
 
 const checkAndAddAddress = ({ userAddress, addressId, userToken, accountSetttingsAddUserAddress }) => {
-  const { name, pinCode, state, city, address, phoneNo, tag } = userAddress;
+  const { name, pinCode, state, city, address, phoneNo, tag, locality } = userAddress;
   if (name.trim().length < 3) {
     showAlert('Please Enter Complete Name'); return;
   }
@@ -38,8 +39,8 @@ const checkAndAddAddress = ({ userAddress, addressId, userToken, accountSettting
   if (pinCode.length !== 6) {
     showAlert('Please Enter a 6 Digit Pincode'); return;
   }
-  if (state.length === 0 || city.length === 0) {
-    showAlert('Please enter a valid pincode And Select a city'); return;
+  if (state.length === 0 || city.length === 0 || locality === undefined || locality.length === 0) {
+    showAlert('Please enter a valid pincode And Select a Locality'); return;
   }
   if (address.trim().length < 5) {
     showAlert('Please Enter Complete Address'); return;
@@ -59,8 +60,12 @@ const AddUserAddress = ({ addressData, userToken, loading, accountSetttingsAddUs
   const [address, updateAddress] = useState(addressData.address);
   const [phoneNo, updatePhone] = useState(addressData.phoneNo);
   const [tag, updateTag] = useState(addressData.tag);
+  const [locality, updateLocality] = useState(addressData.locality === undefined ? '' : addressData.locality);
+  const [localityArray, setLocalityArray] = useState([]);
+  const [loadingPincode, setLoadingPincode] = useState(false);
   const { addressId } = addressData;
-  const userAddress = { name, pinCode, state, city, address, phoneNo, tag, addressId };
+  const userAddress = { name, pinCode, state, city, address, phoneNo, tag, addressId, locality };
+  // console.log(userAddress);
   return (
     <View style={{ flex: 1 }}>
       <Header
@@ -98,21 +103,30 @@ const AddUserAddress = ({ addressData, userToken, loading, accountSetttingsAddUs
 
 
         <Card containerStyle={[styles.cardContainer, { borderColor: '#a7bffc' }]}>
-          <View style={{ flexDirection: 'row', justifyContent: 'space-around', padding: 3 }}>
+          <Input
+            label='Pincode'
+            placeholder='XXXX45'
+            keyboardType="phone-pad"
+            maxLength={6}
+            containerStyle={{ width: '50%' }}
+            inputStyle={styles.inputStyle}
+            onChangeText={(p) => {
+              if (p.trim().length === 6) {
+                setLoadingPincode(true);
+                accountSettingsGetCityAndStateFromPin({ pincode: p, updateState, updateCity, setLocalityArray, setLoadingPincode });
+              }
+              updatePinCode(p.trim());
+             }}
+            value={pinCode}
+            rightIcon={<ActivityIndicator animating={loadingPincode} color={'#ff3f6c'} />}
+          />
+          <View style={{ flexDirection: 'row', justifyContent: 'space-around', padding: 3, marginTop: 20 }}>
             <Input
-              label='Pincode'
-              placeholder='XXXX45'
-              keyboardType="phone-pad"
-              maxLength={6}
+              label='City'
+              disabled
               containerStyle={{ width: '50%' }}
               inputStyle={styles.inputStyle}
-              onChangeText={(p) => {
-                if (p.length === 6) {
-                  accountSettingsGetCityAndStateFromPin({ pincode: p, updateState, updateCity });
-                }
-                updatePinCode(p.trim());
-               }}
-              value={pinCode}
+              value={city}
             />
             <Input
               label='State'
@@ -123,12 +137,19 @@ const AddUserAddress = ({ addressData, userToken, loading, accountSetttingsAddUs
             />
           </View>
 
-          <Input
-            label='City'
-            disabled
-            containerStyle={{ width: '50%', marginTop: 10 }}
-            inputStyle={styles.inputStyle}
-            value={city}
+          <Dropdown
+            label='Locality'
+            data={localityArray}
+            selectedItemColor='#1f7070'
+            itemTextStyle={styles.inputStyle}
+            fontSize={18}
+            containerStyle={styles.dropdownContainer}
+            labelFontSize={styles.inputStyle.fontSize}
+            labelTextStyle={[styles.inputStyle]}
+            value={locality}
+            textColor={'#1f7070'}
+            style={{ marginTop: 5, fontWeight: 'bold' }}
+            onChangeText={(value) => updateLocality(value)}
           />
           <Input
             label='Address'
@@ -170,7 +191,14 @@ const AddUserAddress = ({ addressData, userToken, loading, accountSetttingsAddUs
 
 const styles = StyleSheet.create({
   inputStyle: { fontSize: 16, fontWeight: 'bold', paddingBottom: 0 },
-  cardContainer: { margin: 5, marginTop: 10, marginBottom: 10, borderRadius: 10, borderWidth: 2 }
+  cardContainer: { margin: 5, marginTop: 10, marginBottom: 10, borderRadius: 10, borderWidth: 2 },
+  dropdownContainer: {
+    padding: 10,
+    marginTop: 10,
+    marginBottom: 10,
+    borderColor: 'grey',
+    // width: '50%'
+  }
 });
 
 const mapStateToProps = ({ personalPageState, accountSettingState }) => {

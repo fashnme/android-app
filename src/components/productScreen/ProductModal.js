@@ -1,5 +1,5 @@
-import React from 'react';
-import { StyleSheet, View, Text, FlatList, Image, ScrollView, TouchableWithoutFeedback } from 'react-native';
+import React, { useRef } from 'react';
+import { StyleSheet, View, Text, FlatList, ScrollView, Image, TouchableWithoutFeedback } from 'react-native';
 import { Icon, Overlay } from 'react-native-elements';
 import { connect } from 'react-redux';
 import ProductExtraInfo from './ProductExtraInfo';
@@ -36,6 +36,7 @@ const NoProductTagged = () => {
 const ProductModal = ({ productsData, productsModalVisible, postId, posterId, previousState,
   productPageOpenProductModal, productPageSelectedProductUpdate, videoPagePlayStatusUpdate }) => {
     const { homePageVideoPlay, celebPageVideoPlay } = previousState;
+    const scrollRef = useRef();
     return (
         <Overlay
           isVisible={productsModalVisible}
@@ -46,7 +47,9 @@ const ProductModal = ({ productsData, productsModalVisible, postId, posterId, pr
           animationType={'slide'}
         >
         <View style={styles.modalStyle}>
-        <ScrollView>
+        <ScrollView
+          ref={scrollRef}
+        >
           <View style={styles.commentsModalHeader}>
             <Text style={styles.commentsModalHeaderTitle}>Products</Text>
               <View style={styles.commentsModalHeaderExitButton}>
@@ -75,7 +78,7 @@ const ProductModal = ({ productsData, productsModalVisible, postId, posterId, pr
 
             </View>
             { productsData !== undefined && productsData.length === 0 && <NoProductTagged /> }
-            <ProductPriceSizeView />
+            <ProductPriceSizeView scrollRef={scrollRef} />
             <ProductExtraInfo />
           </View>
         </ScrollView>

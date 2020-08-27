@@ -20,6 +20,7 @@ export const globalStyles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         marginTop: 10,
+        elevation: 2
     },
     buyNowButtonText: {
         color: 'white',
@@ -30,7 +31,8 @@ export const globalStyles = StyleSheet.create({
         backgroundColor: 'orange',
         borderRadius: 25,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        elevation: 2
     },
     bidForRentButtonTitle: {
         color: 'white'

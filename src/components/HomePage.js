@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { Actions } from 'react-native-router-flux';
 import Carousel from 'react-native-snap-carousel';
 import FlashMessage, { showMessage } from 'react-native-flash-message';
+import dynamicLinks from '@react-native-firebase/dynamic-links';
 
 import {
   homePageUpdateActiveTab,
@@ -14,7 +15,9 @@ import {
   homePageFetchUserColdStartDetails,
   personalPageSetData,
   homePageGetInitialPublicFeedData,
-  videoPagePlayStatusUpdate
+  videoPagePlayStatusUpdate,
+  celebrityPageVisitAndSetData,
+  customSinglePostViewPageVisitAndSetData,
 } from '../actions';
 import HomePageImagePost from './homeScreen/HomePageImagePost';
 import HomePageVideoPost from './homeScreen/HomePageVideoPost';
@@ -36,6 +39,11 @@ class HomePage extends Component {
     this.viewabilityConfig = { viewAreaCoveragePercentThreshold: 95 };
   }
   componentDidMount() {
+    // To play home video
+    this.focusListener = this.props.navigation.addListener('didFocus', () => {
+      this.props.videoPagePlayStatusUpdate({ homePageVideoPlay: true, celebPageVideoPlay: false });
+    });
+
     // Check Internet Status
     axios.get('https://clients3.google.com/generate_204')
         .then((response) => {
@@ -47,9 +55,36 @@ class HomePage extends Component {
           showMessage({ message: 'No Internet', type: 'danger', duration: 20000, floating: true, icon: 'warning', description: 'Check You Internet Connection' });
         });
 
-    // Getting the Initial Feed Data, when App in opened
-    const { userToken, feedData } = this.props; // Transfered this Method calling to Splash Screen
+    const { userToken, feedData } = this.props;
+
+    // Handle the Dynamic Link after Installing the App for first time
     if (feedData.length === 0) {
+      // Because when redirecting to this page after entering details, feedData is not fetched & is empty
+      dynamicLinks()
+        .getInitialLink()
+        .then(link => {
+          let params = {};
+          // console.log('link', link);
+          if (link !== null) {
+            params = this.parseUrl({ url: link.url });
+          }
+          const { postId, referrerId, type } = params;
+          switch (type) {
+            case 'postShare':
+              this.props.customSinglePostViewPageVisitAndSetData({ postId });
+              break;
+            case 'profileShare':
+              this.props.celebrityPageVisitAndSetData({ userId: referrerId, userToken });
+              break;
+            default:
+              break;
+          }
+        });
+    }
+
+    // Getting the Initial Feed Data, when App in opened
+    if (feedData.length === 0) {
+      // Transfered these Method calling to Splash Screen, but when came first time after installing feedData is empty
       // console.log('Called Again HomePage');
       this.props.homePageGetInitialFeedData({ userToken });
       this.props.homePageGetInitialPublicFeedData({ userToken });
@@ -57,11 +92,6 @@ class HomePage extends Component {
       this.props.personalPageSetData({ userToken });
     }
     BackHandler.addEventListener('hardwareBackPress', this.handleBackButton.bind(this));
-
-    // To play home video
-    this.focusListener = this.props.navigation.addListener('didFocus', () => {
-      this.props.videoPagePlayStatusUpdate({ homePageVideoPlay: true, celebPageVideoPlay: false });
-    });
   }
 
   componentWillUnmount() {
@@ -95,6 +125,16 @@ class HomePage extends Component {
       return true;
     }
     return false;
+  }
+
+  parseUrl({ url }) {
+    const regex = /[?&]([^=#]+)=([^&#]*)/g;
+    const params = {};
+    let match;
+    while ((match = regex.exec(url))) {
+      params[match[1]] = match[2];
+    }
+    return params;
   }
 
   render() {
@@ -173,5 +213,7 @@ export default connect(mapStateToProps, {
   homePageFetchUserColdStartDetails,
   personalPageSetData,
   homePageGetInitialPublicFeedData,
-  videoPagePlayStatusUpdate
+  videoPagePlayStatusUpdate,
+  celebrityPageVisitAndSetData,
+  customSinglePostViewPageVisitAndSetData,
 })(HomePage);

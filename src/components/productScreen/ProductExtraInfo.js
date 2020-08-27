@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, FlatList } from 'react-native';
+import { View, Text, FlatList, Image } from 'react-native';
 import { Card, ListItem } from 'react-native-elements';
 import { connect } from 'react-redux';
 // import testData from './testData';
@@ -50,17 +50,35 @@ const renderDescription = ({ description }) => {
   );
 };
 
+const renderSizeChart = ({ sizeChartUrl }) => {
+  if (sizeChartUrl === undefined || sizeChartUrl.length === 0) {
+    return <View />;
+  }
+  // const url = 'https://res.cloudinary.com/dhyo2ely0/image/upload/v1598555293/VisualSearch/sampleSizeChart.png';
+  return (
+    <View style={{ flex: 1 }}>
+      {renderHeader('Size Details')}
+          <Image
+            source={{ uri: sizeChartUrl }}
+            // source={{ uri: url }}
+            style={{ height: 200, width: '100%', resizeMode: 'stretch' }}
+          />
+    </View>
+  );
+};
+
 const ProductExtraInfo = ({ selectedItem, productsCompleteData, allFine }) => {
   // console.log('ProductExtraInfo', selectedItem, productsCompleteData, allFine);
   if (!allFine) {
     return <View />;
   }
-  const { features, description } = productsCompleteData[selectedItem];
+  const { features, description, sizeChartUrl } = productsCompleteData[selectedItem];
   // const { features, description } = testData;
   return (
     <Card containerStyle={{ marginBottom: 6, paddingBottom: 4, borderRadius: 8 }}>
       {renderFeatures({ features })}
       {renderDescription({ description })}
+      {renderSizeChart({ sizeChartUrl })}
     </Card>
   );
 };

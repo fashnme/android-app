@@ -62,8 +62,7 @@ export const homePageFetchUserColdStartDetails = ({ userToken }) => {
         payload.likedComments = userLikedCommentsMap;
       }
       dispatch({ type: USER_SET_ACTION_DATA, payload });
-    })
-    .catch(error => {
+    }).catch(error => {
       console.log('HomePageActions homePageFetchUserColdStartDetails Error', error);
     });
   };

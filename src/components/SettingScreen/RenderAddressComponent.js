@@ -7,12 +7,12 @@ import {
   accountSettingSetSelectedAddress as _accountSettingSetSelectedAddress
 } from '../../actions';
 
-const renderTitle = ({ name, address, city, state, pinCode }) => {
+const renderTitle = ({ name, address, city, state, pinCode, locality }) => {
   return (
     <View>
       <Text style={styles.name}> {name} </Text>
       <Text style={styles.textItem}> {address} </Text>
-      <Text style={styles.textItem}> { city } </Text>
+      <Text style={styles.textItem}> { locality },  {city} </Text>
       <Text style={styles.textItem}> { state} {'-'} {pinCode} </Text>
     </View>
   );
@@ -29,10 +29,10 @@ const renderPhone = ({ phoneNo }) => {
 
 const renderSingleAddress = ({ item, selectedAddress, accountSettingSetSelectedAddress }) => {
   // console.log('Address Item', item, selectedAddress);
-  const { label, city, pinCode, name, address, state, phoneNo } = item;
+  const { label, city, pinCode, name, address, state, phoneNo, locality } = item;
   return (
     <ListItem
-      title={renderTitle({ label, name, address, city, state, pinCode })}
+      title={renderTitle({ label, name, address, city, state, pinCode, locality })}
       subtitle={renderPhone({ phoneNo })}
       leftElement={
         <CheckBox
@@ -51,7 +51,7 @@ const renderSingleAddress = ({ item, selectedAddress, accountSettingSetSelectedA
 };
 
 const RenderAddressComponent = ({ deliveryDetailsArray, selectedAddress, accountSettingSetSelectedAddress }) => {
-  const emptyItem = { label: '', addressId: '', city: '', pinCode: '', name: '', address: '', state: '', phoneNo: '' };
+  const emptyItem = { label: '', addressId: '', city: '', pinCode: '', name: '', address: '', locality: '', state: '', phoneNo: '' };
   return (
     <View>
       <Card containerStyle={{ padding: 0, marginBottom: 10, borderRadius: 5 }}>

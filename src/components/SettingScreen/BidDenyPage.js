@@ -16,7 +16,7 @@ const reasons = [
   { value: "Don't want to Share" },
   { value: 'Other Reasons' }
 ];
-// Add Header 
+// Add Header
 const BidDenyPage = ({ bidId, userToken, loading, bidsPageRejectBid }) => {
   const [index, updateIndex] = useState(0);
   const [feedback, updateFeedback] = useState('');
@@ -35,7 +35,7 @@ const BidDenyPage = ({ bidId, userToken, loading, bidsPageRejectBid }) => {
             label='Reason for Rejection'
             data={reasons}
             selectedItemColor='#1f7070'
-            itemCoun={10}
+            itemCount={10}
             fontSize={18}
             containerStyle={styles.dropdownContainer}
             value={reasons[index].value}

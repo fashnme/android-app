@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { Actions } from 'react-native-router-flux';
-import { Image } from 'react-native';
+import { Image, Alert } from 'react-native';
 import ImageResizer from 'react-native-image-resizer/index.android';
 import { RNS3 } from 'react-native-aws3';
 
@@ -89,12 +89,11 @@ export const accountSettingGetAndSetUserData = ({ userId, userToken }) => {
 };
 
 // Get City & State from Pincode
-export const accountSettingsGetCityAndStateFromPin = ({ pincode, updateState, updateCity }) => {
+export const accountSettingsGetCityAndStateFromPin = ({ pincode, updateState, updateCity, setLocalityArray, setLoadingPincode }) => {
   const headers = {
     'Content-Type': 'application/json',
   };
   return (dispatch) => {
-    dispatch({ type: 'accountSettingsGetCityAndStateFromPin' });
     axios({
         method: 'get',
         url: SettingsPageGetCityAndAddressFromPinURL,
@@ -102,18 +101,23 @@ export const accountSettingsGetCityAndStateFromPin = ({ pincode, updateState, up
         params: { pincode }
         })
         .then((response) => {
-            console.log('pinCode resp', response.data);
-            const { stateName, city, status } = response.data;
+            // console.log('pinCode resp', response.data);
+            const { stateName, city, status, locality } = response.data;
             if (status === 'OK') {
               updateState(stateName);
               updateCity(city);
+              setLocalityArray(locality.map(value => ({ value })));
             } else {
               updateState('');
               updateCity('');
+              setLocalityArray([]);
+              Alert.alert('Sorry :(', 'We are not shipping to this Pincode', [{ text: 'Ok' }], { cancelable: true });
             }
-        })
-        .catch((error) => {
+        }).catch((error) => {
             console.log('accountSettingsGetCityAndStateFromPin Actions Error ', error);
+            dispatch({ type: 'accountSettingsGetCityAndStateFromPin' });
+      }).finally(() => {
+        setLoadingPincode(false);
       });
   };
 };
