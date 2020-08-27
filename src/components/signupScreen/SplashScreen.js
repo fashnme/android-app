@@ -36,6 +36,7 @@ class SplashScreen extends Component {
           this.props.personalPageSetData({ userToken });
           let params = {};
           let remoteMessage = null;
+          // Get Incoming Link
           dynamicLinks()
             .getInitialLink()
             .then(link => {
@@ -96,7 +97,7 @@ class SplashScreen extends Component {
                   }
               }
             );
-          }, 2000);
+          }, 2500);
         } else {
           dynamicLinks()
             .getInitialLink()

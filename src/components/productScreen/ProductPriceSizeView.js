@@ -136,6 +136,25 @@ const renderCrossedPriceBlock = ({ crossedPrice, price }) => {
   );
 };
 
+const renderSizeChartText = ({ sizeChartUrl, scrollRef }) => {
+  // "Size Chart" Text
+  if (sizeChartUrl === undefined || sizeChartUrl.length === 0) {
+    return <View />;
+  }
+  return (
+    <View style={{ justifyContent: 'flex-end', flexDirection: 'row', margin: 10, marginTop: 20 }}>
+      <Button
+        title='SIZE CHART'
+        type="outline"
+        titleStyle={styles.sizeChartText}
+        buttonStyle={{ borderColor: '#ff3f6c' }}
+        raised
+        onPress={() => scrollRef.current.scrollToEnd({ animated: true, duration: 1000 })}
+      />
+    </View>
+  );
+};
+
 const checkAndCompleteRequest = ({ productId, sizeSelected, postId, userToken, posterId, referrerId,
   visitCart, manageCartAddProductToCart, productPageOpenProductModal }) => {
   if (sizeSelected === null) {
@@ -160,7 +179,8 @@ const checkAndCompleteRequest = ({ productId, sizeSelected, postId, userToken, p
   showMessage({ message: 'Added to Bag!', type: 'success', floating: true, icon: 'success' });
 };
 
-const ProductPriceSizeView = ({ productData, postId, posterId, askForSize, userToken, referrerId, productAddedForReminder,
+// scrollRef from parent component
+const ProductPriceSizeView = ({ scrollRef, productData, postId, posterId, askForSize, userToken, referrerId, productAddedForReminder,
   productPageOpenProductModal, productPageUpdatePriceAndSize, manageCartAddProductToCart, productPageToggleFullImageViewer,
   productPageAddProductToReminder }) => {
   const [sizeSelected, setSizeSelected] = useState(null);
@@ -169,7 +189,7 @@ const ProductPriceSizeView = ({ productData, postId, posterId, askForSize, userT
   if (productData === undefined) {
     return <View />;
   }
-  const { productId, title, brandName, price, crossedPrice, image, sizesAvailable } = productData;
+  const { productId, title, brandName, price, crossedPrice, image, sizesAvailable, sizeChartUrl } = productData;
   if (askForSize) {
     // Hit the Server to Update the Price & Sizes Available
     productPageUpdatePriceAndSize({ productId });
@@ -201,6 +221,7 @@ const ProductPriceSizeView = ({ productData, postId, posterId, askForSize, userT
           />
         </View>
       </View>
+      {renderSizeChartText({ sizeChartUrl, scrollRef })}
       {renderSizeBlock({ sizesAvailable, sizeSelected, setSizeSelected })}
       {renderInStockReminderButton({ sizesAvailable, userToken, productData, productAddedForReminder, productPageAddProductToReminder })}
       <FullProductImageViewer />
@@ -243,11 +264,7 @@ const styles = {
     fontWeight: 'bold',
     marginLeft: 10,
   },
-  headingStyle: {
-    fontWeight: 'bold',
-    marginBottom: 5,
-    marginTop: 5
-  },
+  headingStyle: { fontWeight: 'bold', marginBottom: 5, marginTop: 5 },
   sizeContainerStyle: {
     margin: 6,
     padding: 3,
@@ -255,12 +272,7 @@ const styles = {
     backgroundColor: 'white',
     borderWidth: 1,
   },
-  sizeTextStyle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    margin: 2,
-    color: 'grey'
-  },
+  sizeTextStyle: { fontSize: 18, fontWeight: 'bold', margin: 2, color: 'grey' },
   codeText: { fontWeight: 'bold', fontSize: 18, color: 'red', textAlign: 'center' },
   codeView: {
     borderWidth: 1,
@@ -276,6 +288,7 @@ const styles = {
     width: '50%',
     alignSelf: 'center'
   },
+  sizeChartText: { fontSize: 14, fontWeight: 'bold', color: '#ff3f6c', textShadowRadius: 1 }
 };
 
 const mapStateToProps = ({ productPageState, personalPageState, referralState }) => {
