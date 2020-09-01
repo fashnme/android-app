@@ -3,9 +3,11 @@ import { View, Text, TouchableWithoutFeedback, TouchableNativeFeedback, Image } 
 import Video from 'react-native-video';
 import { showMessage } from 'react-native-flash-message';
 import { connect } from 'react-redux';
+import { PATH_TO_CACHE_DIR, FILE_TYPE } from '../../types';
 import AvatarComp from './AvatarComp';
 import HeartComp from './HeartComp';
 import BlinkingVideoIcon from './BlinkingVideoIcon';
+import VideoDownloadComp from './VideoDownloadComp';
 // import TestBlinking from './TestBlinking';
 
 import {
@@ -28,19 +30,10 @@ class HomePageVideoPost extends Component {
     this.state = {
       showFullCaption: false,
       player: null,
-      showVideo: false
+      // showVideo: false,
+      showStreamVideo: true
     };
   }
-
-  // componentDidMount() {
-  //   this.focusListener = this.props.navigation.addListener('didFocus', () => {
-  //     this.setState({ showVideo: true });
-  //   });
-  // }
-  // componentWillUnmount() {
-  //   this.setState({ showVideo: false });
-  //   this.focusListener.remove();
-  // }
 
   renderIconWithText({ source, text, onPress }) {
       return (
@@ -132,45 +125,39 @@ class HomePageVideoPost extends Component {
   }
 
   render() {
-    const { currentIndex, currentVisibleIndex, data, homePageVideoPlay, userToken, referrerId } = this.props;
-    const { uploadUrl, thumbnailUrl, userId, postId } = data;
-    // console.log('HomePageVideoPost', uploadUrl, thumbnailUrl);
+    const { currentIndex, currentVisibleIndex, data, homePageVideoPlay, userToken, referrerId, videosDownloaded } = this.props;
+    const { uploadUrl, thumbnailUrl, userId, postId, bucketUrl } = data;
     const absDifference = currentIndex - currentVisibleIndex;
     if (absDifference !== 0) {
-      return <View />;
+      return <VideoDownloadComp bucketUrl={bucketUrl} compType={'homeVideo'} postId={postId} currentIndex={currentIndex} currentVisibleIndex={currentVisibleIndex} />;
     }
-    // if (absDifference > 1 || absDifference < 0) {
-    //   return <View />;
-    // }
-    // console.log('HomePageVideoPost', absDifference, homePageVideoPlay, !(homePageVideoPlay && absDifference === 0));
+    // console.log('showStreamVideo', this.state.showStreamVideo, videosDownloaded);
+
+    if (this.state.showStreamVideo && postId in videosDownloaded) {
+      this.setState({ showStreamVideo: false });
+      // console.log('Video Already Downloaded', videosDownloaded[postId]);
+    }
     return (
       <View style={{ flex: 1 }}>
         <TouchableWithoutFeedback style={styles.containerStyle} onPress={() => {}}>
           <Video
-           source={{ uri: uploadUrl }} // Can be a URL or a local file.
-           // source={{ uri: 'https://fashn-social.s3.ap-south-1.amazonaws.com/testing/aHR0cDovL3RlY2hzbGlkZXMuY29tL2RlbW9zL3NhbXBsZS12aWRlb3Mvc21hbGwubXA0.m3u8' }} // Can be a URL or a local file.
+           source={{ uri: this.state.showStreamVideo ? uploadUrl : `${FILE_TYPE}${PATH_TO_CACHE_DIR}/${postId}.mp4` }} // Can be a URL or a local file.
            onBuffer={() => console.log('buffering')} // Callback when remote video is buffering
-           onError={(e) => console.log('Video Error', e)} // Callback when video cannot be loaded
+           onError={(e) => console.log('Video Error', postId, e)} // Callback when video cannot be loaded
            style={styles.backgroundVideo}
            resizeMode={'cover'}
            playInBackground={false}
            playWhenInactive={false}
            paused={!(homePageVideoPlay && absDifference === 0)}
-           fullscreen
+           // fullscreen
            poster={thumbnailUrl}
            posterResizeMode={'cover'}
            repeat
-           onEnd={() => {
-             console.log('VIdeo End');
-             this.props.homePageMarkUserViewedPost({ posterId: userId, postId, referrerId, userToken });
-           }}
-           // maxBitRate={200000}
-           // Testing
-           // onLoadStart={(d) => console.log('On Load Start', absDifference, d)}
-           // onLoad={(d) => console.log('On Loaded', absDifference, d)}
+           onEnd={() => this.props.homePageMarkUserViewedPost({ posterId: userId, postId, referrerId, userToken })}
           />
         </TouchableWithoutFeedback>
         {this.renderScreenButtons()}
+        <VideoDownloadComp bucketUrl={bucketUrl} compType={'homeVideo'} postId={postId} currentIndex={currentIndex} currentVisibleIndex={currentVisibleIndex} />
       </View>
     );
   }
@@ -248,8 +235,8 @@ const styles = {
 const mapStateToProps = ({ personalPageState, videoPlayStatusState, referralState }) => {
     const { userToken, personalUserId } = personalPageState;
     const { referrerId } = referralState;
-    const { homePageVideoPlay } = videoPlayStatusState;
-    return { userToken, homePageVideoPlay, personalUserId, referrerId };
+    const { homePageVideoPlay, videosDownloaded } = videoPlayStatusState;
+    return { userToken, homePageVideoPlay, videosDownloaded, personalUserId, referrerId };
 };
 
   export default connect(mapStateToProps, {
@@ -265,3 +252,21 @@ const mapStateToProps = ({ personalPageState, videoPlayStatusState, referralStat
     videoPagePlayStatusUpdate,
     homePageMarkUserViewedPost
   })(HomePageVideoPost);
+
+  // rootProject.name = 'patang'
+  // include ':@react-native-community_art'
+  // project(':@react-native-community_art').projectDir = new File(rootProject.projectDir, '../node_modules/@react-native-community/art/android')
+  // include ':react-native-gesture-handler'
+  // project(':react-native-gesture-handler').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-gesture-handler/android')
+  // include ':react-native-reanimated'
+  // project(':react-native-reanimated').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-reanimated/android')
+  // include ':react-native-video'
+  // project(':react-native-video').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-video/android-exoplayer')
+  // include ':react-native-video-processing'
+  // project(':react-native-video-processing').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-video-processing/android')
+  // include ':react-native-fs'
+  // project(':react-native-fs').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-fs/android')
+  // include ':react-native-vector-icons'
+  // project(':react-native-vector-icons').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-vector-icons/android')
+  // apply from: file("../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesSettingsGradle(settings)
+  // include ':app'

@@ -68,13 +68,21 @@ const resizeAndUploadVideo = ({ selectedVideoPath, userToken, personalUserId, ca
   ProcessingManager.getVideoInfo(selectedVideoPath)
   .then((orig) => {
     const { height, width } = orig.size;
-    // console.log('Size', { height, width });
+    const bitrateMultiplier = 1.2;
+    // // TODO:  Set the bitrateMultiplier based on videoSize 
+    // const videoSize = (orig.bitrate * orig.duration) / 8; // In Bytes
+    // if (videoSize > 8000000) { // Greater than 8 MB
+    //   bitrateMultiplier = 1.6;
+    // } else if (videoSize > 4000000) { // Greater than 4 MB
+    //   bitrateMultiplier = 1.4;
+    // }
+    // console.log('Original Video Properties ', { orig, bitrateMultiplier, videoSize });
     // Create Thumbnail
-    ProcessingManager.getPreviewForSecond(selectedVideoPath, 5, { height, width })
+    ProcessingManager.getPreviewForSecond(selectedVideoPath, 1, { height, width })
     .then((thumbnailData) => {
         // console.log('get getPreviewForSecond', typeof thumbnailData, thumbnailData);
-        // const options = { width, height, bitrateMultiplier: 1.0, minimumBitrate: null };
-        const options = { width, height, bitrateMultiplier: 1.0 };
+        // const options = { width, height, bitrateMultiplier: 1.0 };
+        const options = { width, height, bitrateMultiplier };
         // https://github.com/shahen94/react-native-video-processing/issues/138 This issue helped: bitrateMultiplier times quality degrade
         ProcessingManager.compress(selectedVideoPath, options).then((d) => {
             // console.log('Compressed Video Info ', d);
@@ -129,7 +137,7 @@ const uploadContent = ({ uri, type, personalUserId, userToken, caption, dispatch
   })
   .then(response => {
     if (response.status === 201) {
-      // console.log('Content Uploaded', response);
+      console.log('Content Uploaded', response.data);
       if (type.includes('image')) {
         updateDatabase({ caption, mediaType: type, uploadUrl: response.body.postResponse.location, userToken, dispatch });
       } else {
@@ -162,7 +170,7 @@ const uploadThumbnailMethod = ({ thumbnailData, thumbkeyPrefix, thumbName, media
 
             // Compress the Thumbnail
             Image.getSize(outputPath, (w, h) => {
-              ImageResizer.createResizedImage(outputPath, w, h, 'WEBP', 50).then((resp) => {
+              ImageResizer.createResizedImage(outputPath, w, h, 'WEBP', 40).then((resp) => {
                   AWS_OPTIONS.keyPrefix = thumbkeyPrefix;
                   const file = { uri: resp.uri, name: thumbName, type: 'image/webp' };
                   RNS3.put(file, AWS_OPTIONS)

@@ -3,9 +3,11 @@ import { View, Text, TouchableWithoutFeedback, TouchableNativeFeedback, Image } 
 import Video from 'react-native-video';
 import { showMessage } from 'react-native-flash-message';
 import { connect } from 'react-redux';
+import { PATH_TO_CACHE_DIR, FILE_TYPE } from '../../types';
 import AvatarComp from './AvatarComp';
 import HeartComp from './HeartComp';
 import BlinkingVideoIcon from './BlinkingVideoIcon';
+import VideoDownloadComp from './VideoDownloadComp';
 // import TestBlinking from './TestBlinking';
 
 import {
@@ -28,19 +30,10 @@ class HomePageVideoPostForCeleb extends Component {
     this.state = {
       showFullCaption: false,
       player: null,
-      showVideo: false
+      // showVideo: false,
+      showStreamVideo: true
     };
   }
-
-  // componentDidMount() {
-  //   this.focusListener = this.props.navigation.addListener('didFocus', () => {
-  //     this.setState({ showVideo: true });
-  //   });
-  // }
-  // componentWillUnmount() {
-  //   this.setState({ showVideo: false });
-  //   this.focusListener.remove();
-  // }
 
   renderIconWithText({ source, text, onPress }) {
       return (
@@ -132,30 +125,31 @@ class HomePageVideoPostForCeleb extends Component {
   }
 
   render() {
-    const { currentIndex, currentVisibleIndex, data, celebPageVideoPlay, referrerId, userToken } = this.props;
-    const { uploadUrl, thumbnailUrl, userId, postId } = data;
+    const { currentIndex, currentVisibleIndex, data, celebPageVideoPlay, referrerId, userToken, videosDownloaded } = this.props;
+    const { uploadUrl, thumbnailUrl, userId, postId, bucketUrl } = data;
     const absDifference = currentIndex - currentVisibleIndex;
     if (absDifference !== 0) {
-      return <View />;
+      return <VideoDownloadComp bucketUrl={bucketUrl} compType={'customVideo'} postId={postId} currentIndex={currentIndex} currentVisibleIndex={currentVisibleIndex} />;
     }
-    // if (absDifference > 1 || absDifference < 0) {
-    //   return <View />;
-    // }
-    // console.log('HomePageVideoPostForCeleb', absDifference, celebPageVideoPlay, celebPageVideoPlay && (absDifference !== 0));
+    // console.log('showStreamVideo', this.state.showStreamVideo, videosDownloaded);
+
+    if (this.state.showStreamVideo && postId in videosDownloaded) {
+      this.setState({ showStreamVideo: false });
+      // console.log('Video Already Downloaded', videosDownloaded[postId]);
+    }
     return (
       <View style={{ flex: 1 }}>
         <TouchableWithoutFeedback style={styles.containerStyle} onPress={() => {}}>
           <Video
-           source={{ uri: uploadUrl }} // Can be a URL or a local file.
-           // source={{ uri: 'https://fashn-social.s3.ap-south-1.amazonaws.com/testing/aHR0cDovL3RlY2hzbGlkZXMuY29tL2RlbW9zL3NhbXBsZS12aWRlb3Mvc21hbGwubXA0.m3u8' }} // Can be a URL or a local file.
+           source={{ uri: this.state.showStreamVideo ? uploadUrl : `${FILE_TYPE}${PATH_TO_CACHE_DIR}/${postId}.mp4` }} // Can be a URL or a local file.
            onBuffer={() => console.log('buffering')} // Callback when remote video is buffering
-           onError={(e) => console.log('Video Error', e)} // Callback when video cannot be loaded
+           onError={(e) => console.log('Video Error', postId, e)} // Callback when video cannot be loaded
            style={styles.backgroundVideo}
            resizeMode={'cover'}
            playInBackground={false}
            playWhenInactive={false}
            paused={!(celebPageVideoPlay && absDifference === 0)}
-           // fullscreen
+           fullscreen
            poster={thumbnailUrl}
            posterResizeMode={'cover'}
            repeat
@@ -163,6 +157,7 @@ class HomePageVideoPostForCeleb extends Component {
           />
         </TouchableWithoutFeedback>
         {this.renderScreenButtons()}
+        <VideoDownloadComp bucketUrl={bucketUrl} compType={'customVideo'} postId={postId} currentIndex={currentIndex} currentVisibleIndex={currentVisibleIndex} />
       </View>
     );
   }
@@ -239,9 +234,9 @@ const styles = {
 
 const mapStateToProps = ({ personalPageState, videoPlayStatusState, referralState }) => {
     const { userToken, personalUserId } = personalPageState;
-    const { celebPageVideoPlay } = videoPlayStatusState;
+    const { celebPageVideoPlay, videosDownloaded } = videoPlayStatusState;
     const { referrerId } = referralState;
-    return { userToken, celebPageVideoPlay, personalUserId, referrerId };
+    return { userToken, celebPageVideoPlay, personalUserId, referrerId, videosDownloaded };
 };
 
   export default connect(mapStateToProps, {

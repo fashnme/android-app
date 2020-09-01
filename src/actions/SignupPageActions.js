@@ -33,8 +33,8 @@ export const signupPageOTPUpdate = (otp) => {
   return { type: SIGNUP_PAGE_OTP_UPDATE, payload: otp };
 };
 
-export const signupPageSetReferrerData = ({ referrerId }) => {
-  return { type: REFERRAL_PAGE_REFERRER_DATA_UPDATE, payload: { referrerId } };
+export const signupPageSetReferrerData = ({ referrerId, newUser }) => {
+  return { type: REFERRAL_PAGE_REFERRER_DATA_UPDATE, payload: { referrerId, newUser } };
 };
 
 export const signupPageReferrerUpdate = (referrerId) => {

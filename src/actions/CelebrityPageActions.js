@@ -29,10 +29,10 @@ export const celebrityPageVisitAndSetData = ({ userId, userToken }) => {
     'Content-Type': 'application/json',
     Authorization: userToken
   };
+  // Visit the Celebrity Page
+  Actions.celebrityPage();
   return (dispatch) => {
     dispatch({ type: CELEBRITY_PAGE_TOGGLE_LOADING, payload: true });
-    // Visit the Celebrity Page
-    Actions.celebrityPage();
     // console.log('celebrityPageVisitAndSetData', userId);
     // Setting the General Details
     axios({
