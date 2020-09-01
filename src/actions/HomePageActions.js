@@ -1,6 +1,5 @@
 import axios from 'axios';
 import Share from 'react-native-share';
-import { Platform } from 'react-native';
 import RNFS from 'react-native-fs';
 import dynamicLinks from '@react-native-firebase/dynamic-links';
 
@@ -19,7 +18,9 @@ import {
   PLAY_STORE_LINK,
   FIREBASE_DOMAIN_URI_PREFIX,
   SHARE_PAGE_TOGGLE_SHARE_MODAL,
-  SHARE_PAGE_UPDATE_DOWNLOAD_PROGRESS
+  SHARE_PAGE_UPDATE_DOWNLOAD_PROGRESS,
+  PATH_TO_CACHE_DIR,
+  FILE_TYPE
 } from '../types';
 
 import {
@@ -218,18 +219,18 @@ export const homePageDislikePost = ({ userToken, postId, userId }) => {
 
 // Method to mark that video is viewed by user
 export const homePageMarkUserViewedPost = ({ posterId, postId, referrerId, userToken }) => {
-  console.log('homePageMarkUserViewedPost', { posterId, postId, referrerId, userToken });
+  // console.log('homePageMarkUserViewedPost', { posterId, postId, referrerId, userToken });
   const headers = {
     'Content-Type': 'application/json',
     Authorization: userToken
   };
+  const timeStamp = new Date().toISOString();
   return (dispatch) => {
-    dispatch({ type: 'homePageMarkUserViewedPost' });
     axios({
         method: 'post',
         url: HomePageMarkUserViewedPostURL,
         headers,
-        data: { viewedPostArray: [{ postId, posterId, referrerId, timeStamp: new Date() }] }
+        data: { viewedPostArray: [{ postId, posterId, referrerId, timeStamp }] }
         })
         .then((response) => {
             console.log('homePageMarkUserViewedPost', response.data);
@@ -237,6 +238,7 @@ export const homePageMarkUserViewedPost = ({ posterId, postId, referrerId, userT
         .catch((error) => {
             //handle error
             console.log('homePageMarkUserViewedPost Actions Error ', error);
+            dispatch({ type: 'homePageMarkUserViewedPost' });
       });
   };
 };
@@ -256,24 +258,24 @@ export const homePageSharePost = ({ postData, referrerId }) => {
 
     // Options for downloading file
     const type = postData.mediaType;
-    const FILE = Platform.OS === 'ios' ? '' : 'file://';
-    const cacheDir = `${RNFS.DocumentDirectoryPath}/Cache`;
+    // const cacheDir = `${RNFS.DocumentDirectoryPath}/Cache`;
+    // const cacheDir = PATH_TO_CACHE_DIR;
     let outputPath = '';
     let b64PreExt = '';
     if (type === 'video') {
-      outputPath = `${FILE}${cacheDir}/video.mp4`;
+      outputPath = `${FILE_TYPE}${PATH_TO_CACHE_DIR}/video.mp4`;
       b64PreExt = 'video/mp4';
     } else {
-      outputPath = `${FILE}${cacheDir}/image.jpg`;
+      outputPath = `${FILE_TYPE}${PATH_TO_CACHE_DIR}/image.jpg`;
       b64PreExt = 'image/jpeg';
     }
     // Downloading File
-    RNFS.exists(cacheDir)
+    RNFS.exists(PATH_TO_CACHE_DIR)
       .then(response => {
          if (response !== true) {
           // Directory not exists
-          RNFS.mkdir(cacheDir);
-          console.log('homePageSharePost Directory Created', cacheDir);
+          RNFS.mkdir(PATH_TO_CACHE_DIR);
+          console.log('homePageSharePost Directory Created', PATH_TO_CACHE_DIR);
          }
          RNFS.downloadFile({
            fromUrl: url,
@@ -299,7 +301,7 @@ export const homePageSharePost = ({ postData, referrerId }) => {
              dynamicLinks().buildShortLink(dynamicLinkOptions)
              .then((link) => {
                  const content = `data:${b64PreExt};base64,${d}`;
-                 const message = `Patang App\u000A \u000ACheck out ${postData.userName}'s Post \u000A \u000A${postData.caption.trim()} \u000A \u000AWatch Now:\u000A${link} \u000A \u000APatang App: Indian Video Shopping & Sharing App ❤`;
+                 const message = `Patang App: Indian Video Shopping & Sharing App ❤\u000A \u000ACheck out ${postData.userName}'s Post \u000A \u000A${postData.caption.trim()} \u000A \u000AWatch Now:\u000A${link} \u000A \u000A`;
                  const options = { message, url: content, title: 'Share Now' };
                  Share.open(options)
                   .then((res) => { console.log('homePageSharePost Post Shared', res); })
@@ -310,7 +312,7 @@ export const homePageSharePost = ({ postData, referrerId }) => {
              });
            })
            .finally(() => {
-             dispatch({ type: SHARE_PAGE_TOGGLE_SHARE_MODAL, payload: false });
+             setTimeout(() => { dispatch({ type: SHARE_PAGE_TOGGLE_SHARE_MODAL, payload: false }); }, 2000);
            });
            // return { path: outputPath }; // Downloaded Successfully
          })

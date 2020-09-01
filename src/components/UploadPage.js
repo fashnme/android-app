@@ -11,7 +11,8 @@ import PostScreen from './uploadScreen/PostScreen';
 import { CamNotAuthView } from './basic';
 import {
   uploadPageToggleIsSelected,
-  uploadPageUpdateselectedContentPath
+  uploadPageUpdateselectedContentPath,
+  videoPagePlayStatusUpdate
 } from '../actions';
 
 const screenWidth = Dimensions.get('window').width;
@@ -26,6 +27,15 @@ class UploadPage extends Component {
       mediaType: null
     };
   }
+  componentDidMount() {
+    this.focusListener = this.props.navigation.addListener('didFocus', () => {
+      this.props.videoPagePlayStatusUpdate({ homePageVideoPlay: false, celebPageVideoPlay: false });
+    });
+  }
+  componentWillUnmount() {
+    this.focusListener.remove();
+  }
+
   setModalVisible(visible) {
     this.setState({ isModalVisible: visible });
   }
@@ -333,5 +343,6 @@ const mapStateToProps = ({ uploadPageState }) => {
 
 export default connect(mapStateToProps, {
   uploadPageToggleIsSelected,
-  uploadPageUpdateselectedContentPath
+  uploadPageUpdateselectedContentPath,
+  videoPagePlayStatusUpdate
 })(UploadPage);

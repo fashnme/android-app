@@ -105,7 +105,7 @@ class SplashScreen extends Component {
               if (link !== null) {
                 const { referrerId } = this.parseUrl({ url: link.url });
                 if (referrerId !== undefined) {
-                  this.props.signupPageSetReferrerData({ referrerId });
+                  this.props.signupPageSetReferrerData({ referrerId, newUser: true });
                 }
               }
             });

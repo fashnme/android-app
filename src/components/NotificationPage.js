@@ -8,7 +8,8 @@ import { EmptyPage } from './basic';
 import {
   notificationPageGetNotifcations,
   celebrityPageVisitAndSetData,
-  customSinglePostViewPageVisitAndSetData
+  customSinglePostViewPageVisitAndSetData,
+  videoPagePlayStatusUpdate
 } from '../actions';
 
 class NotificationPage extends Component {
@@ -24,6 +25,7 @@ class NotificationPage extends Component {
   onFocusFunction() {
      const { userToken } = this.props;
      this.props.notificationPageGetNotifcations({ userToken, notificationPage: 1 });
+     this.props.videoPagePlayStatusUpdate({ homePageVideoPlay: false, celebPageVideoPlay: false });
   }
 
   rightImage(source) {
@@ -343,5 +345,6 @@ const mapStateToProps = ({ notificationState, personalPageState }) => {
 export default connect(mapStateToProps, {
   notificationPageGetNotifcations,
   celebrityPageVisitAndSetData,
-  customSinglePostViewPageVisitAndSetData
+  customSinglePostViewPageVisitAndSetData,
+  videoPagePlayStatusUpdate
 })(NotificationPage);

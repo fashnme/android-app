@@ -55,11 +55,10 @@ class HomePage extends Component {
           showMessage({ message: 'No Internet', type: 'danger', duration: 20000, floating: true, icon: 'warning', description: 'Check You Internet Connection' });
         });
 
-    const { userToken, feedData } = this.props;
+    const { userToken, feedData, newUser } = this.props;
 
     // Handle the Dynamic Link after Installing the App for first time
-    if (feedData.length === 0) {
-      // Because when redirecting to this page after entering details, feedData is not fetched & is empty
+    if (newUser) {
       dynamicLinks()
         .getInitialLink()
         .then(link => {
@@ -197,11 +196,12 @@ class HomePage extends Component {
 }
 //../resources/background/loader-gif.gif
 
-const mapStateToProps = ({ homePageState, personalPageState }) => {
+const mapStateToProps = ({ homePageState, personalPageState, referralState }) => {
   const { feedData, feedPageNum, publicFeedData, activeTab } = homePageState;
   const { userToken } = personalPageState;
+  const { newUser } = referralState;
   // console.log('HomePage mapStateToProps', feedData.length, feedPageNum);
-  return { feedData, feedPageNum, publicFeedData, activeTab, userToken };
+  return { feedData, feedPageNum, publicFeedData, activeTab, userToken, newUser };
 };
 
 

@@ -1,10 +1,15 @@
+import RNFS from 'react-native-fs';
+import { Platform } from 'react-native';
+
 export const ANDROID_APP_SHARING_URL = 'https://bit.ly/patang_android';
 
 export const PLAY_STORE_LINK = 'https://play.google.com/store/apps/details?id=com.patang';
 export const FIREBASE_DOMAIN_URI_PREFIX = 'https://patang.page.link';
 
-// export const PRODUCT_SHARING_URL_INITIAL = 'https://fashn.me/p/';
-// export const ECOM_SHARING_URL_INITIAL = 'https://fashn.me/cashback-intermediate-page';
+// Download all the Patang Related Videos Here
+export const FILE_TYPE = Platform.OS === 'ios' ? '' : 'file://';
+export const PATH_TO_CACHE_DIR = `${RNFS.CachesDirectoryPath}/PatangCache`;
+
 
 export const AWS_OPTIONS = {
     keyPrefix: '', // Change this Folder Name
@@ -103,7 +108,7 @@ export const SETTING_PAGE_SET_SELECTED_ADDRESS = 'setting_page_set_selected_addr
 export const SETTING_PAGE_SET_USER_WISHLIST = 'setting_page_set_user_wishlist';
 
 export const SETTING_PAGE_GENERAL_LOADING_TOGGLE = 'setting_page_general_loading_toggle';
-export const SETTING_PAGE_CART_AND_WISHLIST_LOADING_TOGGLE = 'setting_page_cart_and_wishlist_loading_toggle'; 
+export const SETTING_PAGE_CART_AND_WISHLIST_LOADING_TOGGLE = 'setting_page_cart_and_wishlist_loading_toggle';
 
 // Cart Operation
 export const MANAGE_CART_PAGE_SET_CART_ARRAY = 'manage_cart_page_set_cart_array';
@@ -127,6 +132,10 @@ export const CUSTOM_POST_LIST_VIEW_PAGE_SET_DATA = 'custom_post_list_view_page_s
 
 // VideoPageStatus
 export const VIDEO_PAGE_PLAY_STATUS_UPDATE = 'video_page_play_status_update';
+export const VIDEO_PAGE_DOWNLOAD_STARTED = 'video_page_download_started';
+export const VIDEO_PAGE_DOWNLOAD_COMPLETE = 'video_page_download_complete';
+export const VIDEO_PAGE_STOP_DOWNLOAD_STATUS = 'video_page_stop_download_status';
+export const VIDEO_PAGE_ADD_TO_DOWNLOADING_OBJ = 'video_page_add_to_downloading_obj';
 
 // Referral Page
 export const REFERRAL_PAGE_REFERRER_DATA_UPDATE = 'referral_page_referrer_data_update';

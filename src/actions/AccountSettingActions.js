@@ -173,31 +173,6 @@ export const accountSettingsUpdateUserProfilePic = ({ profilePic }) => {
     type: SETTING_PAGE_USER_PROFILE_PIC_UDPATE,
     payload: profilePic
   };
-  // return (dispatch) => {
-  //   dispatch({ type: SETTING_PAGE_USER_PROFILE_PIC_UDPATE, payload: profilePic });
-  //   Image.getSize(profilePic, (w, h) => {
-  //     ImageResizer.createResizedImage(profilePic, w, h, 'WEBP', 40).then((response) => {
-  //       const { uri } = response;
-  //       const name = `${personalUserId}-t-${Math.round((new Date().getTime()) / 1000)}.webp`;
-  //       const keyPrefix = 'profilePictures/';
-  //       AWS_OPTIONS.keyPrefix = keyPrefix;
-  //       const file = { uri, name, type: 'image/webp' };
-  //       RNS3.put(file, AWS_OPTIONS).then(resp => {
-  //         if (resp.status === 201) {
-  //           dispatch({ type: SETTING_PAGE_USER_PROFILE_PIC_UDPATE, payload: resp.body.postResponse.location });
-  //           console.log('Content Uploaded', resp.body.postResponse.location);
-  //         } else {
-  //           console.log('accountSettingsUpdateUserProfilePic Error in Uploading profilePic', resp, uri, name);
-  //         }
-  //       })
-  //       .catch((err) => {
-  //         console.log('accountSettingsUpdateUserProfilePic Error Uploading Image', err);
-  //       });
-  //     }).catch((err) => {
-  //       console.log('Error in Image Compression', err);
-  //     });
-  //   });
-  // };
 };
 
 // Save the User Profile Changes in DB
@@ -213,7 +188,11 @@ export const accountSettingsSaveProfileChanges = ({ profileDetailsChanges, perso
       } else {
         // Upload Profile Pic
         Image.getSize(profilePic, (w, h) => {
-          ImageResizer.createResizedImage(profilePic, w, h, 'WEBP', 40).then((response) => {
+          const mywidth = 300;
+          const wpercent = (mywidth / w);
+          const hsize = Math.round((h * wpercent));
+          ImageResizer.createResizedImage(profilePic, mywidth, hsize, 'WEBP', 40).then((response) => {
+          // ImageResizer.createResizedImage(profilePic, w, h, 'WEBP', 50).then((response) => {
             const { uri } = response;
             const name = `${personalUserId}-t-${Math.round((new Date().getTime()) / 1000)}.webp`;
             const keyPrefix = 'profilePictures/';
