@@ -71,7 +71,16 @@ const AddUserAddress = ({ addressData, userToken, loading, accountSetttingsAddUs
       <Header
         backgroundColor={'white'}
         placement={'center'}
-        leftComponent={{ icon: 'arrow-back', color: 'grey', onPress: () => { Actions.pop(); } }}
+        // leftComponent={{ icon: 'arrow-back', color: 'grey', onPress: () => { Actions.pop(); } }}
+        leftComponent={{ icon: 'arrow-left',
+          type: 'font-awesome',
+          color: '#e9e9e9',
+          onPress: () => { Actions.pop(); },
+          reverse: true,
+          size: 18,
+          reverseColor: '#D5252D',
+          containerStyle: { marginLeft: -5, marginTop: 0, opacity: 0.8 },
+        }}
         rightComponent={{
           text: 'Save',
           style: { color: '#2089dc', fontWeight: 'bold', fontSize: 18 },

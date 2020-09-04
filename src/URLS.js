@@ -58,6 +58,7 @@ export const SettingsPageCancelBidURL = 'https://fashn-backend.herokuapp.com/bid
 export const SettingsPageCreateBidURL = 'https://fashn-backend.herokuapp.com/bid/create-bid';
 export const SettingsPageEditBidURL = 'https://fashn-backend.herokuapp.com/bid/edit-bid';
 export const SettingsPageGetUserWishlistURL = 'https://fashn-backend.herokuapp.com/user/get-user-wishlist';
+export const SettingsPageGetUserPersonalStoreURL = 'https://fashn-backend.herokuapp.com/user/get-user-personal-store';
 
 // Checkout Page
 export const ManageCartGetUserCartURL = 'https://fashn-backend.herokuapp.com/user/get-user-cart';

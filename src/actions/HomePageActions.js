@@ -94,6 +94,22 @@ export const homePageGetExtraFeedData = ({ userToken, feedPageNum }) => {
   };
 };
 
+// Delete the Cache Dir every time the app starts to save memory footprint
+export const homePageDeleteTheCacheDir = () => {
+  return (dispatch) => {
+    try {
+      RNFS.unlink(PATH_TO_CACHE_DIR).then(() => {
+        console.log('homePageDeleteTheCacheDir deleted Successfully');
+      }).catch((error) => {
+        console.log('homePageDeleteTheCacheDir Error', error);
+      });
+    } catch (error) {
+      dispatch({ type: 'homePageDeleteTheCacheDir' });
+      console.log('homePageDeleteTheCacheDir Bigger Error', error);
+    }
+  };
+};
+
 // Method to Get the Initial Public Feed Data
 export const homePageGetInitialPublicFeedData = ({ userToken }) => {
   return (dispatch) => {

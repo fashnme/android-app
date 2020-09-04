@@ -12,7 +12,8 @@ import {
   MANAGE_CART_PAGE_SET_CART_ARRAY,
   SETTING_PAGE_SET_USER_WISHLIST,
   SETTING_PAGE_CART_AND_WISHLIST_LOADING_TOGGLE,
-  SETTING_PAGE_SET_USER_REWARDS
+  SETTING_PAGE_SET_USER_REWARDS,
+  SETTING_PAGE_SET_USER_PERSONAL_STORE
 } from '../types';
 
 
@@ -30,7 +31,7 @@ const INITIAL_STATE = {
   rentBidsForMe: [],
   rentBidsByMe: [],
   rewardsObject: {}, // { rewards: {signupReferral: {}, ...}, referralRewardsArray: [...]}
-  personalProductRecomm: [],
+  personalStoreArray: [],
   notificationArray: [],
   userCartArray: [],
   // Loading
@@ -83,6 +84,10 @@ export default (state = INITIAL_STATE, action) => {
 
       case SETTING_PAGE_CART_AND_WISHLIST_LOADING_TOGGLE:
         return { ...state, cartAndWishlistLoading: action.payload };
+
+      case SETTING_PAGE_SET_USER_PERSONAL_STORE: {
+        return { ...state, personalStoreArray: action.payload };
+      }
 
       default:
           return state;

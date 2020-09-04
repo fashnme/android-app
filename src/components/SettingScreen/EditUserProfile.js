@@ -143,14 +143,23 @@ class EditUserProfile extends Component {
       <View style={styles.container}>
         <Header
           backgroundColor={'white'}
-          leftComponent={{ icon: 'chevron-left', size: 30, onPress: () => Actions.pop() }}
+          // leftComponent={{ icon: 'chevron-left', size: 30, onPress: () => Actions.pop() }}
+          leftComponent={{ icon: 'arrow-left',
+            type: 'font-awesome',
+            color: '#e9e9e9',
+            onPress: () => { Actions.pop(); },
+            reverse: true,
+            size: 18,
+            reverseColor: '#D5252D',
+            containerStyle: { marginLeft: -5, marginTop: 0, opacity: 0.8 },
+          }}
           centerComponent={{ text: 'Edit Profile', style: { color: 'black', fontSize: 18, fontWeight: 'bold' } }}
           rightComponent={{
             text: 'Save',
             style: { color: '#007AFF', fontSize: 18 },
             onPress: () => this.props.accountSettingsSaveProfileChanges({ profileDetailsChanges, personalUserId })
           }}
-          containerStyle={{ paddingTop: 0, height: 56 }}
+          containerStyle={{ paddingTop: 0, height: 50 }}
         />
         <ScrollView>
           <View style={styles.body}>
@@ -294,6 +303,7 @@ class EditUserProfile extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#fafafa'
   },
   body: {
     flex: 1,

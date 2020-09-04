@@ -5,7 +5,9 @@ import {
   PRODUCT_PAGE_SET_POSTID_AND_POSTERID,
   PRODUCT_PAGE_PRICE_AND_SIZE_UPDATE,
   PRODUCT_PAGE_TOGGLE_FULL_IMAGE_VIEWER,
-  PRODUCT_PAGE_ADD_PRODUCT_TO_REMINDER
+  PRODUCT_PAGE_ADD_PRODUCT_TO_REMINDER,
+  PRODUCT_PAGE_TOGGLE_PRODUCT_LOADING,
+  PRODUCT_PAGE_SET_SINGLE_PRODUCT_PAGE_DATA
 } from '../types';
 
 const INITIAL_STATE = {
@@ -17,7 +19,9 @@ const INITIAL_STATE = {
   sizeAndPriceObject: {}, // { productId: {price, crossedPrice, size} }
   productAddedForReminder: {}, // { productId: 1 } Tracks whether the product is requested for Reminder
   postId: '',
-  posterId: ''
+  posterId: '',
+  productLoading: false,
+  singleProductPageData: {}
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -54,6 +58,14 @@ export default (state = INITIAL_STATE, action) => {
 
       case PRODUCT_PAGE_TOGGLE_FULL_IMAGE_VIEWER: {
         return { ...state, imageViewerModalVisible: action.payload };
+      }
+
+      case PRODUCT_PAGE_TOGGLE_PRODUCT_LOADING: {
+        return { ...state, productLoading: action.payload };
+      }
+
+      case PRODUCT_PAGE_SET_SINGLE_PRODUCT_PAGE_DATA: {
+        return { ...state, singleProductPageData: action.payload };
       }
 
       default:

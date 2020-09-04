@@ -11,7 +11,8 @@ import { EmptyPage } from '../basic';
 import {
   manageCartGetUserCartDetails,
   manageCartRemoveProductFromCart,
-  manageCartPlaceOrder
+  manageCartPlaceOrder,
+  productPageVisitSetSingleProductPage
 } from '../../actions';
 
 class ManageCartPage extends Component {
@@ -148,6 +149,7 @@ class ManageCartPage extends Component {
           leftAvatar={this.renderImage({ image })}
           pad={10}
           bottomDivider
+          onPress={() => this.props.productPageVisitSetSingleProductPage({ productId, posterId, referrerPost, referrerId })}
         />
         { this.renderButtons({ productId, referrerPost, referrerId, posterId }) }
       </Card>
@@ -178,7 +180,16 @@ class ManageCartPage extends Component {
         <Header
           backgroundColor={'white'}
           placement={'left'}
-          leftComponent={{ icon: 'arrow-back', color: 'grey', onPress: () => { Actions.pop(); } }}
+          // leftComponent={{ icon: 'arrow-back', color: 'grey', onPress: () => { Actions.pop(); } }}
+          leftComponent={{ icon: 'arrow-left',
+            type: 'font-awesome',
+            color: '#e9e9e9',
+            onPress: () => { Actions.pop(); },
+            reverse: true,
+            size: 18,
+            reverseColor: '#D5252D',
+            containerStyle: { marginLeft: -5, marginTop: 0, opacity: 0.8 },
+          }}
           centerComponent={{ text: 'MANAGE BAG', style: { color: 'grey', fontWeight: 'bold', fontSize: 17 } }}
           rightComponent={
             <Button
@@ -278,5 +289,6 @@ const mapStateToProps = ({ personalPageState, accountSettingState }) => {
 export default connect(mapStateToProps, {
   manageCartGetUserCartDetails,
   manageCartRemoveProductFromCart,
-  manageCartPlaceOrder
+  manageCartPlaceOrder,
+  productPageVisitSetSingleProductPage
 })(ManageCartPage);

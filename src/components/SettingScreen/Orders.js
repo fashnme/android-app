@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { View, Text, FlatList, Image, RefreshControl } from 'react-native';
 import { connect } from 'react-redux';
-import { ListItem, Header, Divider } from 'react-native-elements';
+import { ListItem, Header, Divider, Card } from 'react-native-elements';
 import { Actions } from 'react-native-router-flux';
 import {
-  accountSettingsGetUserOrders
+  accountSettingsGetUserOrders,
+  productPageVisitSetSingleProductPage
 } from '../../actions';
 import { EmptyPage } from '../basic';
 
@@ -86,30 +87,41 @@ class Orders extends Component {
   }
 
   renderOrderItem({ item }) {
-    const { brandName, imagesArray, price, title, size, orderId, status, crossedPrice, timeStamp } = item;
+    const { brandName, imagesArray, price, title, size, orderId, status, crossedPrice, timeStamp,
+    referrerPost, referrerId, posterId, productId } = item;
     return (
-      <View style={{ backgroundColor: 'white' }}>
+      <Card containerStyle={{ margin: 6, padding: 2, borderRadius: 8 }}>
         {this.renderOrderNumber({ orderId })}
         <ListItem
            title={this.renderTitleComponent({ title, brandName, price, crossedPrice, size })}
            subtitle={this.renderStatusComponent({ timeStamp, status })}
            leftAvatar={this.renderImage(imagesArray[0])}
-           bottomDivider
+           underlayColor={'transparent'}
            containerStyle={{ borderRadius: 50 }}
+           onPress={() => this.props.productPageVisitSetSingleProductPage({ productId, posterId, referrerPost, referrerId })}
            // chevron={{ color: '#5c5b5b', size: 20 }}
         />
-      </View>
+      </Card>
     );
   }
 
   render() {
     const { ordersArray, userToken, loading } = this.props;
     return (
-      <View>
+      <View style={{ backgroundColor: '#fafafa' }}>
         <Header
           backgroundColor={'white'}
           placement={'left'}
-          leftComponent={{ icon: 'arrow-back', color: 'grey', onPress: () => { Actions.pop(); } }}
+          // leftComponent={{ icon: 'arrow-back', color: 'grey', onPress: () => { Actions.pop(); } }}
+          leftComponent={{ icon: 'arrow-left',
+            type: 'font-awesome',
+            color: '#e9e9e9',
+            onPress: () => { Actions.pop(); },
+            reverse: true,
+            size: 18,
+            reverseColor: '#D5252D',
+            containerStyle: { marginLeft: -5, marginTop: 0, opacity: 0.8 },
+          }}
           centerComponent={{ text: 'ORDERS', style: { color: 'grey', fontWeight: 'bold', fontSize: 17 } }}
           containerStyle={{ paddingTop: 0, height: 56 }}
         />
@@ -187,5 +199,6 @@ const mapStateToProps = ({ personalPageState, accountSettingState }) => {
 };
 
 export default connect(mapStateToProps, {
-  accountSettingsGetUserOrders
+  accountSettingsGetUserOrders,
+  productPageVisitSetSingleProductPage
 })(Orders);

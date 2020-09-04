@@ -66,6 +66,8 @@ export const PRODUCT_PAGE_SET_COMPLETE_PRODUCTS_DATA = 'product_page_set_complet
 export const PRODUCT_PAGE_PRICE_AND_SIZE_UPDATE = 'product_page_price_and_size_update';
 export const PRODUCT_PAGE_TOGGLE_FULL_IMAGE_VIEWER = 'product_page_toggle_full_image_viewer';
 export const PRODUCT_PAGE_ADD_PRODUCT_TO_REMINDER = 'product_page_add_product_to_reminder';
+export const PRODUCT_PAGE_TOGGLE_PRODUCT_LOADING = 'product_page_toggle_product_loading';
+export const PRODUCT_PAGE_SET_SINGLE_PRODUCT_PAGE_DATA = 'product_page_set_single_product_page_data';
 
 // Signup page
 export const SIGNUP_PAGE_PHONE_UPDATE = 'signup_page_phone_update';
@@ -106,6 +108,7 @@ export const SETTING_PAGE_USER_PROFILE_PIC_UDPATE = 'setting_page_user_profile_p
 export const SETTING_PAGE_USER_ADD_ADDRESS = 'setting_page_user_add_address';
 export const SETTING_PAGE_SET_SELECTED_ADDRESS = 'setting_page_set_selected_address';
 export const SETTING_PAGE_SET_USER_WISHLIST = 'setting_page_set_user_wishlist';
+export const SETTING_PAGE_SET_USER_PERSONAL_STORE = 'setting_page_set_user_personal_store';
 
 export const SETTING_PAGE_GENERAL_LOADING_TOGGLE = 'setting_page_general_loading_toggle';
 export const SETTING_PAGE_CART_AND_WISHLIST_LOADING_TOGGLE = 'setting_page_cart_and_wishlist_loading_toggle';

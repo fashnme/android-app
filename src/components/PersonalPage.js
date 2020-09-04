@@ -44,7 +44,7 @@ class PersonalPage extends Component {
                 { isVerified ? <Image source={require('../resources/icons/verifiedUser.png')} style={{ height: 22, width: 22, margin: 0, marginLeft: 3 }} /> : <View /> }
               </View>
             }
-            rightComponent={{ icon: 'settings', color: '#ee5f73', size: 28, onPress: () => { Actions.settings(); } }}
+            rightComponent={{ icon: 'settings', color: '#ee5f73', size: 30, containerStyle: { marginRight: 0 }, onPress: () => { Actions.settings(); } }}
             containerStyle={{ paddingTop: 0, height: 50 }}
           />
           <FlatList

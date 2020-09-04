@@ -257,6 +257,26 @@ class NotificationPage extends Component {
     );
   }
 
+  openPersonalStoreNotification({ item }) {
+    const { image1, body, timeStamp } = item;
+    return (
+      <Card containerStyle={styles.cardContainer}>
+        <ListItem
+          leftAvatar={{ source: { uri: image1 }, size: 55, containerStyle: { padding: 0, marginTop: 5 } }}
+          title={body}
+          titleStyle={styles.title}
+          underlayColor={'transparent'}
+          subtitle={this.timeDifference(timeStamp)}
+          subtitleStyle={{ marginTop: 10, padding: 0 }}
+          containerStyle={styles.containerStyle}
+          rightAvatar={{ source: require('../resources/settingsIcon/personal_store.png'), containerStyle: { padding: 0, marginTop: 0 } }}
+          contentContainerStyle={{ margin: 0, padding: 0 }}
+          onPress={() => Actions.personalStorePage()}
+        />
+      </Card>
+    );
+  }
+
   renderItem({ item }) {
     const { notificationAction } = item;
     switch (notificationAction) {
@@ -276,6 +296,8 @@ class NotificationPage extends Component {
         return this.openPostNotification({ item });
       case 'open_profile':
         return this.openProfileNotification({ item });
+      case 'open_personal_store':
+        return this.openPersonalStoreNotification({ item });
       case 'open_link':
         return this.openLinkNotification({ item });
       default:

@@ -84,7 +84,7 @@ const renderInStockReminderButton = ({ sizesAvailable, userToken, productData, p
 
 const renderSizeBlock = ({ sizesAvailable, sizeSelected, setSizeSelected }) => {
   // console.log('sizesAvailable', sizesAvailable);
-  if (typeof sizesAvailable === 'undefined') {
+  if (sizesAvailable === undefined) {
     return (
       <Card>
         <Text style={{ justifyContent: 'center', flexDirection: 'row', flex: 1 }}> Updating Sizes...... </Text>
