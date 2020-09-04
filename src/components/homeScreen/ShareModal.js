@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, ActivityIndicator } from 'react-native';
+import { View, Text } from 'react-native';
 import { Overlay } from 'react-native-elements';
 import { connect } from 'react-redux';
 import ProgressBar from 'react-native-progress/Bar';

@@ -1,19 +1,17 @@
 import React, { Component } from 'react';
-import { View, Text, FlatList, TouchableWithoutFeedback, Dimensions, ImageBackground, ScrollView } from 'react-native';
+import { View, Text, FlatList, TouchableWithoutFeedback, Dimensions, Image, ScrollView, RefreshControl } from 'react-native';
 import { Header, Button, Overlay, Card, Badge } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { Actions } from 'react-native-router-flux';
 import FlashMessage from 'react-native-flash-message';
-
 import {
-  manageCartGetUserWishlist,
+  manageCartGetUserPersonalStore,
   manageCartAddProductToCart,
-  productPageUpdatePriceAndSize
+  productPageUpdatePriceAndSize,
+  productPageVisitSetSingleProductPage
 } from '../../actions';
 import { EmptyPage } from '../basic';
 
-// TODO TODO TODO
-// Fix the Action & Reducer to Show PersonalStore Products instead of Wishlist Array
 
 const screenWidth = Dimensions.get('window').width;
 const itemSpacing = 10;
@@ -39,7 +37,7 @@ class PersonalStorePage extends Component {
   }
   onFocusFunction() {
     const { userToken } = this.props;
-    this.props.manageCartGetUserWishlist({ userToken });
+    this.props.manageCartGetUserPersonalStore({ userToken });
   }
 
   moveToBagPressed({ item }) {
@@ -61,13 +59,7 @@ class PersonalStorePage extends Component {
       posterId,
       userToken });
 
-    this.refs.storePage.showMessage({
-      message: 'Product Added to Bag',
-      description: '',
-      type: 'success',
-      floating: true,
-      icon: 'success'
-    });
+    this.refs.wishlistPage.showMessage({ message: 'Product Added to Bag', type: 'success', floating: true, icon: 'success' });
     this.setState({ openSizeModal: false, item: null, sizeSelected: null }); // Close Size Modal
   }
 
@@ -85,24 +77,33 @@ class PersonalStorePage extends Component {
 
     if (updatedData === undefined) {
       return (
-        <Card>
-          <Text style={{ justifyContent: 'center' }}> Updating Sizes...... </Text>
-        </Card>
-      );
+        <Overlay
+          isVisible={openSizeModal}
+          overlayStyle={{ borderTopLeftRadius: 15, borderTopRightRadius: 15, borderWidth: 1, borderColor: '#FE19AA', bottom: 0, position: 'absolute' }}
+          width={'100%'}
+          height={'30%'}
+          animationType={'slide'}
+          windowBackgroundColor={'transparent'}
+          onBackdropPress={() => this.setState({ openSizeModal: false, item: null, sizeSelected: null })}
+        >
+          <Text style={styles.headingStyle}> Select Size </Text>
+          <Text style={[styles.headingStyle, { fontWeight: '200', marginTop: 50 }]}> Updating Available Sizes...... </Text>
+      </Overlay>
+    );
     }
     const { sizesAvailable } = updatedData;
     return (
         <Overlay
           isVisible={openSizeModal}
-          overlayStyle={{ borderTopLeftRadius: 15, borderTopRightRadius: 15, padding: 2, bottom: 0, position: 'absolute' }}
+          overlayStyle={{ borderTopLeftRadius: 15, borderTopRightRadius: 15, borderWidth: 1, borderColor: '#FE19AA', bottom: 0, position: 'absolute' }}
           width={'100%'}
           height={'30%'}
-          windowBackgroundColor={'transparent'}
           animationType={'slide'}
+          windowBackgroundColor={'transparent'}
+          onBackdropPress={() => this.setState({ openSizeModal: false, item: null, sizeSelected: null })}
         >
           <View style={{ flex: 1 }}>
             <ScrollView>
-              <Card containerStyle={{ margin: 0 }}>
                 <Text style={styles.headingStyle}> Select Size </Text>
                 <View>
                   <FlatList
@@ -110,7 +111,7 @@ class PersonalStorePage extends Component {
                     keyExtractor={(i, index) => index.toString()}
                     data={sizesAvailable}
                     renderItem={(sizes) => {
-                      console.log('sizes', sizes);
+                      // console.log('sizes', sizes);
                       return (
                         <Badge
                           badgeStyle={[styles.sizeContainerStyle, sizeSelected === sizes.item.size ? { borderColor: '#ee5f73' } : { borderColor: 'grey' }]}
@@ -121,8 +122,8 @@ class PersonalStorePage extends Component {
                       );
                     }}
                     ListEmptyComponent={
-                        <Card>
-                          <Text style={{ justifyContent: 'center', color: 'red', alignItems: 'center' }}> Product Out Of Stock </Text>
+                        <Card containerStyle={{ flex: 1, width: '80%', alignSelf: 'center', justifyContent: 'center', flexDirection: 'column' }}>
+                          <Text style={{ color: 'red', alignSelf: 'center', fontWeight: 'bold' }}> Product Out Of Stock </Text>
                         </Card>
                     }
                   />
@@ -130,11 +131,11 @@ class PersonalStorePage extends Component {
                 <Button
                   title="Done"
                   type="outline"
-                  buttonStyle={{ marginTop: 20, marginBottom: 2, borderColor: '#d00' }}
+                  disabled={sizesAvailable === undefined || sizesAvailable.length === 0}
+                  buttonStyle={{ marginTop: 20, marginBottom: 2, borderColor: '#d00', width: '50%', alignSelf: 'center' }}
                   titleStyle={{ color: '#ff859a', fontWeight: '600' }}
                   onPress={() => { this.moveToBagPressed({ item }); }}
                 />
-              </Card>
             </ScrollView>
           </View>
         </Overlay>
@@ -154,14 +155,16 @@ class PersonalStorePage extends Component {
     );
   }
   renderItem({ item }) {
-    const { title, brandName, price, image, crossedPrice, discount } = item;
+    const { title, brandName, price, image, crossedPrice, discount, productId,
+    posterId = 'patang', referrerPost = 'personalstore', referrerId = '' } = item;
+    // Since there is no post or poster so this will be empty
     return (
       <View style={styles.container}>
-        <TouchableWithoutFeedback>
+        <TouchableWithoutFeedback
+          onPress={() => this.props.productPageVisitSetSingleProductPage({ productId, posterId, referrerPost, referrerId })}
+        >
           <View>
-            <ImageBackground source={{ uri: image }} style={styles.image}>
-              <View />
-            </ImageBackground>
+            <Image source={{ uri: image }} style={styles.image} />
             <Text numberOfLines={1} ellipsizeMode='tail' style={styles.brand}>{ brandName }</Text>
             <Text numberOfLines={1} ellipsizeMode='tail' style={styles.desc}>{ title }</Text>
             { this.renderPriceBlock({ crossedPrice, discount, price }) }
@@ -179,13 +182,21 @@ class PersonalStorePage extends Component {
   }
 
   render() {
-    const { wishlistArray } = this.props;
+    const { personalStoreArray, userToken, cartAndWishlistLoading } = this.props;
     return (
       <View style={{ flex: 1, backgroundColor: 'white' }}>
         <Header
           backgroundColor={'white'}
           placement={'left'}
-          leftComponent={{ icon: 'arrow-back', color: 'grey', onPress: () => { Actions.pop(); } }}
+          leftComponent={{ icon: 'arrow-left',
+            type: 'font-awesome',
+            color: '#e9e9e9',
+            onPress: () => { Actions.pop(); },
+            reverse: true,
+            size: 18,
+            reverseColor: '#D5252D',
+            containerStyle: { marginLeft: -5, marginTop: 0, opacity: 0.8 },
+          }}
           centerComponent={{ text: 'Personal Store', style: { color: 'grey', fontWeight: 'bold', fontSize: 17 } }}
           rightComponent={
             <Button
@@ -202,15 +213,23 @@ class PersonalStorePage extends Component {
           <FlatList
             contentContainerStyle={{ marginTop: 10 }}
             keyExtractor={(item, index) => index.toString()}
-            data={wishlistArray}
+            data={personalStoreArray}
             numColumns={2}
             renderItem={this.renderItem.bind(this)}
-            ListEmptyComponent={<EmptyPage title={'Empty Store!'} subtitle={'We will fill the bucket soon!'} />}
             contentContainerStyle={{ paddingBottom: 100 }}
+            ListEmptyComponent={<EmptyPage title={'Stocking your Store!'} subtitle={'Getting a Perfect Collection for You'} />}
+            refreshControl={
+              <RefreshControl
+                onRefresh={() => this.props.manageCartGetUserPersonalStore({ userToken })}
+                refreshing={cartAndWishlistLoading}
+                colors={['#D5252D', '#FE19AA']}
+              />
+            }
+            refreshing={cartAndWishlistLoading}
           />
         </View>
         {this.renderSizeModal()}
-        <FlashMessage position="bottom" ref="storePage" />
+        <FlashMessage position="bottom" ref="wishlistPage" />
       </View>
     );
   }
@@ -263,7 +282,8 @@ const styles = {
     headingStyle: {
       fontWeight: 'bold',
       marginBottom: 5,
-      marginTop: 5
+      marginTop: 5,
+      alignSelf: 'center'
     },
     sizeContainerStyle: {
       margin: 6,
@@ -282,13 +302,15 @@ const styles = {
 
 const mapStateToProps = ({ personalPageState, accountSettingState, productPageState }) => {
   const { userToken } = personalPageState;
-  const { wishlistArray } = accountSettingState;
+  const { personalStoreArray, cartAndWishlistLoading } = accountSettingState;
   const { sizeAndPriceObject } = productPageState;
-  return { userToken, wishlistArray, sizeAndPriceObject };
+  return { userToken, personalStoreArray, sizeAndPriceObject, cartAndWishlistLoading };
 };
 
+
 export default connect(mapStateToProps, {
-  manageCartGetUserWishlist,
+  manageCartGetUserPersonalStore,
   manageCartAddProductToCart,
-  productPageUpdatePriceAndSize
+  productPageUpdatePriceAndSize,
+  productPageVisitSetSingleProductPage
 })(PersonalStorePage);

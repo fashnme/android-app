@@ -68,8 +68,8 @@ const resizeAndUploadVideo = ({ selectedVideoPath, userToken, personalUserId, ca
   ProcessingManager.getVideoInfo(selectedVideoPath)
   .then((orig) => {
     const { height, width } = orig.size;
-    const bitrateMultiplier = 1.2;
-    // // TODO:  Set the bitrateMultiplier based on videoSize 
+    const bitrateMultiplier = 1.1;
+    // // TODO:  Set the bitrateMultiplier based on videoSize
     // const videoSize = (orig.bitrate * orig.duration) / 8; // In Bytes
     // if (videoSize > 8000000) { // Greater than 8 MB
     //   bitrateMultiplier = 1.6;

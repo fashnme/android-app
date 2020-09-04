@@ -8,6 +8,7 @@ import {
   USER_REMOVED_PRODUCT_FROM_WISHLIST,
   SETTING_PAGE_GENERAL_LOADING_TOGGLE,
   SETTING_PAGE_SET_USER_WISHLIST,
+  SETTING_PAGE_SET_USER_PERSONAL_STORE,
   SETTING_PAGE_CART_AND_WISHLIST_LOADING_TOGGLE
 } from '../types';
 
@@ -17,6 +18,7 @@ import {
   ManageCartRemoveProductFromCartURL,
   ManageCartPlaceOrderURL,
   SettingsPageGetUserWishlistURL,
+  SettingsPageGetUserPersonalStoreURL,
   ManageCartAddProductToWishlistURL,
   ManageCartRemoveProductFromWishlistURL
 } from '../URLS';
@@ -25,10 +27,7 @@ import {
 
 // Fetch User Cart Details
 export const manageCartGetUserCartDetails = ({ userToken }) => {
-  const headers = {
-    'Content-Type': 'application/json',
-    Authorization: userToken
-  };
+  const headers = { 'Content-Type': 'application/json', Authorization: userToken };
   return (dispatch) => {
     dispatch({ type: SETTING_PAGE_CART_AND_WISHLIST_LOADING_TOGGLE, payload: true });
     setTimeout(() => {
@@ -170,10 +169,7 @@ export const manageCartAddProductToWishlist = ({ productId, userToken, posterId,
 // Get User Wishlist
 export const manageCartGetUserWishlist = ({ userToken }) => {
   // console.log('manageCartGetUserWishlist', userToken);
-  const headers = {
-    'Content-Type': 'application/json',
-    Authorization: userToken
-  };
+  const headers = { 'Content-Type': 'application/json', Authorization: userToken };
   return (dispatch) => {
     dispatch({ type: SETTING_PAGE_CART_AND_WISHLIST_LOADING_TOGGLE, payload: true });
     axios({
@@ -182,7 +178,7 @@ export const manageCartGetUserWishlist = ({ userToken }) => {
         headers,
         })
         .then((response) => {
-            console.log('manageCartGetUserWishlist resp', response.data);
+            // console.log('manageCartGetUserWishlist resp', response.data);
             const { products } = response.data;
             dispatch({ type: SETTING_PAGE_SET_USER_WISHLIST, payload: products });
         })
@@ -279,6 +275,30 @@ export const manageCartPlaceOrder = (item) => {
         })
         .finally(() => {
             dispatch({ type: SETTING_PAGE_GENERAL_LOADING_TOGGLE, payload: false });
+        });
+  };
+};
+
+// Get Users Personal Store Details
+export const manageCartGetUserPersonalStore = ({ userToken }) => {
+  const headers = { 'Content-Type': 'application/json', Authorization: userToken };
+  return (dispatch) => {
+    dispatch({ type: SETTING_PAGE_CART_AND_WISHLIST_LOADING_TOGGLE, payload: true });
+    axios({
+        method: 'get',
+        url: SettingsPageGetUserPersonalStoreURL,
+        headers,
+        })
+        .then((response) => {
+            // console.log('manageCartGetUserPersonalStore resp', response.data);
+            const { products } = response.data;
+            dispatch({ type: SETTING_PAGE_SET_USER_PERSONAL_STORE, payload: products });
+        })
+        .catch((error) => {
+            console.log('manageCartGetUserPersonalStore Actions Error ', error);
+        })
+        .finally(() => {
+          dispatch({ type: SETTING_PAGE_CART_AND_WISHLIST_LOADING_TOGGLE, payload: false });
         });
   };
 };

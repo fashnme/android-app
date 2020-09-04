@@ -8,12 +8,12 @@ import {
 } from '../actions';
 
 class SettingsPage extends Component {
-   profile({ avatarUrl, title, subtitle, key }) {
+   profile({ avatarSource, title, subtitle, key }) {
     const { fullName, profilePic } = this.props;
     // console.log('{ fullName, profilePic }', { fullName, profilePic });
     return (
       <ListItem
-        leftAvatar={{ source: { uri: profilePic === undefined ? avatarUrl : profilePic } }}
+        leftAvatar={{ source: { uri: profilePic === undefined ? avatarSource : profilePic } }}
         title={fullName === undefined ? title : fullName}
         titleStyle={styles.title}
         subtitle={subtitle}
@@ -25,10 +25,10 @@ class SettingsPage extends Component {
     );
   }
 
-  defaultView({ avatarUrl, title, subtitle, key }) {
+  defaultView({ avatarSource, title, subtitle, key }) {
     return (
       <ListItem
-        leftAvatar={{ source: { uri: avatarUrl } }}
+        leftAvatar={{ source: avatarSource }}
         title={title}
         titleStyle={styles.title}
         subtitle={subtitle}
@@ -39,10 +39,10 @@ class SettingsPage extends Component {
     );
   }
 
-  badgeView({ avatarUrl, title, subtitle, key }) {
+  badgeView({ avatarSource, title, subtitle, key }) {
     return (
       <ListItem
-        leftAvatar={{ source: { uri: avatarUrl } }}
+        leftAvatar={{ source: avatarSource }}
         title={title}
         titleStyle={styles.title}
         subtitle={subtitle}
@@ -65,16 +65,16 @@ class SettingsPage extends Component {
   }
 
   renderItem({ item }) {
-    const { avatarUrl, title, type, subtitle, key } = item;
+    const { avatarSource, title, type, subtitle, key } = item;
     switch (type) {
       case 'edit':
-        return this.profile({ avatarUrl, title, subtitle, key });
+        return this.profile({ avatarSource, title, subtitle, key });
       case 'badge':
-        return this.badgeView({ avatarUrl, title, subtitle, key });
+        return this.badgeView({ avatarSource, title, subtitle, key });
       case 'heading':
         return this.headingView({ title });
       default:
-        return this.defaultView({ avatarUrl, title, subtitle, key });
+        return this.defaultView({ avatarSource, title, subtitle, key });
     }
   }
 

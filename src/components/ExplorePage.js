@@ -33,7 +33,7 @@ class ExplorePage extends Component {
             listKey={'mainPersonalList'}
             ListHeaderComponent={<UserSearchBar />}
             ListFooterComponent={
-              <View>
+              <View style={{ flex: 1 }}>
                 <TrendingUsers />
                 <TrendingPosts />
               </View>

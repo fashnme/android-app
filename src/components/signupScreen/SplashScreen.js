@@ -19,12 +19,14 @@ import {
   homePageGetInitialPublicFeedData,
   signupPageSetReferrerData,
   celebrityPageVisitAndSetData,
-  customSinglePostViewPageVisitAndSetData
+  customSinglePostViewPageVisitAndSetData,
+  homePageDeleteTheCacheDir
 } from '../../actions';
 import { FadeInView } from '../basic';
 
 class SplashScreen extends Component {
   componentDidMount() {
+    this.props.homePageDeleteTheCacheDir(); // Delete the Cache Dir
     AsyncStorage.getItem(ASYNCSTORAGE_USER_TOKEN_NAME).then(
       (userToken) => {
         if (userToken) {
@@ -97,7 +99,7 @@ class SplashScreen extends Component {
                   }
               }
             );
-          }, 2500);
+          }, 4000);
         } else {
           dynamicLinks()
             .getInitialLink()
@@ -167,5 +169,6 @@ export default connect(null, {
   homePageGetInitialPublicFeedData,
   signupPageSetReferrerData,
   celebrityPageVisitAndSetData,
-  customSinglePostViewPageVisitAndSetData
+  customSinglePostViewPageVisitAndSetData,
+  homePageDeleteTheCacheDir
 })(SplashScreen);

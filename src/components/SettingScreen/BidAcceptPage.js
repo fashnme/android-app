@@ -96,7 +96,16 @@ const BidAcceptPage = ({ bidId, selectedAddress, userToken, loading, bidsPageAcc
       <Header
         backgroundColor={'white'}
         placement={'left'}
-        leftComponent={{ icon: 'arrow-back', color: 'grey', onPress: () => { Actions.pop(); } }}
+        // leftComponent={{ icon: 'arrow-back', color: 'grey', onPress: () => { Actions.pop(); } }}
+        leftComponent={{ icon: 'arrow-left',
+          type: 'font-awesome',
+          color: '#e9e9e9',
+          onPress: () => { Actions.pop(); },
+          reverse: true,
+          size: 18,
+          reverseColor: '#D5252D',
+          containerStyle: { marginLeft: -5, marginTop: 0, opacity: 0.8 },
+        }}
         centerComponent={{ text: 'BIDS', style: { color: 'grey', fontWeight: 'bold', fontSize: 17 } }}
         rightComponent={
           <Button
@@ -107,7 +116,7 @@ const BidAcceptPage = ({ bidId, selectedAddress, userToken, loading, bidsPageAcc
             onPress={() => { checkPropsAndAcceptBid({ bidId, selectedAddress, sliderValue, amount, size, setPropError, bidsPageAcceptBid, userToken }); }}
           />
         }
-        containerStyle={{ paddingTop: 0, height: 56 }}
+        containerStyle={{ paddingTop: 0, height: 50 }}
       />
       <ScrollView>
         <Card containerStyle={{ padding: 0, margin: 0 }}>

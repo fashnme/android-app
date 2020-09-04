@@ -8,7 +8,8 @@ import {
   manageCartGetUserWishlist,
   manageCartRemoveProductFromWishlist,
   manageCartAddProductToCart,
-  productPageUpdatePriceAndSize
+  productPageUpdatePriceAndSize,
+  productPageVisitSetSingleProductPage
 } from '../../actions';
 import { EmptyPage } from '../basic';
 
@@ -155,11 +156,14 @@ class WishlistPage extends Component {
     );
   }
   renderItem({ item }) {
-    const { title, brandName, price, image, crossedPrice, discount, productId } = item;
+    const { title, brandName, price, image, crossedPrice, discount, productId,
+    posterId = '', referrerPost = '', referrerId = '' } = item;
     const { userToken } = this.props;
     return (
       <View style={styles.container}>
-        <TouchableWithoutFeedback>
+        <TouchableWithoutFeedback
+          onPress={() => this.props.productPageVisitSetSingleProductPage({ productId, posterId, referrerPost, referrerId })}
+        >
           <View>
             <ImageBackground source={{ uri: image }} style={styles.image}>
               <Icon
@@ -194,7 +198,16 @@ class WishlistPage extends Component {
         <Header
           backgroundColor={'white'}
           placement={'left'}
-          leftComponent={{ icon: 'arrow-back', color: 'grey', onPress: () => { Actions.pop(); } }}
+          // leftComponent={{ icon: 'arrow-back', color: 'grey', onPress: () => { Actions.pop(); } }}
+          leftComponent={{ icon: 'arrow-left',
+            type: 'font-awesome',
+            color: '#e9e9e9',
+            onPress: () => { Actions.pop(); },
+            reverse: true,
+            size: 18,
+            reverseColor: '#D5252D',
+            containerStyle: { marginLeft: -5, marginTop: 0, opacity: 0.8 },
+          }}
           centerComponent={{ text: 'WISHLIST', style: { color: 'grey', fontWeight: 'bold', fontSize: 17 } }}
           rightComponent={
             <Button
@@ -205,7 +218,7 @@ class WishlistPage extends Component {
               onPress={() => { Actions.manageCart(); }}
             />
           }
-          containerStyle={{ paddingTop: 0, height: 56 }}
+          containerStyle={{ paddingTop: 0, height: 50 }}
         />
         <View>
           <FlatList
@@ -320,5 +333,6 @@ export default connect(mapStateToProps, {
   manageCartGetUserWishlist,
   manageCartRemoveProductFromWishlist,
   manageCartAddProductToCart,
-  productPageUpdatePriceAndSize
+  productPageUpdatePriceAndSize,
+  productPageVisitSetSingleProductPage
 })(WishlistPage);

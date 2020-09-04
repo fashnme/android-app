@@ -149,7 +149,7 @@ class HomePageVideoPostForCeleb extends Component {
            playInBackground={false}
            playWhenInactive={false}
            paused={!(celebPageVideoPlay && absDifference === 0)}
-           fullscreen
+           // fullscreen
            poster={thumbnailUrl}
            posterResizeMode={'cover'}
            repeat

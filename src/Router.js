@@ -15,6 +15,7 @@ import Orders from './components/SettingScreen/Orders';
 import BidRequests from './components/SettingScreen/BidRequests';
 import BidDenyPage from './components/SettingScreen/BidDenyPage';
 import BidAcceptPage from './components/SettingScreen/BidAcceptPage';
+import SingleProductPage from './components/SettingScreen/SingleProductPage';
 import AddUserAddress from './components/SettingScreen/AddUserAddress';
 import BidCancelPage from './components/SettingScreen/BidCancelPage';
 import BidCreatePage from './components/SettingScreen/BidCreatePage';
@@ -128,6 +129,7 @@ const RouterComponent = () => {
                   <Scene hideTabBar key='bidCreatePage' component={BidCreatePage} />
                   <Scene hideTabBar key='bidEditPage' component={BidEditPage} />
                   <Scene hideTabBar key='addUserAddress' component={AddUserAddress} />
+                  <Scene hideTabBar key='singleProductPage' component={SingleProductPage} />
                 </Scene>
             </Scene>
         </Scene>

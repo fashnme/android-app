@@ -51,21 +51,20 @@ const stopUnwantedDownloadVideos = ({ videosDownloadingStatus, currentVisibleInd
 };
 
 
-const VideoDownloadComp = ({ bucketUrl, postId, compType, currentIndex, currentVisibleIndex,
+const VideoDownloadComp = ({ bucketUrl, postId, compType, currentIndex, currentVisibleIndex, shareModalVisible,
   videosDownloadingStatus, videosAlreadyDownloading, videosDownloaded,
   videoPageDownloadVideo, videoPageStopDownload }) => {
-  // console.log({ videosDownloadingStatus });
   if (!(currentIndex - currentVisibleIndex > thirdPriority || currentIndex - currentVisibleIndex < 0)) {
     if ((currentIndex === currentVisibleIndex) && !(postId in videosAlreadyDownloading || postId in videosDownloaded)) {
       videoPageDownloadVideo({ bucketUrl, postId, compType, currentIndex });
       stopUnwantedDownloadVideos({ videosDownloadingStatus, currentVisibleIndex, compType, videoPageStopDownload });
       console.log('First Priority Download Complete', currentIndex);
-    } else if (currentIndex === currentVisibleIndex + secondPriority &&
+    } else if (currentIndex === currentVisibleIndex + secondPriority && !shareModalVisible &&
       highPriorityAlreadyDownloaded({ videosDownloaded, currentIndex, videosAlreadyDownloading, compType, postId, priority: secondPriority })) {
       videoPageDownloadVideo({ bucketUrl, postId, compType, currentIndex });
       stopUnwantedDownloadVideos({ videosDownloadingStatus, currentVisibleIndex, compType, videoPageStopDownload });
       console.log('Second Priority Download Complete', currentIndex);
-    } else if (currentIndex === currentVisibleIndex + thirdPriority &&
+    } else if (currentIndex === currentVisibleIndex + thirdPriority && !shareModalVisible &&
       highPriorityAlreadyDownloaded({ videosDownloaded, currentIndex, videosAlreadyDownloading, compType, postId, priority: thirdPriority })) {
       videoPageDownloadVideo({ bucketUrl, postId, compType, currentIndex });
       stopUnwantedDownloadVideos({ videosDownloadingStatus, currentVisibleIndex, compType, videoPageStopDownload });
@@ -75,9 +74,10 @@ const VideoDownloadComp = ({ bucketUrl, postId, compType, currentIndex, currentV
   return <View />;
 };
 
-const mapStateToProps = ({ videoPlayStatusState }) => {
+const mapStateToProps = ({ videoPlayStatusState, sharePageState }) => {
   const { videosDownloadingStatus, videosAlreadyDownloading, videosDownloaded } = videoPlayStatusState;
-  return { videosDownloadingStatus, videosAlreadyDownloading, videosDownloaded };
+  const { shareModalVisible } = sharePageState; // Stop Caching when user sharing the video
+  return { videosDownloadingStatus, videosAlreadyDownloading, videosDownloaded, shareModalVisible };
 };
 export default connect(mapStateToProps, {
   videoPageDownloadVideo: _videoPageDownloadVideo,

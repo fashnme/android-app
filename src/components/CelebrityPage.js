@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, FlatList, RefreshControl, Image, Text } from 'react-native';
 import { Header } from 'react-native-elements';
 import { connect } from 'react-redux';
+import { Actions } from 'react-native-router-flux';
 import UserDetailsComp from './celebScreen/UserDetailsComp';
 import UserPostsComp from './celebScreen/UserPostsComp';
 import {
@@ -37,7 +38,15 @@ class CelebrityPage extends Component {
         <Header
           backgroundColor={'white'}
           placement={'center'}
-          // centerComponent={{ text: `@${userName}`, style: { color: '#808080', fontWeight: 'bold', fontSize: 19 } }}
+          leftComponent={{ icon: 'arrow-left',
+            type: 'font-awesome',
+            color: '#e9e9e9',
+            onPress: () => { Actions.pop(); },
+            reverse: true,
+            size: 18,
+            reverseColor: '#FF416C',
+            containerStyle: { marginLeft: -5, marginTop: 0, opacity: 0.8 },
+          }}
           centerComponent={
             <View style={{ flexDirection: 'row' }}>
               <Text style={{ color: '#808080', fontWeight: 'bold', fontSize: 19 }}>@{userName}</Text>
