@@ -131,7 +131,12 @@ class Orders extends Component {
             keyExtractor={(item, index) => index.toString()}
             data={ordersArray}
             renderItem={this.renderOrderItem.bind(this)}
-            ListEmptyComponent={<EmptyPage title={'No Orders Found!'} subtitle={'Visit Cart & Add Products!'} />}
+            ListEmptyComponent={
+              <EmptyPage
+                title={loading ? 'Loading Orders...' : 'No Orders Found!'} 
+                subtitle={'Visit Cart & Add Products!'}
+              />
+            }
             contentContainerStyle={{ paddingBottom: 200 }}
             refreshControl={
               <RefreshControl

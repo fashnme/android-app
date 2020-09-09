@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, FlatList, Keyboard } from 'react-native';
-import { Icon, ListItem, Input, Overlay, Card, Button } from 'react-native-elements';
+import { Icon, ListItem, Input, Overlay, Card, Button, Divider } from 'react-native-elements';
 import { showMessage } from 'react-native-flash-message';
 import { connect } from 'react-redux';
 import {
@@ -100,7 +100,10 @@ const CommentsModal = ({ commentsArray, commentsModalVisible, totalComments, pos
         >
           <View style={styles.modalStyle}>
             <View style={styles.commentsModalHeader}>
-              <Text style={styles.commentsModalHeaderTitle}>{totalComments} Comments</Text>
+              <View style={{ flexDirection: 'column' }}>
+                <Divider style={{ backgroundColor: '#c2c9cf', height: 4, width: 30, borderRadius: 20, alignSelf: 'center' }} />
+                <Text style={styles.commentsModalHeaderTitle}>{totalComments} Comments</Text>
+              </View>
               { /* <Text style={styles.commentsModalHeaderTitle}>{data.totalComments} Comments</Text> */ }
                 <View style={styles.commentsModalHeaderExitButton}>
                   <Icon
@@ -162,6 +165,7 @@ const styles = StyleSheet.create({
         fontSize: 13,
         fontWeight: 'bold',
         opacity: 0.6,
+        marginTop: 15
       },
       commentsModalHeaderExitButton: {
         position: 'absolute',

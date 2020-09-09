@@ -9,8 +9,15 @@ import {
   signupPageSendOTP,
   signupPageCountryCodeUpdate
 } from '../../actions';
+import {
+  PersonalStorePageGifURL
+} from '../../URLS';
 
 class EnterPhoneNumberScreen extends Component {
+  componentDidMount() {
+    // Download the Static Assests
+    Image.prefetch(PersonalStorePageGifURL);
+  }
   render() {
     const { phoneNumber, error, countryData } = this.props;
     const { countryCode, name, callingCode } = countryData;

@@ -217,7 +217,12 @@ class ManageCartPage extends Component {
                 <RenderAddressComponent />
               </View>
             }
-            ListEmptyComponent={<EmptyPage title={'Empty Bag!'} subtitle={'Add Products that you Love'} />}
+            ListEmptyComponent={
+              <EmptyPage
+                title={cartAndWishlistLoading ? 'Loading Bag....' : 'Empty Bag!'}
+                subtitle={'Add Products that you Love'}
+              />
+            }
             contentContainerStyle={{ paddingBottom: 150 }}
             refreshControl={
               <RefreshControl

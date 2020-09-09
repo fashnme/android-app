@@ -230,6 +230,8 @@ const updateProfileChanges = ({ dateOfBirth, userName, fullName, gender, bio, so
       })
       .then((response) => {
           console.log('accountSettingsSaveProfileChanges', response.data, response.status);
+          // Once the changes occur, Prefectch the profilePic
+          Image.prefetch(profilePic);
       })
       .catch((error) => {
           console.log('accountSettingsSaveProfileChanges Actions Error ', error);

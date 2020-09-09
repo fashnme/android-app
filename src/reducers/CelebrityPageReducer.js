@@ -2,7 +2,8 @@ import {
   CELEBRITY_PAGE_SET_CELEB_DATA,
   CELEBRITY_PAGE_GET_CELEB_POSTS,
   CELEBRITY_PAGE_GET_CELEB_LIKED_POSTS,
-  CELEBRITY_PAGE_TOGGLE_LOADING
+  CELEBRITY_PAGE_TOGGLE_LOADING,
+  CELEBRITY_PAGE_RESET_DATA
 } from '../types';
 
 
@@ -64,6 +65,9 @@ export default (state = INITIAL_STATE, action) => {
         return { ...state, postLikedArray: result, postLikedPageNum: state.postLikedPageNum + 1 };
       }
 
+      case CELEBRITY_PAGE_RESET_DATA: {
+        return { ...state, ...INITIAL_STATE };
+      }
       default:
           return state;
     }

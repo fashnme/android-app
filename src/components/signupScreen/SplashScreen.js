@@ -81,11 +81,8 @@ class SplashScreen extends Component {
                         default: {
                           console.log('default', params);
                           if (remoteMessage !== null) {
-                            console.log('Notification caused app to open from quit state:', remoteMessage);
-                            Actions.tabBar({ type: ActionConst.RESET });
-                            Actions.notificationPage();
-                            // TODO Map each case in remoteMessage to specific page
-                            // Temperoralily now redirecting to notificationPage
+                            // A separate Function to manage the remote message actions
+                            this.manageFcmNotification({ remoteMessage, userToken });
                           } else {
                             // Visit HomePage
                             Actions.tabBar();
@@ -99,7 +96,7 @@ class SplashScreen extends Component {
                   }
               }
             );
-          }, 4000);
+          }, 3500);
         } else {
           dynamicLinks()
             .getInitialLink()
@@ -129,6 +126,72 @@ class SplashScreen extends Component {
       params[match[1]] = match[2];
     }
     return params;
+  }
+
+  manageFcmNotification({ remoteMessage, userToken }) {
+    console.log('Notification caused app to open from quit state:', remoteMessage);
+    const { notificationAction } = remoteMessage.data;
+    switch (notificationAction) {
+      case 'like_post': {
+        const { postId } = remoteMessage.data;
+        Actions.tabBar({ type: ActionConst.RESET });
+        this.props.customSinglePostViewPageVisitAndSetData({ postId });
+        break;
+      }
+      case 'follow_user': {
+        const { followerId } = remoteMessage.data;
+        Actions.tabBar({ type: ActionConst.RESET });
+        this.props.celebrityPageVisitAndSetData({ userId: followerId, userToken });
+        break;
+      }
+      case 'comment_post': {
+        const { postId } = remoteMessage.data;
+        Actions.tabBar({ type: ActionConst.RESET });
+        this.props.customSinglePostViewPageVisitAndSetData({ postId });
+        break;
+      }
+      case 'referred_user': {
+        const { referredUserId } = remoteMessage.data;
+        Actions.tabBar({ type: ActionConst.RESET });
+        this.props.celebrityPageVisitAndSetData({ userId: referredUserId, userToken });
+        break;
+      }
+      case 'purchased': {
+        const { postId } = remoteMessage.data;
+        Actions.tabBar({ type: ActionConst.RESET });
+        this.props.customSinglePostViewPageVisitAndSetData({ postId });
+        break;
+      }
+      // case 'patang_message': managed in default case
+      case 'open_post': {
+        const { postId } = remoteMessage.data;
+        Actions.tabBar({ type: ActionConst.RESET });
+        this.props.customSinglePostViewPageVisitAndSetData({ postId });
+        break;
+      }
+      case 'open_profile': {
+        const { profileId } = remoteMessage.data;
+        Actions.tabBar({ type: ActionConst.RESET });
+        this.props.celebrityPageVisitAndSetData({ userId: profileId, userToken });
+        break;
+      }
+      case 'open_personal_store': {
+        Actions.tabBar({ type: ActionConst.RESET });
+        Actions.personalStorePage();
+        break;
+      }
+      case 'open_orders': {
+        Actions.tabBar({ type: ActionConst.RESET });
+        Actions.orders();
+        break;
+      }
+      // case 'open_link': Managed in default
+      default: {
+        Actions.tabBar({ type: ActionConst.RESET });
+        Actions.notificationPage();
+        break;
+      }
+    }
   }
 
   render() {

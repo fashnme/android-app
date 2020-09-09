@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { StyleSheet, View, Text, FlatList, ScrollView, Image, TouchableWithoutFeedback } from 'react-native';
-import { Icon, Overlay } from 'react-native-elements';
+import { Icon, Overlay, Divider } from 'react-native-elements';
 import { connect } from 'react-redux';
 import ProductExtraInfo from './ProductExtraInfo';
 import ProductPriceSizeView from './ProductPriceSizeView';
@@ -51,7 +51,10 @@ const ProductModal = ({ productsData, productsModalVisible, postId, posterId, pr
           ref={scrollRef}
         >
           <View style={styles.commentsModalHeader}>
-            <Text style={styles.commentsModalHeaderTitle}>Products</Text>
+            <View style={{ flexDirection: 'column' }}>
+              <Divider style={{ backgroundColor: '#c2c9cf', height: 4, width: 30, borderRadius: 20, alignSelf: 'center' }} />
+              <Text style={styles.commentsModalHeaderTitle}>Products</Text>
+            </View>
               <View style={styles.commentsModalHeaderExitButton}>
                 <Icon
                   name='cross'
@@ -103,6 +106,7 @@ const styles = StyleSheet.create({
         fontSize: 13,
         fontWeight: 'bold',
         opacity: 0.6,
+        marginTop: 15
       },
       commentsModalHeaderExitButton: {
         position: 'absolute',
