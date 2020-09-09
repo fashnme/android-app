@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, FlatList, TouchableWithoutFeedback, Dimensions, Image, ScrollView, RefreshControl } from 'react-native';
-import { Header, Button, Overlay, Card, Badge } from 'react-native-elements';
+import { Header, Button, Overlay, Card, Badge, Divider } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { Actions } from 'react-native-router-flux';
 import FlashMessage from 'react-native-flash-message';
@@ -10,6 +10,9 @@ import {
   productPageUpdatePriceAndSize,
   productPageVisitSetSingleProductPage
 } from '../../actions';
+import {
+  PersonalStorePageGifURL
+} from '../../URLS';
 import { EmptyPage } from '../basic';
 
 
@@ -79,14 +82,17 @@ class PersonalStorePage extends Component {
       return (
         <Overlay
           isVisible={openSizeModal}
-          overlayStyle={{ borderTopLeftRadius: 15, borderTopRightRadius: 15, borderWidth: 1, borderColor: '#FE19AA', bottom: 0, position: 'absolute' }}
+          overlayStyle={{ borderTopLeftRadius: 15, borderTopRightRadius: 15, borderWidth: 0.5, borderColor: '#FE19AA', bottom: 0, position: 'absolute' }}
           width={'100%'}
           height={'30%'}
           animationType={'slide'}
           windowBackgroundColor={'transparent'}
           onBackdropPress={() => this.setState({ openSizeModal: false, item: null, sizeSelected: null })}
         >
-          <Text style={styles.headingStyle}> Select Size </Text>
+          <View style={{ flexDirection: 'column' }}>
+            <Divider style={{ backgroundColor: '#c2c9cf', height: 4, width: 30, borderRadius: 20, alignSelf: 'center' }} />
+            <Text style={[styles.headingStyle, { marginTop: 10 }]}> Select Size </Text>
+          </View>
           <Text style={[styles.headingStyle, { fontWeight: '200', marginTop: 50 }]}> Updating Available Sizes...... </Text>
       </Overlay>
     );
@@ -95,7 +101,7 @@ class PersonalStorePage extends Component {
     return (
         <Overlay
           isVisible={openSizeModal}
-          overlayStyle={{ borderTopLeftRadius: 15, borderTopRightRadius: 15, borderWidth: 1, borderColor: '#FE19AA', bottom: 0, position: 'absolute' }}
+          overlayStyle={{ borderTopLeftRadius: 15, borderTopRightRadius: 15, borderWidth: 0.5, borderColor: '#FE19AA', bottom: 0, position: 'absolute' }}
           width={'100%'}
           height={'30%'}
           animationType={'slide'}
@@ -104,7 +110,10 @@ class PersonalStorePage extends Component {
         >
           <View style={{ flex: 1 }}>
             <ScrollView>
-                <Text style={styles.headingStyle}> Select Size </Text>
+                <View style={{ flexDirection: 'column' }}>
+                  <Divider style={{ backgroundColor: '#c2c9cf', height: 4, width: 30, borderRadius: 20, alignSelf: 'center' }} />
+                  <Text style={[styles.headingStyle, { marginTop: 10 }]}> Select Size </Text>
+                </View>
                 <View>
                   <FlatList
                     horizontal
@@ -217,7 +226,13 @@ class PersonalStorePage extends Component {
             numColumns={2}
             renderItem={this.renderItem.bind(this)}
             contentContainerStyle={{ paddingBottom: 100 }}
-            ListEmptyComponent={<EmptyPage title={'Stocking your Store!'} subtitle={'Getting a Perfect Collection for You'} />}
+            ListEmptyComponent={
+              <EmptyPage
+                title={'Stocking your Store!'}
+                subtitle={'Creating a Perfect Collection for You'}
+                source={{ uri: PersonalStorePageGifURL }}
+              />
+            }
             refreshControl={
               <RefreshControl
                 onRefresh={() => this.props.manageCartGetUserPersonalStore({ userToken })}

@@ -8,17 +8,38 @@ const rowWidth = screenWidth;
 const aspectRatio = 347 / 300; // Image's Height / Width
 
 
-const EmptyPage = ({ title, subtitle }) => {
+const EmptyPage = ({ title, subtitle, source }) => {
+  if (source === undefined) {
+    return (
+      <View>
+        <Card containerStyle={styles.cardContainer}>
+          <ImageBackground
+            imageStyle={styles.imageStyle}
+            style={styles.imageStyle}
+            source={require('../../resources/background/empty-page-background.png')}
+            resizeMode="cover"
+          >
+            <View style={{ justifyContent: 'flex-end', flex: 1, marginTop: 20, alignItems: 'center' }}>
+              <Text style={{ fontWeight: 'bold', fontSize: 24, color: '#606060', textTransform: 'uppercase' }}>{title}</Text>
+              <Text style={{ marginTop: 5, color: '#535665', textAlign: 'center' }}>{subtitle}</Text>
+            </View>
+          </ImageBackground>
+        </Card>
+      </View>
+    );
+  }
+
+  // Source is send from parent page
   return (
     <View>
       <Card containerStyle={styles.cardContainer}>
         <ImageBackground
           imageStyle={styles.imageStyle}
           style={styles.imageStyle}
-          source={require('../../resources/background/empty-page-background.png')}
-          resizeMode="cover"
+          source={source}
+          resizeMode="contain"
         >
-          <View style={{ justifyContent: 'flex-start', flex: 1, marginTop: 20, alignItems: 'center' }}>
+          <View style={{ justifyContent: 'flex-end', flex: 1, marginTop: 20, alignItems: 'center' }}>
             <Text style={{ fontWeight: 'bold', fontSize: 24, color: '#606060', textTransform: 'uppercase' }}>{title}</Text>
             <Text style={{ marginTop: 5, color: '#535665', textAlign: 'center' }}>{subtitle}</Text>
           </View>

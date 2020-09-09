@@ -51,6 +51,7 @@ export const CELEBRITY_PAGE_SET_CELEB_DATA = 'celebrity_page_set_celeb_data';
 export const CELEBRITY_PAGE_GET_CELEB_POSTS = 'celebrity_page_get_celeb_posts';
 export const CELEBRITY_PAGE_GET_CELEB_LIKED_POSTS = 'celebrity_page_get_celeb_liked_posts';
 export const CELEBRITY_PAGE_TOGGLE_LOADING = 'celebrity_page_toggle_loading';
+export const CELEBRITY_PAGE_RESET_DATA = 'celebrity_page_reset_data';
 
 // Upload Page
 export const UPLOAD_PAGE_TOGGLE_ISSELECTED = 'upload_page_toggle_isselected';

@@ -9,6 +9,7 @@ import {
   CELEBRITY_PAGE_GET_CELEB_POSTS,
   CELEBRITY_PAGE_GET_CELEB_LIKED_POSTS,
   CELEBRITY_PAGE_TOGGLE_LOADING,
+  CELEBRITY_PAGE_RESET_DATA,
   PERSONAL_PAGE_SET_OWN_POSTS,
   PERSONAL_PAGE_SET_OWN_LIKED_POSTS,
 } from '../types';
@@ -32,6 +33,7 @@ export const celebrityPageVisitAndSetData = ({ userId, userToken }) => {
   // Visit the Celebrity Page
   Actions.celebrityPage();
   return (dispatch) => {
+    dispatch({ type: CELEBRITY_PAGE_RESET_DATA });
     dispatch({ type: CELEBRITY_PAGE_TOGGLE_LOADING, payload: true });
     // console.log('celebrityPageVisitAndSetData', userId);
     // Setting the General Details

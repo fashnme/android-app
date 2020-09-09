@@ -277,6 +277,26 @@ class NotificationPage extends Component {
     );
   }
 
+  openOrdersPage({ item }) {
+    const { image1, body, timeStamp } = item;
+    return (
+      <Card containerStyle={styles.cardContainer}>
+        <ListItem
+          leftAvatar={{ source: { uri: image1 }, size: 55, containerStyle: { padding: 0, marginTop: 5 } }}
+          title={body}
+          titleStyle={styles.title}
+          underlayColor={'transparent'}
+          subtitle={this.timeDifference(timeStamp)}
+          subtitleStyle={{ marginTop: 10, padding: 0 }}
+          containerStyle={styles.containerStyle}
+          rightAvatar={{ source: require('../resources/settingsIcon/orders.png'), containerStyle: { padding: 0, marginTop: 0 } }}
+          contentContainerStyle={{ margin: 0, padding: 0 }}
+          onPress={() => Actions.orders()}
+        />
+      </Card>
+    );
+  }
+
   renderItem({ item }) {
     const { notificationAction } = item;
     switch (notificationAction) {
@@ -298,6 +318,8 @@ class NotificationPage extends Component {
         return this.openProfileNotification({ item });
       case 'open_personal_store':
         return this.openPersonalStoreNotification({ item });
+      case 'open_orders':
+        return this.openOrdersPage({ item });
       case 'open_link':
         return this.openLinkNotification({ item });
       default:
@@ -309,7 +331,7 @@ class NotificationPage extends Component {
     const { notificationArray, userToken, notificationLoading } = this.props;
     // console.log('NotificationPage', notificationLoading);
     return (
-      <View style={{ flex: 1 }}>
+      <View style={{ flex: 1, backgroundColor: '#fafafa' }}>
         <Header
           backgroundColor={'white'}
           placement={'center'}
@@ -320,7 +342,12 @@ class NotificationPage extends Component {
           keyExtractor={(item, index) => index.toString()}
           data={notificationArray}
           renderItem={this.renderItem.bind(this)}
-          ListEmptyComponent={<EmptyPage title={'No New Notification!'} subtitle={''} />}
+          ListEmptyComponent={
+            <EmptyPage
+              title={notificationLoading ? 'Loading Notifications...' : 'No New Notification!'}
+              subtitle={''}
+            />
+          }
           refreshControl={
             <RefreshControl
               onRefresh={() => this.props.notificationPageGetNotifcations({ userToken, notificationPage: 1 })}

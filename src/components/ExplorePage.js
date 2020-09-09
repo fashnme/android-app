@@ -29,15 +29,11 @@ class ExplorePage extends Component {
     return (
       <View style={{ flex: 1, backgroundColor: '#fafafa' }}>
         <StatusBar hidden />
+          <UserSearchBar />
           <FlatList
-            listKey={'mainPersonalList'}
-            ListHeaderComponent={<UserSearchBar />}
-            ListFooterComponent={
-              <View style={{ flex: 1 }}>
-                <TrendingUsers />
-                <TrendingPosts />
-              </View>
-            }
+            listKey={'exploreList'}
+            ListHeaderComponent={<TrendingUsers />}
+            ListFooterComponent={<TrendingPosts />}
             data={[]}
             keyExtractor={(item, index) => index.toString()}
             renderItem={() => {}}

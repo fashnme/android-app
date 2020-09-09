@@ -1,3 +1,5 @@
+// Static Assests Urls
+export const PersonalStorePageGifURL = 'https://d24slwjpnot1zk.cloudfront.net/staticAssets/personal_store.gif';
 
 // HomePage Urls
 export const HomePageGetInitialFeedDataURL = 'https://fashn-backend.herokuapp.com/feed/get-following-feed';
