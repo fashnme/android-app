@@ -49,15 +49,16 @@ class RewardsPage extends Component {
   }
 
   renderTopCard() {
-    const { rewards } = this.props;
-    let pendingCoins = 0;
-    let availableCoins = 0;
-    if (rewards !== undefined) {
-      for (const [, value] of Object.entries(rewards)) {
-        pendingCoins += value.pending;
-        availableCoins += value.available;
-      }
-    }
+    // const { rewards } = this.props;
+    // let pendingCoins = 0;
+    // let availableCoins = 0;
+    // if (rewards !== undefined) {
+    //   for (const [, value] of Object.entries(rewards)) {
+    //     pendingCoins += value.pending;
+    //     availableCoins += value.available;
+    //   }
+    // }
+    const { pendingCoins, availableCoins } = this.props;
 
     return (
       <Card containerStyle={styles.cardContainer}>
@@ -152,7 +153,12 @@ class RewardsPage extends Component {
               {this.renderHeading('Rewards Earned')}
               </View>
           }
-          ListEmptyComponent={<EmptyPage title={'No Rewards!'} subtitle={'Invite Your Friends And Earn Rewards'} />}
+          ListEmptyComponent={
+            <EmptyPage
+              title={loading ? 'Loading Rewards...' : 'No Rewards'}
+              subtitle={'Invite Your Friends And Earn Rewards'}
+            />
+          }
           keyExtractor={(item, index) => index.toString()}
           data={rewardsArray}
           renderItem={this.renderRewardItem.bind(this)}
@@ -189,7 +195,20 @@ const mapStateToProps = ({ personalPageState, accountSettingState }) => {
   const { userToken } = personalPageState;
   const { rewardsObject, loading } = accountSettingState;
   const { rewards, referralRewardsArray } = rewardsObject;
-  return { userToken, rewardsArray: referralRewardsArray, rewards, loading };
+  let pendingCoins = 0;
+  let availableCoins = 0;
+  try {
+    if (rewards !== undefined) {
+      for (const [, value] of Object.entries(rewards)) {
+        pendingCoins += value.pending;
+        availableCoins += value.available;
+      }
+    }
+  } catch (error) {
+    console.log('mapStateToProps error RewardsPage', error);
+  }
+
+  return { userToken, rewardsArray: referralRewardsArray, rewards, loading, pendingCoins, availableCoins };
 };
 
 export default connect(mapStateToProps, {
