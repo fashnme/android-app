@@ -330,7 +330,7 @@ class SingleProductPage extends Component {
           // ListHeaderComponent={this.renderImages({ imagesArray: singleProductPageData.imagesArray })}
           // ListHeaderComponent={imagesArray === undefined ? this.renderSpinner() : this.renderImages({ imagesArray })}
           ListFooterComponent={
-            <View>
+            <View style={{ marginBottom: 80 }}>
               {imagesArray === undefined ? this.renderSpinner() : this.renderImages({ imagesArray })}
               <Card containerStyle={{ paddingBottom: 4, borderRadius: 8, margin: 6 }}>
                 {this.renderPriceBlock({ singleProductPageData })}
