@@ -7,7 +7,8 @@ import {
   PRODUCT_PAGE_TOGGLE_FULL_IMAGE_VIEWER,
   PRODUCT_PAGE_ADD_PRODUCT_TO_REMINDER,
   PRODUCT_PAGE_TOGGLE_PRODUCT_LOADING,
-  PRODUCT_PAGE_SET_SINGLE_PRODUCT_PAGE_DATA
+  PRODUCT_PAGE_SET_SINGLE_PRODUCT_PAGE_DATA,
+  PRODUCT_PAGE_REQUESTED_FOR_SIZE_UPDATE
 } from '../types';
 
 const INITIAL_STATE = {
@@ -17,6 +18,7 @@ const INITIAL_STATE = {
   productsCompleteData: [],
   selectedItem: 0,
   sizeAndPriceObject: {}, // { productId: {price, crossedPrice, size} }
+  requestedForPriceSizeUpdate: {}, // { productId: 1 } To store that we have asked for size & don't ask again
   productAddedForReminder: {}, // { productId: 1 } Tracks whether the product is requested for Reminder
   postId: '',
   posterId: '',
@@ -46,6 +48,12 @@ export default (state = INITIAL_STATE, action) => {
         const newReminder = { ...state.productAddedForReminder };
         newReminder[action.payload] = 1;
         return { ...state, productAddedForReminder: newReminder };
+      }
+
+      case PRODUCT_PAGE_REQUESTED_FOR_SIZE_UPDATE: {
+          const newrequestedForPriceSizeUpdate = { ...state.requestedForPriceSizeUpdate };
+          newrequestedForPriceSizeUpdate[action.payload] = 1;
+          return { ...state, requestedForPriceSizeUpdate: newrequestedForPriceSizeUpdate };
       }
 
       case PRODUCT_PAGE_SELECTED_PRODUCT_UPDATE:

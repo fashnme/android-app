@@ -71,9 +71,9 @@ class PersonalStorePage extends Component {
     if (!openSizeModal) {
       return <View />;
     }
-    const { sizeAndPriceObject } = this.props;
+    const { sizeAndPriceObject, requestedForPriceSizeUpdate } = this.props;
     const { productId } = item;
-    if (!(productId in sizeAndPriceObject)) {
+    if (!(productId in requestedForPriceSizeUpdate)) {
       this.props.productPageUpdatePriceAndSize({ productId });
     }
     const updatedData = sizeAndPriceObject[productId];
@@ -318,8 +318,8 @@ const styles = {
 const mapStateToProps = ({ personalPageState, accountSettingState, productPageState }) => {
   const { userToken } = personalPageState;
   const { personalStoreArray, cartAndWishlistLoading } = accountSettingState;
-  const { sizeAndPriceObject } = productPageState;
-  return { userToken, personalStoreArray, sizeAndPriceObject, cartAndWishlistLoading };
+  const { sizeAndPriceObject, requestedForPriceSizeUpdate } = productPageState;
+  return { userToken, personalStoreArray, sizeAndPriceObject, requestedForPriceSizeUpdate, cartAndWishlistLoading };
 };
 
 
