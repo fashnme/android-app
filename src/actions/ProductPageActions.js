@@ -11,7 +11,8 @@ import {
   PRODUCT_PAGE_TOGGLE_FULL_IMAGE_VIEWER,
   PRODUCT_PAGE_ADD_PRODUCT_TO_REMINDER,
   PRODUCT_PAGE_TOGGLE_PRODUCT_LOADING,
-  PRODUCT_PAGE_SET_SINGLE_PRODUCT_PAGE_DATA
+  PRODUCT_PAGE_SET_SINGLE_PRODUCT_PAGE_DATA,
+  PRODUCT_PAGE_REQUESTED_FOR_SIZE_UPDATE
 } from '../types';
 
 import {
@@ -34,6 +35,7 @@ export const productPageUpdatePriceAndSize = ({ productId }) => {
   console.log('productPageUpdatePriceAndSize', productId);
   const headers = { 'Content-Type': 'application/json' };
   return (dispatch) => {
+    dispatch({ type: PRODUCT_PAGE_REQUESTED_FOR_SIZE_UPDATE, payload: productId });
     axios({
         method: 'post',
         url: ProductPageGetUpdatePriceAndSizeURL,
@@ -50,11 +52,11 @@ export const productPageUpdatePriceAndSize = ({ productId }) => {
             console.log('productPageUpdatePriceAndSize Actions Error ', error, productId);
             // TODO Remove this dummy data
             const dumdata = {
-                // price: 575,
+                // price: 74,
                 // crossedPrice: 1199,
                 // discount: 52,
                 // offers: [],
-                // sizesAvailable: [{size: 'S'},{size: 'M'},{size: 'L'},{size: 'XL'},{size: 'XLL'} ],
+                // sizesAvailable: [{size: 'S'},{size: 'M'},{size: 'L'},{size: 'XL'},{size: 'XXL'} ],
                 sizesAvailable: [],
                 //     {
                 //         size: 'Onesize',

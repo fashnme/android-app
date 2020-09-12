@@ -69,9 +69,9 @@ class WishlistPage extends Component {
     if (!openSizeModal) {
       return <View />;
     }
-    const { sizeAndPriceObject } = this.props;
+    const { sizeAndPriceObject, requestedForPriceSizeUpdate } = this.props;
     const { productId } = item;
-    if (!(productId in sizeAndPriceObject)) {
+    if (!(productId in requestedForPriceSizeUpdate)) {
       this.props.productPageUpdatePriceAndSize({ productId });
     }
     const updatedData = sizeAndPriceObject[productId];
@@ -332,12 +332,12 @@ const styles = {
 const mapStateToProps = ({ personalPageState, accountSettingState, productPageState }) => {
   const { userToken } = personalPageState;
   const { wishlistArray, cartAndWishlistLoading } = accountSettingState;
-  const { sizeAndPriceObject } = productPageState;
+  const { sizeAndPriceObject, requestedForPriceSizeUpdate } = productPageState;
   let firstProduct = {}; // Using this to rerender Screen
   if (wishlistArray.length !== 0) {
     firstProduct = wishlistArray[0];
   }
-  return { userToken, wishlistArray, sizeAndPriceObject, firstProduct, cartAndWishlistLoading };
+  return { userToken, wishlistArray, sizeAndPriceObject, requestedForPriceSizeUpdate, firstProduct, cartAndWishlistLoading };
 };
 
 export default connect(mapStateToProps, {

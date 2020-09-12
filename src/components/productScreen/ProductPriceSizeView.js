@@ -293,7 +293,7 @@ const styles = {
 
 const mapStateToProps = ({ productPageState, personalPageState, referralState }) => {
     const { productsData, selectedItem, postId, posterId, productsModalVisible,
-      productAddedForReminder, sizeAndPriceObject } = productPageState;
+      productAddedForReminder, sizeAndPriceObject, requestedForPriceSizeUpdate } = productPageState;
     if (!productsModalVisible) {
       return { productData: undefined };
     }
@@ -307,9 +307,11 @@ const mapStateToProps = ({ productPageState, personalPageState, referralState })
     let askForSize = true;
     if (productId in sizeAndPriceObject) {
       productData = { ...oldData, ...sizeAndPriceObject[productId] };
-      askForSize = false;
     } else {
       productData = oldData;
+    }
+    if (productId in requestedForPriceSizeUpdate) {
+      askForSize = false;
     }
     const { referrerId } = referralState;
     return { productData, postId, posterId, askForSize, referrerId, userToken, productAddedForReminder };

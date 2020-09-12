@@ -65,6 +65,7 @@ export const PRODUCT_PAGE_SET_POSTID_AND_POSTERID = 'product_page_set_postid_and
 export const PRODUCT_PAGE_SET_TOGGLE_PRODUCTS_DATA = 'product_page_set_toggle_products_data';
 export const PRODUCT_PAGE_SET_COMPLETE_PRODUCTS_DATA = 'product_page_set_complete_products_data';
 export const PRODUCT_PAGE_PRICE_AND_SIZE_UPDATE = 'product_page_price_and_size_update';
+export const PRODUCT_PAGE_REQUESTED_FOR_SIZE_UPDATE = 'product_page_requested_for_size_update';
 export const PRODUCT_PAGE_TOGGLE_FULL_IMAGE_VIEWER = 'product_page_toggle_full_image_viewer';
 export const PRODUCT_PAGE_ADD_PRODUCT_TO_REMINDER = 'product_page_add_product_to_reminder';
 export const PRODUCT_PAGE_TOGGLE_PRODUCT_LOADING = 'product_page_toggle_product_loading';
