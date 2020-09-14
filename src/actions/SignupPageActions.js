@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { Actions } from 'react-native-router-flux';
 import AsyncStorage from '@react-native-community/async-storage';
-
+import { homePageFetchUserColdStartDetails } from './HomePageActions';
 import {
   SIGNUP_PAGE_PHONE_UPDATE,
   SIGNUP_PAGE_OTP_UPDATE,
@@ -111,6 +111,7 @@ export const signupPageVerifyOTP = (phone, otp, callingCode) => {
             } else {
               Actions.tabBar();
               setUserName('Already a User');
+              dispatch(homePageFetchUserColdStartDetails({ userToken }));
               // console.log('signupPageVerifyOTP Set all the User details', response);
             }
           })

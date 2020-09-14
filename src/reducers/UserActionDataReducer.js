@@ -9,11 +9,13 @@ import {
   USER_ADDED_PRODUCT_TO_WISHLIST,
   USER_REMOVED_PRODUCT_FROM_WISHLIST,
   USER_LIKED_COMMENT,
-  USER_UNLIKED_COMMENT
+  USER_UNLIKED_COMMENT,
+  USER_RESET_ALL_USER_ACTION_DATA // Logout
 } from '../types';
 
 
 const INITIAL_STATE = {
+  loadInitialUserData: true, // For the first time hit the server to load the user data in the app
   likedPosts: {}, // Stores the Map of Liked Posts { postId: 1 }
   followingDataMap: {}, // Stores the Map of stars this user follow { userId: 1 }
   userCartMap: {}, // Stores the Map of Products in the users cart { productId: 1 }
@@ -25,7 +27,7 @@ export default (state = INITIAL_STATE, action) => {
     switch (action.type) {
       case USER_SET_ACTION_DATA: {
         const { likedPosts, followingDataMap, userCartMap, userWishlistMap, likedComments } = action.payload;
-        return { ...state, likedPosts, followingDataMap, userCartMap, userWishlistMap, likedComments };
+        return { ...state, likedPosts, followingDataMap, userCartMap, userWishlistMap, likedComments, loadInitialUserData: false };
       }
 
       case USER_LIKED_POST: {
@@ -91,6 +93,10 @@ export default (state = INITIAL_STATE, action) => {
         const newObject = { ...state.likedComments };
         delete newObject[action.payload];
         return { ...state, likedComments: newObject };
+      }
+
+      case USER_RESET_ALL_USER_ACTION_DATA: {
+        return { ...state, ...INITIAL_STATE };
       }
 
       default:

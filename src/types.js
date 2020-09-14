@@ -35,6 +35,7 @@ export const HOME_PAGE_ACTIVE_TAB_UPDATE = 'home_page_active_tab_update';
 
 // Keeping track of users Actions
 export const USER_SET_ACTION_DATA = 'user_set_action_data';
+export const USER_RESET_ALL_USER_ACTION_DATA = 'user_reset_all_user_action_data';
 export const USER_LIKED_POST = 'user_liked_post';
 export const USER_UNLIKED_POST = 'user_unliked_post';
 export const USER_FOLLOWED_HIM = 'user_followed_him';
@@ -85,6 +86,7 @@ export const SIGNUP_PAGE_GENDER_UPDATE = 'signup_page_gender_update';
 
 // Personal Page
 export const PERSONAL_PAGE_SET_USERTOKEN = 'personal_page_set_usertoken';
+export const PERSONAL_PAGE_RESET_DATA = 'personal_page_reset_data';
 export const PERSONAL_PAGE_SET_PERSONAL_DETAILS_AND_USERID = 'personal_page_set_personal_details_and_userid';
 export const PERSONAL_PAGE_SET_OWN_POSTS = 'personal_page_set_own_posts';
 export const PERSONAL_PAGE_SET_OWN_LIKED_POSTS = 'personal_page_set_own_liked_posts';
@@ -131,6 +133,7 @@ export const COMMENTS_PAGE_DELETE_USER_COMMENT = 'comments_page_delete_user_comm
 // Notification Page
 export const NOTIFICATION_PAGE_UPDATE_NOTIFICATIONS = 'notification_page_update_notifications';
 export const NOTIFICATION_PAGE_TOGGLE_NOTIFICATION_LOADING = 'notification_page_toggle_notification_loading';
+export const NOTIFICATION_PAGE_RESET_DATA = 'notification_page_reset_data';
 
 // CustomPostListView
 export const CUSTOM_POST_LIST_VIEW_PAGE_SET_DATA = 'custom_post_list_view_page_set_data';

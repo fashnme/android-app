@@ -1,6 +1,7 @@
 import {
   NOTIFICATION_PAGE_UPDATE_NOTIFICATIONS,
-  NOTIFICATION_PAGE_TOGGLE_NOTIFICATION_LOADING
+  NOTIFICATION_PAGE_TOGGLE_NOTIFICATION_LOADING,
+  NOTIFICATION_PAGE_RESET_DATA
 } from '../types';
 
 
@@ -28,6 +29,10 @@ export default (state = INITIAL_STATE, action) => {
     case NOTIFICATION_PAGE_TOGGLE_NOTIFICATION_LOADING:
       return { ...state, notificationLoading: action.payload };
 
+    case NOTIFICATION_PAGE_RESET_DATA: {
+      return { ...state, ...INITIAL_STATE };
+    }
+    
     default:
         return state;
   }

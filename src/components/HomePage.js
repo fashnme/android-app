@@ -55,7 +55,7 @@ class HomePage extends Component {
           showMessage({ message: 'No Internet', type: 'danger', duration: 20000, floating: true, icon: 'warning', description: 'Check You Internet Connection' });
         });
 
-    const { userToken, feedData, newUser } = this.props;
+    const { userToken, feedData, newUser, loadInitialUserData } = this.props;
 
     // Handle the Dynamic Link after Installing the App for first time
     if (newUser) {
@@ -81,14 +81,22 @@ class HomePage extends Component {
         });
     }
 
+    if (loadInitialUserData || loadInitialUserData === undefined) {
+      // Checking undefined so when user first time download the redux-persist update then loadInitialUserData
+      // is undefined
+      // Also force call this method when user login
+      this.props.homePageFetchUserColdStartDetails({ userToken });
+      console.log('homePageFetchUserColdStartDetails called on home page', { loadInitialUserData });
+    }
+
     // Getting the Initial Feed Data, when App in opened
     if (feedData.length === 0) {
       // Transfered these Method calling to Splash Screen, but when came first time after installing feedData is empty
       // console.log('Called Again HomePage');
       this.props.homePageGetInitialFeedData({ userToken });
       this.props.homePageGetInitialPublicFeedData({ userToken });
-      this.props.homePageFetchUserColdStartDetails({ userToken }); // TODO Update this to store info in local storage
-      this.props.personalPageSetData({ userToken });
+      // this.props.personalPageSetData({ userToken });Because now persisting & calling everytime user goes
+      // to personal page
     }
     BackHandler.addEventListener('hardwareBackPress', this.handleBackButton.bind(this));
   }
@@ -194,14 +202,14 @@ class HomePage extends Component {
     );
   }
 }
-//../resources/background/loader-gif.gif
 
-const mapStateToProps = ({ homePageState, personalPageState, referralState }) => {
+const mapStateToProps = ({ homePageState, personalPageState, referralState, userActionData }) => {
   const { feedData, feedPageNum, publicFeedData, activeTab } = homePageState;
   const { userToken } = personalPageState;
   const { newUser } = referralState;
-  // console.log('HomePage mapStateToProps', feedData.length, feedPageNum);
-  return { feedData, feedPageNum, publicFeedData, activeTab, userToken, newUser };
+  const { loadInitialUserData } = userActionData;
+  // console.log('HomePage mapStateToProps', { userActionData }, loadInitialUserData);
+  return { feedData, feedPageNum, publicFeedData, activeTab, userToken, newUser, loadInitialUserData };
 };
 
 
