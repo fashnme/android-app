@@ -7,7 +7,10 @@ import {
 } from '../URLS';
 import {
   ASYNCSTORAGE_USER_TOKEN_NAME,
-  ASYNCSTORAGE_USER_USER_NAME
+  ASYNCSTORAGE_USER_USER_NAME,
+  USER_RESET_ALL_USER_ACTION_DATA,
+  PERSONAL_PAGE_RESET_DATA,
+  NOTIFICATION_PAGE_RESET_DATA
 } from '../types';
 
 export const settingsPageRowPressed = ({ key }) => {
@@ -68,9 +71,12 @@ export const settingsPageRowPressed = ({ key }) => {
 export const settingsPageLogoutPressed = () => {
   return (dispatch) => {
     AsyncStorage.removeItem(ASYNCSTORAGE_USER_TOKEN_NAME);
+    // Reset all pages where we persist data in redux 
+    dispatch({ type: USER_RESET_ALL_USER_ACTION_DATA });
+    dispatch({ type: PERSONAL_PAGE_RESET_DATA });
+    dispatch({ type: NOTIFICATION_PAGE_RESET_DATA });
     BackHandler.exitApp();
     setUserName('');
-    dispatch({ type: 'settingsPageLogoutPressed' });
   };
 };
 

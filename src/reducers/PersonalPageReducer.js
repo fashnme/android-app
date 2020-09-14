@@ -4,7 +4,8 @@ import {
   PERSONAL_PAGE_SET_OWN_POSTS,
   PERSONAL_PAGE_SET_OWN_LIKED_POSTS,
   PERSONAL_PAGE_DELETE_POST,
-  PERSONAL_PAGE_TOGGLE_LOADING
+  PERSONAL_PAGE_TOGGLE_LOADING,
+  PERSONAL_PAGE_RESET_DATA
 } from '../types';
 
 const INITIAL_STATE = {
@@ -73,6 +74,10 @@ export default (state = INITIAL_STATE, action) => {
             return { ...state, ownPostsArray: newOwnPostsArray };
           }
           return { ...state };
+      }
+
+      case PERSONAL_PAGE_RESET_DATA: {
+        return { ...state, ...INITIAL_STATE };
       }
 
       default:

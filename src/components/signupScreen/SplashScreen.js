@@ -14,7 +14,6 @@ import { ASYNCSTORAGE_USER_TOKEN_NAME, ASYNCSTORAGE_USER_USER_NAME } from '../..
 import {
   signupPageUserTokenUpdate,
   homePageGetInitialFeedData,
-  homePageFetchUserColdStartDetails,
   personalPageSetData,
   homePageGetInitialPublicFeedData,
   signupPageSetReferrerData,
@@ -34,8 +33,8 @@ class SplashScreen extends Component {
           this.props.signupPageUserTokenUpdate(userToken);
           this.props.homePageGetInitialFeedData({ userToken });
           this.props.homePageGetInitialPublicFeedData({ userToken });
-          this.props.homePageFetchUserColdStartDetails({ userToken }); // TODO Update this to store info in local storage
-          this.props.personalPageSetData({ userToken });
+          // this.props.personalPageSetData({ userToken }); Because now persisting & calling everytime user goes
+          // to personal page 
           let params = {};
           let remoteMessage = null;
           // Get Incoming Link
@@ -227,7 +226,6 @@ const styles = {
 export default connect(null, {
   signupPageUserTokenUpdate,
   homePageGetInitialFeedData,
-  homePageFetchUserColdStartDetails,
   personalPageSetData,
   homePageGetInitialPublicFeedData,
   signupPageSetReferrerData,

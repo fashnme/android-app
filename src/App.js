@@ -1,7 +1,12 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import ReduxThunk from 'redux-thunk';
+import { persistStore, persistReducer, createTransform } from 'redux-persist';
+import AsyncStorage from '@react-native-community/async-storage';
+import { parse, stringify } from 'flatted';
+import { PersistGate } from 'redux-persist/integration/react';
+
 import Router from './Router';
 import reducers from './reducers';
 
@@ -48,15 +53,44 @@ import reducers from './reducers';
 //           console.log('Message handled in the background!', remoteMessage);
 // });
 
-class App extends Component {
-    render() {
-      const store = createStore(reducers, {}, applyMiddleware(ReduxThunk));
-      return (
-          <Provider store={store}>
-            <Router />
-          </Provider>
-      );
-    }
-}
+// Original Class Component
+// class App extends Component {
+//     render() {
+//       const store = createStore(reducers, {}, applyMiddleware(ReduxThunk));
+//       return (
+//           <Provider store={store}>
+//             <Router />
+//           </Provider>
+//       );
+//     }
+// }
+
+export const transformCircular = createTransform(
+    (inboundState, key) => stringify(inboundState),
+    (outboundState, key) => parse(outboundState),
+);
+
+
+const persistConfig = {
+  key: 'root',
+  storage: AsyncStorage,
+  // stateReconciler: autoMergeLevel2,
+  whitelist: ['userActionData', 'personalPageState', 'notificationState', 'explorePageState'],
+  transforms: [transformCircular]
+};
+
+const persistedReducer = persistReducer(persistConfig, reducers);
+const store = createStore(persistedReducer, applyMiddleware(ReduxThunk));
+const persistor = persistStore(store);
+
+const App = () => {
+  return (
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <Router />
+      </PersistGate>
+    </Provider>
+  );
+};
 
 export default App;
