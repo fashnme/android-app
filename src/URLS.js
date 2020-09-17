@@ -79,3 +79,6 @@ export const CommentsPageWriteCommentURL = 'https://fashn-backend.herokuapp.com/
 
 // Notification Page
 export const NotificationPageGetNotificationURL = 'https://fashn-backend.herokuapp.com/notification/get-user-notifications';
+
+// Orders Page
+export const OrdersPageCancelReturnOrderURL = 'https://fashn-backend.herokuapp.com/user/cancel-order';

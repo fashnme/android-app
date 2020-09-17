@@ -45,9 +45,11 @@ const UserPosts = ({ postsData, selfPostPageNum, userId, userToken,
           return (
             <PostThumbnail
               imageUri={item.mediaType === 'image' ? item.uploadUrl : item.thumbnailUrl}
+              mediaType={item.mediaType}
               likes={item.totalLikes}
               onPress={() => customPostListViewPageVisitAndSetData({ customFeedData: postsData, postIndex: index })}
               showDeleteIcon
+              item={item}
               onDeletePress={() => personalPageDeletePost({ postId: item.postId, userToken })}
             />
           );
@@ -72,6 +74,7 @@ const LikedPosts = ({ postsData, postLikedPageNum, userId, userToken,
         <PostThumbnail
           imageUri={item.mediaType === 'image' ? item.uploadUrl : item.thumbnailUrl}
           likes={item.totalLikes}
+          mediaType={item.mediaType}
           onPress={() => customPostListViewPageVisitAndSetData({ customFeedData: postsData, postIndex: index })}
         />
       )}

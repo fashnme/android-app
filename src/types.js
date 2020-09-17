@@ -10,6 +10,8 @@ export const FIREBASE_DOMAIN_URI_PREFIX = 'https://patang.page.link';
 export const FILE_TYPE = Platform.OS === 'ios' ? '' : 'file://';
 export const PATH_TO_CACHE_DIR = `${RNFS.CachesDirectoryPath}/PatangCache`;
 
+// Phone Number to Contact us
+export const PHONE_NUMBER_TO_CONTACT_US = '+919999342429';
 
 export const AWS_OPTIONS = {
     keyPrefix: '', // Change this Folder Name

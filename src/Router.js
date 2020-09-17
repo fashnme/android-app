@@ -12,6 +12,7 @@ import EnterDetailsPage from './components/signupScreen/EnterDetailsPage';
 import SettingsPage from './components/SettingsPage';
 import EditUserProfile from './components/SettingScreen/EditUserProfile';
 import Orders from './components/SettingScreen/Orders';
+import OrderCancelReturnPage from './components/SettingScreen/OrderCancelReturnPage';
 import BidRequests from './components/SettingScreen/BidRequests';
 import BidDenyPage from './components/SettingScreen/BidDenyPage';
 import BidAcceptPage from './components/SettingScreen/BidAcceptPage';
@@ -117,6 +118,7 @@ const RouterComponent = () => {
                   <Scene hideTabBar key='settings' title='Settings' component={SettingsPage} />
                   <Scene hideTabBar key='editUserProfile' component={EditUserProfile} />
                   <Scene hideTabBar key='orders' title='Orders' component={Orders} />
+                  <Scene hideTabBar key='orderCancelReturnPage' title='Order Cancel' component={OrderCancelReturnPage} />
                   <Scene hideTabBar key='wishlistPage' title='Wishlist' component={WishlistPage} />
                   <Scene hideTabBar key='personalStorePage' title='Personal Store' component={PersonalStorePage} />
                   <Scene hideTabBar key='manageCart' title='Cart' component={ManageCartPage} />
