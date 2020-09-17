@@ -45,6 +45,7 @@ const UserPosts = ({ postsData, selfPostPageNum, userId, userToken,
             <PostThumbnail
               imageUri={item.mediaType === 'image' ? item.uploadUrl : item.thumbnailUrl}
               likes={item.totalLikes}
+              mediaType={item.mediaType}
               onPress={() => customPostListViewPageVisitAndSetData({ customFeedData: postsData, postIndex: index })}
             />
           );
@@ -69,6 +70,7 @@ const LikedPosts = ({ postsData, postLikedPageNum, userId, userToken,
         <PostThumbnail
           imageUri={item.mediaType === 'image' ? item.uploadUrl : item.thumbnailUrl}
           likes={item.totalLikes}
+          mediaType={item.mediaType}
           onPress={() => customPostListViewPageVisitAndSetData({ customFeedData: postsData, postIndex: index })}
         />
       )}

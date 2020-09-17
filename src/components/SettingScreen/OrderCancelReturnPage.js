@@ -5,24 +5,24 @@ import { Header, Card, Input, Button } from 'react-native-elements';
 import { Dropdown } from 'react-native-material-dropdown';
 import { connect } from 'react-redux';
 import {
-  bidsPageRejectBid as _bidsPageRejectBid
+  ordersPageCancelReturnOrder as _ordersPageCancelReturnOrder
 } from '../../actions';
 
 const reasons = [
-  { value: 'Bid Price is Low' },
-  { value: 'Bid Price is High' },
-  { value: 'This is not my Product' },
-  { value: 'Unable to Process the Request' },
-  { value: "Don't want to Share" },
+  { value: 'Incorrect Size Ordered' },
+  { value: 'Product Not Required Anymore ' },
+  { value: 'Ordered By Mistake' },
+  { value: 'Duplicate Order' },
+  { value: 'Delayed Delivery Cancellation' },
   { value: 'Other Reasons' }
 ];
 // Add Header
-const BidDenyPage = ({ bidId, userToken, loading, bidsPageRejectBid }) => {
+const OrderCancelReturnPage = ({ productId, orderId, userToken, loading, ordersPageCancelReturnOrder }) => {
   const [index, updateIndex] = useState(0);
   const [feedback, updateFeedback] = useState('');
   // console.log('ind', index, feedback);
   return (
-    <View style={{ backgroundColor: 'white', flex: 1 }}>
+    <View style={{ backgroundColor: '#fafafa', flex: 1 }}>
       <Header
         backgroundColor={'white'}
         placement={'left'}
@@ -36,21 +36,22 @@ const BidDenyPage = ({ bidId, userToken, loading, bidsPageRejectBid }) => {
           reverseColor: '#D5252D',
           containerStyle: { marginLeft: -5, marginTop: 0, opacity: 0.8 },
         }}
-        centerComponent={{ text: 'BIDS FOR ME', style: { color: 'grey', fontWeight: 'bold', fontSize: 17 } }}
+        centerComponent={{ text: 'RETURN ORDER', style: { color: 'grey', fontWeight: 'bold', fontSize: 17 } }}
         containerStyle={{ paddingTop: 0, height: 50 }}
       />
       <Card containerStyle={{ margin: 5, marginTop: 10, marginBottom: 10, borderRadius: 10, borderWidth: 2 }}>
           <Dropdown
-            label='Reason for Rejection'
+            label='Please tell the Reason of Cancellation'
             data={reasons}
             selectedItemColor='#1f7070'
-            itemCount={10}
             fontSize={18}
             containerStyle={styles.dropdownContainer}
             itemTextStyle={styles.inputStyle}
             labelFontSize={styles.inputStyle.fontSize}
             labelTextStyle={[styles.inputStyle]}
             value={reasons[index].value}
+            textColor={'#1f7070'}
+            style={{ marginTop: 5, fontWeight: 'bold' }}
             onChangeText={(value, i) => updateIndex(i)}
           />
           <Card containerStyle={styles.inputContainer}>
@@ -58,25 +59,25 @@ const BidDenyPage = ({ bidId, userToken, loading, bidsPageRejectBid }) => {
               placeholder='Please Provide Feedback'
               label='Feedback'
               multiline
-              value={feedback}
-              onChangeText={text => updateFeedback(text)}
               inputStyle={styles.commentInputStyle}
               value={feedback}
-              inputContainerStyle={{ borderBottomWidth: 0 }}
+              onChangeText={text => updateFeedback(text)}
               maxLength={500}
+              underlineColorAndroid='transparent'
+              inputContainerStyle={{ borderBottomWidth: 0 }}
             />
           </Card>
 
             <Button
               raised
               containerStyle={{ marginTop: 30 }}
-              buttonStyle={{ borderColor: '#ff859a', borderWidth: 1 }}
-              titleStyle={{ color: '#ff859a', fontWeight: 'bold', fontSize: 18 }}
+              buttonStyle={{ borderColor: 'red', borderWidth: 1 }}
+              titleStyle={{ color: 'red', fontWeight: 'bold', fontSize: 18 }}
               loading={loading}
-              loadingProps={{ color: '#ff859a' }}
-              title={'Reject Bid'}
+              loadingProps={{ color: 'red' }}
+              title={'RETURN'}
               type={'outline'}
-              onPress={() => bidsPageRejectBid({ bidId, userToken, feedback, reason: reasons[index].value })}
+              onPress={() => ordersPageCancelReturnOrder({ productId, orderId, userToken, feedback, reason: reasons[index].value })}
             />
       </Card>
     </View>
@@ -84,22 +85,30 @@ const BidDenyPage = ({ bidId, userToken, loading, bidsPageRejectBid }) => {
 };
 
 const styles = {
-  buttonStyle: { borderWidth: 1, borderColor: '#1b83ea' },
+  buttonStyle: {
+		borderWidth: 1,
+		borderColor: '#1b83ea',
+  },
   inputContainer: {
     margin: 2,
     padding: 5,
-    marginTop: 10,
+    marginTop: 20,
     elevation: 1,
     borderRadius: 5,
   },
   inputStyle: { fontSize: 16, fontWeight: 'bold', paddingBottom: 0 },
+  cardContainer: { margin: 5, marginTop: 10, marginBottom: 10, borderRadius: 10, borderWidth: 2 },
   dropdownContainer: {
     padding: 10,
     marginTop: 10,
     marginBottom: 10,
     borderColor: 'grey',
   },
-  commentInputStyle: { fontSize: 17, textAlignVertical: 'top', maxHeight: 200 },
+  commentInputStyle: {
+    fontSize: 17,
+    textAlignVertical: 'top',
+    maxHeight: 200
+  },
 };
 
 const mapStateToProps = ({ personalPageState, accountSettingState }) => {
@@ -108,5 +117,5 @@ const mapStateToProps = ({ personalPageState, accountSettingState }) => {
   return { userToken, loading };
 };
 export default connect(mapStateToProps, {
-  bidsPageRejectBid: _bidsPageRejectBid
-})(BidDenyPage);
+  ordersPageCancelReturnOrder: _ordersPageCancelReturnOrder
+})(OrderCancelReturnPage);

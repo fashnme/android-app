@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
-import { View, Text, FlatList, Image, RefreshControl } from 'react-native';
+import { View, Text, FlatList, Image, RefreshControl, Linking, Platform } from 'react-native';
 import { connect } from 'react-redux';
-import { ListItem, Header, Divider, Card } from 'react-native-elements';
+import { ListItem, Header, Divider, Card, Button } from 'react-native-elements';
 import { Actions } from 'react-native-router-flux';
 import {
   accountSettingsGetUserOrders,
   productPageVisitSetSingleProductPage
 } from '../../actions';
 import { EmptyPage } from '../basic';
+import { PHONE_NUMBER_TO_CONTACT_US } from '../../types';
 
 
 class Orders extends Component {
@@ -64,6 +65,12 @@ class Orders extends Component {
       case 'delivered':
         color = '#4ea668';
         break;
+      case 'cancelled':
+        color = 'red';
+        break;
+      case 'completed':
+        color = 'green';
+        break;
       default:
         color = '#4d4b4b';
         break;
@@ -86,6 +93,38 @@ class Orders extends Component {
     );
   }
 
+  renderButtons({ productId, status, orderId }) {
+    return (
+      <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginBottom: 10 }}>
+        <Button
+          title={'CONTACT US'}
+          titleStyle={{ fontSize: 13, color: 'grey' }}
+          type={'outline'}
+          icon={{ name: 'phone-call', type: 'feather', size: 15, color: '#4cbb17' }}
+          buttonStyle={{ borderColor: '#4cbb17' }}
+          iconRight
+          raised
+          onPress={() => {
+            const number = Platform.OS === 'ios' ? `telprompt:${PHONE_NUMBER_TO_CONTACT_US}` : `tel:${PHONE_NUMBER_TO_CONTACT_US}`;
+            Linking.openURL(number);
+          }}
+        />
+        <Button
+          title={status === 'delivered' ? 'RETURN ORDER' : 'CANCEL ORDER'}
+          titleStyle={{ fontSize: 13, color: 'grey' }}
+          type={'outline'}
+          icon={{ name: 'circle-with-cross', type: 'entypo', size: 18, color: 'red' }}
+          buttonStyle={{ borderColor: 'red' }}
+          iconRight
+          raised
+          onPress={() => {
+            Actions.orderCancelReturnPage({ orderId, productId });
+          }}
+        />
+      </View>
+    );
+  }
+
   renderOrderItem({ item }) {
     const { brandName, imagesArray, price, title, size, orderId, status, crossedPrice, timeStamp,
     referrerPost, referrerId, posterId, productId } = item;
@@ -101,6 +140,7 @@ class Orders extends Component {
            onPress={() => this.props.productPageVisitSetSingleProductPage({ productId, posterId, referrerPost, referrerId })}
            // chevron={{ color: '#5c5b5b', size: 20 }}
         />
+        { status === 'cancelled' || status === 'completed' ? <View /> : this.renderButtons({ productId, status, orderId }) }
       </Card>
     );
   }
@@ -133,7 +173,7 @@ class Orders extends Component {
             renderItem={this.renderOrderItem.bind(this)}
             ListEmptyComponent={
               <EmptyPage
-                title={loading ? 'Loading Orders...' : 'No Orders Found!'} 
+                title={loading ? 'Loading Orders...' : 'No Orders Found!'}
                 subtitle={'Visit Cart & Add Products!'}
               />
             }
