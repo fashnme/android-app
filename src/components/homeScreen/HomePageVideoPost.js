@@ -7,7 +7,7 @@ import { PATH_TO_CACHE_DIR, FILE_TYPE } from '../../types';
 import AvatarComp from './AvatarComp';
 import HeartComp from './HeartComp';
 import BlinkingVideoIcon from './BlinkingVideoIcon';
-import VideoDownloadComp from './VideoDownloadComp';
+// import VideoDownloadComp from './VideoDownloadComp';
 // import TestBlinking from './TestBlinking';
 
 import {
@@ -129,19 +129,22 @@ class HomePageVideoPost extends Component {
     const { uploadUrl, thumbnailUrl, userId, postId, bucketUrl } = data;
     const absDifference = currentIndex - currentVisibleIndex;
     if (absDifference !== 0) {
-      return <VideoDownloadComp bucketUrl={bucketUrl} compType={'homeVideo'} postId={postId} currentIndex={currentIndex} currentVisibleIndex={currentVisibleIndex} />;
+      // TESTING
+      // return <VideoDownloadComp bucketUrl={bucketUrl} compType={'homeVideo'} postId={postId} currentIndex={currentIndex} currentVisibleIndex={currentVisibleIndex} />;
+      return <View />;
     }
     // console.log('showStreamVideo', this.state.showStreamVideo, videosDownloaded);
 
-    if (this.state.showStreamVideo && postId in videosDownloaded) {
-      this.setState({ showStreamVideo: false });
-      // console.log('Video Already Downloaded', videosDownloaded[postId]);
-    }
+    // if (this.state.showStreamVideo && postId in videosDownloaded) {
+    //   this.setState({ showStreamVideo: false });
+    //   // console.log('Video Already Downloaded', videosDownloaded[postId]);
+    // }
     return (
       <View style={{ flex: 1 }}>
         <TouchableWithoutFeedback style={styles.containerStyle} onPress={() => {}}>
           <Video
-           source={{ uri: this.state.showStreamVideo ? uploadUrl : `${FILE_TYPE}${PATH_TO_CACHE_DIR}/${postId}.mp4` }} // Can be a URL or a local file.
+           // source={{ uri: this.state.showStreamVideo ? uploadUrl : `${FILE_TYPE}${PATH_TO_CACHE_DIR}/${postId}.mp4` }} // Can be a URL or a local file.
+           source={{ uri: bucketUrl }} // Can be a URL or a local file.
            onBuffer={() => console.log('buffering')} // Callback when remote video is buffering
            onError={(e) => console.log('Video Error', postId, e)} // Callback when video cannot be loaded
            style={styles.backgroundVideo}
@@ -152,16 +155,18 @@ class HomePageVideoPost extends Component {
            // fullscreen
            poster={thumbnailUrl}
            posterResizeMode={'cover'}
+           // maxBitRate={1000000}
            repeat
            onEnd={() => this.props.homePageMarkUserViewedPost({ posterId: userId, postId, referrerId, userToken })}
           />
         </TouchableWithoutFeedback>
         {this.renderScreenButtons()}
-        <VideoDownloadComp bucketUrl={bucketUrl} compType={'homeVideo'} postId={postId} currentIndex={currentIndex} currentVisibleIndex={currentVisibleIndex} />
       </View>
     );
   }
 }
+// <VideoDownloadComp bucketUrl={bucketUrl} compType={'homeVideo'} postId={postId} currentIndex={currentIndex} currentVisibleIndex={currentVisibleIndex} />
+
 
 const styles = {
   backgroundVideo: {
