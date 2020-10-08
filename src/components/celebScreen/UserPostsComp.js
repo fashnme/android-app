@@ -52,7 +52,11 @@ const UserPosts = ({ postsData, selfPostPageNum, userId, userToken,
         }}
       ListEmptyComponent={<EmptyPage title={''} subtitle={'No Posts Found!'} />}
       keyExtractor={(item, index) => index.toString()}
-      onEndReached={() => console.log('UserPosts onEndReached', selfPostPageNum)}
+      onEndReached={() => {
+        console.log('UserPosts onEndReached', selfPostPageNum);
+        getMethod({ userId, userToken, selfPostPageNum, isPersonalData: false });
+      }}
+      onEndReachedThreshold={0.1}
       style={styles.postFeeds}
     />
   );
@@ -76,7 +80,11 @@ const LikedPosts = ({ postsData, postLikedPageNum, userId, userToken,
       )}
       ListEmptyComponent={<EmptyPage title={''} subtitle={'No Posts Found!'} />}
       keyExtractor={(item, index) => index.toString() + item}
-      onEndReached={() => console.log('LikedPosts onEndReached', postLikedPageNum)}
+      onEndReached={() => {
+        console.log('LikedPosts onEndReached', postLikedPageNum);
+        getMethod({ userId, userToken, postLikedPageNum, isPersonalData: false });
+      }}
+      onEndReachedThreshold={0.1}
       style={styles.postFeeds}
     />
   );

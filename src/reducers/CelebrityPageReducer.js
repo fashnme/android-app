@@ -48,7 +48,7 @@ export default (state = INITIAL_STATE, action) => {
                                 return newArray.find(s => s.postId === postId);
                             }
                           );
-        return { ...state, selfPostArray: result, selfPostPageNum: state.selfPostPageNum + 1 };
+        return { ...state, selfPostArray: result, selfPostPageNum: selfPostPageNum + 1 };
       }
 
       case CELEBRITY_PAGE_GET_CELEB_LIKED_POSTS: {
@@ -62,7 +62,7 @@ export default (state = INITIAL_STATE, action) => {
                                 return newArray.find(s => s.postId === postId);
                             }
                           );
-        return { ...state, postLikedArray: result, postLikedPageNum: state.postLikedPageNum + 1 };
+        return { ...state, postLikedArray: result, postLikedPageNum: postLikedPageNum + 1 };
       }
 
       case CELEBRITY_PAGE_RESET_DATA: {

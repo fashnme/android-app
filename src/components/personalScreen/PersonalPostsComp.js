@@ -56,7 +56,11 @@ const UserPosts = ({ postsData, selfPostPageNum, userId, userToken,
         }}
       ListEmptyComponent={<EmptyPage title={''} subtitle={'No Posts Found!'} />}
       keyExtractor={(item, index) => index.toString()}
-      onEndReached={() => console.log('UserPosts onEndReached', selfPostPageNum)}
+      onEndReached={() => {
+        console.log('UserPosts onEndReached', selfPostPageNum);
+        getMethod({ userId, userToken, selfPostPageNum, isPersonalData: true });
+      }}
+      onEndReachedThreshold={0.1}
       style={styles.postFeeds}
     />
   );
@@ -80,7 +84,11 @@ const LikedPosts = ({ postsData, postLikedPageNum, userId, userToken,
       )}
       ListEmptyComponent={<EmptyPage title={''} subtitle={'No Posts Found!'} />}
       keyExtractor={(item, index) => index.toString() + item}
-      onEndReached={() => console.log('LikedPosts onEndReached', postLikedPageNum)}
+      onEndReached={() => {
+        console.log('LikedPosts onEndReached', postLikedPageNum);
+        getMethod({ userId, userToken, postLikedPageNum, isPersonalData: true });
+      }}
+      onEndReachedThreshold={0.1}
       style={styles.postFeeds}
     />
   );
@@ -142,9 +150,9 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = ({ personalPageState }) => {
-    // console.log('Length of selfPostArray', selfPostArray.length);
     const { personalUserId, ownPostsArray, userToken, selfLikedPostArray, ownPostPageNum, postLikedPageNum } = personalPageState;
     // Use the data from personalPageState & transform it, so that the component remains same as Celebrity component
+    // console.log('Length of selfPostArray', ownPostsArray.length, selfLikedPostArray.length);
     return {
       selfPostArray: ownPostsArray,
       postLikedArray: selfLikedPostArray,

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import messaging from '@react-native-firebase/messaging';
-import { Share } from 'react-native';
+import { Share, Image } from 'react-native';
 import dynamicLinks from '@react-native-firebase/dynamic-links';
 
 
@@ -57,6 +57,7 @@ export const personalPageSetData = ({ userToken }) => {
               dispatch({ type: SIGNUP_PAGE_USERNAME_UPDATE, payload: userName });
               dispatch({ type: SIGNUP_PAGE_FULLNAME_UPDATE, payload: fullName });
               dispatch({ type: SIGNUP_PAGE_GENDER_UPDATE, payload: gender });
+              Image.prefetch(profilePic);
               try {
                 const deliveryDetailsArray = Object.values(response.data.userDetails.deliveryDetails);
                 dispatch({ type: SETTING_PAGE_USER_ADD_ADDRESS, payload: deliveryDetailsArray });
