@@ -38,29 +38,31 @@ export default (state = INITIAL_STATE, action) => {
       }
 
       case PERSONAL_PAGE_SET_OWN_POSTS: {
-        if (state.ownPostPageNum === 1) {
-          return { ...state, ownPostsArray: action.payload, ownPostPageNum: state.ownPostPageNum + 1 };
+        const { selfPostPageNum, posts } = action.payload;
+        if (selfPostPageNum === 1) {
+          return { ...state, ownPostsArray: posts, ownPostPageNum: 2 };
         }
-        const newArray = [...state.ownPostsArray, ...action.payload];
+        const newArray = [...state.ownPostsArray, ...posts];
         const result = Array.from(new Set(newArray.map(s => s.postId)))
                           .map(postId => {
                                 return newArray.find(s => s.postId === postId);
                             }
                           );
-        return { ...state, ownPostsArray: result, ownPostPageNum: state.ownPostPageNum + 1 };
+        return { ...state, ownPostsArray: result, ownPostPageNum: selfPostPageNum + 1 };
       }
 
       case PERSONAL_PAGE_SET_OWN_LIKED_POSTS: {
-        if (state.postLikedPageNum === 1) {
-          return { ...state, selfLikedPostArray: action.payload, postLikedPageNum: state.postLikedPageNum + 1 };
+        const { posts, postLikedPageNum } = action.payload;
+        if (postLikedPageNum === 1) {
+          return { ...state, selfLikedPostArray: posts, postLikedPageNum: 2 };
         }
-        const newArray = [...state.selfLikedPostArray, ...action.payload];
+        const newArray = [...state.selfLikedPostArray, ...posts];
         const result = Array.from(new Set(newArray.map(s => s.postId)))
                           .map(postId => {
                                 return newArray.find(s => s.postId === postId);
                             }
                           );
-        return { ...state, selfLikedPostArray: result, postLikedPageNum: state.postLikedPageNum + 1 };
+        return { ...state, selfLikedPostArray: result, postLikedPageNum: postLikedPageNum + 1 };
       }
 
       case PERSONAL_PAGE_DELETE_POST: {

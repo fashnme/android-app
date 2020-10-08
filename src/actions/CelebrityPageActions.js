@@ -133,9 +133,12 @@ export const celebrityPageGetUserPosts = ({ userId, userToken, selfPostPageNum, 
         data: { userId, page: selfPostPageNum }
         })
         .then((response) => {
-            // console.log('celebrityPageGetUserPosts', selfPostPageNum, response.data.posts);
-            if (isPersonalData === true) {
-              dispatch({ type: PERSONAL_PAGE_SET_OWN_POSTS, payload: response.data.posts });
+            // console.log('celebrityPageGetUserPosts', selfPostPageNum, response.data.posts.length);
+            if (response.data.posts.length === 0) {
+              console.log('empty celebrityPageGetUserPosts', selfPostPageNum);
+            } else if (isPersonalData === true) {
+              const payload = { posts: response.data.posts, selfPostPageNum };
+              dispatch({ type: PERSONAL_PAGE_SET_OWN_POSTS, payload });
             } else {
               const payload = { posts: response.data.posts, selfPostPageNum };
               dispatch({ type: CELEBRITY_PAGE_GET_CELEB_POSTS, payload });
@@ -152,7 +155,9 @@ export const celebrityPageGetUserPosts = ({ userId, userToken, selfPostPageNum, 
 export const celebrityPageGetUserLikedPosts = ({ userId, userToken, postLikedPageNum, isPersonalData }) => {
   // console.log('celebrityPageGetUserLikedPosts data', userId, postLikedPageNum, isPersonalData);
 
-  if (userId.length === 0) {
+  if (userId.length === 0 || postLikedPageNum > 3) {
+    // TODO: postLikedPageNum > 3 Precaution initially, Remove after uneven length problem solved
+
     return { type: 'CELEBRITY_PAGE_GET_CELEB_POSTS_UNHANDLED' };
   }
   const headers = {
@@ -167,9 +172,12 @@ export const celebrityPageGetUserLikedPosts = ({ userId, userToken, postLikedPag
         data: { userId, page: postLikedPageNum }
         })
         .then((response) => {
-          // console.log('celebrityPageGetUserLikedPosts', postLikedPageNum, response.data.posts);
-          if (isPersonalData === true) {
-            dispatch({ type: PERSONAL_PAGE_SET_OWN_LIKED_POSTS, payload: response.data.posts });
+          console.log('celebrityPageGetUserLikedPosts', postLikedPageNum, response.data.posts.length);
+          if (response.data.posts.length === 0) {
+            console.log('empty celebrityPageGetUserLikedPosts', postLikedPageNum);
+          } else if (isPersonalData === true) {
+            const payload = { posts: response.data.posts, postLikedPageNum };
+            dispatch({ type: PERSONAL_PAGE_SET_OWN_LIKED_POSTS, payload });
           } else {
             const payload = { posts: response.data.posts, postLikedPageNum };
             dispatch({ type: CELEBRITY_PAGE_GET_CELEB_LIKED_POSTS, payload });
