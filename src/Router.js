@@ -28,6 +28,7 @@ import RewardsPage from './components/SettingScreen/RewardsPage';
 import ReferAndEarnPage from './components/SettingScreen/ReferAndEarnPage';
 import NotificationPage from './components/NotificationPage';
 import CustomPostListView from './components/CustomPostListView';
+import ProductSearchResults from './components/exploreScreen/ProductSearchResults';
 
 // Using ICONS
 // class TabIcon extends Component {
@@ -106,8 +107,10 @@ const RouterComponent = () => {
                     <Scene hideTabBar key='customPostListView' title='' component={CustomPostListView} />
                 </Scene>
 
-                <Scene hideNavBar icon={TabIcon} iconName={'explore'} key='explorePage' title='Explore' component={ExplorePage} tabStyle={styles.tabStyle} />
-
+                <Scene hideNavBar icon={TabIcon} iconName={'explore'} tabStyle={styles.tabStyle}>
+                  <Scene initial key='explorePage' title='Explore' component={ExplorePage} />
+                  <Scene hideTabBar key='productSearchResults' title='' component={ProductSearchResults} />
+                </Scene>
                 <Scene hideNavBar icon={TabIcon} iconName={'upload'} key='uploadPage' title='Upload' component={UploadPage} tabStyle={styles.tabStyle} />
 
                 <Scene hideNavBar icon={TabIcon} iconName={'notify'} key='notificationPage' component={NotificationPage} tabStyle={styles.tabStyle} />
