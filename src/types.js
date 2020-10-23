@@ -100,6 +100,8 @@ export const EXPLORE_PAGE_SET_USER_SEARCH_DATA = 'explore_page_set_user_search_d
 export const EXPLORE_PAGE_SET_TRENDING_USERS = 'explore_page_set_trending_users';
 export const EXPLORE_PAGE_SET_TRENDING_POSTS = 'explore_page_set_trending_posts';
 export const EXPLORE_PAGE_TOGGLE_LOADING = 'explore_page_toggle_loading';
+export const EXPLORE_PAGE_SET_CATEGORY_DATA = 'explore_page_set_category_data';
+export const EXPLORE_PAGE_SET_PRODUCT_SEARCH_DATA = 'explore_page_set_product_search_data';
 
 // Settings
 export const SETTING_PAGE_SET_USER_ORDERS = 'setting_page_set_user_orders';

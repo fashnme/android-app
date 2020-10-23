@@ -1,25 +1,26 @@
 import axios from 'axios';
+import { Actions } from 'react-native-router-flux';
 
 import {
   EXPLORE_PAGE_SET_USER_SEARCH_DATA,
   EXPLORE_PAGE_SET_TRENDING_USERS,
   EXPLORE_PAGE_SET_TRENDING_POSTS,
-  EXPLORE_PAGE_TOGGLE_LOADING
+  EXPLORE_PAGE_TOGGLE_LOADING,
+  EXPLORE_PAGE_SET_CATEGORY_DATA,
+  EXPLORE_PAGE_SET_PRODUCT_SEARCH_DATA
 } from '../types';
 
 import {
   ExplorePageGetSearchResultURL,
   ExplorePageGetTrendingUsersURL,
-  ExplorePageGetTrendingPostsURL
+  ExplorePageGetTrendingPostsURL,
+  HomePageGetInitialFeedDataURL // Temporarily TODO
 } from '../URLS';
 
 
 // Get Autocomplete Search Results
 export const explorePageGetUserSearchResults = ({ userToken, query, setLoading }) => {
-  const headers = {
-    'Content-Type': 'application/json',
-     Authorization: userToken
-  };
+  const headers = { 'Content-Type': 'application/json', Authorization: userToken };
   return (dispatch) => {
     axios({
         method: 'get',
@@ -65,10 +66,8 @@ export const explorePageGetTrendingUsers = ({ userToken }) => {
 
 // Get Trending Posts
 export const explorePageGetTrendingPosts = ({ userToken }) => {
-  const headers = {
-    'Content-Type': 'application/json',
-     Authorization: userToken
-  };
+  console.log('explorePageGetTrendingPosts action called');
+  const headers = { 'Content-Type': 'application/json', Authorization: userToken };
   return (dispatch) => {
     dispatch({ type: EXPLORE_PAGE_TOGGLE_LOADING, payload: true });
     axios({
@@ -87,5 +86,34 @@ export const explorePageGetTrendingPosts = ({ userToken }) => {
         .finally(() => {
           dispatch({ type: EXPLORE_PAGE_TOGGLE_LOADING, payload: false });
         });
+  };
+};
+
+export const explorePageSetCategoriesData = ({ WomenCategoriesData, MenCategoriesData }) => {
+  // console.log('explorePageSetCategoriesData', { WomenCategoriesData, MenCategoriesData });
+  return {
+    type: EXPLORE_PAGE_SET_CATEGORY_DATA,
+    payload: { WomenCategoriesData, MenCategoriesData }
+  };
+};
+
+// Search across tagged Products in Post Index
+export const explorePageGetProductSearchResults = ({ query, userToken }) => {
+  // TODO
+  Actions.productSearchResults();
+  console.log('explorePageGetProductSearchResults query', query, userToken);
+  // Temporarily getting results from feed data
+  return (dispatch) => {
+    dispatch({ type: EXPLORE_PAGE_TOGGLE_LOADING, payload: true });
+    axios.get(HomePageGetInitialFeedDataURL, { headers: { Authorization: userToken, 'Content-Type': 'application/json' } })
+    .then(response => {
+      // console.log('Actions explorePageGetProductSearchResults', response.data.posts);
+      dispatch({ type: EXPLORE_PAGE_SET_PRODUCT_SEARCH_DATA, payload: response.data.posts });
+    })
+    .catch(error => {
+      console.log('explorePageGetProductSearchResults Error', error);
+    }).finally(() => {
+      dispatch({ type: EXPLORE_PAGE_TOGGLE_LOADING, payload: false });
+    });
   };
 };

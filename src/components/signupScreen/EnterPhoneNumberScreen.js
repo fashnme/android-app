@@ -12,11 +12,22 @@ import {
 import {
   PersonalStorePageGifURL
 } from '../../URLS';
+import { WomenCategoriesData, MenCategoriesData } from '../../resources/staticData/CategoriesData';
+
 
 class EnterPhoneNumberScreen extends Component {
   componentDidMount() {
     // Download the Static Assests
     Image.prefetch(PersonalStorePageGifURL);
+    this.prefetchImages();
+  }
+  prefetchImages() {
+    // Download Womens Images
+    Image.prefetch(WomenCategoriesData.mainImageUri);
+    WomenCategoriesData.categories.forEach(element => Image.prefetch(element.imageUri));
+    // Download Mens Images
+    Image.prefetch(MenCategoriesData.mainImageUri);
+    MenCategoriesData.categories.forEach(element => Image.prefetch(element.imageUri));
   }
   render() {
     const { phoneNumber, error, countryData } = this.props;
