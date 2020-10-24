@@ -7,6 +7,9 @@ import {
   customPostListViewPageVisitAndSetData as _customPostListViewPageVisitAndSetData
 } from '../../actions';
 
+import { EmptyPage } from '../basic';
+
+
 const WINDOW_WIDTH = Dimensions.get('window').width;
 const ASSPECT_RATIO = 3 / 4;
 const THUMBNAIL_WIDTH = WINDOW_WIDTH / 2;
@@ -117,6 +120,12 @@ const ProductSearchResults = ({ productSearchResults, explorePageLoading,
           <RefreshControl
             refreshing={explorePageLoading}
             colors={['#D5252D', '#FE19AA']}
+          />
+        }
+        ListEmptyComponent={
+          <EmptyPage
+            title={explorePageLoading ? 'Searching Products...' : 'Oooppps.. No Product Found!'}
+            subtitle={explorePageLoading ? '' : 'We are adding new styles daily!'}
           />
         }
         refreshing={explorePageLoading}

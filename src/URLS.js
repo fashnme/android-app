@@ -35,6 +35,7 @@ export const SignupPageSubmitUserDetailsURL = 'https://fashn-backend.herokuapp.c
 export const ExplorePageGetSearchResultURL = 'http://fashn-backend.herokuapp.com/search';
 export const ExplorePageGetTrendingUsersURL = 'http://fashn-backend.herokuapp.com/trending-users';
 export const ExplorePageGetTrendingPostsURL = 'http://fashn-backend.herokuapp.com/trending-posts';
+export const ExplorePageGetProductSearchURL = 'https://fashn-backend.herokuapp.com/search/product-search';
 
 // ProductPage Urls
 export const ProductPageFetchProductsInfoURL = 'https://fashn-backend.herokuapp.com/product/fetch-products';
