@@ -11,7 +11,7 @@ const renderItem = ({ item, userToken, explorePageGetProductSearchResults }) => 
   const { title, imageUri } = item;
   const searchText = `women ${item.searchText}`;
   return (
-    <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-around', marginTop: 10 }}>
+    <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-around', marginTop: 18 }}>
     <CategoryCard
       title={title}
       imageUri={imageUri}
@@ -23,7 +23,7 @@ const renderItem = ({ item, userToken, explorePageGetProductSearchResults }) => 
 
 const renderHeader = ({ mainImageUri }) => {
   return (
-    <View style={{ marginBottom: 30 }}>
+    <View style={{ marginBottom: 5 }}>
       <Image
         source={{ uri: mainImageUri }}
         style={{ flex: 1, height: 200, width: '100%', resizeMode: 'cover' }}

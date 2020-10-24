@@ -14,7 +14,7 @@ import {
   ExplorePageGetSearchResultURL,
   ExplorePageGetTrendingUsersURL,
   ExplorePageGetTrendingPostsURL,
-  HomePageGetInitialFeedDataURL // Temporarily TODO
+  ExplorePageGetProductSearchURL
 } from '../URLS';
 
 
@@ -99,21 +99,25 @@ export const explorePageSetCategoriesData = ({ WomenCategoriesData, MenCategorie
 
 // Search across tagged Products in Post Index
 export const explorePageGetProductSearchResults = ({ query, userToken }) => {
-  // TODO
   Actions.productSearchResults();
-  console.log('explorePageGetProductSearchResults query', query, userToken);
-  // Temporarily getting results from feed data
+  // console.log('explorePageGetProductSearchResults query', query, userToken);
+  const headers = { 'Content-Type': 'application/json', Authorization: userToken };
   return (dispatch) => {
-    dispatch({ type: EXPLORE_PAGE_TOGGLE_LOADING, payload: true });
-    axios.get(HomePageGetInitialFeedDataURL, { headers: { Authorization: userToken, 'Content-Type': 'application/json' } })
-    .then(response => {
-      // console.log('Actions explorePageGetProductSearchResults', response.data.posts);
-      dispatch({ type: EXPLORE_PAGE_SET_PRODUCT_SEARCH_DATA, payload: response.data.posts });
-    })
-    .catch(error => {
-      console.log('explorePageGetProductSearchResults Error', error);
-    }).finally(() => {
-      dispatch({ type: EXPLORE_PAGE_TOGGLE_LOADING, payload: false });
-    });
+    axios({
+        method: 'get',
+        url: ExplorePageGetProductSearchURL,
+        headers,
+        params: { product: query.toLowerCase() }
+        })
+        .then((response) => {
+          // console.log('Actions explorePageGetProductSearchResults', response.data.posts);
+          dispatch({ type: EXPLORE_PAGE_SET_PRODUCT_SEARCH_DATA, payload: response.data.posts });
+        })
+        .catch((error) => {
+          dispatch({ type: EXPLORE_PAGE_SET_PRODUCT_SEARCH_DATA, payload: [] });
+          console.log('explorePageGetProductSearchResults Error', error);
+        }).finally(() => {
+          dispatch({ type: EXPLORE_PAGE_TOGGLE_LOADING, payload: false });
+        });
   };
 };
