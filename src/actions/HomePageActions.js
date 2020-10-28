@@ -96,6 +96,8 @@ export const homePageGetExtraFeedData = ({ userToken, feedPageNum }) => {
 
 // Delete the Cache Dir every time the app starts to save memory footprint
 export const homePageDeleteTheCacheDir = () => {
+  // Don't Use this Method because in Explore Screen, ********** WARNING **********
+  // downloading all the category images in this directory
   return (dispatch) => {
     try {
       RNFS.unlink(PATH_TO_CACHE_DIR).then(() => {

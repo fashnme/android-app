@@ -7,7 +7,8 @@ import { connect } from 'react-redux';
 import {
   signupPagePhoneUpdate,
   signupPageSendOTP,
-  signupPageCountryCodeUpdate
+  signupPageCountryCodeUpdate,
+  explorePageSetCategoriesData
 } from '../../actions';
 import {
   PersonalStorePageGifURL
@@ -17,18 +18,13 @@ import { WomenCategoriesData, MenCategoriesData } from '../../resources/staticDa
 
 class EnterPhoneNumberScreen extends Component {
   componentDidMount() {
-    // Download the Static Assests
-    Image.prefetch(PersonalStorePageGifURL);
-    this.prefetchImages();
+    this.prefetchImages(); // Download the Static Assests
   }
   prefetchImages() {
-    // Download Womens Images
-    Image.prefetch(WomenCategoriesData.mainImageUri);
-    WomenCategoriesData.categories.forEach(element => Image.prefetch(element.imageUri));
-    // Download Mens Images
-    Image.prefetch(MenCategoriesData.mainImageUri);
-    MenCategoriesData.categories.forEach(element => Image.prefetch(element.imageUri));
+    Image.prefetch(PersonalStorePageGifURL);
+    this.props.explorePageSetCategoriesData({ WomenCategoriesData, MenCategoriesData });
   }
+
   render() {
     const { phoneNumber, error, countryData } = this.props;
     const { countryCode, name, callingCode } = countryData;
@@ -119,5 +115,6 @@ const mapStateToProps = ({ signupPageState }) => {
 export default connect(mapStateToProps, {
   signupPagePhoneUpdate,
   signupPageSendOTP,
-  signupPageCountryCodeUpdate
+  signupPageCountryCodeUpdate,
+  explorePageSetCategoriesData
 })(EnterPhoneNumberScreen);

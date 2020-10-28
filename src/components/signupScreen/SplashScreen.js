@@ -19,13 +19,11 @@ import {
   signupPageSetReferrerData,
   celebrityPageVisitAndSetData,
   customSinglePostViewPageVisitAndSetData,
-  homePageDeleteTheCacheDir
 } from '../../actions';
 import { FadeInView } from '../basic';
 
 class SplashScreen extends Component {
   componentDidMount() {
-    this.props.homePageDeleteTheCacheDir(); // Delete the Cache Dir
     AsyncStorage.getItem(ASYNCSTORAGE_USER_TOKEN_NAME).then(
       (userToken) => {
         if (userToken) {
@@ -34,7 +32,7 @@ class SplashScreen extends Component {
           this.props.homePageGetInitialFeedData({ userToken });
           this.props.homePageGetInitialPublicFeedData({ userToken });
           // this.props.personalPageSetData({ userToken }); Because now persisting & calling everytime user goes
-          // to personal page 
+          // to personal page
           let params = {};
           let remoteMessage = null;
           // Get Incoming Link
@@ -231,5 +229,4 @@ export default connect(null, {
   signupPageSetReferrerData,
   celebrityPageVisitAndSetData,
   customSinglePostViewPageVisitAndSetData,
-  homePageDeleteTheCacheDir
 })(SplashScreen);

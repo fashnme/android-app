@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { Actions } from 'react-native-router-flux';
+import RNFS from 'react-native-fs';
 
 import {
   EXPLORE_PAGE_SET_USER_SEARCH_DATA,
@@ -7,7 +8,8 @@ import {
   EXPLORE_PAGE_SET_TRENDING_POSTS,
   EXPLORE_PAGE_TOGGLE_LOADING,
   EXPLORE_PAGE_SET_CATEGORY_DATA,
-  EXPLORE_PAGE_SET_PRODUCT_SEARCH_DATA
+  EXPLORE_PAGE_SET_PRODUCT_SEARCH_DATA,
+  PATH_TO_CACHE_DIR,
 } from '../types';
 
 import {
@@ -91,10 +93,40 @@ export const explorePageGetTrendingPosts = ({ userToken }) => {
 
 export const explorePageSetCategoriesData = ({ WomenCategoriesData, MenCategoriesData }) => {
   // console.log('explorePageSetCategoriesData', { WomenCategoriesData, MenCategoriesData });
-  return {
-    type: EXPLORE_PAGE_SET_CATEGORY_DATA,
-    payload: { WomenCategoriesData, MenCategoriesData }
+  return (dispatch) => {
+    dispatch({ type: EXPLORE_PAGE_SET_CATEGORY_DATA, payload: { WomenCategoriesData, MenCategoriesData } });
+    // Download all the images
+    RNFS.exists(PATH_TO_CACHE_DIR)
+      .then(response => {
+         if (response !== true) {
+            RNFS.mkdir(PATH_TO_CACHE_DIR);
+            console.log('homePageSharePost Directory Created', PATH_TO_CACHE_DIR);
+          }
+          donwloadImageToPath(MenCategoriesData.mainImageUri, MenCategoriesData.mainImagePath);
+          MenCategoriesData.categories.forEach((item,) => {
+            const { imageUri, imagePath } = item;
+            donwloadImageToPath(imageUri, imagePath);
+          });
+          donwloadImageToPath(WomenCategoriesData.mainImageUri, WomenCategoriesData.mainImagePath);
+          WomenCategoriesData.categories.forEach((item,) => {
+            const { imageUri, imagePath } = item;
+            donwloadImageToPath(imageUri, imagePath);
+          });
+      });
   };
+};
+
+const donwloadImageToPath = (imageUri, imagePath) => {
+  RNFS.exists(imagePath).then(imageAlreadyExists => {
+    if (!imageAlreadyExists) {
+      RNFS.downloadFile({
+        fromUrl: imageUri,
+        toFile: imagePath,
+      }).promise.then(() => console.log('explorePageSetCategoriesData Downloaded', imagePath));
+    } else {
+      console.log('explorePageSetCategoriesData Image Already Exists', imagePath);
+    }
+  });
 };
 
 // Search across tagged Products in Post Index
